@@ -36,7 +36,8 @@ const checkingSchema = yup.object({
   password: yup.string()
     .required()
     .min(5)
-    .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/, 'Password must have at least one number, one letter, and one special character'), 
+    .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/,
+    'Password must have at least one number, one letter, and one special character'), 
     //Minimum five characters, at least one letter, one number and one special character
   confirm_password: yup.string()
     .required('Must confirm password')
@@ -45,21 +46,23 @@ const checkingSchema = yup.object({
 });
 
 export default class SignUp extends React.Component {
-    render(){
+    
+  render(){
     return (
-    <>
-    <View style={styles.container}>
-        <Image source={require('./assets/bear.jpg')} style={styles.bearImage}/><ScrollView>
-        <Formik
-        validationSchema={checkingSchema}
-        initialValues={{ name: '', email: '', username: '', password: '', confirm_password: '' }}
-        onSubmit={(values, actions) => {
-          actions.resetForm(); 
-          console.log(values); //Interact with Database HERE
-        }}
-      >
-        {props => (
-          <View >
+      <>
+        <View style={styles.container}>
+          <Image source={require('./assets/bear.jpg')} style={styles.bearImage}/>
+          <ScrollView>
+          <Formik
+            validationSchema={checkingSchema}
+            initialValues={{ name: '', email: '', username: '', password: '', confirm_password: '' }}
+            onSubmit={(values, actions) => {
+              actions.resetForm(); 
+              console.log(values); //Interact with Database HERE
+            }}
+          >
+          {props => (
+          <View>
             <TextInput
               style={{...styles.input, backgroundColor: (props.touched.name && props.errors.name) ? 'red' : 'white'}}
               placeholder='Name'
@@ -68,7 +71,7 @@ export default class SignUp extends React.Component {
               value={props.values.name}
               underlineColorAndroid='transparent'
             />
-           {props.touched.name && props.errors.name && <Text style={styles.errorText}>{props.errors.name}</Text> }
+            {props.touched.name && props.errors.name && <Text style={styles.errorText}>{props.errors.name}</Text> }
 
             <TextInput
               style={{...styles.input, backgroundColor: (props.touched.email && props.errors.email) ? 'red' : 'white'}}
@@ -115,13 +118,14 @@ export default class SignUp extends React.Component {
             
             {props.touched.confirm_password && props.errors.confirm_password && <Text style={styles.errorText}>{props.touched.confirm_password && props.errors.confirm_password}</Text>}
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 20}}>
+            <View style={styles.buttonGroup}>
               <CustomButton text="Login" />
               <CustomButton text="Submit" onPress={props.handleSubmit}/>
-          </View>
-          </View>
+            </View>
+        </View>
         )}
-      </Formik></ScrollView>
+        </Formik>
+        </ScrollView>
       </View>
     </>
   );
@@ -157,6 +161,11 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
       borderRadius: 9,
       fontSize: 18,
+  },
+  buttonGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 20
   }
 });
 

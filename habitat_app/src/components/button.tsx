@@ -4,32 +4,31 @@ import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-nati
 const dimensions = Dimensions.get('window');
 const imageWidth = dimensions.width;
 
-interface IAProps {
+interface Props {
     text: string;
     onPress?: any;
 }
 
-interface IAState {
+interface State {
     color: string,
     colorToggle: boolean
 }
 
-export default class CustomButton extends React.Component<IAProps, IAState> {
+export default class CustomButton extends React.Component<Props, State> {
         
     _onPress(){
          this.setState({color: this.state.colorToggle ?'orange':'black', colorToggle: !this.state.colorToggle}) 
          if(this.props.onPress)this.props.onPress();
          setTimeout( () => this.setState({color: this.state.colorToggle ?'orange':'black', 
-            colorToggle: !this.state.colorToggle}), 1000) //use to change color back
+         colorToggle: !this.state.colorToggle}), 1000) //use to change color back
     }
 
-    constructor(props: IAProps){
+    constructor(props: Props){
         super(props);
         this.state = { color: 'black', colorToggle: true}
     }
  
     render(){
-
         return (
         <TouchableOpacity onPress={this._onPress.bind(this)}>
             <View style={{...styles.button, backgroundColor: this.state.color}}>

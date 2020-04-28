@@ -10,15 +10,11 @@
 
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
-  Text,
-  StatusBar,
-  Image, Dimensions,
-  TextInput,
-  Button
+  Image, 
+  Dimensions,
+  TextInput
 } from 'react-native';
 
 import  CustomButton  from './components/button';
@@ -31,12 +27,12 @@ const imageWidth = dimensions.width;
 
 
 export default class Login extends React.Component {
-    render(){
+  render(){
     return (
-    <>
+      <>
       <View style={styles.container}>
         <View>
-        <Image source={require('./assets/bear.jpg')} style={styles.bearImage}/>
+          <Image source={require('./assets/bear.jpg')} style={styles.bearImage}/>
           {/*<Text style={styles.header}>Log-In</Text>*/}
           <TextInput 
             underlineColorAndroid={'transparent'} placeholder="Username"
@@ -44,15 +40,16 @@ export default class Login extends React.Component {
           <TextInput 
             underlineColorAndroid={'transparent'} placeholder="Password"
             style={styles.input} placeholderTextColor={'black'} secureTextEntry={true}/>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
+          <View style={styles.buttonGroup}>
             <CustomButton text="Submit" />
             <CustomButton text="Sign-up"/>
           </View>
         </View>
-      </View>
-    </>
-  );
-}}
+        </View>
+      </>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -60,7 +57,6 @@ const styles = StyleSheet.create({
     paddingTop: 45,
     backgroundColor: '#0094FF',
   },
-  
   bearImage: { 
     height: imageHeight, 
     width: imageWidth, 
@@ -76,13 +72,17 @@ const styles = StyleSheet.create({
     color: '#FFFFFF'
   },
   input: {
-      borderWidth: 3,
-      borderColor: "#000000",
-      padding: 8,
-      margin: 4,
-      backgroundColor: 'white',
-      borderRadius: 9,
-      fontSize: 18,
+    borderWidth: 3,
+    borderColor: "#000000",
+    padding: 8,
+    margin: 4,
+    backgroundColor: 'white',
+    borderRadius: 9,
+    fontSize: 18,
+  },
+  buttonGroup: {
+   flexDirection: 'row',
+   justifyContent: 'space-around'
   }
 });
 
