@@ -12,6 +12,10 @@ import {
 } from 'react-native';
 
 
+class temp {
+  constructor(name: string, key: string) {}
+}
+
 class FriendList extends Component{
 
   state = {
@@ -20,28 +24,32 @@ class FriendList extends Component{
     textInput_Holder: '',
   };
 
-  data = [
+  dummy = [
     {
-      code: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      key: 'Alex',
+      key: '910',
+      name: 'Alex',
     },
     {
-      code: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      key: 'Darin',
+      key: '5678',
+      name: 'Darin',
     },
     {
-      code: '58694a0f-3da1-471f-bd96-145571e29d72',
-      key: 'Evan',
+      key: '1234',
+      name: 'Evan',
     },
   ];
 
+  data: temp[] = [];
 
+  findName(code: string) {
+    return this.dummy.find(data => data.key === code);
+   }; 
 
   joinData = () => {
 
     if (this.state.textInput_Holder != ''){
-    
-      this.data.push({code: '0', key: this.state.textInput_Holder});
+      
+      this.data.push({key: this.state.textInput_Holder, name: (this.findName(this.state.textInput_Holder).name)});
       
       this.setState({ arrayHolder: [...this.data] });
 
@@ -69,7 +77,7 @@ class FriendList extends Component{
               <TextInput
                 style={styles.inputTxt}
                 placeholder="Enter Friend Code"
-                onChangeText={data => this.setState({ textInput_Holder: data })}
+                onChangeText={input => this.setState({ textInput_Holder: input })}
               />
               </View>
               
@@ -134,7 +142,7 @@ class FriendList extends Component{
           <View style={styles.container}>
               <FlatList
                 data={this.data}
-                renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+                renderItem={({item}) => <Text style={styles.item}>{item.name}</Text>}
               />
           </View>
 
