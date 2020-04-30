@@ -19,8 +19,6 @@ import {
 
 import  CustomButton  from './components/button';
 
-declare const global: {HermesInternal: null | {}};
-
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round(dimensions.width * 1 / 4);
 const imageWidth = dimensions.width;
@@ -33,7 +31,6 @@ export default class Login extends React.Component {
       <View style={styles.container}>
         <View>
           <Image source={require('./assets/bear.jpg')} style={styles.bearImage}/>
-          {/*<Text style={styles.header}>Log-In</Text>*/}
           <TextInput 
             underlineColorAndroid={'transparent'} placeholder="Username"
             style={styles.input} placeholderTextColor={'black'} />
