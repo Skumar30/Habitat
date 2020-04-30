@@ -30,7 +30,7 @@ export default class Login extends React.Component {
       <>
       <View style={styles.container}>
         <View>
-          <Image source={require('./assets/bear.jpg')} style={styles.bearImage}/>
+          <Image source={require('./assets/logo.jpg')} style={styles.bearImage}/>
           <TextInput 
             underlineColorAndroid={'transparent'} placeholder="Username"
             style={styles.input} placeholderTextColor={'black'} />
