@@ -26,7 +26,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-declare const global: {HermesInternal: null | {}};
+declare const global: { HermesInternal: null | {} };
 
 const App = () => {
   return (
@@ -44,7 +44,7 @@ const App = () => {
           )}
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
+              <Text style={styles.sectionTitle}>Step Zero</Text>
               <Text style={styles.sectionDescription}>
                 Edit <Text style={styles.highlight}>App.tsx</Text> to change
                 this screen and then come back to see your edits.
