@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, Component } from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, Image } from "react-native";
 import ViewWellnessContract from "./WellnessContract";
 /*
 class App extends Component {
@@ -98,7 +98,7 @@ class App extends Component {
   }
 
   render() {
-    
+
     if(this.state.clicked) {
 
       return(
@@ -115,7 +115,7 @@ class App extends Component {
         </View>
       );
     }
-    
+
   }
 }
 

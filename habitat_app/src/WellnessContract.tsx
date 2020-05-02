@@ -118,14 +118,16 @@ const styles = StyleSheet.create({
 export default App;
 */
 import React, {useState, Component} from "react";
-import { View, Text, Button } from "react-native";
+import { ScrollView, View, Text, Button, Image, TouchableOpacity, Modal } from "react-native";
+import PendingCard from "./PendingCard";
+import TaskCard from "./TaskCard";
 
 class ViewWellnessContract extends Component {
 
   constructor(props){
 
     super(props);
-    this.state = {hasWellnessContract:false}
+    this.state = {hasWellnessContract:false, viewYourTasks:true}
   }
 
   createWellnessContract = () => {
@@ -133,81 +135,117 @@ class ViewWellnessContract extends Component {
     this.setState({hasWellnessContract:true});
   }
 
+  leaveWellnessContract = () => {
+
+    this.setState({hasWellnessContract:false});
+  }
+
+  toggleViewYourTasks = () => {
+
+    this.setState({viewYourTasks: !this.state.viewYourTasks});
+  }
+
   render() {
 
     if(this.state.hasWellnessContract) {
 
-      return (
-        <View
-          style={{
-            flexDirection: "column",
-            height: 650,
-            width: 410,
-            padding: 20
-          }}
-        >
-          <Text
+      if(this.state.viewYourTasks) {
+        return (
+          <View
             style={{
-              textAlign: 'center',
-              fontWeight: 'bold',
-              textDecorationLine: 'underline',
-              fontSize: 32
-            }}>
-            Wellness Contracts
-          </Text>
-          <View style={{ flexDirection: "column", backgroundColor: "#DDDDDD" }}>
+              flexDirection: "column",
+              height: 650,
+              width: 410,
+              padding: 20
+            }}
+          >
             <Text
               style={{
                 textAlign: 'center',
-                fontSize: 20,
-                padding: 10
+                fontWeight: 'bold',
+                textDecorationLine: 'underline',
+                fontSize: 32
               }}>
-              Your tasks
+              Wellness Contracts
             </Text>
             <Text
-              style={{
-                textAlign: 'left',
-                fontSize: 16,
-                padding: 10
-              }}>
-              Your task #1
-            </Text>
-            <Text
-              style={{
-                textAlign: 'left',
-                fontSize: 16,
-                padding: 10
-              }}>
-              Your task #2
-            </Text>
-            <Text
-              style={{
-                textAlign: 'left',
-                fontSize: 16,
-                padding: 10
-              }}>
-              Your task #3
-            </Text>
-            <Text
-              style={{
-                textAlign: 'left',
-                fontSize: 16,
-                padding: 10
-              }}>
-              Your task #4
-            </Text>
-            <Text
-              style={{
-                textAlign: 'left',
-                fontSize: 16,
-                padding: 10
-              }}>
-              Your task #5
-            </Text>
+                style={{
+                  textAlign: 'left',
+                  fontSize: 20,
+                  padding: 10
+                }}>
+                Your tasks:
+              </Text>
+            <ScrollView style={{ flexDirection: "column", backgroundColor: "#DDDDDD" }}>
+              <TaskCard message="Your task #1"/>
+              <TaskCard message="Your task #2"/>
+              <TaskCard message="Your task #3"/>
+              <TaskCard message="Your task #4"/>
+              <TaskCard message="Your task #5"/>
+              <TaskCard message="Your task #6"/>
+              <TaskCard message="Your task #7"/>
+              <TaskCard message="Your task #8"/>
+              <TaskCard message="Your task #9"/>
+              <TaskCard message="Your task #10"/>
+            </ScrollView>
+            <Button
+              title="View their tasks"
+              onPress={this.toggleViewYourTasks}></Button>
+            <Button
+              title="Back"
+              onPress={this.leaveWellnessContract}></Button>
           </View>
-          <Button title="View their tasks"></Button>
-        </View>
-      );
+        );
+      }
+      else{
+
+        return (
+          <View
+            style={{
+              flexDirection: "column",
+              height: 650,
+              width: 410,
+              padding: 20
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontWeight: 'bold',
+                textDecorationLine: 'underline',
+                fontSize: 32
+              }}>
+              Wellness Contracts
+            </Text>
+            <Text
+                style={{
+                  textAlign: 'left',
+                  fontSize: 20,
+                  padding: 10
+                }}>
+                Their tasks:
+              </Text>
+            <ScrollView style={{ flexDirection: "column", backgroundColor: "#DDDDDD" }}>
+              <TaskCard message="Their task #1"/>
+              <TaskCard message="Their task #2"/>
+              <TaskCard message="Their task #3"/>
+              <TaskCard message="Their task #4"/>
+              <TaskCard message="Their task #5"/>
+              <TaskCard message="Their task #6"/>
+              <TaskCard message="Their task #7"/>
+              <TaskCard message="Their task #8"/>
+              <TaskCard message="Their task #9"/>
+              <TaskCard message="Their task #10"/>
+            </ScrollView>
+            <Button
+              title="View your tasks"
+              onPress={this.toggleViewYourTasks}></Button>
+            <Button
+              title="Back"
+              onPress={this.leaveWellnessContract}></Button>
+          </View>
+        );
+      }
     }
     else {
       return (
@@ -228,9 +266,86 @@ class ViewWellnessContract extends Component {
             }}>
             Wellness Contracts
           </Text>
-          <Button 
-            title="Create a wellness contract"
-            onPress={this.createWellnessContract}></Button>
+          <View
+            style={{
+              flexDirection:"row",
+              width: 370,
+              height: 150
+            }}>
+            <TouchableOpacity onPress={this.createWellnessContract}>
+              <View
+                style={{
+                  width:125,
+                  height:150,
+                  borderColor: '#DDDDDD',
+                  borderWidth: 5
+                }}>
+                  
+                  <Image 
+                    style={{
+                      flex: 1
+                    }}
+                    source={require('./Assets/view.png')}
+                  >
+                  </Image>
+              
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View
+                style={{
+                  width:125,
+                  height:150,
+                  borderColor: '#DDDDDD',
+                  borderWidth: 5
+                }}>
+                  
+                  <Image 
+                    style={{
+                      flex: 1
+                    }}
+                    source={require('./Assets/leave.png')}
+                  >
+                  </Image>
+              
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View
+                style={{
+                  width:125,
+                  height:150,
+                  borderColor: '#DDDDDD',
+                  borderWidth: 5
+                }}>
+                  
+                  <Image 
+                    style={{
+                      flex: 1
+                    }}
+                    source={require('./Assets/create.png')}
+                  >
+                  </Image>
+              
+              </View>
+            </TouchableOpacity>
+          </View>
+          
+          <Text 
+            style={{
+              fontSize: 16
+            }}>
+            Pending wellness contracts:
+          </Text>
+          <ScrollView>
+            <PendingCard message='Pending Wellness Contract #1'/>
+            <PendingCard message='Pending Wellness Contract #2'/>
+            <PendingCard message='Pending Wellness Contract #3'/>
+            <PendingCard message='Pending Wellness Contract #4'/>
+            <PendingCard message='Pending Wellness Contract #5'/>
+            <PendingCard message='Pending Wellness Contract #6'/>  
+          </ScrollView>
+  
         </View>
       );
     }
@@ -239,3 +354,32 @@ class ViewWellnessContract extends Component {
 
 
 export default ViewWellnessContract;
+
+/*
+            <TouchableOpacity
+              style={{
+                height: 35,
+                width: 35
+              }}>
+              <Image
+                style={{
+                  height:35,
+                  width:35
+                }}
+                source={require('./Assets/checkmark.png')}>
+              </Image>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                height: 35,
+                width: 35
+              }}>
+              <Image
+                style={{
+                  height:35,
+                  width:35
+                }}
+                source={require('./Assets/x.png')}>
+              </Image>
+            </TouchableOpacity>
+            */
