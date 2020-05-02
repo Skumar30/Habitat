@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, Component } from "react";
 import { View, Text, Button, Image } from "react-native";
-import ViewWellnessContract from "./WellnessContract";
+import WellnessContractScreen from "./WellnessContract";
 /*
 class App extends Component {
 
@@ -103,7 +103,7 @@ class App extends Component {
 
       return(
         <View>
-          <ViewWellnessContract />
+          <WellnessContractScreen />
         </View>
       );
     }

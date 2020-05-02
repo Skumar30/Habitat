@@ -137,7 +137,7 @@ class TaskCard extends Component {
 
     return(
 
-      <TouchableWithoutFeedback onPress={() => alert("popup with wellness contract info")}>
+      <TouchableWithoutFeedback onPress={() => alert("not in edit mode")}>
         <View
           style={{
             backgroundColor: '#FFFFFF',

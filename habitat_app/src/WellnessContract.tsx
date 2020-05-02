@@ -118,38 +118,87 @@ const styles = StyleSheet.create({
 export default App;
 */
 import React, {useState, Component} from "react";
-import { ScrollView, View, Text, Button, Image, TouchableOpacity, Modal } from "react-native";
+import { ScrollView, View, Text, Button, Image, TouchableOpacity, Modal, FlatList, Alert } from "react-native";
 import PendingCard from "./PendingCard";
 import TaskCard from "./TaskCard";
 
-class ViewWellnessContract extends Component {
+class WellnessContractHome extends Component {
 
   constructor(props){
 
     super(props);
-    this.state = {hasWellnessContract:false, viewYourTasks:true}
+    this.state = {viewingContract:false, viewMyTasks:true, hasContract:true}
   }
 
-  createWellnessContract = () => {
+  setViewingContract = (val: boolean) => {
 
-    this.setState({hasWellnessContract:true});
+    if(this.state.hasContract) {
+
+      this.setState({viewingContract: val});
+    }
+    else {
+
+      Alert.alert("User no has no existing wellness contract");
+    }
+    
   }
 
-  leaveWellnessContract = () => {
+  setHasContract = (val: boolean) => {
 
-    this.setState({hasWellnessContract:false});
+    this.setState({hasContract: val});
   }
 
-  toggleViewYourTasks = () => {
+  toggleViewMyTasks = () => {
 
-    this.setState({viewYourTasks: !this.state.viewYourTasks});
+    this.setState({viewMyTasks: !this.state.viewMyTasks});
   }
 
+  //user task data
+  myTasks = [
+    {
+      id: '1',
+      message: 'My task #1',
+    },
+    {
+      id: '2',
+      message: 'My task #2',
+    },
+    {
+      id: '3',
+      message: 'My task #3',
+    },
+    {
+      id: '4',
+      message: 'My task #4',
+    },
+    {
+      id: '5',
+      message: 'My task #5',
+    },
+    {
+      id: '6',
+      message: 'My task #6',
+    },
+    {
+      id: '7',
+      message: 'My task #7',
+    },
+    {
+      id: '8',
+      message: 'My task #8',
+    },
+    {
+      id: '9',
+      message: 'My task #9',
+    }
+  ];
+ 
   render() {
 
-    if(this.state.hasWellnessContract) {
+    //if user is viewing their wellness contract
+    if(this.state.viewingContract) {
 
-      if(this.state.viewYourTasks) {
+      if(this.state.viewMyTasks) {
         return (
           <View
             style={{
@@ -174,26 +223,20 @@ class ViewWellnessContract extends Component {
                   fontSize: 20,
                   padding: 10
                 }}>
-                Your tasks:
+                My tasks:
               </Text>
             <ScrollView style={{ flexDirection: "column", backgroundColor: "#DDDDDD" }}>
-              <TaskCard message="Your task #1"/>
-              <TaskCard message="Your task #2"/>
-              <TaskCard message="Your task #3"/>
-              <TaskCard message="Your task #4"/>
-              <TaskCard message="Your task #5"/>
-              <TaskCard message="Your task #6"/>
-              <TaskCard message="Your task #7"/>
-              <TaskCard message="Your task #8"/>
-              <TaskCard message="Your task #9"/>
-              <TaskCard message="Your task #10"/>
+              <FlatList
+                data={this.myTasks}
+                renderItem={({ item }) => <TaskCard message={item.message} />}
+              />
             </ScrollView>
             <Button
               title="View their tasks"
-              onPress={this.toggleViewYourTasks}></Button>
+              onPress={this.toggleViewMyTasks}></Button>
             <Button
               title="Back"
-              onPress={this.leaveWellnessContract}></Button>
+              onPress={() => {this.setViewingContract(false)}}></Button>
           </View>
         );
       }
@@ -238,16 +281,16 @@ class ViewWellnessContract extends Component {
               <TaskCard message="Their task #10"/>
             </ScrollView>
             <Button
-              title="View your tasks"
-              onPress={this.toggleViewYourTasks}></Button>
+              title="View my tasks"
+              onPress={this.toggleViewMyTasks}></Button>
             <Button
               title="Back"
-              onPress={this.leaveWellnessContract}></Button>
+              onPress={() => {this.setViewingContract(false)}}></Button>
           </View>
         );
       }
     }
-    else {
+    else { //if the user is in the wellness contract home screen
       return (
         <View
           style={{
@@ -266,13 +309,17 @@ class ViewWellnessContract extends Component {
             }}>
             Wellness Contracts
           </Text>
+          
+          {/* View which holds top three buttons */}
           <View
             style={{
               flexDirection:"row",
               width: 370,
               height: 150
             }}>
-            <TouchableOpacity onPress={this.createWellnessContract}>
+            
+            {/* button which allows user to view existing wellness contract */}
+            <TouchableOpacity onPress={() => {this.setViewingContract(true)}}>
               <View
                 style={{
                   width:125,
@@ -291,7 +338,9 @@ class ViewWellnessContract extends Component {
               
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+
+            {/* button which allows user to leave existing wellness contract */}
+            <TouchableOpacity onPress={() => {this.setHasContract(false)}}>
               <View
                 style={{
                   width:125,
@@ -310,7 +359,9 @@ class ViewWellnessContract extends Component {
               
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+
+            {/* button which allows user to create new wellness contract */}
+            <TouchableOpacity onPress={() => {this.setHasContract(true)}}>
               <View
                 style={{
                   width:125,
@@ -353,7 +404,7 @@ class ViewWellnessContract extends Component {
 }
 
 
-export default ViewWellnessContract;
+export default WellnessContractHome;
 
 /*
             <TouchableOpacity
