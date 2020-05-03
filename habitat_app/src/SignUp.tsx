@@ -51,7 +51,7 @@ export default class SignUp extends React.Component {
     return (
       <>
         <View style={styles.container}>
-          <Image source={require('./assets/bear.jpg')} style={styles.bearImage}/>
+          <Image source={require('./assets/logo.jpg')} style={styles.bearImage}/>
           <ScrollView>
           <Formik
             validationSchema={checkingSchema}
