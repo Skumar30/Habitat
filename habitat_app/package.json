@@ -12,6 +12,7 @@
   "dependencies": {
     "react": "16.11.0",
     "react-native": "0.62.2",
+    "react-native-header-scroll-view": "^2.0.0",
     "react-native-ionicons": "^5.0.0-rc"
   },
   "devDependencies": {
