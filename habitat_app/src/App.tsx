@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, Component } from "react";
 import { View, Text, Button, Image } from "react-native";
-import WellnessContractScreen from "./WellnessContract";
+import WellnessContractHome from "./WellnessContractHome";
 /*
 class App extends Component {
 
@@ -89,21 +89,21 @@ class App extends Component {
   constructor(props){
 
     super(props);
-    this.state = {clicked:false}
+    this.state = {displayWellnessContractScreen:false}
   }
 
-  onClickHandler = () => {
+  onClickHandler = (val: boolean) => {
 
-    this.setState({clicked:true});
+    this.setState({displayWellnessContractScreen:val});
   }
 
   render() {
 
-    if(this.state.clicked) {
+    if(this.state.displayWellnessContractScreen) {
 
       return(
         <View>
-          <WellnessContractScreen />
+          <WellnessContractHome onBack={this.onClickHandler}/>
         </View>
       );
     }
@@ -111,7 +111,7 @@ class App extends Component {
 
       return(
         <View>
-          <Button title="click here" onPress={this.onClickHandler}></Button>
+          <Button title="click here to go to wellness contract home screen" onPress={() => this.onClickHandler(true)}></Button>
         </View>
       );
     }
