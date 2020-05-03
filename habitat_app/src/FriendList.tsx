@@ -10,6 +10,7 @@ import {
   Alert,
   TextInput,
 } from 'react-native';
+import { create } from 'react-test-renderer';
 
 
 class temp {
@@ -19,9 +20,12 @@ class temp {
 class FriendList extends Component{
 
   state = {
-    modalVisible: false,
+    addModalVisible: false,
+    friendModalVis: false,
+    currFriend: temp,
     arrayHolder: [],
     textInput_Holder: '',
+    invalidCode: false,
   };
 
   dummy = [
@@ -41,30 +45,42 @@ class FriendList extends Component{
 
   data: temp[] = [];
 
-  findName(code: string) {
+  findName (code: string): any {
     return this.dummy.find(data => data.key === code);
-   }; 
+  }; 
 
   joinData = () => {
 
-    if (this.state.textInput_Holder != ''){
+    let friend: any = (this.findName(this.state.textInput_Holder));
+
+    if (friend == undefined && this.state.textInput_Holder != '') {
+      this.setState({invalidCode: true});
+    }
+
+    else if (this.state.textInput_Holder != ''){
       
-      this.data.push({key: this.state.textInput_Holder, name: (this.findName(this.state.textInput_Holder).name)});
+      this.data.push({key: this.state.textInput_Holder, name: friend.name});
       
       this.setState({ arrayHolder: [...this.data] });
 
-      this.setState({modalVisible:false});
+      this.setState({textInput_Holder: ''});
+      this.setState({addModalVisible:false});
     }
   }
 
-  renderForm = () => {
+  onEnterCode = (input: string) => {
+    this.setState({ textInput_Holder: input });
+    this.setState({invalidCode: false});
+  }
+
+  renderAddForm = () => {
 
     return (
       <View>
         <Modal
           animationType="fade"
           transparent={true}
-          visible={this.state.modalVisible}
+          visible={this.state.addModalVisible}
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
@@ -74,10 +90,14 @@ class FriendList extends Component{
               </View>
 
               <View style={styles.centerThis}>
+              {this.state.invalidCode && <Text style={{color:'red'}}>Invalid Friend Code</Text>}
+              </View>
+
+              <View style={styles.centerThis}>
               <TextInput
                 style={styles.inputTxt}
                 placeholder="Enter Friend Code"
-                onChangeText={input => this.setState({ textInput_Holder: input })}
+                onChangeText={input => this.onEnterCode(input)}
               />
               </View>
               
@@ -86,7 +106,7 @@ class FriendList extends Component{
                   <TouchableOpacity
                     style={{...styles.addButton, backgroundColor: "#2196F3" }}
                     onPress={() => {
-                      this.setState({modalVisible:false});
+                      this.setState({addModalVisible:false});
                     }}
                   >
                     <Text style={styles.textStyle}>Cancel</Text>
@@ -101,14 +121,95 @@ class FriendList extends Component{
                     <Text style={styles.textStyle}>Add</Text>
                   </TouchableOpacity>
                 </View>
-                
               </View>
+
             </View>
           </View>
         </Modal>
 
       </View>
     );
+  }
+
+  FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#607D8B",
+        }}
+      />
+    );
+  }
+
+  renderFriendForm = () => {
+    return(
+      <View>  
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={this.state.friendModalVis}
+        >
+          <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+
+                <View>
+                  <Text style={styles.modalText}>{this.state.currFriend.name}</Text>
+                </View>
+                
+                <View style={styles.buttonSeparation}>
+
+                  <View>
+                    <TouchableOpacity
+                      style={{...styles.addButton}}
+                      onPress={() => {
+                        this.removeFriend(this.state.currFriend)
+                      }}
+                    >
+                      <Text style={styles.textStyle}>Remove Friend</Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View>
+                    <TouchableOpacity
+                      style={{...styles.addButton}}
+                      //onPress={}
+                    >
+                      <Text style={styles.textStyle}>View Profile</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <View style={styles.centerThis}>
+                  <TouchableOpacity
+                    style={{
+                      ...styles.addButton,
+                      width: 100,}}
+                    onPress={() => {
+                      this.setState({friendModalVis:false});
+                    }}
+                  >
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
+
+              </View>
+            </View>
+        </Modal>
+      </View>
+    );
+  }
+
+  onFriendPress = (friend: any) => {
+    this.setState({friendModalVis: true, currFriend: friend});
+  }
+
+  removeFriend = (friend: temp) => {
+    
+    const index = this.data.indexOf(friend);
+    this.data.splice(index, 1);
+    this.setState({friendModalVis:false});
   }
 
   render(){
@@ -124,7 +225,7 @@ class FriendList extends Component{
                   <Text style={styles.sectionTitle}>Friends List</Text>
                   <TouchableOpacity 
                     style={styles.button}
-                    onPress={() => this.setState({modalVisible: true}) }
+                    onPress={() => this.setState({addModalVisible: true}) }
                     >
                       <Text>Add Friend</Text>
                   </TouchableOpacity>
@@ -135,18 +236,23 @@ class FriendList extends Component{
                 </Text>
               </View>
             </View>
-            
-
           </SafeAreaView>
 
           <View style={styles.container}>
               <FlatList
                 data={this.data}
-                renderItem={({item}) => <Text style={styles.item}>{item.name}</Text>}
+                renderItem={({item}) => 
+                <TouchableOpacity onPress={() => this.onFriendPress(item)}>  
+                  <Text style={styles.item}>{item.name}</Text>
+                </TouchableOpacity>
+                }
+                ItemSeparatorComponent = {this.FlatListItemSeparator}
+                ListEmptyComponent = {() => (<Text style={styles.emptyMessageStyle}>Add Some Friends!</Text>)}
               />
           </View>
 
-          {this.state.modalVisible && this.renderForm()}
+          {this.state.addModalVisible && this.renderAddForm()}
+          {this.state.friendModalVis && this.renderFriendForm()}
         </>
 
       );
@@ -161,6 +267,7 @@ const styles = StyleSheet.create({
    flex: 1,
    paddingTop: 15,
    paddingLeft: 15,
+   paddingRight: 15,
   },
   item: {
     padding: 5,
@@ -198,11 +305,15 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: 'white',
   },
-  OpTouchableOpacity: {
-    fontWeight: '700',
-  },
+
   centerText: {
     textAlign: 'center',
+  },
+
+  emptyMessageStyle: {
+    textAlign: 'center',
+    fontSize: 28,
+    marginTop: '50%', 
   },
 
 // MODAL STYLE
@@ -227,7 +338,7 @@ centeredView: {
     elevation: 5
   },
   addButton: {
-    backgroundColor: "#F194FF",
+    backgroundColor: "#2196F3",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
@@ -246,6 +357,7 @@ centeredView: {
   buttonSeparation: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    margin: 10,
   },
 
   inputTxt: {
