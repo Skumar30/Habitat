@@ -8,15 +8,18 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
+    SafeAreaView,
+    StyleSheet,
+    ScrollView,
+    View,
+    Text,
+    Platform,
+    StatusBar, TextInput, Button, YellowBox, TextComponent,
 } from 'react-native';
+
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import {
   Header,
@@ -26,93 +29,102 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-declare const global: {HermesInternal: null | {}};
 
 const App = () => {
+
+  function doSomething() {
+
+  }
+
+  const [date, setDate] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  function onChange ({event, selectedDate}: { event: any, selectedDate: any }) {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+
+  function showMode({currentMode}: { currentMode: any }) {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode({currentMode: 'date'});
+  };
+
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
+      <View style={styles.container}>
+
+        <View>
+          <Text style={styles.titleText}>Create Contract</Text>
+
+          <TextInput placeholder="Task" style={styles.titleInput}/>
+          <TextInput placeholder="Daily" style={styles.titleInput}/>
+
+          <TextInput>
+            "currentDate"
+          </TextInput>
+            <View>
+                <Button onPress={showDatepicker} title="Change Due Date" />
             </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.tsx</Text> to change
-                this screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
+            {show && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    timeZoneOffsetInMinutes={0}
+                    value={date}
+                    is24Hour={true}
+                    display="default"
+                />
+            )}
+          <View style={styles.buttonContainer}>
+            <Button onPress={doSomething} title="Create Contract">Create Contract</Button>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+            <View style={styles.buttonContainer}>
+                <Button onPress={doSomething} title="Cancel">Cancel</Button>
+            </View>
+        </View>
+      </View>
+
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  titleText: {
+    fontSize: 50,
+    fontWeight: "bold",
+    textAlign: 'center'
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  container: {
+    marginTop: 10,
+    flex: 2,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
   },
-  body: {
-    backgroundColor: Colors.white,
+  buttonContainer: {
+    marginTop: 100
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  titleInput: {
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#000',
+    width: 390,
+    height: 50,
+    padding: 8,
+    borderRadius: 7
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+  descriptionInput: {
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#000',
+    width: 390,
+    height: 150,
+    padding: 8,
+    borderRadius: 7
+  }
 });
 
 export default App;
