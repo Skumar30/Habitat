@@ -10,17 +10,14 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@react-native-community/datetimepicker": "^2.3.2",
     "react": "16.11.0",
     "react-native": "^0.62.2",
-    "react-native-material-dropdown": "^0.11.1"
-=======
+    "react-native-material-dropdown": "^0.11.1",
     "formik": "^2.1.4",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "yup": "^0.28.4"
->>>>>>> 09cfb4b904a9b465dd57da4c79b119d9feb83c70
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
