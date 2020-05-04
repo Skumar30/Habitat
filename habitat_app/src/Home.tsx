@@ -18,15 +18,16 @@ class Home extends React.Component {
     const mood = 4;
 
     // Assets
-    const full = require('./images/full.png');
-    const empty = require('./images/empty.png');
-    const store = require('./images/store.png');
-    const settings = require('./images/settings.png');
-    const points = require('./images/points.png');
-    const head = require('./images/head.png');
-    const happy = require('./images/happy.png');
-    const sad = require('./images/sad.png');
-    const background = require('./images/background.png');
+    const full = require('./assets/full.png');
+    const empty = require('./assets/empty.png');
+    const store = require('./assets/store.png');
+    const settings = require('./assets/settings.png');
+    const points = require('./assets/points.png');
+    const head = require('./assets/head.png');
+    const happy = require('./assets/happy.png');
+    const sad = require('./assets/sad.png');
+    const background = require('./assets/background.png');
+    // Doesnt load as a local for some reason
     const bear = 'https://i.imgur.com/6H0QDqq.png';
     const feeling = mood >= 3 ? happy : sad;
 
