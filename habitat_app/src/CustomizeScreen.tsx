@@ -1,13 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React, { Component, useState, Props } from 'react';
 import Icon from 'react-native-ionicons';
 // import HeaderScrollView from 'react-native-header-scroll-view';
@@ -27,24 +17,25 @@ import {
   Modal,
 } from 'react-native';
 
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 declare const global: { HermesInternal: null | {} };
 
 class Customize extends React.Component<{}, {
-  skin1: boolean, skin2: boolean, skin3: boolean, skin4: boolean, skin5: boolean, hat1: boolean, hat2: boolean,
-  hat3: boolean, hat4: boolean, hat5: boolean, hat6: boolean, other1: boolean, other2: boolean, other3: boolean,
-  unownedClicked: boolean, confirmationVisible: boolean, skin5owned: boolean,
+  skin0: boolean, skin1: boolean, skin2: boolean, skin3: boolean, skin4: boolean,
+  hat0: boolean, hat1: boolean, hat2: boolean, hat3: boolean, hat4: boolean, hat5: boolean,
+  other0: boolean, other1: boolean, other2: boolean,
+  unownedClicked: boolean, confirmationVisible: boolean,
+  // i will get an error if i dont include this huge block for some reason...
 }>{
   constructor(props: any) {
     super(props)
 
     this.state = {
-      skin1: true, skin2: false, skin3: false, skin4: false, skin5: false, hat1: true, hat2: false,
-      hat3: false, hat4: false, hat5: false, hat6: false, other1: true, other2: false, other3: false,
-      unownedClicked: false, confirmationVisible: false, skin5owned: false,
+      skin0: true, skin1: false, skin2: false, skin3: false, skin4: false,
+      hat0: true, hat1: false, hat2: false, hat3: false, hat4: false, hat5: false,
+      other0: true, other1: false, other2: false,
+      unownedClicked: false, confirmationVisible: false,
     };
   }
 
@@ -54,9 +45,9 @@ class Customize extends React.Component<{}, {
 
   itemList = [
     { id: 0, name: 'Bear', price: 100, owned: true, active: true },
-    { id: 1, name: 'Cat', price: 100, owned: true, active: false },
-    { id: 2, name: 'Cow', price: 100, owned: true, active: false },
-    { id: 3, name: 'Fox', price: 100, owned: true, active: false },
+    { id: 1, name: 'Cat', price: 100, owned: false, active: false },
+    { id: 2, name: 'Cow', price: 100, owned: false, active: false },
+    { id: 3, name: 'Fox', price: 100, owned: false, active: false },
     { id: 4, name: 'Pig', price: 100, owned: false, active: false },
   ];
 
@@ -80,18 +71,63 @@ class Customize extends React.Component<{}, {
     item.owned = status;
   }
 
-  handlePurchase() {
-    this.setState({ confirmationVisible: false });
-    this.setState({ unownedClicked: false });
-    this.setState({ skin5owned: true });
-    this.setState({ skin5: true });
-    this.activateSkin5();
-    this.credits -= this.getPrice(4);
-    //update database value
+  getActiveStatus(code: number): any {
+    let item = this.itemList.find((itemList: { id: number; }) => itemList.id === code);
+    return item.active;
   }
 
-  //this is hardcoded just for the pig skin for now. 
-  //planning on properly implementing this once the database is working
+  setActiveStatus(code: number, status: boolean): any {
+    let item = this.itemList.find((itemList: { id: number; }) => itemList.id === code);
+    item.active = status;
+    if (code == 0) {
+      this.setState({ skin0: status });
+    } else if (code == 1) {
+      this.setState({ skin1: status });
+    } else if (code == 2) {
+      this.setState({ skin2: status });
+    } else if (code == 3) {
+      this.setState({ skin3: status });
+    } else if (code == 4) {
+      this.setState({ skin4: status });
+    }
+  }
+
+  handlePurchase(code: number) {
+    this.setState({ confirmationVisible: false });
+    this.setState({ unownedClicked: false });
+    this.setOwnedStatus(code, true);
+    this.setActiveStatus(code, true);
+    this.deactivateOthers(code);
+    this.credits -= this.getPrice(code);
+
+    //update database value here:
+    // __________________
+  }
+
+  deactivateOthers(code: number) {
+    if (code == 0) {
+      this.setActiveStatus(1, false); this.setActiveStatus(2, false);
+      this.setActiveStatus(3, false); this.setActiveStatus(4, false);
+    } else if (code == 1) {
+      this.setActiveStatus(0, false); this.setActiveStatus(2, false);
+      this.setActiveStatus(3, false); this.setActiveStatus(4, false);
+    } else if (code == 2) {
+      this.setActiveStatus(0, false); this.setActiveStatus(1, false);
+      this.setActiveStatus(3, false); this.setActiveStatus(4, false);
+    } else if (code == 3) {
+      this.setActiveStatus(0, false); this.setActiveStatus(1, false);
+      this.setActiveStatus(2, false); this.setActiveStatus(4, false);
+    } else if (code == 4) {
+      this.setActiveStatus(0, false); this.setActiveStatus(1, false);
+      this.setActiveStatus(2, false); this.setActiveStatus(3, false);
+    } // will add more for other categories later
+  }
+
+  unownedSkinSelected(code: number) {
+    this.setState({ unownedClicked: true });
+    this.currID = code;
+  }
+
   purchaseConfirmation = (code: number) => {
     return (
       <View>
@@ -103,7 +139,9 @@ class Customize extends React.Component<{}, {
           <View style={{ flex: 1, marginTop: 45, height: 100 }}>
             <View style={styles.modalView}>
               <View>
-                <Text style={styles.modalText}>Would you like to purchase {this.getItemName(code)} for ${this.getPrice(code)}?</Text>
+                <Text style={styles.modalText}>
+                  Would you like to purchase {this.getItemName(code)} for ${this.getPrice(code)}?
+                </Text>
               </View>
 
               <View style={styles.buttonSeparation}>
@@ -113,7 +151,7 @@ class Customize extends React.Component<{}, {
                     style={[styles.confirmationButton, { backgroundColor: '#555' }]}
                     onPress={() => {
                       this.setState({ confirmationVisible: false }); this.setState({ unownedClicked: false });
-                      this.setState({ skin5owned: false });
+                      this.setOwnedStatus(code, false);
                     }}
                   >
                     <Text style={styles.itemText}>NO</Text>
@@ -123,7 +161,7 @@ class Customize extends React.Component<{}, {
                 <View>
                   <TouchableOpacity
                     style={[styles.confirmationButton, { backgroundColor: 'slategray' }]}
-                    onPress={() => { this.handlePurchase() }}
+                    onPress={() => { this.handlePurchase(code) }}
                   >
                     <Text style={styles.itemText}>YES</Text>
                   </TouchableOpacity>
@@ -134,18 +172,6 @@ class Customize extends React.Component<{}, {
         </Modal>
       </View >
     );
-  }
-
-  activateSkin5() {
-    this.setState({ skin1: false });
-    this.setState({ skin2: false });
-    this.setState({ skin3: false });
-    this.setState({ skin4: false });
-  }
-
-  unownedSkin5Selected() {
-    this.setState({ unownedClicked: true });
-    this.currID = 4;
   }
 
   render() {
@@ -180,136 +206,124 @@ class Customize extends React.Component<{}, {
               <Text style={styles.sectionTitle}>SKINS</Text>
               <View style={styles.itemsContainer}>
 
-                <TouchableOpacity onPressIn={() => this.setState({ skin1: true })}
-                  onPressOut={() => {
-                    this.setState({ skin2: false }); this.setState({ skin3: false }); this.setState({ skin4: false });
-                    this.setState({ skin5: false });
-                  }}
-                  style={this.state.skin1 ? styles.itemElementActive : styles.itemElement}
+                <TouchableOpacity onPressIn={() => { this.getOwnedStatus(0) ? this.setActiveStatus(0, true) : null }}
+                  onPressOut={() => { this.getOwnedStatus(0) ? this.deactivateOthers(0) : this.unownedSkinSelected(0) }}
+                  style={this.state.skin0 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>Bear</Text>
-                  <Image style={styles.itemImage} source={require('../assets/bear.png')} />
-                  {/* <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text> */}
+                  <Image style={styles.itemImage} source={require('./assets/bear.png')} />
+                  {this.getOwnedStatus(0) ? null : <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]} >${this.getPrice(0)}</Text>}
                 </TouchableOpacity>
 
-                <TouchableOpacity onPressIn={() => this.setState({ skin2: true })}
-                  onPressOut={() => {
-                    this.setState({ skin1: false }); this.setState({ skin3: false }); this.setState({ skin4: false });
-                    this.setState({ skin5: false });
-                  }}
-                  style={this.state.skin2 ? styles.itemElementActive : styles.itemElement}
+                <TouchableOpacity onPressIn={() => { this.getOwnedStatus(1) ? this.setActiveStatus(1, true) : null }}
+                  onPressOut={() => { this.getOwnedStatus(1) ? this.deactivateOthers(1) : this.unownedSkinSelected(1) }}
+                  style={this.state.skin1 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>Cat</Text>
-                  <Image style={styles.itemImage} source={require('../assets/cat.png')} />
-                  {/* <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text> */}
+                  <Image style={styles.itemImage} source={require('./assets/cat.png')} />
+                  {this.getOwnedStatus(1) ? null : <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]} >${this.getPrice(1)}</Text>}
                 </TouchableOpacity>
 
-                <TouchableOpacity onPressIn={() => this.setState({ skin3: true })}
-                  onPressOut={() => {
-                    this.setState({ skin1: false }); this.setState({ skin2: false }); this.setState({ skin4: false });
-                    this.setState({ skin5: false });
-                  }}
-                  style={this.state.skin3 ? styles.itemElementActive : styles.itemElement}
+                <TouchableOpacity onPressIn={() => { this.getOwnedStatus(2) ? this.setActiveStatus(2, true) : null }}
+                  onPressOut={() => { this.getOwnedStatus(2) ? this.deactivateOthers(2) : this.unownedSkinSelected(2) }}
+                  style={this.state.skin2 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>Cow</Text>
-                  <Image style={styles.itemImage} source={require('../assets/cow.png')} />
-                  {/* <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text> */}
+                  <Image style={styles.itemImage} source={require('./assets/cow.png')} />
+                  {this.getOwnedStatus(2) ? null : <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]} >${this.getPrice(2)}</Text>}
                 </TouchableOpacity>
 
-                <TouchableOpacity onPressIn={() => this.setState({ skin4: true })}
-                  onPressOut={() => {
-                    this.setState({ skin1: false }); this.setState({ skin2: false }); this.setState({ skin3: false });
-                    this.setState({ skin5: false });
-                  }}
-                  style={this.state.skin4 ? styles.itemElementActive : styles.itemElement}
+                <TouchableOpacity onPressIn={() => { this.getOwnedStatus(3) ? this.setActiveStatus(3, true) : null }}
+                  onPressOut={() => { this.getOwnedStatus(3) ? this.deactivateOthers(3) : this.unownedSkinSelected(3) }}
+                  style={this.state.skin3 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>Fox</Text>
-                  <Image style={styles.itemImage} source={require('../assets/fox.png')} />
-                  {/* <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text> */}
+                  <Image style={styles.itemImage} source={require('./assets/fox.png')} />
+                  {this.getOwnedStatus(3) ? null : <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]} >${this.getPrice(3)}</Text>}
                 </TouchableOpacity>
 
-                <TouchableOpacity onPressIn={() => { this.state.skin5owned ? this.setState({ skin5: true }) : null }}
-                  onPressOut={() => { this.state.skin5owned ? this.activateSkin5() : this.unownedSkin5Selected() }}
-                  style={this.state.skin5 ? styles.itemElementActive : styles.itemElement}
+                <TouchableOpacity onPressIn={() => { this.getOwnedStatus(4) ? this.setActiveStatus(4, true) : null }}
+                  onPressOut={() => { this.getOwnedStatus(4) ? this.deactivateOthers(4) : this.unownedSkinSelected(4) }}
+                  style={this.state.skin4 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>Pig</Text>
-                  <Image style={styles.itemImage} source={require('../assets/pig.png')} />
-                  {this.state.skin5owned ? null : <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]} >${this.getPrice(4)}</Text>}
+                  <Image style={styles.itemImage} source={require('./assets/pig.png')} />
+                  {this.getOwnedStatus(4) ? null : <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]} >${this.getPrice(4)}</Text>}
                 </TouchableOpacity>
 
               </View>
               <Text style={styles.sectionTitle}>HATS</Text>
               <View style={styles.itemsContainer}>
 
+                <TouchableOpacity onPressIn={() => this.setState({ hat0: true })}
+                  onPressOut={() => {
+                    this.setState({ hat1: false }); this.setState({ hat2: false }); this.setState({ hat3: false });
+                    this.setState({ hat4: false }); this.setState({ hat5: false });
+                  }}
+                  style={this.state.hat0 ? styles.itemElementActive : styles.itemElement}
+                >
+                  <Text style={styles.itemText}>ITEM 1</Text>
+                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
+                  <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
+                </TouchableOpacity>
+
                 <TouchableOpacity onPressIn={() => this.setState({ hat1: true })}
                   onPressOut={() => {
-                    this.setState({ hat2: false }); this.setState({ hat3: false }); this.setState({ hat4: false });
-                    this.setState({ hat5: false }); this.setState({ hat6: false });
+                    this.setState({ hat0: false }); this.setState({ hat2: false }); this.setState({ hat3: false });
+                    this.setState({ hat4: false }); this.setState({ hat5: false });
                   }}
                   style={this.state.hat1 ? styles.itemElementActive : styles.itemElement}
                 >
-                  <Text style={styles.itemText}>ITEM 1</Text>
-                  <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
+                  <Text style={styles.itemText}>ITEM 2</Text>
+                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPressIn={() => this.setState({ hat2: true })}
                   onPressOut={() => {
-                    this.setState({ hat1: false }); this.setState({ hat3: false }); this.setState({ hat4: false });
-                    this.setState({ hat5: false }); this.setState({ hat6: false });
+                    this.setState({ hat0: false }); this.setState({ hat1: false }); this.setState({ hat3: false });
+                    this.setState({ hat4: false }); this.setState({ hat5: false });
                   }}
                   style={this.state.hat2 ? styles.itemElementActive : styles.itemElement}
                 >
-                  <Text style={styles.itemText}>ITEM 2</Text>
-                  <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
+                  <Text style={styles.itemText}>ITEM 3</Text>
+                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPressIn={() => this.setState({ hat3: true })}
                   onPressOut={() => {
-                    this.setState({ hat1: false }); this.setState({ hat2: false }); this.setState({ hat4: false });
-                    this.setState({ hat5: false }); this.setState({ hat6: false });
+                    this.setState({ hat0: false }); this.setState({ hat1: false }); this.setState({ hat2: false });
+                    this.setState({ hat4: false }); this.setState({ hat5: false });
                   }}
                   style={this.state.hat3 ? styles.itemElementActive : styles.itemElement}
                 >
-                  <Text style={styles.itemText}>ITEM 3</Text>
-                  <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
+                  <Text style={styles.itemText}>ITEM 4</Text>
+                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPressIn={() => this.setState({ hat4: true })}
                   onPressOut={() => {
-                    this.setState({ hat1: false }); this.setState({ hat2: false }); this.setState({ hat3: false });
-                    this.setState({ hat5: false }); this.setState({ hat6: false });
+                    this.setState({ hat0: false }); this.setState({ hat1: false }); this.setState({ hat2: false });
+                    this.setState({ hat3: false }); this.setState({ hat5: false });
                   }}
                   style={this.state.hat4 ? styles.itemElementActive : styles.itemElement}
                 >
-                  <Text style={styles.itemText}>ITEM 4</Text>
-                  <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
+                  <Text style={styles.itemText}>ITEM 5</Text>
+                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPressIn={() => this.setState({ hat5: true })}
                   onPressOut={() => {
-                    this.setState({ hat1: false }); this.setState({ hat2: false }); this.setState({ hat3: false });
-                    this.setState({ hat4: false }); this.setState({ hat6: false });
+                    this.setState({ hat0: false }); this.setState({ hat1: false }); this.setState({ hat2: false });
+                    this.setState({ hat3: false }); this.setState({ hat4: false });
                   }}
                   style={this.state.hat5 ? styles.itemElementActive : styles.itemElement}
                 >
-                  <Text style={styles.itemText}>ITEM 5</Text>
-                  <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
-                  <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => this.setState({ hat6: true })}
-                  onPressOut={() => {
-                    this.setState({ hat1: false }); this.setState({ hat2: false }); this.setState({ hat3: false });
-                    this.setState({ hat4: false }); this.setState({ hat5: false });
-                  }}
-                  style={this.state.hat6 ? styles.itemElementActive : styles.itemElement}
-                >
                   <Text style={styles.itemText}>ITEM 6</Text>
-                  <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
+                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
 
@@ -317,30 +331,30 @@ class Customize extends React.Component<{}, {
               <Text style={styles.sectionTitle}>OTHER</Text>
               <View style={styles.itemsContainer}>
 
-                <TouchableOpacity onPressIn={() => this.setState({ other1: true })}
-                  onPressOut={() => { this.setState({ other2: false }); this.setState({ other3: false }); }}
-                  style={this.state.other1 ? styles.itemElementActive : styles.itemElement}
+                <TouchableOpacity onPressIn={() => this.setState({ other0: true })}
+                  onPressOut={() => { this.setState({ other1: false }); this.setState({ other2: false }); }}
+                  style={this.state.other0 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>ITEM 1</Text>
-                  <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
+                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
+                  <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPressIn={() => this.setState({ other1: true })}
+                  onPressOut={() => { this.setState({ other0: false }); this.setState({ other2: false }); }}
+                  style={this.state.other1 ? styles.itemElementActive : styles.itemElement}
+                >
+                  <Text style={styles.itemText}>ITEM 2</Text>
+                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPressIn={() => this.setState({ other2: true })}
-                  onPressOut={() => { this.setState({ other1: false }); this.setState({ other3: false }); }}
+                  onPressOut={() => { this.setState({ other0: false }); this.setState({ other1: false }); }}
                   style={this.state.other2 ? styles.itemElementActive : styles.itemElement}
                 >
-                  <Text style={styles.itemText}>ITEM 2</Text>
-                  <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
-                  <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => this.setState({ other3: true })}
-                  onPressOut={() => { this.setState({ other1: false }); this.setState({ other2: false }); }}
-                  style={this.state.other3 ? styles.itemElementActive : styles.itemElement}
-                >
                   <Text style={styles.itemText}>ITEM 3</Text>
-                  <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
+                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
 
