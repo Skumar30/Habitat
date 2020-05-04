@@ -24,6 +24,7 @@ import {
   TouchableHighlight,
   Animated,
   FlatList,
+  Modal,
 } from 'react-native';
 
 import {
@@ -32,42 +33,119 @@ import {
 
 declare const global: { HermesInternal: null | {} };
 
-//interface 
-
-class ToggleItem extends React.Component<{ label: string, imageSource: string }, { active: boolean }> {
-  constructor(props: any) {
-    super(props)
-
-    this.state = {
-      active: false
-    };
-  }
-
-  render() {
-    return (
-      <TouchableOpacity onPress={() => this.setState({ active: !this.state.active })}
-        style={this.state.active ? styles.itemElementActive : styles.itemElement}
-      >
-        <Text style={styles.itemText}>{this.props.label}</Text>
-        <Image style={styles.itemImage} source={require('../assets/bear.png')} />
-        <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
-      </TouchableOpacity>
-    );
-  }
-
-}
-
 class Customize extends React.Component<{}, {
-  op1: boolean, op2: boolean, op3: boolean, op4: boolean, op5: boolean, op6: boolean, op7: boolean,
-  op8: boolean, op9: boolean, op10: boolean, op11: boolean, op12: boolean, op13: boolean, op14: boolean
+  skin1: boolean, skin2: boolean, skin3: boolean, skin4: boolean, skin5: boolean, hat1: boolean, hat2: boolean,
+  hat3: boolean, hat4: boolean, hat5: boolean, hat6: boolean, other1: boolean, other2: boolean, other3: boolean,
+  unownedClicked: boolean, confirmationVisible: boolean, skin5owned: boolean,
 }>{
   constructor(props: any) {
     super(props)
 
     this.state = {
-      op1: true, op2: false, op3: false, op4: false, op5: false, op6: true, op7: false,
-      op8: false, op9: false, op10: false, op11: false, op12: true, op13: false, op14: false
+      skin1: true, skin2: false, skin3: false, skin4: false, skin5: false, hat1: true, hat2: false,
+      hat3: false, hat4: false, hat5: false, hat6: false, other1: true, other2: false, other3: false,
+      unownedClicked: false, confirmationVisible: false, skin5owned: false,
     };
+  }
+
+  credits = 1000; // this will eventually come from value in database
+
+  currID = 0;
+
+  itemList = [
+    { id: 0, name: 'Bear', price: 100, owned: true, active: true },
+    { id: 1, name: 'Cat', price: 100, owned: true, active: false },
+    { id: 2, name: 'Cow', price: 100, owned: true, active: false },
+    { id: 3, name: 'Fox', price: 100, owned: true, active: false },
+    { id: 4, name: 'Pig', price: 100, owned: false, active: false },
+  ];
+
+  getPrice(code: number): any {
+    let item = this.itemList.find((itemList: { id: number; }) => itemList.id === code);
+    return item.price;
+  };
+
+  getItemName(code: number): any {
+    let item = this.itemList.find((itemList: { id: number; }) => itemList.id === code);
+    return item.name;
+  }
+
+  getOwnedStatus(code: number): any {
+    let item = this.itemList.find((itemList: { id: number; }) => itemList.id === code);
+    return item.owned;
+  }
+
+  setOwnedStatus(code: number, status: boolean): any {
+    let item = this.itemList.find((itemList: { id: number; }) => itemList.id === code);
+    item.owned = status;
+  }
+
+  handlePurchase() {
+    this.setState({ confirmationVisible: false });
+    this.setState({ unownedClicked: false });
+    this.setState({ skin5owned: true });
+    this.setState({ skin5: true });
+    this.activateSkin5();
+    this.credits -= this.getPrice(4);
+    //update database value
+  }
+
+  //this is hardcoded just for the pig skin for now. 
+  //planning on properly implementing this once the database is working
+  purchaseConfirmation = (code: number) => {
+    return (
+      <View>
+        <Modal
+          animationType='fade'
+          transparent={true}
+          visible={this.state.unownedClicked}
+        >
+          <View style={{ flex: 1, marginTop: 45, height: 100 }}>
+            <View style={styles.modalView}>
+              <View>
+                <Text style={styles.modalText}>Would you like to purchase {this.getItemName(code)} for ${this.getPrice(code)}?</Text>
+              </View>
+
+              <View style={styles.buttonSeparation}>
+
+                <View>
+                  <TouchableOpacity
+                    style={[styles.confirmationButton, { backgroundColor: '#555' }]}
+                    onPress={() => {
+                      this.setState({ confirmationVisible: false }); this.setState({ unownedClicked: false });
+                      this.setState({ skin5owned: false });
+                    }}
+                  >
+                    <Text style={styles.itemText}>NO</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View>
+                  <TouchableOpacity
+                    style={[styles.confirmationButton, { backgroundColor: 'slategray' }]}
+                    onPress={() => { this.handlePurchase() }}
+                  >
+                    <Text style={styles.itemText}>YES</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View >
+    );
+  }
+
+  activateSkin5() {
+    this.setState({ skin1: false });
+    this.setState({ skin2: false });
+    this.setState({ skin3: false });
+    this.setState({ skin4: false });
+  }
+
+  unownedSkin5Selected() {
+    this.setState({ unownedClicked: true });
+    this.currID = 4;
   }
 
   render() {
@@ -76,205 +154,201 @@ class Customize extends React.Component<{}, {
       <>
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
-          {/* <Animated.View style={styles.body}>
-            <Text style={styles.screenTitle}>Customize</Text>
-            <Text style={{ textAlign: 'right', fontSize: 20, fontWeight: '600', paddingRight: 20 }}>$ CURRENCY</Text>
-          </Animated.View> */}
           <View style={[styles.body, { zIndex: 3 }]}>
             <Text style={styles.screenTitle}>Customize</Text>
             <Text style={{
               textAlign: 'right', fontSize: 20, fontWeight: '600', paddingRight: 20,
               paddingBottom: 10
-            }}>$ CURRENCY</Text>
+            }}>${this.credits}</Text>
           </View>
-          {/* <FlatList
-            ListHeaderComponent={this.Render_FlatList_Sticky_header}
-            stickyHeaderIndices={[0]}
-          /> */}
 
           <TouchableOpacity onPress={() => this.exit()}
             style={{
-              position: 'absolute', alignSelf: 'center', bottom: 130, backgroundColor: 'rgba(10, 20, 30, 0.5)',
-              borderRadius: 60, height: 40, width: 90, margin: 12
+              position: 'absolute', alignSelf: 'center', bottom: 130, backgroundColor: 'rgba(210, 42, 42, 0.8)',
+              borderRadius: 60, height: 40, width: 90, margin: 13
             }}>
-            <Text style={{ textAlign: 'center', marginVertical: 10, color: 'white' }}>CLOSE</Text>
+            <Text style={{ textAlign: 'center', marginVertical: 11, color: 'white' }}>BACK</Text>
           </TouchableOpacity>
 
-          <ScrollView
-            contentInsetAdjustmentBehavior="automatic"
-            style={styles.scrollView}
-          //onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }], { useNativeDriver: true })}
-          >
+          <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
             {global.HermesInternal == null ? null : (
               <View style={styles.engine}>
                 <Text style={styles.footer}>Engine: Hermes</Text>
               </View>
             )}
-            {/* <Icon name="close" /> */}
-            {/* <View style={[styles.body, { zIndex: 3, backgroundColor: 'rgba(100, 100, 100, 0.5)' }]}>
-              <Text style={styles.screenTitle}>Customize</Text>
-              <Text style={{ textAlign: 'right', fontSize: 20, fontWeight: '600', paddingRight: 20 }}>$ CURRENCY</Text>
-            </View> */}
-
             <View style={[styles.body, { paddingTop: 10, paddingBottom: 35, zIndex: 1 }]}>
               <Text style={styles.sectionTitle}>SKINS</Text>
               <View style={styles.itemsContainer}>
-                <TouchableOpacity onPressIn={() => this.setState({ op1: true })}
+
+                <TouchableOpacity onPressIn={() => this.setState({ skin1: true })}
                   onPressOut={() => {
-                    this.setState({ op2: false }); this.setState({ op3: false }); this.setState({ op4: false });
-                    this.setState({ op5: false });
+                    this.setState({ skin2: false }); this.setState({ skin3: false }); this.setState({ skin4: false });
+                    this.setState({ skin5: false });
                   }}
-                  style={this.state.op1 ? styles.itemElementActive : styles.itemElement}
+                  style={this.state.skin1 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>Bear</Text>
                   <Image style={styles.itemImage} source={require('../assets/bear.png')} />
-                  <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
+                  {/* <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text> */}
                 </TouchableOpacity>
 
-                <TouchableOpacity onPressIn={() => this.setState({ op2: true })}
+                <TouchableOpacity onPressIn={() => this.setState({ skin2: true })}
                   onPressOut={() => {
-                    this.setState({ op1: false }); this.setState({ op3: false }); this.setState({ op4: false });
-                    this.setState({ op5: false });
+                    this.setState({ skin1: false }); this.setState({ skin3: false }); this.setState({ skin4: false });
+                    this.setState({ skin5: false });
                   }}
-                  style={this.state.op2 ? styles.itemElementActive : styles.itemElement}
+                  style={this.state.skin2 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>Cat</Text>
                   <Image style={styles.itemImage} source={require('../assets/cat.png')} />
-                  <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
+                  {/* <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text> */}
                 </TouchableOpacity>
-                <TouchableOpacity onPressIn={() => this.setState({ op3: true })}
+
+                <TouchableOpacity onPressIn={() => this.setState({ skin3: true })}
                   onPressOut={() => {
-                    this.setState({ op1: false }); this.setState({ op2: false }); this.setState({ op4: false });
-                    this.setState({ op5: false });
+                    this.setState({ skin1: false }); this.setState({ skin2: false }); this.setState({ skin4: false });
+                    this.setState({ skin5: false });
                   }}
-                  style={this.state.op3 ? styles.itemElementActive : styles.itemElement}
+                  style={this.state.skin3 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>Cow</Text>
                   <Image style={styles.itemImage} source={require('../assets/cow.png')} />
-                  <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
+                  {/* <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text> */}
                 </TouchableOpacity>
-                <TouchableOpacity onPressIn={() => this.setState({ op4: true })}
+
+                <TouchableOpacity onPressIn={() => this.setState({ skin4: true })}
                   onPressOut={() => {
-                    this.setState({ op1: false }); this.setState({ op2: false }); this.setState({ op3: false });
-                    this.setState({ op5: false });
+                    this.setState({ skin1: false }); this.setState({ skin2: false }); this.setState({ skin3: false });
+                    this.setState({ skin5: false });
                   }}
-                  style={this.state.op4 ? styles.itemElementActive : styles.itemElement}
+                  style={this.state.skin4 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>Fox</Text>
                   <Image style={styles.itemImage} source={require('../assets/fox.png')} />
-                  <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
+                  {/* <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text> */}
                 </TouchableOpacity>
-                <TouchableOpacity onPressIn={() => this.setState({ op5: true })}
-                  onPressOut={() => {
-                    this.setState({ op1: false }); this.setState({ op2: false }); this.setState({ op3: false });
-                    this.setState({ op4: false });
-                  }}
-                  style={this.state.op5 ? styles.itemElementActive : styles.itemElement}
+
+                <TouchableOpacity onPressIn={() => { this.state.skin5owned ? this.setState({ skin5: true }) : null }}
+                  onPressOut={() => { this.state.skin5owned ? this.activateSkin5() : this.unownedSkin5Selected() }}
+                  style={this.state.skin5 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>Pig</Text>
                   <Image style={styles.itemImage} source={require('../assets/pig.png')} />
-                  <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
+                  {this.state.skin5owned ? null : <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]} >${this.getPrice(4)}</Text>}
                 </TouchableOpacity>
+
               </View>
               <Text style={styles.sectionTitle}>HATS</Text>
               <View style={styles.itemsContainer}>
-                <TouchableOpacity onPressIn={() => this.setState({ op6: true })}
+
+                <TouchableOpacity onPressIn={() => this.setState({ hat1: true })}
                   onPressOut={() => {
-                    this.setState({ op7: false }); this.setState({ op8: false }); this.setState({ op9: false });
-                    this.setState({ op10: false }); this.setState({ op11: false });
+                    this.setState({ hat2: false }); this.setState({ hat3: false }); this.setState({ hat4: false });
+                    this.setState({ hat5: false }); this.setState({ hat6: false });
                   }}
-                  style={this.state.op6 ? styles.itemElementActive : styles.itemElement}
+                  style={this.state.hat1 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>ITEM 1</Text>
                   <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPressIn={() => this.setState({ op7: true })}
+
+                <TouchableOpacity onPressIn={() => this.setState({ hat2: true })}
                   onPressOut={() => {
-                    this.setState({ op6: false }); this.setState({ op8: false }); this.setState({ op9: false });
-                    this.setState({ op10: false }); this.setState({ op11: false });
+                    this.setState({ hat1: false }); this.setState({ hat3: false }); this.setState({ hat4: false });
+                    this.setState({ hat5: false }); this.setState({ hat6: false });
                   }}
-                  style={this.state.op7 ? styles.itemElementActive : styles.itemElement}
+                  style={this.state.hat2 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>ITEM 2</Text>
                   <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPressIn={() => this.setState({ op8: true })}
+
+                <TouchableOpacity onPressIn={() => this.setState({ hat3: true })}
                   onPressOut={() => {
-                    this.setState({ op6: false }); this.setState({ op7: false }); this.setState({ op9: false });
-                    this.setState({ op10: false }); this.setState({ op11: false });
+                    this.setState({ hat1: false }); this.setState({ hat2: false }); this.setState({ hat4: false });
+                    this.setState({ hat5: false }); this.setState({ hat6: false });
                   }}
-                  style={this.state.op8 ? styles.itemElementActive : styles.itemElement}
+                  style={this.state.hat3 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>ITEM 3</Text>
                   <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPressIn={() => this.setState({ op9: true })}
+
+                <TouchableOpacity onPressIn={() => this.setState({ hat4: true })}
                   onPressOut={() => {
-                    this.setState({ op6: false }); this.setState({ op7: false }); this.setState({ op8: false });
-                    this.setState({ op10: false }); this.setState({ op11: false });
+                    this.setState({ hat1: false }); this.setState({ hat2: false }); this.setState({ hat3: false });
+                    this.setState({ hat5: false }); this.setState({ hat6: false });
                   }}
-                  style={this.state.op9 ? styles.itemElementActive : styles.itemElement}
+                  style={this.state.hat4 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>ITEM 4</Text>
                   <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPressIn={() => this.setState({ op10: true })}
+
+                <TouchableOpacity onPressIn={() => this.setState({ hat5: true })}
                   onPressOut={() => {
-                    this.setState({ op6: false }); this.setState({ op7: false }); this.setState({ op8: false });
-                    this.setState({ op9: false }); this.setState({ op11: false });
+                    this.setState({ hat1: false }); this.setState({ hat2: false }); this.setState({ hat3: false });
+                    this.setState({ hat4: false }); this.setState({ hat6: false });
                   }}
-                  style={this.state.op10 ? styles.itemElementActive : styles.itemElement}
+                  style={this.state.hat5 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>ITEM 5</Text>
                   <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPressIn={() => this.setState({ op11: true })}
+
+                <TouchableOpacity onPressIn={() => this.setState({ hat6: true })}
                   onPressOut={() => {
-                    this.setState({ op6: false }); this.setState({ op7: false }); this.setState({ op8: false });
-                    this.setState({ op9: false }); this.setState({ op10: false });
+                    this.setState({ hat1: false }); this.setState({ hat2: false }); this.setState({ hat3: false });
+                    this.setState({ hat4: false }); this.setState({ hat5: false });
                   }}
-                  style={this.state.op11 ? styles.itemElementActive : styles.itemElement}
+                  style={this.state.hat6 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>ITEM 6</Text>
                   <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
+
               </View>
               <Text style={styles.sectionTitle}>OTHER</Text>
               <View style={styles.itemsContainer}>
-                <TouchableOpacity onPressIn={() => this.setState({ op12: true })}
-                  onPressOut={() => { this.setState({ op13: false }); this.setState({ op14: false }); }}
-                  style={this.state.op12 ? styles.itemElementActive : styles.itemElement}
+
+                <TouchableOpacity onPressIn={() => this.setState({ other1: true })}
+                  onPressOut={() => { this.setState({ other2: false }); this.setState({ other3: false }); }}
+                  style={this.state.other1 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>ITEM 1</Text>
                   <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPressIn={() => this.setState({ op13: true })}
-                  onPressOut={() => { this.setState({ op12: false }); this.setState({ op14: false }); }}
-                  style={this.state.op13 ? styles.itemElementActive : styles.itemElement}
+
+                <TouchableOpacity onPressIn={() => this.setState({ other2: true })}
+                  onPressOut={() => { this.setState({ other1: false }); this.setState({ other3: false }); }}
+                  style={this.state.other2 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>ITEM 2</Text>
                   <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPressIn={() => this.setState({ op14: true })}
-                  onPressOut={() => { this.setState({ op12: false }); this.setState({ op13: false }); }}
-                  style={this.state.op14 ? styles.itemElementActive : styles.itemElement}
+
+                <TouchableOpacity onPressIn={() => this.setState({ other3: true })}
+                  onPressOut={() => { this.setState({ other1: false }); this.setState({ other2: false }); }}
+                  style={this.state.other3 ? styles.itemElementActive : styles.itemElement}
                 >
                   <Text style={styles.itemText}>ITEM 3</Text>
                   <Image style={styles.itemImage} source={require('../assets/gary-gillespie.png')} />
                   <Text style={[styles.itemText, { textAlignVertical: 'bottom' }]}>$ PRICE</Text>
                 </TouchableOpacity>
+
               </View>
             </View>
           </ScrollView>
         </SafeAreaView>
+        {this.state.unownedClicked && this.purchaseConfirmation(this.currID)}
       </>
     );
   }
@@ -283,14 +357,6 @@ class Customize extends React.Component<{}, {
     //go back home
   }
 
-  // Render_FlatList_Sticky_header = () => {
-  //   var Sticky_header_View = (
-  //     <View style={styles.header_style}>
-  //       <Text style={{ textAlign: 'center', color: '#fff', fontSize: 22 }}> FlatList Sticky Header </Text>
-  //     </View>
-  //   );
-  //   return Sticky_header_View;
-  // };
 }
 
 const styles = StyleSheet.create({
@@ -317,9 +383,6 @@ const styles = StyleSheet.create({
   },
   body: {
     backgroundColor: Colors.white,
-    // flexDirection: 'row',
-    // flexWrap: 'wrap',
-    // alignSelf: 'flex-start',
   },
   itemsContainer: {
     margin: 10,
@@ -329,9 +392,8 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   itemElement: {
-    // flex: 2,
     margin: 10,
-    borderRadius: 10,
+    borderRadius: 15,
     width: 100,
     height: 140,
     flexShrink: 100,
@@ -343,15 +405,14 @@ const styles = StyleSheet.create({
     alignContent: 'space-between',
   },
   itemElementActive: {
-    // flex: 2,
     margin: 10,
-    borderRadius: 10,
+    borderRadius: 15,
     width: 100,
     height: 140,
     flexShrink: 100,
     flexGrow: 100,
     flexBasis: 100,
-    backgroundColor: 'limegreen',
+    backgroundColor: '#55dc69',
     textAlign: 'center',
     flexDirection: 'column',
     alignContent: 'space-between',
@@ -359,7 +420,7 @@ const styles = StyleSheet.create({
   itemText: {
     margin: 5,
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '400',
     alignContent: 'space-between',
     textAlign: 'center',
@@ -376,7 +437,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#202020',
     paddingHorizontal: 35,
-    // textAlign: 'center',
   },
   sectionDescription: {
     marginTop: 8,
@@ -392,13 +452,41 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     textAlign: 'right',
   },
-  // header_style: {
-  //   width: '100%',
-  //   height: 45,
-  //   backgroundColor: 'transparent',
-  //   alignItems: 'center',
-  //   justifyContent: 'center'
-  // },
+  modalView: {
+    margin: 20,
+    marginTop: 300,
+    width: 375,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 20,
+    padding: 35,
+    justifyContent: 'center',
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  modalText: {
+    marginBottom: 10,
+    textAlign: 'center',
+    fontSize: 20,
+  },
+  buttonSeparation: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    margin: 10,
+  },
+  confirmationButton: {
+    padding: 10,
+    borderRadius: 60,
+    marginTop: 20,
+    height: 50,
+    width: 90,
+    elevation: 2,
+  },
 });
 
 export default Customize;
