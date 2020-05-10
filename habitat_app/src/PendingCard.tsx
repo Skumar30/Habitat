@@ -1,5 +1,5 @@
 import React, {useState, Component} from "react";
-import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, Modal } from "react-native";
+import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, Modal, StyleSheet } from "react-native";
 
 class PendingCard extends Component {
 
@@ -29,21 +29,13 @@ class PendingCard extends Component {
 
       <TouchableOpacity onPress={() => alert("popup with wellness contract info")}>
         <View
-          style={{
-            backgroundColor: '#FFFFFF',
-            borderWidth: 4,
-            borderColor: '#CCCCCC',
-            flexDirection: 'row',
-            margin: 5
-        }}>
+          style={styles.cardContainer}
+        >
           
           {/* View for pending contract title */}
           <View
-            style={{
-              flex: 0.7,
-              backgroundColor: '#FFFFFF',
-              justifyContent: 'center'
-            }}>
+            style={styles.cardTextContainer}
+          >
             <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 24}}>
               {this.props.title}
             </Text>
@@ -51,24 +43,13 @@ class PendingCard extends Component {
           
           {/* View for checkmark region */}
           <View
-            style={{
-              flex:0.15,
-              flexDirection: 'column',
-              backgroundColor: '#FFFFFF',
-              justifyContent: 'center'
-            }}>
+            style={styles.pendingCardInteractContainer}
+          >
             <TouchableOpacity
-              style={{
-                height: 35,
-                width: 35,
-                margin: 5
-              }}
+              style={styles.pendingCardInteract}
               onPress={this.handleAcceptModalVisible}>
               <Image
-                style={{
-                  height:35,
-                  width:35
-                }}
+                style={styles.pendingCardImage}
                 source={require('./Assets/checkmark.png')}>
               </Image>
             </TouchableOpacity>
@@ -76,24 +57,13 @@ class PendingCard extends Component {
           
           {/* View for x mark region */}
           <View
-            style={{
-              flex:0.15,
-              flexDirection: 'column',
-              backgroundColor: '#FFFFFF',
-              justifyContent: 'center'
-            }}>
+            style={styles.pendingCardInteractContainer}
+          >
             <TouchableOpacity
-              style={{
-                height: 35,
-                width: 35,
-                margin: 5
-              }}
+              style={styles.pendingCardInteract}
               onPress={this.handleRejectModalVisible}>
               <Image
-                style={{
-                  height:35,
-                  width:35
-                }}
+                style={styles.pendingCardImage}
                 source={require('./Assets/x.png')}>
               </Image>
             </TouchableOpacity>
@@ -109,19 +79,11 @@ class PendingCard extends Component {
             }}
           >
             <View
-              style={{
-                flex:1,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
+              style={styles.popupModalScreen}
+            >
                 <View
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderWidth: 4,
-                    borderColor: '#CCCCCC',
-                    width: 300,
-                    height: 200
-                  }}>
+                  style={styles.popupModalContainer}
+                >
                   <Text
                     style={{
                       fontSize: 20
@@ -150,19 +112,11 @@ class PendingCard extends Component {
             }}
           >
             <View
-              style={{
-                flex:1,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
+              style={styles.popupModalScreen}
+            >
                 <View
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderWidth: 4,
-                    borderColor: '#CCCCCC',
-                    width: 300,
-                    height: 200
-                  }}>
+                  style={styles.popupModalContainer}
+                >
                   <Text
                     style={{
                       fontSize: 20
@@ -188,5 +142,97 @@ class PendingCard extends Component {
           
 }
 
+const styles = StyleSheet.create({
+  entireScreenContainer: {
+    flexDirection: "column",
+    height: 650,
+    width: 410,
+    padding: 20
+  },
+  titleText: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+    fontSize: 32
+  },
+
+  subtitleText: {
+    textAlign: 'left',
+    fontSize: 20,
+    padding: 10
+  },
+
+  iconButtonContainer: {
+    width:125,
+    height:150,
+    borderColor: '#DDDDDD',
+    borderWidth: 5
+  },
+
+  popupModalScreen: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  popupModalContainer: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 4,
+    borderColor: '#CCCCCC',
+    width: 300,
+    height: 200
+  },
+
+  scrollViewStyle: {
+    flexDirection: "column", 
+    backgroundColor: "#DDDDDD"
+  },
+
+  cardContainer: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 4,
+    borderColor: '#CCCCCC',
+    flexDirection: 'row',
+    margin: 5
+  },
+
+  cardTextContainer: {
+    flex: 0.7,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center'
+  },
+
+  taskCardCheckboxContainer: {
+    flex:0.3,
+    flexDirection: 'column',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center'
+  },
+
+  taskCardInteract: {
+    alignSelf: 'center',
+    width: 30,
+    height: 30,
+    margin: 6
+  },
+
+  pendingCardInteractContainer: {
+    flex:0.15,
+    flexDirection: 'column',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center'
+  },
+
+  pendingCardInteract: {
+    height: 35,
+    width: 35,
+    margin: 5
+  },
+
+  pendingCardImage: {
+    height:35,
+    width:35
+  }
+});
 
 export default PendingCard;

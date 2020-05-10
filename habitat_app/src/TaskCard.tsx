@@ -1,5 +1,5 @@
 import React, {useState, Component} from "react";
-import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, CheckBox, TouchableHighlightBase, TabBarIOS, Modal } from "react-native";
+import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, CheckBox, TouchableHighlightBase, TabBarIOS, Modal, StyleSheet } from "react-native";
 
 class TaskCard extends Component {
 
@@ -18,8 +18,8 @@ class TaskCard extends Component {
 
     if(this.props.deleteMode) {
 
-      //highlight the task
-      Alert.alert("Exit Delete Mode", "Please exit delete mode in order to delete a task.");
+      //cannot edit task if in delete mode
+      Alert.alert("Exit Delete Mode", "Please exit delete mode in order to edit a task.");
     }
     else {
 
@@ -43,42 +43,26 @@ class TaskCard extends Component {
   
           <TouchableWithoutFeedback onPress={this.handleSelect}>
             <View
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderWidth: 4,
-                borderColor: '#CCCCCC',
-                flexDirection: 'row',
-                margin: 5
-            }}>
+              style={styles.cardContainer}
+            >
               
               <View
-                style={{
-                  flex: 0.7,
-                  backgroundColor: '#FFFFFF',
-                  justifyContent: 'center'
-                }}>
+                style={styles.cardTextContainer}
+              >
                 <Text style={{textAlign: 'center', fontSize: 24}}>
                   {this.props.message}
                 </Text>
               </View>
               <View
-                style={{
-                  flex:0.3,
-                  flexDirection: 'column',
-                  backgroundColor: '#FFFFFF',
-                  justifyContent: 'center'
-                }}>
+                style={styles.taskCardCheckboxContainer}
+              >
                 <TouchableOpacity
                   style={{
                     alignSelf: "center"
                   }}
                   onPress={this.handleDeleteTaskModalVisible}>
                   <Image
-                    style={{
-                      width: 30,
-                      height: 30,
-                      margin: 6
-                    }}
+                    style={styles.taskCardInteract}
                     source={require('./Assets/x.png')}>
   
                   </Image>
@@ -100,13 +84,8 @@ class TaskCard extends Component {
                         alignItems: 'center'
                       }}>
                         <View
-                          style={{
-                            backgroundColor: '#FFFFFF',
-                            borderWidth: 4,
-                            borderColor: '#CCCCCC',
-                            width: 300,
-                            height: 200
-                          }}>
+                          style={styles.popupModalContainer}
+                        >
                           <Text
                             style={{
                               fontSize: 20
@@ -135,31 +114,19 @@ class TaskCard extends Component {
   
           <TouchableWithoutFeedback onPress={this.handleSelect}>
             <View
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderWidth: 4,
-                borderColor: '#CCCCCC',
-                flexDirection: 'row',
-                margin: 5
-            }}>
+              style={styles.cardContainer}
+            >
               
               <View
-                style={{
-                  flex: 0.7,
-                  backgroundColor: '#FFFFFF',
-                  justifyContent: 'center'
-                }}>
+                style={styles.cardTextContainer}
+              >
                 <Text style={{textAlign: 'center', fontSize: 24}}>
                   {this.props.message}
                 </Text>
               </View>
               <View
-                style={{
-                  flex:0.3,
-                  flexDirection: 'column',
-                  backgroundColor: '#FFFFFF',
-                  justifyContent: 'center'
-                }}>
+                style={styles.taskCardCheckboxContainer}
+              >
                 <CheckBox 
                   style={{
                     alignSelf: 'center',
@@ -180,42 +147,25 @@ class TaskCard extends Component {
 
         <TouchableWithoutFeedback onPress={this.handleSelect}>
           <View
-            style={{
-              backgroundColor: '#FFFFFF',
-              borderWidth: 4,
-              borderColor: '#CCCCCC',
-              flexDirection: 'row',
-              margin: 5
-          }}>
+            style={styles.cardContainer}
+          >
             
             <View
-              style={{
-                flex: 0.7,
-                backgroundColor: '#FFFFFF',
-                justifyContent: 'center'
-              }}>
+              style={styles.cardTextContainer}
+            >
               <Text style={{textAlign: 'center', fontSize: 24}}>
                 {this.props.message}
               </Text>
             </View>
             <View
-                style={{
-                  flex:0.3,
-                  flexDirection: 'column',
-                  backgroundColor: '#FFFFFF',
-                  justifyContent: 'center'
-                }}>
-                <Image
-                  style={{
-                    alignSelf: 'center',
-                    width: 30,
-                    height: 30,
-                    margin: 6
-                  }}
-                  source={require('./Assets/checkmark.png')}>
+              style={styles.taskCardCheckboxContainer}
+            >
+              <Image
+                style={styles.taskCardInteract}
+                source={require('./Assets/checkmark.png')}>
 
-                </Image>
-              </View>
+              </Image>
+            </View>
           </View>
         </TouchableWithoutFeedback>
       );
@@ -224,5 +174,97 @@ class TaskCard extends Component {
           
 }
 
+const styles = StyleSheet.create({
+  entireScreenContainer: {
+    flexDirection: "column",
+    height: 650,
+    width: 410,
+    padding: 20
+  },
+  titleText: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+    fontSize: 32
+  },
+
+  subtitleText: {
+    textAlign: 'left',
+    fontSize: 20,
+    padding: 10
+  },
+
+  iconButtonContainer: {
+    width:125,
+    height:150,
+    borderColor: '#DDDDDD',
+    borderWidth: 5
+  },
+
+  popupModalScreen: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  popupModalContainer: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 4,
+    borderColor: '#CCCCCC',
+    width: 300,
+    height: 200
+  },
+
+  scrollViewStyle: {
+    flexDirection: "column", 
+    backgroundColor: "#DDDDDD"
+  },
+
+  cardContainer: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 4,
+    borderColor: '#CCCCCC',
+    flexDirection: 'row',
+    margin: 5
+  },
+
+  cardTextContainer: {
+    flex: 0.7,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center'
+  },
+
+  taskCardCheckboxContainer: {
+    flex:0.3,
+    flexDirection: 'column',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center'
+  },
+
+  taskCardInteract: {
+    alignSelf: 'center',
+    width: 30,
+    height: 30,
+    margin: 6
+  },
+
+  pendingCardInteractContainer: {
+    flex:0.15,
+    flexDirection: 'column',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center'
+  },
+
+  pendingCardInteract: {
+    height: 35,
+    width: 35,
+    margin: 5
+  },
+
+  pendingCardImage: {
+    height:35,
+    width:35
+  }
+});
 
 export default TaskCard;

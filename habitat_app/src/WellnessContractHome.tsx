@@ -1,5 +1,5 @@
 import React, {useState, Component} from "react";
-import { ScrollView, View, Text, Button, Image, TouchableOpacity, Modal, FlatList, Alert, TouchableHighlightBase } from "react-native";
+import { ScrollView, View, Text, Button, Image, TouchableOpacity, Modal, FlatList, Alert, TouchableHighlightBase, StyleSheet } from "react-native";
 import PendingCard from "./PendingCard";
 import TaskCard from "./TaskCard";
 import ViewWellnessContract from "./ViewWellnessContract";
@@ -229,12 +229,7 @@ class WellnessContractHome extends Component {
     else { //if the user is in the wellness contract home screen
       return (
         <View
-          style={{
-            flexDirection: "column",
-            height: 650,
-            width: 410,
-            padding: 20
-          }}
+          style={styles.entireScreenContainer}
         >
           <View
             style={{
@@ -255,12 +250,7 @@ class WellnessContractHome extends Component {
             <View
               style={{flex:0.9}}>
               <Text
-                style={{
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  textDecorationLine: 'underline',
-                  fontSize: 32
-                }}>
+                style={styles.titleText}>
                 Wellness Contracts
               </Text>
             </View>
@@ -278,20 +268,15 @@ class WellnessContractHome extends Component {
             {/* button which allows user to view existing wellness contract */}
             <TouchableOpacity onPress={() => {this.setViewingContract(true)}}>
               <View
-                style={{
-                  width:125,
-                  height:150,
-                  borderColor: '#DDDDDD',
-                  borderWidth: 5
-                }}>
-                  
-                  <Image 
-                    style={{
-                      flex: 1
-                    }}
-                    source={require('./Assets/view.png')}
-                  >
-                  </Image>
+                style={styles.iconButtonContainer}
+              >
+                <Image 
+                  style={{
+                    flex: 1
+                  }}
+                  source={require('./Assets/view.png')}
+                >
+                </Image>
               
               </View>
             </TouchableOpacity>
@@ -299,20 +284,16 @@ class WellnessContractHome extends Component {
             {/* button which allows user to leave existing wellness contract */}
             <TouchableOpacity onPress={this.handleLeaveContract}>
               <View
-                style={{
-                  width:125,
-                  height:150,
-                  borderColor: '#DDDDDD',
-                  borderWidth: 5
-                }}>
+                style={styles.iconButtonContainer}
+              >
                   
-                  <Image 
-                    style={{
-                      flex: 1
-                    }}
-                    source={require('./Assets/leave.png')}
-                  >
-                  </Image>
+                <Image 
+                  style={{
+                    flex: 1
+                  }}
+                  source={require('./Assets/leave.png')}
+                >
+                </Image>
               
               </View>
             </TouchableOpacity>
@@ -333,13 +314,8 @@ class WellnessContractHome extends Component {
                   alignItems: 'center'
                 }}>
                   <View
-                    style={{
-                      backgroundColor: '#FFFFFF',
-                      borderWidth: 4,
-                      borderColor: '#CCCCCC',
-                      width: 300,
-                      height: 200
-                    }}>
+                    style={styles.popupModalContainer}
+                  >
                     <Text
                       style={{
                         fontSize: 20
@@ -361,20 +337,16 @@ class WellnessContractHome extends Component {
             {/* button which allows user to create new wellness contract */}
             <TouchableOpacity onPress={this.handleCreateContract}>
               <View
-                style={{
-                  width:125,
-                  height:150,
-                  borderColor: '#DDDDDD',
-                  borderWidth: 5
-                }}>
+                style={styles.iconButtonContainer}
+              >
                   
-                  <Image 
-                    style={{
-                      flex: 1
-                    }}
-                    source={require('./Assets/create.png')}
-                  >
-                  </Image>
+                <Image 
+                  style={{
+                    flex: 1
+                  }}
+                  source={require('./Assets/create.png')}
+                >
+                </Image>
               
               </View>
             </TouchableOpacity>
@@ -399,5 +371,97 @@ class WellnessContractHome extends Component {
   }
 }
 
+const styles = StyleSheet.create({
+  entireScreenContainer: {
+    flexDirection: "column",
+    height: 650,
+    width: 410,
+    padding: 20
+  },
+  titleText: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+    fontSize: 32
+  },
+
+  subtitleText: {
+    textAlign: 'left',
+    fontSize: 20,
+    padding: 10
+  },
+
+  iconButtonContainer: {
+    width:125,
+    height:150,
+    borderColor: '#DDDDDD',
+    borderWidth: 5
+  },
+
+  popupModalScreen: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  popupModalContainer: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 4,
+    borderColor: '#CCCCCC',
+    width: 300,
+    height: 200
+  },
+
+  scrollViewStyle: {
+    flexDirection: "column", 
+    backgroundColor: "#DDDDDD"
+  },
+
+  cardContainer: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 4,
+    borderColor: '#CCCCCC',
+    flexDirection: 'row',
+    margin: 5
+  },
+
+  cardTextContainer: {
+    flex: 0.7,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center'
+  },
+
+  taskCardCheckboxContainer: {
+    flex:0.3,
+    flexDirection: 'column',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center'
+  },
+
+  taskCardInteract: {
+    alignSelf: 'center',
+    width: 30,
+    height: 30,
+    margin: 6
+  },
+
+  pendingCardInteractContainer: {
+    flex:0.15,
+    flexDirection: 'column',
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center'
+  },
+
+  pendingCardInteract: {
+    height: 35,
+    width: 35,
+    margin: 5
+  },
+
+  pendingCardImage: {
+    height:35,
+    width:35
+  }
+});
 
 export default WellnessContractHome;
