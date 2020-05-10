@@ -30,5 +30,5 @@ class App extends React.Component<{}, any>{
     super(props);
     this.state = {trigger: false}
   }
-}
+
 export default App;
