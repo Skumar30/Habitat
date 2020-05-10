@@ -21,25 +21,10 @@ import {
     DebugInstructions,
     ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-class temp {
-    constructor(name: string, key: string) {}
-}
 
 const CreateContract = () => {
 
     var currDate = "01/01/2020";
-
-    const tempList = [
-        {
-            name: 'Darin'
-        },
-        {
-            name: 'Evan'
-        },
-        {
-            name: 'Alex'
-        },
-    ]
 
     function doSomething() {
 
