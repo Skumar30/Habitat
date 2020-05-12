@@ -10,18 +10,13 @@ router.post(
   }),
   function (req, res) {
     console.log(req.user);
-    if (req.user) {
-      if (req.session.flash && req.session.flash.error) {
-        req.session.flash.error = [];
-      }
-      res.json(req.user);
-    }
+    res.json(req.user);
   }
 );
 
 router.get('/signup', function (req, res) {
-  let arraylength = req.session.flash.error.length;
-  let message = req.session.flash.error[arraylength - 1];
+  array_length = req.session.flash.error.length;
+  message = req.session.flash.error[array_length - 1];
   req.session.flash.error = [];
   res.json({message: message});
 });

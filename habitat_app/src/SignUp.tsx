@@ -44,8 +44,16 @@ const checkingSchema = yup.object({
     .required("Must confirm password")
     .oneOf([yup.ref("password"), null], "Passwords must match"),
 })
+interface State {
+  errormsg: boolean
+}
 
-export default class SignUp extends React.Component {
+export default class SignUp extends React.Component<{}, State> {
+  constructor(props: any) {
+    super(props)
+    this.state = { errormsg: false }
+  }
+
   render() {
     return (
       <>
@@ -65,7 +73,7 @@ export default class SignUp extends React.Component {
                 confirm_password: "",
               }}
               onSubmit={(values, actions) => {
-                fetch("http://INSERT YOUR OWN IPv4 Address:3000/users/signup", {
+                fetch("http://INSERT YOUR IPv4 ADDRESS:3000/users/signup", {
                   method: "POST",
                   headers: {
                     Accept: "application/json",
@@ -79,13 +87,26 @@ export default class SignUp extends React.Component {
                   }),
                 })
                   .then((response) => response.json())
-                  .then((output) => console.log(output))
-                console.log(values) //Interact with Database HERE
+                  .then((output) => {
+                    console.log(output)
+                    if (output.message) {
+                      this.setState({ errormsg: true })
+                    } else {
+                      this.setState({ errormsg: false })
+                    }
+                  })
+
                 actions.resetForm()
               }}
             >
               {(props) => (
                 <View>
+                  {this.state.errormsg && (
+                    <Text style={styles.errorText}>
+                      Username already exists!
+                    </Text>
+                  )}
+
                   <TextInput
                     style={{
                       ...styles.input,
