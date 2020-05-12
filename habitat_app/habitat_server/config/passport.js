@@ -23,10 +23,10 @@ passport.use(
     function (req, username, password, done) {
       User.findOne({username: username}, function (err, user) {
         if (err) {
-          return done(err);
+          return done(err, {message: 'Error with database'});
         }
         if (user) {
-          return done(null, false, {message: 'Email is already in use.'});
+          return done(null, false, {message: 'Username is already in use.'});
         }
 
         var newUser = new User();
@@ -43,7 +43,6 @@ passport.use(
           if (error) {
             return done(err);
           }
-          console.log(result);
           return done(null, newUser);
         });
       });
@@ -60,8 +59,6 @@ passport.use(
       passReqToCallback: true
     },
     (req, username, password, done) => {
-      //  console.log("VFYGHUIJK");
-
       User.findOne({username: username}, function (err, user) {
         if (err) {
           return done(err);
