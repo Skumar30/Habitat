@@ -31,20 +31,20 @@ class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin
   currCategory = '';
 
   itemList = [
-    { id: '0', category: 'skin', name: 'Bear', price: 100, owned: true, active: true },
-    { id: '1', category: 'skin', name: 'Cat', price: 100, owned: true, active: false },
-    { id: '2', category: 'skin', name: 'Cow', price: 100, owned: true, active: false },
-    { id: '3', category: 'skin', name: 'Fox', price: 300, owned: false, active: false },
-    { id: '4', category: 'skin', name: 'Pig', price: 600, owned: false, active: false },
-    { id: '5', category: 'hat', name: 'ITEM 1', price: 100, owned: true, active: true },
-    { id: '6', category: 'hat', name: 'ITEM 2', price: 100, owned: true, active: false },
-    { id: '7', category: 'hat', name: 'ITEM 3', price: 100, owned: true, active: false },
-    { id: '8', category: 'hat', name: 'ITEM 4', price: 300, owned: true, active: false },
-    { id: '9', category: 'hat', name: 'ITEM 5', price: 600, owned: false, active: false },
-    { id: '10', category: 'hat', name: 'ITEM 6', price: 100, owned: false, active: false },
-    { id: '11', category: 'accessory', name: 'ITEM 1', price: 100, owned: true, active: true },
-    { id: '12', category: 'accessory', name: 'ITEM 2', price: 100, owned: false, active: false },
-    { id: '13', category: 'accessory', name: 'ITEM 3', price: 300, owned: false, active: false },
+    { id: '0', category: 'skin', name: 'Bear', price: 100, image: require('./assets/bear.png'), owned: true, active: true },
+    { id: '1', category: 'skin', name: 'Cat', price: 100, image: require('./assets/cat.png'), owned: true, active: false },
+    { id: '2', category: 'skin', name: 'Cow', price: 100, image: require('./assets/cow.png'), owned: true, active: false },
+    { id: '3', category: 'skin', name: 'Fox', price: 300, image: require('./assets/fox.png'), owned: false, active: false },
+    { id: '4', category: 'skin', name: 'Pig', price: 600, image: require('./assets/pig.png'), owned: false, active: false },
+    { id: '5', category: 'hat', name: 'ITEM 1', price: 100, image: require('./assets/gary-gillespie.png'), owned: true, active: true },
+    { id: '6', category: 'hat', name: 'ITEM 2', price: 100, image: require('./assets/gary-gillespie.png'), owned: true, active: false },
+    { id: '7', category: 'hat', name: 'ITEM 3', price: 100, image: require('./assets/gary-gillespie.png'), owned: true, active: false },
+    { id: '8', category: 'hat', name: 'ITEM 4', price: 300, image: require('./assets/gary-gillespie.png'), owned: true, active: false },
+    { id: '9', category: 'hat', name: 'ITEM 5', price: 600, image: require('./assets/gary-gillespie.png'), owned: false, active: false },
+    { id: '10', category: 'hat', name: 'ITEM 6', price: 100, image: require('./assets/gary-gillespie.png'), owned: false, active: false },
+    { id: '11', category: 'accessory', name: 'ITEM 1', price: 100, image: require('./assets/gary-gillespie.png'), owned: true, active: true },
+    { id: '12', category: 'accessory', name: 'ITEM 2', price: 100, image: require('./assets/gary-gillespie.png'), owned: false, active: false },
+    { id: '13', category: 'accessory', name: 'ITEM 3', price: 300, image: require('./assets/gary-gillespie.png'), owned: false, active: false },
   ];
 
   getCategory(code: string): any {
@@ -61,6 +61,11 @@ class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin
     let item = this.itemList.find((itemList: { id: string; }) => itemList.id === code);
     return item.price;
   };
+
+  getImage(code: string): any {
+    let item = this.itemList.find((itemList: { id: string; }) => itemList.id === code);
+    return item.image;
+  }
 
   getOwnedStatus(code: string): any {
     let item = this.itemList.find((itemList: { id: string; }) => itemList.id === code);
@@ -193,6 +198,26 @@ class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin
     }
   }
 
+  //mapping function. begin(inclusive), end(exclusive)
+  list = (begin: number, end: number) => {
+    return this.itemList.slice(begin, end).map(e => {
+      return (
+        <TouchableOpacity onPressIn={() => { this.getOwnedStatus(e.id) ? this.setActiveStatus(e.id, true) : null }}
+          onPressOut={() => {
+            this.getOwnedStatus(e.id) ? this.deactivateOthers(e.id, this.getCategory(e.id)) :
+              this.unownedSelected(e.id, this.getCategory(e.id))
+          }}
+          style={this.getActiveStatus(e.id) ? styles.itemElementActive :
+            this.getOwnedStatus(e.id) ? styles.itemElement : styles.itemElementNotOwned}
+        >
+          <Text style={styles.itemText}>{this.getName(e.id)}</Text>
+          <Image style={styles.itemImage} source={this.getImage(e.id)} />
+          {this.getOwnedStatus(e.id) ? null : <Text style={styles.itemText} >${this.getPrice(e.id)}</Text>}
+        </TouchableOpacity>
+      );
+    });
+  };
+
   render() {
 
     return (
@@ -218,183 +243,15 @@ class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin
             <View style={[styles.body, { paddingTop: 10, paddingBottom: 35, zIndex: 1 }]}>
               <Text style={styles.sectionTitle}>SKINS</Text>
               <View style={styles.itemsContainer}>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('0') ? this.setActiveStatus('0', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('0') ? this.deactivateOthers('0', 'skin') : this.unownedSelected('0', 'skin')
-                  }}
-                  style={this.getActiveStatus('0') ? styles.itemElementActive :
-                    this.getOwnedStatus('0') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>Bear</Text>
-                  <Image style={styles.itemImage} source={require('./assets/bear.png')} />
-                  {this.getOwnedStatus('0') ? null : <Text style={styles.itemText} >${this.getPrice('0')}</Text>}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('1') ? this.setActiveStatus('1', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('1') ? this.deactivateOthers('1', 'skin') : this.unownedSelected('1', 'skin')
-                  }}
-                  style={this.getActiveStatus('1') ? styles.itemElementActive :
-                    this.getOwnedStatus('1') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>Cat</Text>
-                  <Image style={styles.itemImage} source={require('./assets/cat.png')} />
-                  {this.getOwnedStatus('1') ? null : <Text style={styles.itemText} >${this.getPrice('1')}</Text>}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('2') ? this.setActiveStatus('2', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('2') ? this.deactivateOthers('2', 'skin') : this.unownedSelected('2', 'skin')
-                  }}
-                  style={this.getActiveStatus('2') ? styles.itemElementActive :
-                    this.getOwnedStatus('2') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>Cow</Text>
-                  <Image style={styles.itemImage} source={require('./assets/cow.png')} />
-                  {this.getOwnedStatus('2') ? null : <Text style={styles.itemText} >${this.getPrice('2')}</Text>}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('3') ? this.setActiveStatus('3', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('3') ? this.deactivateOthers('3', 'skin') : this.unownedSelected('3', 'skin')
-                  }}
-                  style={this.getActiveStatus('3') ? styles.itemElementActive :
-                    this.getOwnedStatus('3') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>Fox</Text>
-                  <Image style={styles.itemImage} source={require('./assets/fox.png')} />
-                  {this.getOwnedStatus('3') ? null : <Text style={styles.itemText} >${this.getPrice('3')}</Text>}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('4') ? this.setActiveStatus('4', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('4') ? this.deactivateOthers('4', 'skin') : this.unownedSelected('4', 'skin')
-                  }}
-                  style={this.getActiveStatus('4') ? styles.itemElementActive :
-                    this.getOwnedStatus('4') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>Pig</Text>
-                  <Image style={styles.itemImage} source={require('./assets/pig.png')} />
-                  {this.getOwnedStatus('4') ? null : <Text style={styles.itemText} >${this.getPrice('4')}</Text>}
-                </TouchableOpacity>
-
+                {this.list(0, 5)}
               </View>
               <Text style={styles.sectionTitle}>HATS</Text>
               <View style={styles.itemsContainer}>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('5') ? this.setActiveStatus('5', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('5') ? this.deactivateOthers('5', 'hat') : this.unownedSelected('5', 'hat')
-                  }}
-                  style={this.getActiveStatus('5') ? styles.itemElementActive :
-                    this.getOwnedStatus('5') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>ITEM 1</Text>
-                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
-                  {this.getOwnedStatus('5') ? null : <Text style={styles.itemText} >${this.getPrice('5')}</Text>}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('6') ? this.setActiveStatus('6', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('6') ? this.deactivateOthers('6', 'hat') : this.unownedSelected('6', 'hat')
-                  }}
-                  style={this.getActiveStatus('6') ? styles.itemElementActive :
-                    this.getOwnedStatus('6') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>ITEM 2</Text>
-                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
-                  {this.getOwnedStatus('6') ? null : <Text style={styles.itemText} >${this.getPrice('6')}</Text>}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('7') ? this.setActiveStatus('7', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('7') ? this.deactivateOthers('7', 'hat') : this.unownedSelected('7', 'hat')
-                  }}
-                  style={this.getActiveStatus('7') ? styles.itemElementActive :
-                    this.getOwnedStatus('7') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>ITEM 3</Text>
-                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
-                  {this.getOwnedStatus('7') ? null : <Text style={styles.itemText} >${this.getPrice('7')}</Text>}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('8') ? this.setActiveStatus('8', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('8') ? this.deactivateOthers('8', 'hat') : this.unownedSelected('8', 'hat')
-                  }}
-                  style={this.getActiveStatus('8') ? styles.itemElementActive :
-                    this.getOwnedStatus('8') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>ITEM 4</Text>
-                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
-                  {this.getOwnedStatus('8') ? null : <Text style={styles.itemText} >${this.getPrice('8')}</Text>}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('9') ? this.setActiveStatus('9', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('9') ? this.deactivateOthers('9', 'hat') : this.unownedSelected('9', 'hat')
-                  }}
-                  style={this.getActiveStatus('9') ? styles.itemElementActive :
-                    this.getOwnedStatus('9') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>ITEM 5</Text>
-                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
-                  {this.getOwnedStatus('9') ? null : <Text style={styles.itemText} >${this.getPrice('9')}</Text>}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('10') ? this.setActiveStatus('10', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('10') ? this.deactivateOthers('10', 'hat') : this.unownedSelected('10', 'hat')
-                  }}
-                  style={this.getActiveStatus('10') ? styles.itemElementActive :
-                    this.getOwnedStatus('10') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>ITEM 6</Text>
-                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
-                  {this.getOwnedStatus('10') ? null : <Text style={styles.itemText} >${this.getPrice('10')}</Text>}
-                </TouchableOpacity>
-
+                {this.list(5, 11)}
               </View>
               <Text style={styles.sectionTitle}>OTHER</Text>
               <View style={styles.itemsContainer}>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('11') ? this.setActiveStatus('11', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('11') ? this.deactivateOthers('11', 'accessory') : this.unownedSelected('11', 'accessory')
-                  }}
-                  style={this.getActiveStatus('11') ? styles.itemElementActive :
-                    this.getOwnedStatus('11') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>ITEM 1</Text>
-                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
-                  {this.getOwnedStatus('11') ? null : <Text style={styles.itemText} >${this.getPrice('11')}</Text>}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('12') ? this.setActiveStatus('12', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('12') ? this.deactivateOthers('12', 'accessory') : this.unownedSelected('12', 'accessory')
-                  }}
-                  style={this.getActiveStatus('12') ? styles.itemElementActive :
-                    this.getOwnedStatus('12') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>ITEM 2</Text>
-                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
-                  {this.getOwnedStatus('12') ? null : <Text style={styles.itemText} >${this.getPrice('12')}</Text>}
-                </TouchableOpacity>
-
-                <TouchableOpacity onPressIn={() => { this.getOwnedStatus('13') ? this.setActiveStatus('13', true) : null }}
-                  onPressOut={() => {
-                    this.getOwnedStatus('13') ? this.deactivateOthers('13', 'accessory') : this.unownedSelected('13', 'accessory')
-                  }}
-                  style={this.getActiveStatus('13') ? styles.itemElementActive :
-                    this.getOwnedStatus('13') ? styles.itemElement : styles.itemElementNotOwned}
-                >
-                  <Text style={styles.itemText}>ITEM 3</Text>
-                  <Image style={styles.itemImage} source={require('./assets/gary-gillespie.png')} />
-                  {this.getOwnedStatus('13') ? null : <Text style={styles.itemText} >${this.getPrice('13')}</Text>}
-                </TouchableOpacity>
-
+                {this.list(11, 14)}
               </View>
             </View>
           </ScrollView>
@@ -413,8 +270,7 @@ class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin
 const styles = StyleSheet.create({
   scrollView: {
     //backgroundColor: Colors.lighter,
-    backgroundColor: 'rgba(255, 255, 255, 0)',
-
+    backgroundColor: Colors.white,
     marginBottom: 155,
   },
   engine: {
