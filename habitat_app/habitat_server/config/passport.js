@@ -26,7 +26,7 @@ passport.use(
           return done(err, {message: 'Error with database'});
         }
         if (user) {
-          return done(null, false, {message: 'Username is already in use.'});
+          return done(null, false, {message: 'Username is already in use'});
         }
 
         var newUser = new User();
@@ -60,16 +60,17 @@ passport.use(
     },
     (req, username, password, done) => {
       User.findOne({username: username}, function (err, user) {
+        console.log('here');
         if (err) {
-          return done(err);
+          return done(err, {message: 'Error with database'});
         }
         if (!user) {
-          return done(null, false, {message: 'No user found'});
+          return done(null, false, {message: 'Username not found'});
         }
 
         if (user.password !== password) {
           //  console.log(user.password);
-          return done(null, false, {message: 'Wrong password'});
+          return done(null, false, {message: 'Incorrect Password'});
         }
         return done(null, user);
       });

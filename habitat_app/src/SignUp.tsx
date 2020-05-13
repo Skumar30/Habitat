@@ -73,10 +73,10 @@ export default class SignUp extends React.Component<{}, State> {
                 confirm_password: "",
               }}
               onSubmit={(values, actions) => {
-                fetch("http://INSERT YOUR IPv4 ADDRESS:3000/users/signup", {
+                fetch("http://INSERT YOUR IPv4 Address:3000/users/signup", {
                   method: "POST",
                   headers: {
-                    Accept: "application/json",
+                    Accept: "application/json", //expects a JSON
                     "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
@@ -86,10 +86,11 @@ export default class SignUp extends React.Component<{}, State> {
                     password: values.password,
                   }),
                 })
-                  .then((response) => response.json())
+                  .then((response) => response.json()) //gets response body
                   .then((output) => {
                     console.log(output)
                     if (output.message) {
+                      //used to check if error message exists
                       this.setState({ errormsg: true })
                     } else {
                       this.setState({ errormsg: false })
