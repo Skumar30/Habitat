@@ -1,5 +1,5 @@
 import React, { Component, useState, Props } from 'react';
-import Icon from 'react-native-ionicons';
+// import Icon from 'react-native-ionicons';
 // import HeaderScrollView from 'react-native-header-scroll-view';
 import {
   SafeAreaView,
