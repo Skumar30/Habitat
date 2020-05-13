@@ -9,14 +9,25 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-class Home extends React.Component {
-  render() {
-    // Placeholder values to pull from database
-    const petName = "Pet Name"
-    const playerName = "Joe"
-    const friendshipPoints = 1312;
-    const mood = 4;
+interface HomeState {
+  petName: string;
+  playerName: string;
+  friendshipPoints: number;
+  mood: number;
+}
 
+class Home extends React.Component<{}, HomeState> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      // Placeholder values to pull from database
+      petName: "Pet Name",
+      playerName: "Joe",
+      friendshipPoints: 1312,
+      mood: 4
+    };
+  }
+  render() {
     // Assets
     const full = require('./assets/full.png');
     const empty = require('./assets/empty.png');
@@ -29,13 +40,13 @@ class Home extends React.Component {
     const background = require('./assets/background.png');
     // Doesnt load as a local for some reason
     const bear = 'https://i.imgur.com/6H0QDqq.png';
-    const feeling = mood >= 3 ? happy : sad;
+    const feeling = this.state.mood >= 3 ? happy : sad;
 
 
     // Calculate how much of the healthbar to fill
     const bars = [];
     for (var i = 0; i < 5; i++) {
-      if (i < mood) {
+      if (i < this.state.mood) {
         bars[i] = full;
       }
       else {
@@ -52,14 +63,14 @@ class Home extends React.Component {
             <View style={styles.singleRow}>
                   <Image source={head} style={styles.stretchImage}></Image>
                 <View style={styles.playerName}>
-                  <Text>{playerName}</Text>
+                  <Text>{this.state.playerName}</Text>
                 </View>
             </View>
             </TouchableOpacity>
             <View style={styles.singleRow}>
               <Image source={points} style={styles.stretchImage}></Image>
               <View style={styles.friendshipPoints}>
-                <Text>{friendshipPoints}</Text>
+                <Text>{this.state.friendshipPoints}</Text>
               </View>
             </View>
           </View>
@@ -82,7 +93,7 @@ class Home extends React.Component {
             </ImageBackground>
           </View>
           <View style={styles.petName}>
-            <TextInput>{petName}</TextInput>
+            <TextInput>{this.state.petName}</TextInput>
           </View>
           <View style={styles.singleRow}>
             <Image source={feeling} style={styles.stretchImage}></Image>
@@ -94,7 +105,7 @@ class Home extends React.Component {
           </View>
         </View>
       </>
-    );
+    )
   }
 };
 
