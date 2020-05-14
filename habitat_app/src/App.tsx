@@ -17,6 +17,10 @@ import {
     Text,
     StatusBar,
 } from 'react-native';
+import RegTask from './RegTask'
+import { View, Text,
+ Button
+} from 'react-native';
 
 import {
     Header,
@@ -26,7 +30,7 @@ import {
     ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-declare const global: {HermesInternal: null | {}};
+declare const global: { HermesInternal: null | {} };
 
 const App = () => {
     return (
@@ -114,5 +118,12 @@ const styles = StyleSheet.create({
         textAlign: 'right',
     },
 });
+
+class App extends React.Component<{}, any>{
+  
+  constructor(props:any){
+    super(props);
+    this.state = {trigger: false}
+  }
 
 export default App;

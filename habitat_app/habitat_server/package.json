@@ -6,11 +6,23 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^3.2.0",
     "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "express-session": "^1.17.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "mongoose": "^5.9.13",
+    "morgan": "~1.9.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "prettierrc": "0.0.0-5"
+  },
+  "devDependencies": {
+    "eslint-plugin-prettier": "^3.1.3"
   }
 }
