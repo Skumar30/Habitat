@@ -60,7 +60,6 @@ passport.use(
     },
     (req, username, password, done) => {
       User.findOne({username: username}, function (err, user) {
-        console.log('here');
         if (err) {
           return done(err, {message: 'Error with database'});
         }
@@ -69,7 +68,6 @@ passport.use(
         }
 
         if (user.password !== password) {
-          //  console.log(user.password);
           return done(null, false, {message: 'Incorrect Password'});
         }
         return done(null, user);
