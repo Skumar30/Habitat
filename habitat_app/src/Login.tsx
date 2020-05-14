@@ -8,9 +8,9 @@
  * @format
  */
 
-import React from "react"
-import { Formik } from "formik"
-import * as yup from "yup"
+import React from 'react';
+import {Formik} from 'formik';
+import * as yup from 'yup';
 import {
   StyleSheet,
   View,
@@ -19,27 +19,27 @@ import {
   TextInput,
   Text,
   ScrollView,
-} from "react-native"
+} from 'react-native';
 
-import CustomButton from "./components/button"
+import CustomButton from './components/button';
 
-const dimensions = Dimensions.get("window")
-const imageHeight = Math.round((dimensions.width * 1) / 4)
-const imageWidth = dimensions.width
+const dimensions = Dimensions.get('window');
+const imageHeight = Math.round((dimensions.width * 1) / 4);
+const imageWidth = dimensions.width;
 const checkingSchema = yup.object({
   username: yup.string().required(),
   password: yup.string().required(),
-})
+});
 
 interface State {
-  errortoggle: boolean
-  errormsg: string
+  errortoggle: boolean;
+  errormsg: string;
 }
 
 export default class Login extends React.Component<{}, State> {
   constructor(props: any) {
-    super(props)
-    this.state = { errortoggle: false, errormsg: "" }
+    super(props);
+    this.state = {errortoggle: false, errormsg: ''};
   }
 
   render() {
@@ -47,22 +47,22 @@ export default class Login extends React.Component<{}, State> {
       <>
         <View style={styles.container}>
           <Image
-            source={require("./assets/logo.jpg")}
+            source={require('./assets/logo.jpg')}
             style={styles.bearImage}
           />
           <ScrollView>
             <Formik
               validationSchema={checkingSchema}
               initialValues={{
-                username: "",
-                password: "",
+                username: '',
+                password: '',
               }}
               onSubmit={(values, actions) => {
-                fetch("http://INSERT YOUR IPv4 Address:3000/users/signin", {
-                  method: "POST",
+                fetch('http://INSERT YOUR IPv4 Address:3000/users/signin', {
+                  method: 'POST',
                   headers: {
-                    Accept: "application/json", //expects a JSON
-                    "Content-Type": "application/json",
+                    Accept: 'application/json', //expects a JSON
+                    'Content-Type': 'application/json',
                   },
                   body: JSON.stringify({
                     username: values.username,
@@ -71,21 +71,20 @@ export default class Login extends React.Component<{}, State> {
                 })
                   .then((response) => response.json()) //gets response body
                   .then((output) => {
-                    console.log(output)
+                    console.log(output);
                     if (output.message) {
                       //used to check if error message exists
                       this.setState({
                         errortoggle: true,
                         errormsg: output.message,
-                      })
+                      });
                     } else {
-                      this.setState({ errortoggle: false, errormsg: "" })
+                      this.setState({errortoggle: false, errormsg: ''});
                     }
-                  })
+                  });
 
-                actions.resetForm()
-              }}
-            >
+                actions.resetForm();
+              }}>
               {(props) => (
                 <View>
                   {this.state.errortoggle && (
@@ -97,12 +96,12 @@ export default class Login extends React.Component<{}, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.username && props.errors.username
-                          ? "red"
-                          : "white",
+                          ? 'red'
+                          : 'white',
                     }}
                     placeholder="Username"
-                    onChangeText={props.handleChange("username")}
-                    onBlur={props.handleBlur("username")}
+                    onChangeText={props.handleChange('username')}
+                    onBlur={props.handleBlur('username')}
                     value={props.values.username}
                     underlineColorAndroid="transparent"
                   />
@@ -116,12 +115,12 @@ export default class Login extends React.Component<{}, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.password && props.errors.password
-                          ? "red"
-                          : "white",
+                          ? 'red'
+                          : 'white',
                     }}
                     placeholder="Password"
-                    onChangeText={props.handleChange("password")}
-                    onBlur={props.handleBlur("password")}
+                    onChangeText={props.handleChange('password')}
+                    onBlur={props.handleBlur('password')}
                     value={props.values.password}
                     secureTextEntry={true}
                     underlineColorAndroid="transparent"
@@ -141,7 +140,7 @@ export default class Login extends React.Component<{}, State> {
           </ScrollView>
         </View>
       </>
-    )
+    );
   }
 }
 
@@ -149,7 +148,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 45,
-    backgroundColor: "#0094FF",
+    backgroundColor: '#0094FF',
   },
   bearImage: {
     height: imageHeight,
@@ -158,33 +157,33 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   header: {
-    fontFamily: "italic",
+    fontFamily: 'italic',
     fontSize: 80,
-    textAlign: "left",
+    textAlign: 'left',
     margin: 10,
-    fontWeight: "bold",
-    color: "#FFFFFF",
+    fontWeight: 'bold',
+    color: '#FFFFFF',
   },
   input: {
     borderWidth: 3,
-    borderColor: "#000000",
+    borderColor: '#000000',
     padding: 8,
     margin: 4,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 9,
     fontSize: 18,
   },
   buttonGroup: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   errorText: {
-    fontFamily: "italic",
+    fontFamily: 'italic',
     fontSize: 13,
-    textAlign: "center",
+    textAlign: 'center',
     margin: 5,
-    fontWeight: "bold",
-    color: "white",
-    textTransform: "uppercase",
+    fontWeight: 'bold',
+    color: 'white',
+    textTransform: 'uppercase',
   },
-})
+});

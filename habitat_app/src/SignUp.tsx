@@ -8,9 +8,9 @@
  * @format
  */
 
-import React from "react"
-import { Formik } from "formik"
-import * as yup from "yup"
+import React from 'react';
+import {Formik} from 'formik';
+import * as yup from 'yup';
 import {
   StyleSheet,
   View,
@@ -19,13 +19,13 @@ import {
   TextInput,
   Text,
   ScrollView,
-} from "react-native"
+} from 'react-native';
 
-import CustomButton from "./components/button"
+import CustomButton from './components/button';
 
-const dimensions = Dimensions.get("window")
-const imageHeight = Math.round((dimensions.width * 1) / 4)
-const imageWidth = dimensions.width
+const dimensions = Dimensions.get('window');
+const imageHeight = Math.round((dimensions.width * 1) / 4);
+const imageWidth = dimensions.width;
 const checkingSchema = yup.object({
   name: yup.string().required().min(1),
   email: yup.string().required().email(),
@@ -36,22 +36,22 @@ const checkingSchema = yup.object({
     .min(5)
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/,
-      "Password must have at least one number, one letter, and one special character"
+      'Password must have at least one number, one letter, and one special character',
     ),
   //Minimum five characters, at least one letter, one number and one special character
   confirm_password: yup
     .string()
-    .required("Must confirm password")
-    .oneOf([yup.ref("password"), null], "Passwords must match"),
-})
+    .required('Must confirm password')
+    .oneOf([yup.ref('password'), null], 'Passwords must match'),
+});
 interface State {
-  errormsg: boolean
+  errormsg: boolean;
 }
 
 export default class SignUp extends React.Component<{}, State> {
   constructor(props: any) {
-    super(props)
-    this.state = { errormsg: false }
+    super(props);
+    this.state = {errormsg: false};
   }
 
   render() {
@@ -59,25 +59,25 @@ export default class SignUp extends React.Component<{}, State> {
       <>
         <View style={styles.container}>
           <Image
-            source={require("./assets/logo.jpg")}
+            source={require('./assets/logo.jpg')}
             style={styles.bearImage}
           />
           <ScrollView>
             <Formik
               validationSchema={checkingSchema}
               initialValues={{
-                name: "",
-                email: "",
-                username: "",
-                password: "",
-                confirm_password: "",
+                name: '',
+                email: '',
+                username: '',
+                password: '',
+                confirm_password: '',
               }}
               onSubmit={(values, actions) => {
-                fetch("http://INSERT YOUR IPv4 Address:3000/users/signup", {
-                  method: "POST",
+                fetch('http://INSERT YOUR IPv4 Address:3000/users/signup', {
+                  method: 'POST',
                   headers: {
-                    Accept: "application/json", //expects a JSON
-                    "Content-Type": "application/json",
+                    Accept: 'application/json', //expects a JSON
+                    'Content-Type': 'application/json',
                   },
                   body: JSON.stringify({
                     name: values.name,
@@ -88,18 +88,17 @@ export default class SignUp extends React.Component<{}, State> {
                 })
                   .then((response) => response.json()) //gets response body
                   .then((output) => {
-                    console.log(output)
+                    console.log(output);
                     if (output.message) {
                       //used to check if error message exists
-                      this.setState({ errormsg: true })
+                      this.setState({errormsg: true});
                     } else {
-                      this.setState({ errormsg: false })
+                      this.setState({errormsg: false});
                     }
-                  })
+                  });
 
-                actions.resetForm()
-              }}
-            >
+                actions.resetForm();
+              }}>
               {(props) => (
                 <View>
                   {this.state.errormsg && (
@@ -113,12 +112,12 @@ export default class SignUp extends React.Component<{}, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.name && props.errors.name
-                          ? "red"
-                          : "white",
+                          ? 'red'
+                          : 'white',
                     }}
                     placeholder="Name"
-                    onChangeText={props.handleChange("name")}
-                    onBlur={props.handleBlur("name")}
+                    onChangeText={props.handleChange('name')}
+                    onBlur={props.handleBlur('name')}
                     value={props.values.name}
                     underlineColorAndroid="transparent"
                   />
@@ -131,12 +130,12 @@ export default class SignUp extends React.Component<{}, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.email && props.errors.email
-                          ? "red"
-                          : "white",
+                          ? 'red'
+                          : 'white',
                     }}
                     placeholder="Email"
-                    onChangeText={props.handleChange("email")}
-                    onBlur={props.handleBlur("email")}
+                    onChangeText={props.handleChange('email')}
+                    onBlur={props.handleBlur('email')}
                     value={props.values.email}
                     underlineColorAndroid="transparent"
                   />
@@ -149,12 +148,12 @@ export default class SignUp extends React.Component<{}, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.username && props.errors.username
-                          ? "red"
-                          : "white",
+                          ? 'red'
+                          : 'white',
                     }}
                     placeholder="Username"
-                    onChangeText={props.handleChange("username")}
-                    onBlur={props.handleBlur("username")}
+                    onChangeText={props.handleChange('username')}
+                    onBlur={props.handleBlur('username')}
                     value={props.values.username}
                     underlineColorAndroid="transparent"
                   />
@@ -170,12 +169,12 @@ export default class SignUp extends React.Component<{}, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.password && props.errors.password
-                          ? "red"
-                          : "white",
+                          ? 'red'
+                          : 'white',
                     }}
                     placeholder="Password"
-                    onChangeText={props.handleChange("password")}
-                    onBlur={props.handleBlur("password")}
+                    onChangeText={props.handleChange('password')}
+                    onBlur={props.handleBlur('password')}
                     value={props.values.password}
                     secureTextEntry={true}
                     underlineColorAndroid="transparent"
@@ -193,12 +192,12 @@ export default class SignUp extends React.Component<{}, State> {
                       backgroundColor:
                         props.touched.confirm_password &&
                         props.errors.confirm_password
-                          ? "red"
-                          : "white",
+                          ? 'red'
+                          : 'white',
                     }}
                     placeholder="Confirm Password"
-                    onChangeText={props.handleChange("confirm_password")}
-                    onBlur={props.handleBlur("confirm_password")}
+                    onChangeText={props.handleChange('confirm_password')}
+                    onBlur={props.handleBlur('confirm_password')}
                     value={props.values.confirm_password}
                     secureTextEntry={true}
                     underlineColorAndroid="transparent"
@@ -222,7 +221,7 @@ export default class SignUp extends React.Component<{}, State> {
           </ScrollView>
         </View>
       </>
-    )
+    );
   }
 }
 
@@ -230,7 +229,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: "#0094FF",
+    backgroundColor: '#0094FF',
   },
   bearImage: {
     height: imageHeight,
@@ -239,26 +238,26 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   errorText: {
-    fontFamily: "italic",
+    fontFamily: 'italic',
     fontSize: 13,
-    textAlign: "center",
+    textAlign: 'center',
     margin: 5,
-    fontWeight: "bold",
-    color: "white",
-    textTransform: "uppercase",
+    fontWeight: 'bold',
+    color: 'white',
+    textTransform: 'uppercase',
   },
   input: {
     borderWidth: 3,
-    borderColor: "#000000",
+    borderColor: '#000000',
     padding: 8,
     margin: 4,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 9,
     fontSize: 18,
   },
   buttonGroup: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     marginBottom: 20,
   },
-})
+});
