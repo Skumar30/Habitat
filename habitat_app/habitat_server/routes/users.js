@@ -15,8 +15,8 @@ router.post(
 );
 
 router.get('/signup', function (req, res) {
-  array_length = req.session.flash.error.length;
-  message = req.session.flash.error[array_length - 1];
+  var array_length = req.session.flash.error.length;
+  var message = req.session.flash.error[array_length - 1];
   req.session.flash.error = [];
   res.json({message: message});
 });
@@ -34,8 +34,8 @@ router.post(
 );
 
 router.get('/signin', function (req, res) {
-  array_length = req.session.flash.error.length;
-  message = req.session.flash.error[array_length - 1];
+  var array_length = req.session.flash.error.length;
+  var message = req.session.flash.error[array_length - 1];
   req.session.flash.error = [];
   res.json({message: message});
 });
