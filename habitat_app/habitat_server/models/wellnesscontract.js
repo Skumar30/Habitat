@@ -7,4 +7,4 @@ var contractSchema = new mongoose.Schema({
   pending: {type: Boolean, required: true}
 });
 
-module.exports = mongoose.model('WContract', contractSchema);
+module.exports = mongoose.model('Contract', contractSchema);
