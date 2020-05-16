@@ -24,18 +24,12 @@ import {
 
 const CreateContract = () => {
 
-    var currDate = "01/01/2020";
-
-    function doSomething() {
+    function submitData() {
 
     }
 
     function updateFriend({friend}: {friend: any}) {
         changeCurrFriend(friend);
-    }
-
-    function displayDate() {
-        currDate = date.toDateString();
     }
 
     const [date, setDate] = useState(new Date(1598051730000));
@@ -58,6 +52,10 @@ const CreateContract = () => {
     const showDatepicker = () => {
         showMode({currentMode: 'date'});
     };
+
+    function rerouteScreen() {
+
+    }
 
     // @ts-ignore
     return (
@@ -101,7 +99,7 @@ const CreateContract = () => {
                         </MenuTrigger  >
 
                         <MenuOptions>
-                            <MenuOption value={'Darin'} onSelect={doSomething}>
+                            <MenuOption value={'Darin'} onSelect={rerouteScreen}>
                                 <Text style={styles.menuContent}>Darin</Text>
                             </MenuOption>
                             <MenuOption value={"Register"}>
@@ -136,10 +134,10 @@ const CreateContract = () => {
                     />
                 )}
                 <View style={styles.buttonContainer}>
-                    <Button onPress={doSomething} title="Create Contract">Create Contract</Button>
+                    <Button onPress={submitData} title="Create Contract">Create Contract</Button>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Button onPress={doSomething} title="Cancel">Cancel</Button>
+                    <Button onPress={rerouteScreen} title="Cancel">Cancel</Button>
                 </View>
             </View>
 
