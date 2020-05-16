@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -14,10 +15,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var MongoStore = require('connect-mongo')(session);
 var app = express();
-mongoose.connect(
-  'mongodb+srv://rkomawar:IyJrM8QoVuowhkqQ@cluster0-zv2fa.mongodb.net/habitat?retryWrites=true&w=majority',
-  {useNewUrlParser: true}
-);
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true});
 mongoose.connection.on('connected', () => {
   console.log('connected');
 });
@@ -33,7 +31,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(
   session({
-    secret: 'black',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({mongooseConnection: mongoose.connection}),
