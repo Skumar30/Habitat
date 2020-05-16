@@ -62,7 +62,7 @@ const CreateContract = () => {
         <View style={styles.container}>
 
             <View>
-                <Text style={styles.titleText}>Create Contract</Text>
+                <Text style={styles.titleText} >{"Create Contract"}</Text>
 
                 <MenuProvider style={{padding: 30, paddingTop: 50 }}>
                     <Menu >
@@ -118,7 +118,7 @@ const CreateContract = () => {
 
 
                 <Text style={styles.dateInput}>
-                    Current Due Date is {date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}
+                    {"Current Due Date is "}{date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}
                 </Text>
                 <View style={styles.buttonContainer}>
                     <Button onPress={showDatepicker} title="Change Due Date" />
@@ -136,7 +136,7 @@ const CreateContract = () => {
                 <View style={styles.buttonContainer}>
                     <Button onPress={submitData} title="Create Contract">Create Contract</Button>
                 </View>
-                <View style={styles.buttonContainer}>
+                <View style={styles.lastButton}>
                     <Button onPress={rerouteScreen} title="Cancel">Cancel</Button>
                 </View>
             </View>
@@ -148,20 +148,24 @@ const CreateContract = () => {
 
 const styles = StyleSheet.create({
     titleText: {
-        fontSize: 50,
+        fontSize: 45,
         fontWeight: "bold",
         textAlign: 'center',
         marginTop: 20,
+        fontFamily: "serif"
     },
     container: {
         marginTop: 10,
-        flex: 2,
-        backgroundColor: '#FFF44F',
+        flex: 1,
+        backgroundColor: '#aaeeff',
         alignItems: 'center',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
     },
     buttonContainer: {
         marginBottom: 10,
+        marginLeft:70,
+        marginRight:70,
+        fontFamily: "serif"
     },
     titleInput: {
         marginTop: 10,
@@ -170,28 +174,28 @@ const styles = StyleSheet.create({
         width: 390,
         height: 50,
         padding: 8,
-        borderRadius: 7
+        borderRadius: 7,
+        fontFamily: "serif"
     },
     dateInput: {
         marginTop: 10,
-        width: 390,
         height: 50,
-        padding: 8,
-        borderRadius: 7,
         textAlign: 'center',
         textAlignVertical: 'center',
-        fontSize: 20,
+        fontSize: 15,
+        fontFamily: "serif"
     },
 
     headerText: {
-        fontSize: 20,
+        fontSize: 15,
         height: 40,
         textAlignVertical: 'center',
         borderWidth: 1,
         borderColor: '#000',
         borderRadius: 7,
         textAlign: 'center',
-        backgroundColor: '#58CEDF'
+        backgroundColor: '#58CEDF',
+        fontFamily: "serif"
     },
     menuContent: {
         color: "#000",
@@ -215,6 +219,13 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 20,
         paddingBottom: 20,
+        fontFamily: "serif"
+    },
+    lastButton: {
+        marginBottom: 50,
+        marginLeft:70,
+        marginRight:70,
+        fontFamily: "serif"
     },
 });
 

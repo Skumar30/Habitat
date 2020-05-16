@@ -31,14 +31,14 @@ export class DailyScreen extends Component {
         return (
         <>
         <View style={[styles.header]}>
-            <Text style={{fontSize:40}}> Dailies </Text>
+            <Text style={styles.textBox}> Dailies </Text>
         </View>
 
         <View style={[styles.container]}>
 
             <ScrollView>
                         <View style={[styles.body]}>
-                            <Text style={{fontSize:28}}> Sample Card </Text>
+                            <Text style={styles.card}> Sample Card </Text>
                             <CheckBox
                             checkedIcon='dot-circle-o'
                             uncheckedIcon='circle-o'
@@ -65,35 +65,34 @@ export class DailyScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 6,
-    backgroundColor: '#DDDDDD',
+    backgroundColor: '#aaeeff',
+
   },
+    textBox: {
+        fontSize:40,
+        fontFamily: "serif",
+    },
+    card: {
+        fontSize:25,
+        fontFamily: "serif",
+    },
   header: {
     flex: 1,
     height: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#AAAAAA',
-    borderRadius: 6,
-    marginVertical: 2,
-    marginHorizontal: 2,
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: '#333',
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
+    backgroundColor: '#7799FF',
   },
 
   body:{
     height: 100,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#f7bf86',
-    borderRadius: 6,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 60,
     marginVertical: 20,
     marginHorizontal: 20,
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: '#333',
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
+      borderColor: '#000000',
   },
 
 TouchableOpacityStyle: {

@@ -227,7 +227,7 @@ class FriendList extends Component{
                     style={styles.button}
                     onPress={() => this.setState({addModalVisible: true}) }
                     >
-                      <Text>Add Friend</Text>
+                      <Text style={styles.textBox}>Add Friend</Text>
                   </TouchableOpacity>
 
                 </View>
@@ -279,6 +279,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#DDDDDD",
     padding: 10,
     borderRadius: 20,
+
   },
 
   fixToText: {
@@ -287,34 +288,43 @@ const styles = StyleSheet.create({
   },
 
   body: {
-    backgroundColor: '#FC886F',
+    backgroundColor: '#7799ff',
   },
   sectionContainer: {
-    marginTop: 32,
+    marginTop: 15,
     paddingHorizontal: 24,
+    paddingRight: 10,
   },
   sectionTitle: {
     fontSize: 32,
     fontWeight: '600',
     color: 'white',
+    fontFamily: 'serif',
   },
   sectionDescription: {
     marginTop: 8,
-    marginBottom: 8,
-    fontSize: 24,
+    marginBottom: 15,
+    fontSize: 17,
     fontWeight: '400',
     color: 'white',
+    fontFamily: 'serif'
   },
 
   centerText: {
     textAlign: 'center',
+      fontFamily: "serif"
   },
 
   emptyMessageStyle: {
     textAlign: 'center',
     fontSize: 28,
-    marginTop: '50%', 
+    marginTop: '50%',
+    fontFamily: 'serif'
   },
+  textBox: {
+    fontFamily: 'serif'
+  },
+
 
 // MODAL STYLE
 centeredView: {
@@ -346,12 +356,14 @@ centeredView: {
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
+    fontFamily: 'serif'
   },
   modalText: {
     marginBottom: 10,
     textAlign: "center",
     fontSize: 25,
+    fontFamily: 'serif'
   },
 
   buttonSeparation: {
@@ -367,12 +379,14 @@ centeredView: {
     borderWidth: 1, 
     borderRadius: 5, 
     margin: 10, 
-    textAlign: 'center', 
+    textAlign: 'center',
+    fontFamily: 'serif'
     
   },
 
   centerThis: {
     alignSelf: 'center',
+
   },
   
 });

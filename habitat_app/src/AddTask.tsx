@@ -124,34 +124,15 @@ export default function AddTask(){
 
   return (
     <View style={styles.container}>
-      {/* Back Button */}
-      <View style={styles.backButton}>
-        <Button title="Back"/>
-      </View>
 
+        <Text style={styles.titleText} >{"Add Task"}</Text>
       {/* Task Title */}
       <TextInput
         placeholder="Task Title"
         onChangeText={(val)=>setTitle(val)}
         style={styles.titleInput}/>
 
-        {/* Due Date Picker */}
-        <View style={styles.button}>
-            <Button
-            onPress={showDatepicker}
-            title="Change Due Date"
-            />
-        </View>
-        {show && (
-            <DateTimePicker
-                testID="dateTimePicker"
-                timeZoneOffsetInMinutes={0}
-                value={date}
-                is24Hour={true}
-                display="default"
-                onChange={changeDate}
-            />
-        )}
+
 
       {/* Frequency */}
         <View style={styles.repeat}>
@@ -165,31 +146,52 @@ export default function AddTask(){
         </View>
 
         <View>
-          <Text>Current Due Date is {date.getMonth()+1}/{date.getDate()}/{date.getYear()+1900}{repeat}</Text>
+          <Text style={styles.textContainer}>Current Due Date is {date.getMonth()+1}/{date.getDate()}/{date.getYear()+1900}{repeat}</Text>
         </View>
         <View>
         <Text>{repeat}</Text>
         </View>
 
-
+        {/* Due Date Picker */}
+        <View style={styles.button}>
+            <Button
+                onPress={showDatepicker}
+                title="Change Due Date"
+            />
+        </View>
+        {show && (
+            <DateTimePicker
+                testID="dateTimePicker"
+                timeZoneOffsetInMinutes={0}
+                value={date}
+                is24Hour={true}
+                display="default"
+                onChange={changeDate}
+            />
+        )}
       {/* Add Button */}
       <View style={styles.addButton}>
         <Button
         title="Add Task"
         onPress={addHandler}/>
       </View>
+        {/* Back Button */}
+        <View style={styles.backButton}>
+            <Button title="Back"/>
+        </View>
     </View>
+
   );
 };
 
 const styles = StyleSheet.create({
-  backButton: {
-    marginTop: 0,
-    flex: 0,
-    justifyContent: 'flex-start',
-    alignSelf: 'flex-start',
-    width: 100
-  },
+    titleText: {
+        fontSize: 50,
+        fontWeight: "bold",
+        textAlign: 'center',
+        marginTop: 20,
+        fontFamily: "serif"
+    },
   container: {
     marginTop: 0,
     flex: 1,
@@ -197,15 +199,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start'
   },
+    textContainer: {
+        fontFamily: "serif",
+        fontSize: 15
+    },
   titleInput: {
     marginTop: 60,
+      marginBottom: 20,
     borderWidth: 1,
     borderColor: '#000',
     width: 390,
     height: 50,
     padding: 8,
     borderRadius: 7,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
+      fontFamily: "serif"
   },
   repeat: {
     flex: 1,
@@ -213,21 +221,27 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width:200,
     height:100,
+        fontFamily: "serif"
   },
   dateText: {
-    marginTop:10
+    marginTop:10,
+      fontFamily: "serif"
   },
   inputTitle: {
-    marginTop: 10
+    marginTop: 10,
+      fontFamily: "serif"
   },
   button: {
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: 128,
+    marginBottom: 20,
     width: 200,
   },
   addButton: {
-    marginTop: 150,
-    marginBottom: 180,
+    marginBottom: 20,
     width: 200
-  }
+  },
+    backButton: {
+        marginBottom: 90,
+        width: 200
+    }
 });

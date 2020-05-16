@@ -287,6 +287,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
+    fontFamily: 'serif'
   },
   body: {
     backgroundColor: Colors.white,
@@ -297,6 +298,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     paddingRight: 20,
     paddingBottom: 10,
+    fontFamily: 'serif'
   },
   itemsContainer: {
     margin: 10,
@@ -351,6 +353,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     alignContent: 'space-between',
     textAlign: 'center',
+    fontFamily: 'serif'
   },
   itemImage: {
     height: 80,
@@ -364,12 +367,14 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#202020',
     paddingHorizontal: 35,
+    fontFamily: 'serif'
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
     fontWeight: '400',
     color: Colors.dark,
+    fontFamily: 'serif'
   },
   backButton: {
     position: 'absolute',
@@ -410,6 +415,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
     fontSize: 20,
+    fontFamily: 'serif'
   },
   buttonSeparation: {
     flexDirection: 'row',

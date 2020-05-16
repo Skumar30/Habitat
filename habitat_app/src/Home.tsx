@@ -63,14 +63,14 @@ class Home extends React.Component<{}, HomeState> {
             <View style={styles.singleRow}>
                   <Image source={head} style={styles.stretchImage}></Image>
                 <View style={styles.playerName}>
-                  <Text>{this.state.playerName}</Text>
+                  <Text style={styles.textBox}>{this.state.playerName}</Text>
                 </View>
             </View>
             </TouchableOpacity>
             <View style={styles.singleRow}>
               <Image source={points} style={styles.stretchImage}></Image>
               <View style={styles.friendshipPoints}>
-                <Text>{this.state.friendshipPoints}</Text>
+                <Text style={styles.textBox}>{this.state.friendshipPoints}</Text>
               </View>
             </View>
           </View>
@@ -93,7 +93,7 @@ class Home extends React.Component<{}, HomeState> {
             </ImageBackground>
           </View>
           <View style={styles.petName}>
-            <TextInput>{this.state.petName}</TextInput>
+            <TextInput style={styles.textBox}>{this.state.petName}</TextInput>
           </View>
           <View style={styles.singleRow}>
             <Image source={feeling} style={styles.stretchImage}></Image>
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 5,
     backgroundColor:
-    'blanchedalmond'
+    'blanchedalmond',
   },
   singleRow: {
     flex: 1,
@@ -161,6 +161,10 @@ const styles = StyleSheet.create({
   },
   playerName: {
     flex: 2, justifyContent: 'center', alignItems: 'center'
+  },
+  textBox: {
+    fontFamily: 'serif',
+    fontSize: 17
   }
 });
 
