@@ -242,7 +242,7 @@ class WellnessContractHome extends Component {
               style={{flex:0.1}}>
               <TouchableOpacity onPress={() => this.props.onBack(false)}>
                 <Image
-                  source={require('./Assets/backArrow.png')}>
+                  source={require('./assets/backArrow.png')}>
                 </Image>
               </TouchableOpacity>
             </View>
@@ -274,7 +274,7 @@ class WellnessContractHome extends Component {
                   style={{
                     flex: 1
                   }}
-                  source={require('./Assets/view.png')}
+                  source={require('./assets/view.png')}
                 >
                 </Image>
               
@@ -291,7 +291,7 @@ class WellnessContractHome extends Component {
                   style={{
                     flex: 1
                   }}
-                  source={require('./Assets/leave.png')}
+                  source={require('./assets/leave.png')}
                 >
                 </Image>
               
@@ -344,7 +344,7 @@ class WellnessContractHome extends Component {
                   style={{
                     flex: 1
                   }}
-                  source={require('./Assets/create.png')}
+                  source={require('./assets/create.png')}
                 >
                 </Image>
               

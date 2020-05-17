@@ -63,7 +63,7 @@ class TaskCard extends Component {
                   onPress={this.handleDeleteTaskModalVisible}>
                   <Image
                     style={styles.taskCardInteract}
-                    source={require('./Assets/x.png')}>
+                    source={require('./assets/x.png')}>
   
                   </Image>
                 </TouchableOpacity>
@@ -162,7 +162,7 @@ class TaskCard extends Component {
             >
               <Image
                 style={styles.taskCardInteract}
-                source={require('./Assets/checkmark.png')}>
+                source={require('./assets/checkmark.png')}>
 
               </Image>
             </View>

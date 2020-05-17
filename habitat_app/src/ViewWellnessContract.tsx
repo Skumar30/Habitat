@@ -139,7 +139,7 @@ class ViewWellnessContract extends Component {
               style={{flex:0.1}}>
               <TouchableOpacity onPress={() => this.props.onBack(false)}>
                 <Image
-                  source={require('./Assets/backArrow.png')}>
+                  source={require('./assets/backArrow.png')}>
                 </Image>
               </TouchableOpacity>
             </View>
@@ -177,7 +177,7 @@ class ViewWellnessContract extends Component {
               <TouchableOpacity
                 onPress={this.toggleDeleteMode}>
                 <Image
-                  source={require('./Assets/trash.png')}>
+                  source={require('./assets/trash.png')}>
                 </Image>
               </TouchableOpacity>
             </View>
@@ -214,7 +214,7 @@ class ViewWellnessContract extends Component {
               style={{flex:0.1}}>
               <TouchableOpacity onPress={() => this.props.onBack(false)}>
                 <Image
-                  source={require('./Assets/backArrow.png')}>
+                  source={require('./assets/backArrow.png')}>
                 </Image>
               </TouchableOpacity>
             </View>

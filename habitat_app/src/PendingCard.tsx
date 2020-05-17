@@ -50,7 +50,7 @@ class PendingCard extends Component {
               onPress={this.handleAcceptModalVisible}>
               <Image
                 style={styles.pendingCardImage}
-                source={require('./Assets/checkmark.png')}>
+                source={require('./assets/checkmark.png')}>
               </Image>
             </TouchableOpacity>
           </View>
@@ -64,7 +64,7 @@ class PendingCard extends Component {
               onPress={this.handleRejectModalVisible}>
               <Image
                 style={styles.pendingCardImage}
-                source={require('./Assets/x.png')}>
+                source={require('./assets/x.png')}>
               </Image>
             </TouchableOpacity>
           </View>
