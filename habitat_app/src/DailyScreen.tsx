@@ -30,32 +30,26 @@ export class DailyScreen extends Component {
 
         return (
         <>
-        <View style={[styles.header]}>
-            <Text style={styles.textBox}> Dailies </Text>
-        </View>
-
-        <View style={[styles.container]}>
-
-            <ScrollView>
-                        <View style={[styles.body]}>
-                            <Text style={styles.card}> Sample Card </Text>
-                            <CheckBox
-                            checkedIcon='dot-circle-o'
-                            uncheckedIcon='circle-o'
-
-                            />
-                        </View>
-            </ScrollView>
-
-            <TouchableOpacity
-                activeOpacity={0.8}
-                style={[styles.TouchableOpacityStyle]}>
-                <Image
-                    source={require ('./DailyComponent/add-trimmy.png') }
-                    style={[styles.FloatingButtonStyle]}
-                />
-            </TouchableOpacity>
-
+        <View style={{flex: 1, flexDirection: 'column'}}>
+          <View style={[styles.header]}>
+              <Text style={styles.textBox}>Dailies</Text>
+          </View>
+          <View style={[styles.container]}>
+              <ScrollView style={{flex: 1}}>
+                <View style={[styles.body]}>
+                    <Text style={styles.card}> Sample Card </Text>
+                    <CheckBox checkedIcon='dot-circle-o' uncheckedIcon='circle-o'/>
+                </View>
+              </ScrollView>
+              <View style={{flex: 0.2, flexDirection: 'row'}}>
+                <View style={{flex: 8}}></View>
+                <View style={{flex: 2, borderWidth: 5, margin: 5}}>
+                  <TouchableOpacity style={{flex: 3}}>
+                    <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
+                  </TouchableOpacity>
+                </View>
+              </View>
+          </View>
         </View>
         </>
         );
@@ -65,7 +59,7 @@ export class DailyScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 6,
-    backgroundColor: '#aaeeff',
+    backgroundColor: 'blanchedalmond',
 
   },
     textBox: {
@@ -81,35 +75,27 @@ const styles = StyleSheet.create({
     height: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#7799FF',
+    backgroundColor: '#b4ecb4',
+    borderWidth: 5
   },
 
   body:{
-    height: 100,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: '#FFFFFF',
     borderRadius: 60,
     marginVertical: 20,
     marginHorizontal: 20,
-      borderColor: '#000000',
+    borderColor: '#000000',
+    borderWidth: 5
   },
 
 TouchableOpacityStyle: {
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 30,
-    bottom: 30,
-  },
-
-  FloatingButtonStyle: {
-    resizeMode: 'contain',
-    width: 50,
-    height: 50,
-  },
+  flex: 1,
+  resizeMode: 'stretch',
+  width: 'auto',
+  height: 'auto'
+}
 
 
 });
