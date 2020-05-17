@@ -31,14 +31,5 @@ class App extends React.Component<{}, any>{
     this.state = {trigger: false}
   }
 
-  render(){
-    const trigger:boolean = this.state.trigger;
-    return(
-      <View>
-     {this.state.trigger != true && <Button onPress={()=>this.setState({trigger: true})} title="Click here" />}
-     {this.state.trigger && <RegTask show={this.state.trigger}/>}
-     </View>
-    )
-  }
-}
 export default App;
+ 
