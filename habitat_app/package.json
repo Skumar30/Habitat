@@ -20,7 +20,6 @@
     "react-native-material-dropdown": "^0.11.1",
     "react-native-popup-menu": "^0.15.7",
     "yup": "^0.28.4"
-
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
