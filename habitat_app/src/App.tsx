@@ -10,7 +10,6 @@
 
 import React from 'react';
 import {
-<<<<<<< HEAD
   SafeAreaView,
   StyleSheet,
   ScrollView,
@@ -18,16 +17,6 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
-=======
-    SafeAreaView,
-    StyleSheet,
-    ScrollView,
-    View,
-    Text,
-    StatusBar,
-} from 'react-native';
-import RegTask from './RegTask'
->>>>>>> 3a39d152c92324cf3853ca1e1455853c9292b8d5
 
 import {
   Header,
@@ -37,7 +26,6 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-<<<<<<< HEAD
 declare const global: {HermesInternal: null | {}};
 
 const App = () => {
@@ -125,31 +113,6 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     textAlign: 'right',
   },
-=======
-import Home from './Home'
-import Login from './Login'
-import FriendList from './FriendList'
-import MyApp from './MyApp'
-import DailyScreen from './DailyScreen'
-import AddTask from './AddTask'
-import CreateContract from './CreateContract'
-import CustomizeScreen from './CustomizeScreen'
-import PendingCard from './PendingCard'
-import WellnessContractHome from './WellnessContractHome';
-import TaskCard from './TaskCard'
-import SignUp from './SignUp';
-
-declare const global: { HermesInternal: null | {} };
-
-const App = () => {
-    return (
-      <MyApp></MyApp>
-    );
-};
-
-const styles = StyleSheet.create({
-   
->>>>>>> 3a39d152c92324cf3853ca1e1455853c9292b8d5
 });
 
 export default App;
