@@ -17,9 +17,8 @@ import {
   TouchableOpacity,
   UIManager,
 } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-export class DailyScreen extends Component {
+class DailyScreen extends Component {
     constructor(props) {
         super(props);
         this.state = { tasks: [] }
@@ -41,13 +40,15 @@ export class DailyScreen extends Component {
                     <CheckBox checkedIcon='dot-circle-o' uncheckedIcon='circle-o'/>
                 </View>
               </ScrollView>
-              <View style={{flex: 0.2, flexDirection: 'row'}}>
-                <View style={{flex: 8}}></View>
-                <View style={{flex: 2, borderWidth: 5, margin: 5}}>
-                  <TouchableOpacity style={{flex: 3}}>
-                    <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
-                  </TouchableOpacity>
+              <View style={{flex: 0.15, flexDirection: 'row'}}>
+                <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}>
+                  <Image source={require ('./assets/back.png') } style={styles.TouchableOpacityStyle}/>
+                </TouchableOpacity>
+                <View style={{flex: 4, opacity: 0}}>
                 </View>
+                <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}>
+                  <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
+                </TouchableOpacity>
               </View>
           </View>
         </View>
@@ -60,19 +61,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 6,
     backgroundColor: 'blanchedalmond',
-
+    borderWidth: 5,
+    borderTopWidth: 0
   },
     textBox: {
         fontSize:40,
         fontFamily: "serif",
     },
     card: {
-        fontSize:25,
+        fontSize:30,
         fontFamily: "serif",
     },
   header: {
     flex: 1,
-    height: 0,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: '#b4ecb4',
@@ -87,7 +88,8 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     marginHorizontal: 20,
     borderColor: '#000000',
-    borderWidth: 5
+    borderWidth: 5,
+    flexDirection: 'row'
   },
 
 TouchableOpacityStyle: {

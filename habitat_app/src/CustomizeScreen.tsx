@@ -172,19 +172,19 @@ class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin
 
                   <View>
                     <TouchableOpacity
-                      style={[styles.confirmationButton, { backgroundColor: '#556' }]}
+                      style={[styles.confirmationButton, { backgroundColor: 'indianred' }]}
                       onPress={() => { this.setState({ modalVisible: false }); }}
                     >
-                      <Text style={styles.itemText}>NO</Text>
+                      <Text style={[styles.itemText]}>NO</Text>
                     </TouchableOpacity>
                   </View>
 
                   <View>
                     <TouchableOpacity
-                      style={[styles.confirmationButton, { backgroundColor: 'slategray' }]}
+                      style={[styles.confirmationButton, { backgroundColor: '#b4ecb4' }]}
                       onPress={() => { this.handlePurchase(code, type) }}
                     >
-                      <Text style={styles.itemText}>YES</Text>
+                      <Text style={[styles.itemText, {color: 'black'}]}>YES</Text>
                     </TouchableOpacity>
                   </View>
 
@@ -224,15 +224,17 @@ class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin
       <>
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
-          <View style={[styles.body, { zIndex: 3 }]}>
-            <Text style={styles.screenTitle}>Customize</Text>
-            <Text style={styles.creditDisplay}>${this.credits}</Text>
+          <View style={[styles.body, { zIndex: 3, flexDirection: 'row'}]}>
+            <View style={styles.backButton}>
+              <TouchableOpacity onPress={() => this.exit()}>
+                <Text style={{fontSize: 30, fontFamily: 'serif'}}>BACK</Text>
+               </TouchableOpacity>
+            </View>
+            <View style={{alignContent: 'center', flexDirection: 'row'}}>
+              <Text style={styles.screenTitle}>Customize</Text>
+              <Text style={styles.creditDisplay}>${this.credits}</Text>
+            </View>
           </View>
-
-          <TouchableOpacity onPress={() => this.exit()}
-            style={styles.backButton}>
-            <Text style={{ textAlign: 'center', marginVertical: 11, color: 'white' }}>BACK</Text>
-          </TouchableOpacity>
 
           <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
             {global.HermesInternal == null ? null : (
@@ -271,7 +273,6 @@ const styles = StyleSheet.create({
   scrollView: {
     //backgroundColor: Colors.lighter,
     backgroundColor: Colors.white,
-    marginBottom: 155,
   },
   engine: {
     position: 'absolute',
@@ -281,7 +282,7 @@ const styles = StyleSheet.create({
     fontSize: 38,
     fontWeight: '700',
     color: Colors.black,
-    textAlign: 'left',
+    textAlign: 'center',
     paddingHorizontal: 20,
     paddingTop: 40,
     flexDirection: 'row',
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
     fontFamily: 'serif'
   },
   body: {
-    backgroundColor: Colors.white,
+    backgroundColor: 'blanchedalmond',
   },
   creditDisplay: {
     textAlign: 'right',
@@ -298,7 +299,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     paddingRight: 20,
     paddingBottom: 10,
-    fontFamily: 'serif'
+    fontFamily: 'serif',
+    alignSelf: 'center'
   },
   itemsContainer: {
     margin: 10,
@@ -319,6 +321,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     flexDirection: 'column',
     alignContent: 'space-between',
+    borderWidth: 5,
+    justifyContent: 'center'
   },
   itemElementActive: {
     margin: 10,
@@ -332,6 +336,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     flexDirection: 'column',
     alignContent: 'space-between',
+    borderWidth: 5,
+    justifyContent: 'center'
   },
   itemElementNotOwned: {
     margin: 10,
@@ -345,6 +351,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     flexDirection: 'column',
     alignContent: 'space-between',
+    borderWidth: 5,
+    justifyContent: 'center'
   },
   itemText: {
     margin: 5,
@@ -377,14 +385,10 @@ const styles = StyleSheet.create({
     fontFamily: 'serif'
   },
   backButton: {
-    position: 'absolute',
     alignSelf: 'center',
-    bottom: 130,
-    backgroundColor: 'rgba(210, 42, 42, 0.8)',
-    borderRadius: 60,
-    height: 40,
-    width: 90,
-    margin: 13,
+    backgroundColor: 'indianred',
+    borderRadius: 10,
+    borderWidth: 5
   },
   footer: {
     color: Colors.dark,
@@ -398,7 +402,8 @@ const styles = StyleSheet.create({
     margin: 20,
     marginTop: 300,
     width: 375,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: 'blanchedalmond',
+    borderWidth: 5,
     borderRadius: 20,
     padding: 35,
     justifyContent: 'center',
@@ -415,7 +420,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
     fontSize: 20,
-    fontFamily: 'serif'
+    fontFamily: 'serif',
+    color: 'black'
   },
   buttonSeparation: {
     flexDirection: 'row',
@@ -429,6 +435,8 @@ const styles = StyleSheet.create({
     height: 50,
     width: 90,
     elevation: 2,
+    justifyContent: 'center',
+    borderWidth: 5
   },
 });
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, Alert, TouchableHighlight, Image } from 'react-native'
-import {Header, Button, Icon, CheckBox, Tooltip} from 'react-native-elements'
+import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, Alert, TouchableHighlight, Image, CheckBox} from 'react-native'
+import {Header, Button, Icon, Tooltip} from 'react-native-elements'
 import {Dimensions} from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
@@ -61,7 +61,7 @@ class RegTask extends React.Component<{}, State>{
     /* Display the alert that allows a user to edit/delete a task */
 
     editAlert(index: number){
-        Alert.alert("Title", "Select an options", [
+        Alert.alert("Title", "Select an option", [
           {
             text: "Cancel",
             style: "cancel"
@@ -139,8 +139,8 @@ class RegTask extends React.Component<{}, State>{
             </View>
           </TouchableOpacity>
           <CheckBox 
-            checked={this.state.checked[index]}
-            onPress={() => {
+            value={this.state.checked[index]}
+            onValueChange={() => {
                 if( disabled) 
                   return
                 var checked = this.state.checked
@@ -151,17 +151,11 @@ class RegTask extends React.Component<{}, State>{
      )};
     
     render(){
-
         return(
         <View style={styles.container}>
-          
-          <Header 
-            containerStyle={styles.headerContainer}
-            leftComponent={this.backButton()}
-            centerComponent={{ text: 'Your Tasks', style: styles.headerText }}
-            rightComponent={this.helpToolTip()}
-          />
-
+          <View style={styles.headerContainer}>
+              <Text style={styles.headerText}>Your Tasks</Text>
+          </View>
           <View style={styles.dateContainer}>
             <Icon 
               name='arrow-left'
@@ -180,19 +174,25 @@ class RegTask extends React.Component<{}, State>{
               type='simple-line-icon'
               size={12} />           
           </View>
+          <View style={styles.listContainer}>
+            <View style={{flex: 9}}>
+              <FlatList
+                data={this.state.data}
+                renderItem={({ item, index }) => this.Item(item.title, index)}
+                keyExtractor={item => item.id}
+              />
+            </View>
+            <View style={{flex: 1, flexDirection: 'row'}}>
+              <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}>
+                <Image source={require ('./assets/back.png') } style={styles.TouchableOpacityStyle}/>
+              </TouchableOpacity>
+              <View style={{flex: 4, opacity: 0}}>
 
-          <FlatList
-            data={this.state.data}
-            renderItem={({ item, index }) => this.Item(item.title, index)}
-            keyExtractor={item => item.id}
-          />
-          <View style={styles.addContainer}>
-            <Icon 
-              name='add' 
-              type='material'  
-              reverse color='#43d151' 
-              onPress={() => console.log("Add new task")}
-            />
+              </View>
+              <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}>
+                <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       )
@@ -202,21 +202,34 @@ class RegTask extends React.Component<{}, State>{
   const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: '#88e3e0', 
-      alignItems: 'center'
+      backgroundColor: 'blanchedalmond', 
+      borderRightWidth: 5,
+      borderLeftWidth: 5,
+      borderBottomWidth: 5
     },
     headerText: {
-      color: '#fff', 
-      fontSize: 26
+      fontSize: 40,
+      fontFamily: 'serif',
+      padding: 10
     },
     headerContainer : {
-      height: 50
+      flex: 0.1,
+      backgroundColor: 'skyblue',
+      borderTopWidth: 5,
+      borderBottomWidth: 5,
+      justifyContent: "center",
+      alignItems: "center",
     },
     dateContainer : {
-      width: 150, 
+      flex: 0.05,
       flexDirection: 'row', 
-      justifyContent: 'space-around', 
-      marginTop: 5},
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    listContainer: {
+      flex: 1,
+      alignItems: 'center',
+    },
     dateText : {fontSize: 16},
     icon : {marginTop: 5},
     itemView: {
@@ -224,19 +237,21 @@ class RegTask extends React.Component<{}, State>{
       alignItems: 'center', 
       marginVertical: 8,
       borderColor: 'black', 
-      borderWidth: 1, 
-      backgroundColor: '#52f2bf', 
+      borderWidth: 5, 
+      backgroundColor: '#fff', 
+      borderRadius: 50,
       width: 350
     },
     item: {
-      backgroundColor: '#52f2bf',
+      backgroundColor: '#fff',
       padding: 20, 
       width: 250,
       marginVertical: 8,
       marginHorizontal: 16, 
       flexDirection: 'row', 
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
+      borderRadius: 50
     },
     addContainer: {
       alignSelf:'flex-end', 
@@ -249,7 +264,14 @@ class RegTask extends React.Component<{}, State>{
     title: {
       fontSize: 18, 
       color: 'black', 
-      fontWeight: 'bold'}
+      fontWeight: 'bold'},
+    TouchableOpacityStyle: {
+      flex: 1,
+      resizeMode: 'contain',
+      width: 'auto',
+      height: 'auto',
+      borderWidth: 5,
+    }
   })
   export default RegTask;
   
