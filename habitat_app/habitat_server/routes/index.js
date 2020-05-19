@@ -10,9 +10,4 @@ router.get('/', function (req, res, next) {
   }
 });
 
-/* GET home page. */
-router.get('/wellnesscontract', function (req, res, next) {
-  //Contract.find({"_id" : { $inreq.user.contracts
-});
-
 module.exports = router;
