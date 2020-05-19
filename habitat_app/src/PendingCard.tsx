@@ -165,7 +165,6 @@ const styles = StyleSheet.create({
   iconButtonContainer: {
     width:125,
     height:150,
-    borderColor: '#DDDDDD',
     borderWidth: 5
   },
 
@@ -176,9 +175,8 @@ const styles = StyleSheet.create({
   },
 
   popupModalContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'blanchedalmond',
     borderWidth: 4,
-    borderColor: '#CCCCCC',
     width: 300,
     height: 200
   },
@@ -190,8 +188,8 @@ const styles = StyleSheet.create({
 
   cardContainer: {
     backgroundColor: '#FFFFFF',
-    borderWidth: 4,
-    borderColor: '#CCCCCC',
+    borderWidth: 5,
+    borderRadius: 10,
     flexDirection: 'row',
     margin: 5
   },
@@ -226,12 +224,12 @@ const styles = StyleSheet.create({
   pendingCardInteract: {
     height: 35,
     width: 35,
-    margin: 5
+    margin: 5,
   },
 
   pendingCardImage: {
     height:35,
-    width:35
+    width:35,
   }
 });
 
