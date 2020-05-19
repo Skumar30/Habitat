@@ -42,7 +42,17 @@ interface State {
   checked: boolean[]
   isToday: boolean
   date: Date
+  allData: any[]
   data: any[] //TODO
+}
+
+interface Task{
+  _id: any
+  title: string
+  due: string
+  daily: boolean
+  start: string
+  frequency: string[]
 }
 
 const START_DATE = new Date()
@@ -55,7 +65,7 @@ class RegTask extends React.Component<{}, State>{
       for(var i = 0; i < FAKE_DATA.length; i++){
         checks.push(false)
       }
-      this.state ={date: new Date(), checked: checks, isToday: true, data: FAKE_DATA}
+      this.state ={date: new Date(), checked: checks, isToday: true, allData: [], data: []}
     }
 
     /* Display the alert that allows a user to edit/delete a task */
@@ -129,7 +139,6 @@ class RegTask extends React.Component<{}, State>{
 
     /* Create the individual items for the flatlist */
     Item = (title:string, index:number) =>{
-      console.log(index) 
       var disabled = !this.state.isToday
       return(
         <View style={styles.itemView}>
@@ -149,7 +158,40 @@ class RegTask extends React.Component<{}, State>{
             }}/>
         </View>
      )};
+
+     componentDidMount(){
+      this.getData().then(res => {
+        this.setState({allData: res})
+        //find the data for the list
+        let newData:any[] = [];
+        res.forEach((element : Task) => {
+
+          let startDate = new Date(element.start);
+          let endDate = new Date(element.due);
+          let day = this.state.date.getDay();
+          console.log("The day is ", element.frequency[day], "and the daily is", element.daily)
+          if(startDate <= this.state.date && endDate >= this.state.date){// start and end dates are valid 
+            if(element.daily  || (element.frequency[this.state.date.getDay()] == 'true') ){
+              newData.push(element);
+            }
+          }
+
+        });
+        console.log(newData)
+        this.setState({data: newData})
     
+        });
+     }  
+    
+     getData = async () => {
+       const response = await fetch('http://10.0.0.10:3000/myTask');
+       const body = await response.json();
+       if (response.status !== 200) {
+        console.error(body.message) 
+      }
+  
+       return body;
+     }
     render(){
 
         return(
@@ -184,7 +226,7 @@ class RegTask extends React.Component<{}, State>{
           <FlatList
             data={this.state.data}
             renderItem={({ item, index }) => this.Item(item.title, index)}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item._id}
           />
           <View style={styles.addContainer}>
             <Icon 
