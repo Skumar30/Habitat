@@ -163,7 +163,6 @@ class TaskCard extends Component {
               <Image
                 style={styles.taskCardInteract}
                 source={require('./assets/checkmark.png')}>
-
               </Image>
             </View>
           </View>
@@ -197,20 +196,19 @@ const styles = StyleSheet.create({
   iconButtonContainer: {
     width:125,
     height:150,
-    borderColor: '#DDDDDD',
     borderWidth: 5
   },
 
   popupModalScreen: {
     flex:1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'blanchedalmond'
   },
 
   popupModalContainer: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 4,
-    borderColor: '#CCCCCC',
+    backgroundColor: 'blanchedalmond',
+    borderWidth: 5,
     width: 300,
     height: 200
   },
@@ -222,10 +220,10 @@ const styles = StyleSheet.create({
 
   cardContainer: {
     backgroundColor: '#FFFFFF',
-    borderWidth: 4,
-    borderColor: '#CCCCCC',
+    borderWidth: 5,
     flexDirection: 'row',
-    margin: 5
+    margin: 5,
+    borderRadius: 10
   },
 
   cardTextContainer: {
@@ -245,7 +243,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: 30,
     height: 30,
-    margin: 6
+    margin: 6,
   },
 
   pendingCardInteractContainer: {

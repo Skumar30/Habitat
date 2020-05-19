@@ -60,7 +60,6 @@ const CreateContract = () => {
     // @ts-ignore
     return (
         <View style={styles.container}>
-
             <View>
                 <Text style={styles.titleText} >{"Create Contract"}</Text>
 
@@ -120,8 +119,13 @@ const CreateContract = () => {
                 <Text style={styles.dateInput}>
                     {"Current Due Date is "}{date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}
                 </Text>
-                <View style={styles.buttonContainer}>
-                    <Button onPress={showDatepicker} title="Change Due Date" />
+            
+                <View style={{flex: 1}}>
+                {/* Due Date Picker */}
+                <View style={styles.changeButton}>
+                <TouchableOpacity onPress={showDatepicker}>
+                    <Text style={styles.buttonText}>Change Due Date</Text>
+                </TouchableOpacity>
                 </View>
                 {show && (
                     <DateTimePicker
@@ -133,12 +137,19 @@ const CreateContract = () => {
                         onChange={changeDate}
                     />
                 )}
-                <View style={styles.buttonContainer}>
-                    <Button onPress={submitData} title="Create Contract">Create Contract</Button>
+                {/* Add Button */}
+                <View style={styles.addButton}>
+                <TouchableOpacity onPress={submitData}>
+                    <Text style={styles.buttonText}>Create Contract</Text>
+                </TouchableOpacity>
                 </View>
-                <View style={styles.lastButton}>
-                    <Button onPress={rerouteScreen} title="Cancel">Cancel</Button>
+                {/* Back Button */}
+                <View style={styles.backButton}>
+                <TouchableOpacity onPress={rerouteScreen}>
+                    <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
                 </View>
+            </View>
             </View>
 
         </View>
@@ -151,13 +162,12 @@ const styles = StyleSheet.create({
         fontSize: 45,
         fontWeight: "bold",
         textAlign: 'center',
-        marginTop: 20,
         fontFamily: "serif"
     },
     container: {
         marginTop: 10,
         flex: 1,
-        backgroundColor: '#aaeeff',
+        backgroundColor: 'blanchedalmond',
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
@@ -190,11 +200,11 @@ const styles = StyleSheet.create({
         fontSize: 15,
         height: 40,
         textAlignVertical: 'center',
-        borderWidth: 1,
+        borderWidth: 5,
         borderColor: '#000',
-        borderRadius: 7,
+        borderRadius: 30,
         textAlign: 'center',
-        backgroundColor: '#58CEDF',
+        backgroundColor: 'white',
         fontFamily: "serif"
     },
     menuContent: {
@@ -227,6 +237,33 @@ const styles = StyleSheet.create({
         marginRight:70,
         fontFamily: "serif"
     },
+    changeButton: {
+        marginBottom: 20,
+        borderWidth: 5,
+        borderRadius: 10,
+        alignItems: 'center',
+        backgroundColor: 'powderblue',
+        justifyContent: 'center',
+      },
+      addButton: {
+        marginBottom: 20,
+        borderWidth: 5,
+        borderRadius: 10,
+        backgroundColor: '#b4ecb4',
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+      backButton: {
+          marginBottom: 90,
+          borderWidth: 5,
+          borderRadius: 10,
+          backgroundColor: 'mistyrose',
+          alignItems: 'center',
+          justifyContent: 'center'
+      },
+      buttonText: {
+        fontSize: 20
+      }
 });
 
 export default CreateContract;

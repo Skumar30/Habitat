@@ -233,7 +233,7 @@ class WellnessContractHome extends Component {
         >
           <View
             style={{
-              backgroundColor: 'white',
+              backgroundColor: 'blanchedalmond',
               flexDirection: 'row'
             }}
           >
@@ -242,7 +242,7 @@ class WellnessContractHome extends Component {
               style={{flex:0.1}}>
               <TouchableOpacity onPress={() => this.props.onBack(false)}>
                 <Image
-                  source={require('./assets/backArrow.png')}>
+                  source={require('./assets/backsmall.png')}>
                 </Image>
               </TouchableOpacity>
             </View>
@@ -376,12 +376,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     height: 650,
     width: 410,
-    padding: 20
+    padding: 20,
+    backgroundColor: 'blanchedalmond'
   },
   titleText: {
     textAlign: 'center',
     fontWeight: 'bold',
-    textDecorationLine: 'underline',
     fontSize: 32
   },
 
@@ -394,8 +394,7 @@ const styles = StyleSheet.create({
   iconButtonContainer: {
     width:125,
     height:150,
-    borderColor: '#DDDDDD',
-    borderWidth: 5
+    borderWidth: 5,
   },
 
   popupModalScreen: {
@@ -419,8 +418,7 @@ const styles = StyleSheet.create({
 
   cardContainer: {
     backgroundColor: '#FFFFFF',
-    borderWidth: 4,
-    borderColor: '#CCCCCC',
+    borderWidth: 5,
     flexDirection: 'row',
     margin: 5
   },

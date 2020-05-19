@@ -130,8 +130,8 @@ class ViewWellnessContract extends Component {
         >
           <View
             style={{
-              backgroundColor: 'white',
-              flexDirection: 'row'
+              backgroundColor: 'blanchedalmond',
+              flexDirection: 'row',
             }}
           >
             {/* back button to get out of wellness contract home screen */}
@@ -139,7 +139,7 @@ class ViewWellnessContract extends Component {
               style={{flex:0.1}}>
               <TouchableOpacity onPress={() => this.props.onBack(false)}>
                 <Image
-                  source={require('./assets/backArrow.png')}>
+                  source={require('./assets/backsmall.png')}>
                 </Image>
               </TouchableOpacity>
             </View>
@@ -175,9 +175,9 @@ class ViewWellnessContract extends Component {
                 justifyContent: 'center'
               }}>
               <TouchableOpacity
-                onPress={this.toggleDeleteMode}>
+                onPress={this.toggleDeleteMode} style={{borderWidth: 4}}>
                 <Image
-                  source={require('./assets/trash.png')}>
+                  source={require('./assets/delete.png')}>
                 </Image>
               </TouchableOpacity>
             </View>
@@ -191,9 +191,13 @@ class ViewWellnessContract extends Component {
               renderItem={({ item, index }) => <TaskCard message={item.message} deleteMode={this.state.deleteMode} viewMyTasks={this.state.viewMyTasks} id={item.id} handleDeleteTask={this.deleteTask} />}
             />
           </ScrollView>
-          <Button
-            title="View their tasks"
-            onPress={this.toggleViewMyTasks}></Button>
+          <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
+            <TouchableOpacity onPress={this.toggleViewMyTasks} style={{alignContent: 'center'}}>
+              <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
+                View My Tasks
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       );
     }
@@ -205,22 +209,22 @@ class ViewWellnessContract extends Component {
         >
           <View
             style={{
-              backgroundColor: 'white',
-              flexDirection: 'row'
+              flexDirection: 'row',
+              backgroundColor: 'blanchedalmond'
             }}
           >
             {/* back button to get out of wellness contract home screen */}
             <View
-              style={{flex:0.1}}>
+              style={{flex:0.15, backgroundColor: 'blanchedalmond'}}>
               <TouchableOpacity onPress={() => this.props.onBack(false)}>
                 <Image
-                  source={require('./assets/backArrow.png')}>
+                  source={require('./assets/backsmall.png')}>
                 </Image>
               </TouchableOpacity>
             </View>
               
             <View
-              style={{flex:0.9}}>
+              style={{flex:0.9, backgroundColor: 'blanchedalmond'}}>
               <Text
                 style={styles.titleText}
               >
@@ -244,9 +248,13 @@ class ViewWellnessContract extends Component {
               renderItem={({ item, index }) => <TaskCard message={item.message} deleteMode={this.state.deleteMode} viewMyTasks={this.state.viewMyTasks} />}
             />
           </ScrollView>
-          <Button
-            title="View my tasks"
-            onPress={this.toggleViewMyTasks}></Button>
+          <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
+            <TouchableOpacity onPress={this.toggleViewMyTasks} style={{alignContent: 'center'}}>
+              <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
+                View My Tasks
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       );
     }
@@ -258,6 +266,7 @@ class ViewWellnessContract extends Component {
 const styles = StyleSheet.create({
   entireScreenContainer: {
     flexDirection: "column",
+    backgroundColor: 'blanchedalmond',
     height: 650,
     width: 410,
     padding: 20
@@ -265,7 +274,6 @@ const styles = StyleSheet.create({
   titleText: {
     textAlign: 'center',
     fontWeight: 'bold',
-    textDecorationLine: 'underline',
     fontSize: 32
   },
 
@@ -278,33 +286,31 @@ const styles = StyleSheet.create({
   iconButtonContainer: {
     width:125,
     height:150,
-    borderColor: '#DDDDDD',
     borderWidth: 5
   },
 
   popupModalScreen: {
     flex:1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'blanchedalmond'
   },
 
   popupModalContainer: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 4,
-    borderColor: '#CCCCCC',
+    backgroundColor: 'blanchedalmond',
+    borderWidth: 5,
     width: 300,
     height: 200
   },
 
   scrollViewStyle: {
     flexDirection: "column", 
-    backgroundColor: "#DDDDDD"
+    backgroundColor: "blanchedalmond"
   },
 
   cardContainer: {
     backgroundColor: '#FFFFFF',
-    borderWidth: 4,
-    borderColor: '#CCCCCC',
+    borderWidth: 5,
     flexDirection: 'row',
     margin: 5
   },
