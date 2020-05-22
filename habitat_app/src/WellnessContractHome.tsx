@@ -10,8 +10,8 @@ class WellnessContractHome extends Component {
 
     super(props);
     this.state = {
-      viewingContract:false, 
-      viewMyTasks:true, 
+      viewingContract:false,
+      viewMyTasks:true,
       hasContract:true,
       leaveModalVisible: false,
 
@@ -54,7 +54,7 @@ class WellnessContractHome extends Component {
           message: 'My task #9',
         }
       ],
-      
+
       //other user in wellness contract task data
       theirTasks: [
 
@@ -99,42 +99,7 @@ class WellnessContractHome extends Component {
       //pending contract invitations for the user
       pendingContracts: [
 
-        {
-          id: '1',
-          title: 'Pending Wellness Contract #1',
-        },
-        {
-          id: '2',
-          title: 'Pending Wellness Contract #2',
-        },
-        {
-          id: '3',
-          title: 'Pending Wellness Contract #3',
-        },
-        {
-          id: '4',
-          title: 'Pending Wellness Contract #4',
-        },
-        {
-          id: '5',
-          title: 'Pending Wellness Contract #5',
-        },
-        {
-          id: '6',
-          title: 'Pending Wellness Contract #6',
-        },
-        {
-          id: '7',
-          title: 'Pending Wellness Contract #7',
-        },
-        {
-          id: '8',
-          title: 'Pending Wellness Contract #8',
-        },
-        {
-          id: '9',
-          title: 'Pending Wellness Contract #9',
-        }
+
       ]
     }
   }
@@ -149,7 +114,7 @@ class WellnessContractHome extends Component {
 
       Alert.alert("No Existing Wellness Contract", "Please create a wellness contract in order to view it.");
     }
-    
+
   }
 
   setHasContract = (val: boolean) => {
@@ -219,6 +184,19 @@ class WellnessContractHome extends Component {
     }
   }
 
+  getPendingContracts =async() => {
+
+      const response = await fetch('http://172.17.59.113:3000/getPendingContracts');
+      const body = await response.json();
+      var pendingContractData = body;
+      this.setState({pendingContracts: pendingContractData});
+  }
+
+  componentDidMount(){
+
+    this.getPendingContracts();
+  }
+
   render() {
 
     //if user is viewing their wellness contract
@@ -246,7 +224,7 @@ class WellnessContractHome extends Component {
                 </Image>
               </TouchableOpacity>
             </View>
-              
+
             <View
               style={{flex:0.9}}>
               <Text
@@ -255,8 +233,8 @@ class WellnessContractHome extends Component {
               </Text>
             </View>
           </View>
-      
-          
+
+
           {/* View which holds top three buttons */}
           <View
             style={{
@@ -264,20 +242,20 @@ class WellnessContractHome extends Component {
               width: 370,
               height: 150
             }}>
-            
+
             {/* button which allows user to view existing wellness contract */}
             <TouchableOpacity onPress={() => {this.setViewingContract(true)}}>
               <View
                 style={styles.iconButtonContainer}
               >
-                <Image 
+                <Image
                   style={{
                     flex: 1
                   }}
                   source={require('./assets/view.png')}
                 >
                 </Image>
-              
+
               </View>
             </TouchableOpacity>
 
@@ -286,15 +264,15 @@ class WellnessContractHome extends Component {
               <View
                 style={styles.iconButtonContainer}
               >
-                  
-                <Image 
+
+                <Image
                   style={{
                     flex: 1
                   }}
                   source={require('./assets/leave.png')}
                 >
                 </Image>
-              
+
               </View>
             </TouchableOpacity>
 
@@ -339,20 +317,20 @@ class WellnessContractHome extends Component {
               <View
                 style={styles.iconButtonContainer}
               >
-                  
-                <Image 
+
+                <Image
                   style={{
                     flex: 1
                   }}
                   source={require('./assets/create.png')}
                 >
                 </Image>
-              
+
               </View>
             </TouchableOpacity>
           </View>
-          
-          <Text 
+
+          <Text
             style={{
               fontSize: 16
             }}>
@@ -361,10 +339,10 @@ class WellnessContractHome extends Component {
           <ScrollView>
             <FlatList
                 data={this.state.pendingContracts}
-                renderItem={({ item }) => <PendingCard title={item.title} handleReject={this.removeInvitation} handleAccept={this.acceptInvitation} id={item.id} />}
+                renderItem={({ item }) => <PendingCard owner={item.owner} handleReject={this.removeInvitation} handleAccept={this.acceptInvitation} id={item.id} due_date={item.due_date} />}
               />
           </ScrollView>
-  
+
         </View>
       );
     }
@@ -412,7 +390,7 @@ const styles = StyleSheet.create({
   },
 
   scrollViewStyle: {
-    flexDirection: "column", 
+    flexDirection: "column",
     backgroundColor: "#DDDDDD"
   },
 
