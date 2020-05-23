@@ -40,7 +40,7 @@ class PendingCard extends Component {
               {this.props.owner}
             </Text>
             <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 18}}>
-              due_date: {this.props.due_date}
+              Due: {this.props.due_date}
             </Text>
           </View>
 

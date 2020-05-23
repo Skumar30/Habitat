@@ -100,31 +100,18 @@ class WellnessContractHome extends Component {
       pendingContracts: [
 
 
-      ]
+      ],
+      currentContractId: {}
     }
   }
 
   setViewingContract = (val: boolean) => {
-
-    if(this.state.hasContract) {
-
-      this.setState({viewingContract: val});
-    }
-    else {
-
-      Alert.alert("No Existing Wellness Contract", "Please create a wellness contract in order to view it.");
-    }
-
+    this.setState({viewingContract: val});
   }
 
   setHasContract = (val: boolean) => {
 
     this.setState({hasContract: val});
-  }
-
-  toggleViewMyTasks = () => {
-
-    this.setState({viewMyTasks: !this.state.viewMyTasks});
   }
 
   removeInvitation = (contractId: number) => {
@@ -147,14 +134,28 @@ class WellnessContractHome extends Component {
     this.setState({leaveModalVisible: !this.state.leaveModalVisible});
   }
 
-  leaveContract = () => {
+  removeContract = async(contractId) => {
+
+    var response = await fetch('http://172.17.59.113:3000/removeContract', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contractId: contractId
+      })
+    });
+
+    var result = await response.json(); //gets response body
 
     this.setState({hasContract: false});
+    this.setState({currentContractId: null});
     this.handleLeaveModalVisible();
     Alert.alert("Leave Contract Confirmation", "You have left the current contract.");
   }
 
-  handleLeaveContract = () => {
+  handleRemoveContract = () => {
 
     if(this.state.hasContract) {
 
@@ -184,6 +185,22 @@ class WellnessContractHome extends Component {
     }
   }
 
+  handleViewContract = () => {
+
+    console.log("enter");
+    if(this.state.hasContract) {
+
+      this.setState({viewingContract: true});
+      console.log("should be viewing contract");
+    }
+    else {
+
+      console.log("should be viewing alert");
+      this.setViewingContract(false);
+      Alert.alert("No Existing Wellness Contract", "Please create or accept a wellness contract in order to view it.");
+    }
+  }
+
   getPendingContracts =async() => {
 
       const response = await fetch('http://172.17.59.113:3000/getPendingContracts');
@@ -192,9 +209,36 @@ class WellnessContractHome extends Component {
       this.setState({pendingContracts: pendingContractData});
   }
 
+  checkCurrentContract = async() => {
+
+    const response = await fetch('http://172.17.59.113:3000/checkCurrentContract');
+    const body = await response.json();
+    if(body.length > 0) {
+      this.setState({hasContract: true});
+      this.setState({currentContractId: body[0]})
+      console.log(this.state.currentContractId);
+    }
+    else
+      this.setState({hasContract: false});
+  }
+
+  updateContracts = async() => {
+
+    var response = await fetch('http://172.17.59.113:3000/updateContracts');
+    var contractsToRemove= await response.json(); //gets response body
+    console.log(contractsToRemove);
+    for(var i = 0; i < contractsToRemove.length; i++) {
+
+      this.removeContract(contractsToRemove[i]);
+    }
+  }
+
+
   componentDidMount(){
 
     this.getPendingContracts();
+    this.checkCurrentContract();
+    this.updateContracts();
   }
 
   render() {
@@ -202,7 +246,7 @@ class WellnessContractHome extends Component {
     //if user is viewing their wellness contract
     if(this.state.viewingContract) {
 
-      return(<ViewWellnessContract onBack={this.setViewingContract}/>);
+      return(<ViewWellnessContract onBack={this.setViewingContract} currentContractId={this.state.currentContractId}/>);
     }
     else { //if the user is in the wellness contract home screen
       return (
@@ -244,7 +288,7 @@ class WellnessContractHome extends Component {
             }}>
 
             {/* button which allows user to view existing wellness contract */}
-            <TouchableOpacity onPress={() => {this.setViewingContract(true)}}>
+            <TouchableOpacity onPress={this.handleViewContract}>
               <View
                 style={styles.iconButtonContainer}
               >
@@ -260,7 +304,7 @@ class WellnessContractHome extends Component {
             </TouchableOpacity>
 
             {/* button which allows user to leave existing wellness contract */}
-            <TouchableOpacity onPress={this.handleLeaveContract}>
+            <TouchableOpacity onPress={this.handleRemoveContract}>
               <View
                 style={styles.iconButtonContainer}
               >
@@ -302,7 +346,7 @@ class WellnessContractHome extends Component {
                     </Text>
                     <Button
                       title="Leave contract"
-                      onPress={this.leaveContract}>
+                      onPress={() => this.removeContract(this.state.currentContractId)}>
                     </Button>
                     <Button
                       title="Cancel"
