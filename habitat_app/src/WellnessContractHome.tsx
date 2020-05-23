@@ -134,6 +134,13 @@ class WellnessContractHome extends Component {
     this.setState({leaveModalVisible: !this.state.leaveModalVisible});
   }
 
+  handleRemoveConfirm = () => {
+
+    this.removeContract(this.state.currentContractId);
+    this.handleLeaveModalVisible();
+    Alert.alert("Leave Contract Confirmation", "You have left the current contract.");
+  }
+  
   removeContract = async(contractId) => {
 
     var response = await fetch('http://172.17.59.113:3000/removeContract', {
@@ -151,8 +158,6 @@ class WellnessContractHome extends Component {
 
     this.setState({hasContract: false});
     this.setState({currentContractId: null});
-    this.handleLeaveModalVisible();
-    Alert.alert("Leave Contract Confirmation", "You have left the current contract.");
   }
 
   handleRemoveContract = () => {
@@ -346,7 +351,7 @@ class WellnessContractHome extends Component {
                     </Text>
                     <Button
                       title="Leave contract"
-                      onPress={() => this.removeContract(this.state.currentContractId)}>
+                      onPress={this.handleRemoveConfirm}>
                     </Button>
                     <Button
                       title="Cancel"
