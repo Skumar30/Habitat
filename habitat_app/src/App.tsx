@@ -8,7 +8,8 @@
  * @format
  */
 
-import React from 'react';
+import React, {Fragment} from 'react';
+import * as Screens from './Screens';
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,6 +17,7 @@ import {
   View,
   Text,
   StatusBar,
+  Button,
 } from 'react-native';
 import RegTask from './RegTask';
 
@@ -39,13 +41,79 @@ import PendingCard from './PendingCard';
 import WellnessContractHome from './WellnessContractHome';
 import TaskCard from './TaskCard';
 import SignUp from './SignUp';
+import ViewWellnessContract from './ViewWellnessContract';
+import WellnessContract from './WellnessContract';
 
 declare const global: {HermesInternal: null | {}};
 
-const App = () => {
-  return <MyApp></MyApp>;
-};
+interface State {
+  screen: string;
+  toSend: any;
+  trigger: boolean;
+}
+class App extends React.Component<{}, State> {
+  constructor(props: any) {
+    super(props);
+    this.state = {screen: Screens.RegTask, toSend: {}, trigger: true};
+  }
 
-const styles = StyleSheet.create({});
+  routeTo = (screen: string, props: any = {}) => {
+    console.log(screen);
+    this.setState({screen: screen, toSend: props});
+  };
+
+  renderScreen() {
+    var screenToShow;
+    switch (
+      this.state.screen
+      /*
+      case Screens.AddTask : screenToShow = <AddTask routeTo={this.routeTo} props={this.state.toSend} />
+                          break;
+      case Screens.CreateContract : screenToShow = <CreateContract routeTo={this.routeTo} props={this.state.toSend} />
+                          break;
+      case Screens.CustomizeScreen : screenToShow = <CustomizeScreen routeTo={this.routeTo} props={this.state.toSend} />
+                          break;
+      case Screens.DailyScreen : screenToShow = <DailyScreen routeTo={this.routeTo} props={this.state.toSend} />
+                          break;
+      case Screens.FriendList : screenToShow = <FriendList routeTo={this.routeTo} props={this.state.toSend} />
+                          break;
+      case Screens.Login : screenToShow = <Login routeTo={this.routeTo} props={this.state.toSend} />
+                          break;
+      
+      case Screens.Home : screenToShow = <Home routeTo={this.routeTo} props={this.state.toSend} />
+                          break;
+      case Screens.RegTask : screenToShow = <RegTask routeTo={this.routeTo} props={this.state.toSend} />
+                          break;
+      
+      case Screens.SignUp : screenToShow = <SignUp routeTo={this.routeTo} props={this.state.toSend} />
+                          break;
+      case Screens.ViewWellnessContract : screenToShow = <ViewWellnessContract routeTo={this.routeTo} props={this.state.toSend} />
+                          break;
+      case Screens.WellnessContract : screenToShow = <WellnessContract routeTo={this.routeTo} props={this.state.toSend} />
+                          break;
+      case Screens.WellnessContractHome : screenToShow = <WellnessContractHome routeTo={this.routeTo} props={this.state.toSend} />
+                          break;
+      */
+    ) {
+    }
+    console.log(screenToShow);
+    return screenToShow;
+  }
+  render() {
+    return (
+      <Fragment>
+        {console.log(this.state.screen)}
+        {this.renderScreen()}
+      </Fragment>
+      /*
+     <Fragment>
+     {this.state.trigger && <Login/>}
+     {this.state.trigger == false && <RegTask/>}
+     <Button title="Toggle" onPress={() => this.setState({trigger: !this.state.trigger})} />
+ </Fragment>
+*/
+    );
+  }
+}
 
 export default App;

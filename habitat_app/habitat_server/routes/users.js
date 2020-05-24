@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var Pet = require('../models/pet');
+var User = require('../models/user');
 
 router.post(
   '/signup',
@@ -10,7 +12,25 @@ router.post(
   }),
   function (req, res) {
     console.log(req.user);
-    res.json(req.user);
+    var defaultPet = new Pet();
+
+    defaultPet.happiness = 100;
+    defaultPet.name = 'Beary';
+    defaultPet.type = 'bear';
+    defaultPet.cosmetics = [];
+    defaultPet.save(function (error, pet) {
+      if (error) {
+        res.json({message: 'Default Pet Error'});
+      }
+
+      User.findByIdAndUpdate(req.user._id, {pet_id: pet._id}, function (err) {
+        if (err) {
+          res.json({message: "Could not update user's pet id"});
+        }
+        req.user.pet_id = pet._id;
+        res.json(req.user);
+      });
+    });
   }
 );
 
