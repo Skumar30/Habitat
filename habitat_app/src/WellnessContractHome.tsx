@@ -114,18 +114,62 @@ class WellnessContractHome extends Component {
     this.setState({hasContract: val});
   }
 
-  removeInvitation = (contractId: number) => {
+  rejectInvitation = async(contractId) => {
+
+    var response = await fetch('http://172.17.59.113:3000/removeContract', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contractId: contractId
+      })
+    });
 
     const newPendingContracts = this.state.pendingContracts.filter(item => item.id !== contractId);
     this.setState({pendingContracts: newPendingContracts});
     Alert.alert("Inviation Reject Confirmation", "Invitation has been rejected.");
   }
 
-  acceptInvitation = (contractId: number) => {
+  acceptInvitation = (contractId) => {
 
-    const newPendingContracts = this.state.pendingContracts.filter(item => item.id !== contractId);
-    this.setState({pendingContracts: newPendingContracts});
-    Alert.alert("Invitation Accept Confirmation", "Invitation has been accepted.");
+    if(this.state.hasContract) {
+
+      Alert.alert("Exiting Wellness Contract", "Please leave current wellness contract before accepting invitation.");
+    }
+    else {
+
+      //update hasContract state
+      this.setState({hasContract: true});
+
+      //switch pending field from true to false
+      fetch('http://172.17.59.113:3000/acceptContract', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json', //expects a JSON
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contractId: contractId
+        })
+      })
+        .then((response) => response.json()) //gets response body
+        .then((output) => {
+          console.log(output);
+
+        });
+
+      //refresh list of pending contracts
+      const newPendingContracts = this.state.pendingContracts.filter(item => item.id !== contractId);
+      this.setState({pendingContracts: newPendingContracts});
+
+      //update currentContractId
+      this.state.currentContractId = contractId;
+
+      //call checkCurrentContract
+      Alert.alert("Invitation Accept Confirmation", "Invitation has been accepted.");
+    }
   }
 
   //method which toggles leaveModalVisible
@@ -140,7 +184,7 @@ class WellnessContractHome extends Component {
     this.handleLeaveModalVisible();
     Alert.alert("Leave Contract Confirmation", "You have left the current contract.");
   }
-  
+
   removeContract = async(contractId) => {
 
     var response = await fetch('http://172.17.59.113:3000/removeContract', {
@@ -211,6 +255,7 @@ class WellnessContractHome extends Component {
       const response = await fetch('http://172.17.59.113:3000/getPendingContracts');
       const body = await response.json();
       var pendingContractData = body;
+      console.log(pendingContractData);
       this.setState({pendingContracts: pendingContractData});
   }
 
@@ -388,7 +433,7 @@ class WellnessContractHome extends Component {
           <ScrollView>
             <FlatList
                 data={this.state.pendingContracts}
-                renderItem={({ item }) => <PendingCard owner={item.owner} handleReject={this.removeInvitation} handleAccept={this.acceptInvitation} id={item.id} due_date={item.due_date} />}
+                renderItem={({ item }) => <PendingCard owner={item.owner} handleReject={this.rejectInvitation} handleAccept={this.acceptInvitation} id={item.id} due_date={item.due_date} />}
               />
           </ScrollView>
 

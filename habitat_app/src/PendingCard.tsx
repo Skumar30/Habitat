@@ -95,7 +95,10 @@ class PendingCard extends Component {
                   </Text>
                   <Button
                     title="Accept Invitation"
-                    onPress={() => this.props.handleAccept(this.props.id)}>
+                    onPress={() => {
+                      this.props.handleAccept(this.props.id);
+                      this.handleAcceptModalVisible();
+                    }}>
                   </Button>
                   <Button
                     title="Cancel"
@@ -128,7 +131,10 @@ class PendingCard extends Component {
                   </Text>
                   <Button
                     title="Reject Invitation"
-                    onPress={() => this.props.handleReject(this.props.id)}>
+                    onPress={() => {
+                      this.props.handleReject(this.props.id);
+                      this.handleRejectModalVisible();
+                    }}>
                   </Button>
                   <Button
                     title="Cancel"
