@@ -11,17 +11,40 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 declare const global: {HermesInternal: null | {}};
 
-const addHandler = () => {
-  //TODO
-}
+
 
 export default function AddTask(){
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [repeat, setRepeat] = useState([false,false,false,false,false,false,false])
+  const [repeat, setRepeat] = useState([false,false,false,false,false,false,false]);
+
+  const checkDaily = () => {
+    for(int i = 0; i < 7; i++){
+      if(repeat[i] === false){
+        return false;
+      }
+    }
+    return true;
+  }
+
+  const addHandler = () => {
+    fetch('http://192.168.99.1:3000/AddTask', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: this.title,
+        due_date: this.date,
+        daily: checkDaily(),
+        frequency: this.repeat
+      })
+  }
+
+
 
   const showMode = currentMode => {
       setShow(true);
