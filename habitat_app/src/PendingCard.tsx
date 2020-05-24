@@ -31,16 +31,19 @@ class PendingCard extends Component {
         <View
           style={styles.cardContainer}
         >
-          
+
           {/* View for pending contract title */}
           <View
             style={styles.cardTextContainer}
           >
             <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 24}}>
-              {this.props.title}
+              {this.props.owner}
+            </Text>
+            <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 18}}>
+              Due: {this.props.due_date}
             </Text>
           </View>
-          
+
           {/* View for checkmark region */}
           <View
             style={styles.pendingCardInteractContainer}
@@ -54,7 +57,7 @@ class PendingCard extends Component {
               </Image>
             </TouchableOpacity>
           </View>
-          
+
           {/* View for x mark region */}
           <View
             style={styles.pendingCardInteractContainer}
@@ -68,7 +71,7 @@ class PendingCard extends Component {
               </Image>
             </TouchableOpacity>
           </View>
-          
+
           {/* Modal for confirming accept invitation */}
           <Modal
             animationType='none'
@@ -136,10 +139,10 @@ class PendingCard extends Component {
           </Modal>
         </View>
       </TouchableOpacity>
-      
+
     );
   }
-          
+
 }
 
 const styles = StyleSheet.create({
@@ -182,7 +185,7 @@ const styles = StyleSheet.create({
   },
 
   scrollViewStyle: {
-    flexDirection: "column", 
+    flexDirection: "column",
     backgroundColor: "#DDDDDD"
   },
 
