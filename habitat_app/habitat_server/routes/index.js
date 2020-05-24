@@ -414,12 +414,25 @@ router.post('/addReward', async(req, res, next) => {
 
   try {
     var UserModel = require('../models/user.js');
-
+    var PetModel = require('../models/pet.js');
     var user = await UserModel.findOne({_id: req.user._id});
     var updatedCredits = user.credits + 45;
     var result = await UserModel.update(
         { _id: req.user._id },
         { credits: updatedCredits }
+    );
+
+    //updating pet's happiness
+    var pet = await PetModel.findOne({_id: req.user.pet_id});
+    var updatedHappiness = pet.happiness + 3;
+
+    //happiness can be a max of 100
+    if(updatedHappiness > 100)
+      updatedHappiness = 100;
+
+    var result2 = await PetModel.update(
+      {_id: req.user.pet_id},
+      {happiness: updatedHappiness}
     );
 
 
@@ -430,8 +443,41 @@ router.post('/addReward', async(req, res, next) => {
     console.log(err);
     res.status(500).send(err);
   }
+});
+
+router.post('/removeReward', async(req, res, next) => {
+
+  try {
+    var UserModel = require('../models/user.js');
+    var PetModel = require('../models/pet.js');
+    var user = await UserModel.findOne({_id: req.user._id});
+    var updatedCredits = user.credits - 45;
+    var result = await UserModel.update(
+        { _id: req.user._id },
+        { credits: updatedCredits }
+    );
+
+    //updating pet's happiness
+    var pet = await PetModel.findOne({_id: req.user.pet_id});
+    var updatedHappiness = pet.happiness - 3;
+
+    //happiness can be a min of 0
+    if(updatedHappiness < 0)
+      updatedHappiness = 0;
+      
+    var result2 = await PetModel.update(
+      {_id: req.user.pet_id},
+      {happiness: updatedHappiness}
+    );
 
 
+    res.send(result);
+  }
+  catch(err) {
+
+    console.log(err);
+    res.status(500).send(err);
+  }
 });
 
 module.exports = router;

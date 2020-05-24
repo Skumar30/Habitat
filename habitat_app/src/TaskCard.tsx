@@ -9,7 +9,41 @@ class TaskCard extends Component {
     this.state = {isSelected: false, deleteTaskModalVisible:false}
   }
 
+  addReward = async() => {
+
+    fetch('http://172.17.59.113:3000/addReward', {
+      method: 'POST'
+    })
+      .then((response) => response.json()) //gets response body
+      .then((output) => {
+        console.log(output);
+
+      });
+  }
+
+  removeReward = async() => {
+
+    fetch('http://172.17.59.113:3000/removeReward', {
+      method: 'POST'
+    })
+      .then((response) => response.json()) //gets response body
+      .then((output) => {
+        console.log(output);
+
+      });
+  }
+
   checkboxHandler = () => {
+
+    //if user is marking the task as complete
+    if(this.state.isSelected) {
+
+      this.removeReward();
+    }
+    else { //if user is unmarking task as complete
+
+      this.addReward();
+    }
 
     this.setState({isSelected: !this.state.isSelected});
   }
