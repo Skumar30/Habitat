@@ -73,7 +73,7 @@ export default class SignUp extends React.Component<{}, State> {
                 confirm_password: '',
               }}
               onSubmit={(values, actions) => {
-                fetch('http://INSERT YOUR IPv4 Address:3000/users/signup', {
+                fetch('INSERT YOUR IPv4 ADDRESS HERE:3000/users/signup', {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json', //expects a JSON
