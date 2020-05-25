@@ -1,40 +1,27 @@
 
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect, Component, Fragment } from "react";
 import { View, Text, Button, Image } from "react-native";
-import WellnessContractHome from "./WellnessContractHome";
+import Login from "./Login";
+import FriendList from "./FriendList";
 
 class MyApp extends Component {
 
-  constructor(props){
-
+  state = {trigger: true}
+  
+  constructor(props:any){
     super(props);
-    this.state = {displayWellnessContractScreen:false}
-  }
-
-  onClickHandler = (val: boolean) => {
-
-    this.setState({displayWellnessContractScreen:val});
+    this.state = {trigger: true}
   }
 
   render() {
-
-    if(this.state.displayWellnessContractScreen) {
-
-      return(
-        <View>
-          <WellnessContractHome onBack={this.onClickHandler}/>
-        </View>
-      );
-    }
-    else {
-
-      return(
-        <View>
-          <Button title="click here to go to wellness contract home screen" onPress={() => this.onClickHandler(true)}></Button>
-        </View>
-      );
-    }
-
+      var trigger:boolean = this.state.trigger;
+    return(
+      <Fragment>
+                {this.state.trigger && <Login/>}
+        {this.state.trigger == false && <FriendList/>}
+        <Button title="Toggle" onPress={() => this.setState({trigger: !this.state.trigger})} />
+      </Fragment>
+    );
   }
 }
 
