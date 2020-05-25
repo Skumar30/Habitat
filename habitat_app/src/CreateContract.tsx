@@ -25,7 +25,17 @@ import {
 const CreateContract = () => {
 
     function submitData() {
-
+        fetch('http://192.168.4.21:3000/createContract', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json', //expects a JSON
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                friend: friend ,
+                tasks: [ tasks ],
+                //pending: true
+            })
     }
 
     function updateFriend({friend}: {friend: any}) {
@@ -54,7 +64,7 @@ const CreateContract = () => {
     };
 
     function rerouteScreen() {
-
+        // reroute to WellnessContractHome
     }
 
     // @ts-ignore
@@ -62,58 +72,16 @@ const CreateContract = () => {
         <View style={styles.container}>
             <View>
                 <Text style={styles.titleText} >{"Create Contract"}</Text>
-
-                <MenuProvider style={{padding: 30, paddingTop: 50 }}>
-                    <Menu >
-
-                        <MenuTrigger  >
+                    <TouchableOpacity onPress={}> // LINK TO EditWellnessContract.tsx
                             <Text style={styles.headerText}>Tasks to Add</Text>
-                        </MenuTrigger  >
-
-                        <MenuOptions>
-                            <MenuOption value={"Login"}>
-                                <Text style={styles.menuContent}>Login</Text>
-                            </MenuOption>
-                            <MenuOption value={"Register"}>
-                                <Text style={styles.menuContent}>Register</Text>
-                            </MenuOption>
-                            <MenuOption value={"Download"}>
-                                <Text style={styles.menuContent}>Download</Text>
-                            </MenuOption>
-                            <MenuOption value={"Logout"}>
-                                <Text style={styles.menuContent}>Logout</Text>
-                            </MenuOption>
-                        </MenuOptions>
-
-                    </Menu>
-                </MenuProvider>
+                    </TouchableOpacity>
 
                 <Text style={styles.dateInput}>
                     Friend to Invite: {friend}
                 </Text>
-                <MenuProvider style={{paddingLeft: 30, paddingRight:30 }}>
-                    <Menu >
-                        <MenuTrigger  >
+                    <TouchableOpacity onPress={}> // LINK TO WellnessContractFriends
                             <Text style={styles.headerText}>Friend to Invite</Text>
-                        </MenuTrigger  >
-
-                        <MenuOptions>
-                            <MenuOption value={'Darin'} onSelect={rerouteScreen}>
-                                <Text style={styles.menuContent}>Darin</Text>
-                            </MenuOption>
-                            <MenuOption value={"Register"}>
-                                <Text style={styles.menuContent}>Register</Text>
-                            </MenuOption>
-                            <MenuOption value={"Download"}>
-                                <Text style={styles.menuContent}>Download</Text>
-                            </MenuOption>
-                            <MenuOption value={"Logout"}>
-                                <Text style={styles.menuContent}>Logout</Text>
-                            </MenuOption>
-                        </MenuOptions>
-
-                    </Menu>
-                </MenuProvider>
+                    </TouchableOpacity>
 
 
                 <Text style={styles.dateInput}>
