@@ -10,90 +10,15 @@ class ViewWellnessContract extends Component {
 
     super(props);
     this.state = {
- 
+
       viewMyTasks:true,
       deleteMode:false,
       deleteTaskModalVisible: false,
       //user task data
-      myTasks: [
-        {
-          id: '1',
-          message: 'My task #1',
-        },
-        {
-          id: '2',
-          message: 'My task #2',
-        },
-        {
-          id: '3',
-          message: 'My task #3',
-        },
-        {
-          id: '4',
-          message: 'My task #4',
-        },
-        {
-          id: '5',
-          message: 'My task #5',
-        },
-        {
-          id: '6',
-          message: 'My task #6',
-        },
-        {
-          id: '7',
-          message: 'My task #7',
-        },
-        {
-          id: '8',
-          message: 'My task #8',
-        },
-        {
-          id: '9',
-          message: 'My task #9',
-        }
-      ],
-      
-      //other user in wellness contract task data
-      theirTasks: [
+      myTasks: [],
 
-        {
-          id: '1',
-          message: 'Their task #1',
-        },
-        {
-          id: '2',
-          message: 'Their task #2',
-        },
-        {
-          id: '3',
-          message: 'Their task #3',
-        },
-        {
-          id: '4',
-          message: 'Their task #4',
-        },
-        {
-          id: '5',
-          message: 'Their task #5',
-        },
-        {
-          id: '6',
-          message: 'Their task #6',
-        },
-        {
-          id: '7',
-          message: 'Their task #7',
-        },
-        {
-          id: '8',
-          message: 'Their task #8',
-        },
-        {
-          id: '9',
-          message: 'Their task #9',
-        }
-      ]
+      //other user in wellness contract task data
+      theirTasks: []
     }
   }
 
@@ -119,7 +44,33 @@ class ViewWellnessContract extends Component {
     this.setState({myTasks: newMyTasks});
     Alert.alert("Task Delete Confirmation", "Task has been deleted.");
   }
-  
+
+  getMyTasks = async() => {
+
+    fetch(`http://172.17.59.113:3000/getMyTasks?id=${encodeURIComponent(this.props.currentContractId)}`)
+      .then((response) => response.json()) //gets response body
+      .then((output) => {
+        this.setState({myTasks: output});
+      });
+
+  }
+
+  getTheirTasks = async() => {
+
+    fetch(`http://172.17.59.113:3000/getTheirTasks?id=${encodeURIComponent(this.props.currentContractId)}`)
+      .then((response) => response.json()) //gets response body
+      .then((output) => {
+        this.setState({theirTasks: output});
+      });
+
+  }
+
+  componentDidMount(){
+
+    this.getMyTasks();
+    this.getTheirTasks();
+  }
+
   render() {
 
     //if user is viewing their wellness contract
@@ -143,7 +94,7 @@ class ViewWellnessContract extends Component {
                 </Image>
               </TouchableOpacity>
             </View>
-              
+
             <View
               style={{flex:0.9}}>
               <Text
@@ -153,7 +104,7 @@ class ViewWellnessContract extends Component {
               </Text>
             </View>
           </View>
-          
+
           <View
             style={{
               flexDirection: 'row'
@@ -182,19 +133,19 @@ class ViewWellnessContract extends Component {
               </TouchableOpacity>
             </View>
           </View>
-          
-          <ScrollView 
+
+          <ScrollView
             style={styles.scrollViewStyle}
           >
             <FlatList
               data={this.state.myTasks}
-              renderItem={({ item, index }) => <TaskCard message={item.message} deleteMode={this.state.deleteMode} viewMyTasks={this.state.viewMyTasks} id={item.id} handleDeleteTask={this.deleteTask} />}
+              renderItem={({ item, index }) => <TaskCard title={item.title} due_date={item.due_date} deleteMode={this.state.deleteMode} viewMyTasks={this.state.viewMyTasks} id={item.id} handleDeleteTask={this.deleteTask} />}
             />
           </ScrollView>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
             <TouchableOpacity onPress={this.toggleViewMyTasks} style={{alignContent: 'center'}}>
               <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
-                View My Tasks
+                View Their Tasks
               </Text>
             </TouchableOpacity>
           </View>
@@ -222,7 +173,7 @@ class ViewWellnessContract extends Component {
                 </Image>
               </TouchableOpacity>
             </View>
-              
+
             <View
               style={{flex:0.9, backgroundColor: 'blanchedalmond'}}>
               <Text
@@ -232,20 +183,20 @@ class ViewWellnessContract extends Component {
               </Text>
             </View>
           </View>
-          
-          
+
+
           <Text
               style={styles.subtitleText}
           >
             Their tasks:
           </Text>
-          <ScrollView 
+          <ScrollView
             style={styles.scrollViewStyle}
           >
-            
+
             <FlatList
               data={this.state.theirTasks}
-              renderItem={({ item, index }) => <TaskCard message={item.message} deleteMode={this.state.deleteMode} viewMyTasks={this.state.viewMyTasks} />}
+              renderItem={({ item, index }) => <TaskCard title={item.title} due_date={item.due_date} deleteMode={this.state.deleteMode} viewMyTasks={this.state.viewMyTasks} />}
             />
           </ScrollView>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
@@ -259,8 +210,8 @@ class ViewWellnessContract extends Component {
       );
     }
   }
-    
-  
+
+
 }
 
 const styles = StyleSheet.create({
@@ -304,7 +255,7 @@ const styles = StyleSheet.create({
   },
 
   scrollViewStyle: {
-    flexDirection: "column", 
+    flexDirection: "column",
     backgroundColor: "blanchedalmond"
   },
 
