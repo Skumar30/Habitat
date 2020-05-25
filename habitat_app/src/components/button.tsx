@@ -22,21 +22,9 @@ interface State {
 
 export default class CustomButton extends React.Component<Props, State> {
   _onPress() {
-    this.setState({
-      color: this.state.colorToggle ? 'orange' : 'black',
-      colorToggle: !this.state.colorToggle,
-    });
     if (this.props.onPress) {
       this.props.onPress();
     }
-    setTimeout(
-      () =>
-        this.setState({
-          color: this.state.colorToggle ? 'orange' : 'black',
-          colorToggle: !this.state.colorToggle,
-        }),
-      1000,
-    ); //used to change color back to black after 1s
   }
 
   constructor(props: Props) {

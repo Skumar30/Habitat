@@ -20,7 +20,7 @@ import {
   Text,
   ScrollView,
 } from 'react-native';
-
+import * as Screens from './Screens';
 import CustomButton from './components/button';
 
 const dimensions = Dimensions.get('window');
@@ -73,7 +73,7 @@ export default class SignUp extends React.Component<{}, State> {
                 confirm_password: '',
               }}
               onSubmit={(values, actions) => {
-                fetch('http://INSERT YOUR IPv4 Address:3000/users/signin', {
+                fetch('http://INSERT YOUR IPv4 HERE:3000/users/signup', {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json', //expects a JSON
@@ -93,7 +93,8 @@ export default class SignUp extends React.Component<{}, State> {
                       //used to check if error message exists
                       this.setState({errormsg: true});
                     } else {
-                      this.setState({errormsg: false});
+                      actions.resetForm();
+                      this.props.routeTo(Screens.Home);
                     }
                   });
 
@@ -212,7 +213,10 @@ export default class SignUp extends React.Component<{}, State> {
                     )}
 
                   <View style={styles.buttonGroup}>
-                    <CustomButton text="Login" />
+                    <CustomButton
+                      text="Login"
+                      onPress={() => this.props.routeTo(Screens.Login)}
+                    />
                     <CustomButton text="Submit" onPress={props.handleSubmit} />
                   </View>
                 </View>

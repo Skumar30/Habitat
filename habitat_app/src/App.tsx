@@ -54,7 +54,7 @@ interface State {
 class App extends React.Component<{}, State> {
   constructor(props: any) {
     super(props);
-    this.state = {screen: Screens.RegTask, toSend: {}, trigger: true};
+    this.state = {screen: Screens.Login, toSend: {}, trigger: true};
   }
 
   routeTo = (screen: string, props: any = {}) => {
@@ -64,37 +64,77 @@ class App extends React.Component<{}, State> {
 
   renderScreen() {
     var screenToShow;
-    switch (
-      this.state.screen
-      /*
-      case Screens.AddTask : screenToShow = <AddTask routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.CreateContract : screenToShow = <CreateContract routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.CustomizeScreen : screenToShow = <CustomizeScreen routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.DailyScreen : screenToShow = <DailyScreen routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.FriendList : screenToShow = <FriendList routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.Login : screenToShow = <Login routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      
-      case Screens.Home : screenToShow = <Home routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.RegTask : screenToShow = <RegTask routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      
-      case Screens.SignUp : screenToShow = <SignUp routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.ViewWellnessContract : screenToShow = <ViewWellnessContract routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.WellnessContract : screenToShow = <WellnessContract routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.WellnessContractHome : screenToShow = <WellnessContractHome routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      */
-    ) {
+    switch (this.state.screen) {
+      case Screens.AddTask:
+        screenToShow = (
+          <AddTask routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.CreateContract:
+        screenToShow = (
+          <CreateContract routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.CustomizeScreen:
+        screenToShow = (
+          <CustomizeScreen routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.DailyScreen:
+        screenToShow = (
+          <DailyScreen routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.FriendList:
+        screenToShow = (
+          <FriendList routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.Login:
+        screenToShow = (
+          <Login routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+
+      case Screens.Home:
+        screenToShow = (
+          <Home routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.RegTask:
+        screenToShow = (
+          <RegTask routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+
+      case Screens.SignUp:
+        screenToShow = (
+          <SignUp routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.ViewWellnessContract:
+        screenToShow = (
+          <ViewWellnessContract
+            routeTo={this.routeTo}
+            props={this.state.toSend}
+          />
+        );
+        break;
+      case Screens.WellnessContract:
+        screenToShow = (
+          <WellnessContract routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.WellnessContractHome:
+        screenToShow = (
+          <WellnessContractHome
+            routeTo={this.routeTo}
+            props={this.state.toSend}
+          />
+        );
+        break;
+
+      //) {
     }
     console.log(screenToShow);
     return screenToShow;
