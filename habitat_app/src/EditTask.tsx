@@ -14,12 +14,13 @@ declare const global: {HermesInternal: null | {}};
 
 
 export default function EditTask(props){
-  const [title, setTitle] = useState(props.title);
-  const [date, setDate] = useState(props.date);
+  const [title, setTitle] = useState(this.props.props.title);
+  const [date, setDate] = useState(this.props.props.date);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [repeat, setRepeat] = useState(props.repeat);
+  const [repeat, setRepeat] = useState(this.props.props.repeat);
 
+// this.props.props is the json object passed into this screen
   const checkDaily = () => {
     for(int i = 0; i < 7; i++){
       if(repeat[i] === false){

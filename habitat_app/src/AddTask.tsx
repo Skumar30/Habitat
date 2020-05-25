@@ -21,7 +21,7 @@ export default function AddTask(){
   const [repeat, setRepeat] = useState([false,false,false,false,false,false,false]);
 
   const checkDaily = () => {
-    for(int i = 0; i < 7; i++){
+    for(let i = 0; i < 7; i++){
       if(repeat[i] === false){
         return false;
       }
@@ -30,20 +30,20 @@ export default function AddTask(){
   }
 
   const addHandler = () => {
-    fetch('http://192.168.99.1:3000/AddTask', {
+    fetch('http://192.168.99.1:3000/createTask', {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        title: this.title,
-        due_date: this.date,
+        title: title,
+        due_date: date,
         daily: checkDaily(),
-        frequency: this.repeat
+        frequency: repeat,
       })
-  }
-
+  });
+}
 
 
   const showMode = currentMode => {

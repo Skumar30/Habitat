@@ -191,6 +191,7 @@ router.post('/createTask', async(req, res, next) => {
   try {
     var TaskModel = require('../models/task.js');
     var taskToCreate = new TaskModel(req.body);
+    taskToCreate.start_date = new Date();
 
     var result = await taskToCreate.save();
     res.send(result);
