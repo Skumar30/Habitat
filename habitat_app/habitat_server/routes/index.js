@@ -420,7 +420,7 @@ router.post('/addReward', async(req, res, next) => {
 
     //adding credits to user
     var user = await UserModel.findOne({_id: req.user._id});
-    var task = TaskModel.findOne({_id: req.body.taskId});
+    var task = await TaskModel.findOne({_id: req.body.taskId});
     var updatedCredits;
     if(task.daily) {
       updatedCredits = user.credits + Math.floor((10 + task.streak) * 1.5);
@@ -444,25 +444,30 @@ router.post('/addReward', async(req, res, next) => {
     if(updatedHappiness > 100)
       updatedHappiness = 100;
 
-    var result2 = await PetModel.update(
+    var result2 = await PetModel.updateOne(
       {_id: req.user.pet_id},
       {happiness: updatedHappiness}
     );
 
     //calculating percent task completion bonus
     var tasksCompleted = 0;
-    var contract = ContractModel.findOne({_id: req.body.contractId});
+    var contractId = req.body.contractId;
+    contractId instanceof mongoose.Types.ObjectId;
+    var contract = await ContractModel.findOne({_id: contractId});
 
     //add current date to datesCompleted
-    task.datesCompleted.push(new Date());
+    var taskId = req.body.taskId;
+    taskId instanceof mongoose.Types.ObjectId;
+    var today = new Date();
+    var pushDate = await TaskModel.updateOne({_id: taskId}, { $push: { datesCompleted: today } });
 
     //finding all tasks which have been completed
     for(var i = 0; i < contract.tasks.length; i++) {
 
       //current task object
-      var currTask = TaskModel.findOne({_id: contract.tasks[i]});
-      var today = new Date();
-      today = today.getDay();
+      var currTask = await TaskModel.findOne({_id: contract.tasks[i]});
+
+      var day = today.getDay();
       var nextDue = today; //assumes task is a daily and is due today
       var counter = 0;
 
@@ -497,25 +502,27 @@ router.post('/addReward', async(req, res, next) => {
       }
     }
 
+
     var percentCompleted = tasksCompleted / contract.tasks.length;
     var bonus = Math.floor(percentCompleted * 100);
 
     var totalCredits = updatedCredits + bonus;
-    var result = UserModel.update(
+    var result = await UserModel.updateOne(
         { _id: req.user._id },
         { credits: totalCredits }
     );
 
+
     //adding bonus to other user
     var otherUser;
     if(req.user._id.equals(contract.participants[0]))
-      otherUser = UserModel.findOne({_id: contract.participants[1]});
+      otherUser = await UserModel.findOne({_id: contract.participants[1]});
     else {
-      otherUser = UserModel.findOne({_id: contract.participants[0]});
+      otherUser = await UserModel.findOne({_id: contract.participants[0]});
     }
 
     var otherUserBonus = otherUser.credits + bonus;
-    var otherResult = UserModel.update({_id: otherUser.id}, {credits: otherUserBonus});
+    var otherResult = await UserModel.updateOne({_id: otherUser.id}, {credits: otherUserBonus});
     res.send(result);
   }
   catch(err) {
@@ -642,6 +649,32 @@ router.post('/removeReward', async(req, res, next) => {
     console.log(err);
     res.status(500).send(err);
   }
+});
+
+router.post('/addTaskToContract', async(req, res, next) => {
+
+  try {
+    var User = require('../models/user.js');
+    var ContractModel = require('../models/wellnesscontract.js');
+    var contractId = req.body.contractId;
+    contractId instanceof mongoose.Types.ObjectId;
+
+    var taskId = req.body.taskId;
+    taskId instanceof mongoose.Types.ObjectId;
+
+    var result = await ContractModel.update(
+        { _id: contractId },
+        { $push: { tasks: taskId } }
+    );
+    res.send(result);
+  }
+  catch(err) {
+
+    console.log(err);
+    res.status(500).send(err);
+  }
+
+
 });
 
 module.exports = router;

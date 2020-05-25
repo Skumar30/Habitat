@@ -11,6 +11,7 @@ class TaskCard extends Component {
 
   addReward = async() => {
 
+    console.log("contractId is: " + this.props.currentContractId);
     fetch('http://172.17.59.113:3000/addReward', {
       method: 'POST',
       headers: {
@@ -19,7 +20,7 @@ class TaskCard extends Component {
       },
       body: JSON.stringify({
 
-        contractId: this.props.contractId,
+        contractId: this.props.currentContractId,
         taskId: this.props.id
       })
     })
@@ -178,7 +179,7 @@ class TaskCard extends Component {
                     alignSelf: 'center',
                     margin: 5
                   }}
-                  value={this.state.isSelected}
+                  checked={this.state.isSelected}
                   onValueChange={this.checkboxHandler}
                 />
               </View>

@@ -66,7 +66,6 @@ class ViewWellnessContract extends Component {
   }
 
   componentDidMount(){
-
     this.getMyTasks();
     this.getTheirTasks();
   }
@@ -201,7 +200,11 @@ class ViewWellnessContract extends Component {
 
             <FlatList
               data={this.state.theirTasks}
-              renderItem={({ item, index }) => <TaskCard title={item.title} due_date={item.due_date} deleteMode={this.state.deleteMode} viewMyTasks={this.state.viewMyTasks} />}
+              renderItem={({ item, index }) =>
+                <TaskCard
+                  title={item.title} due_date={item.due_date} deleteMode={this.state.deleteMode} viewMyTasks={this.state.viewMyTasks}
+                />
+              }
             />
           </ScrollView>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
