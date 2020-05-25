@@ -2,15 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="912dc296-c5c3-4fd8-8a3e-8ba3c824f7c3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/habitat_app/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/.prettierrc.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/CustomizeScreen.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/EditWellnessContract.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/Screens.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/WellnessContractFriends.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/.eslintrc.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/.prettierrc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/.eslintrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/.prettierrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/.prettierrc.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/__tests__/App-test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/__tests__/App-test.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/config/passport.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/config/passport.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/models/cosmetic.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/models/cosmetic.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/models/pet.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/models/pet.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/models/task.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/models/task.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/models/wellnesscontract.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/models/wellnesscontract.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/users.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcodeproj/project.pbxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/ios/habitat_app/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/ios/habitat_app/Info.plist" afterDir="false" />
@@ -19,7 +29,13 @@
       <change beforePath="$PROJECT_DIR$/habitat_app/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/CreateContract.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/CreateContract.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/PendingCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/PendingCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/RegTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/RegTask.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/TaskCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/TaskCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/ViewWellnessContract.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/ViewWellnessContract.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/WellnessContractHome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/WellnessContractHome.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/assets/create.png" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/assets/create.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/components/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/components/button.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/helloworld.js" beforeDir="false" />
     </list>
@@ -75,7 +91,7 @@
       <workItem from="1590292795971" duration="11953000" />
       <workItem from="1590306424360" duration="1971000" />
       <workItem from="1590361785481" duration="1943000" />
-      <workItem from="1590425087794" duration="1495000" />
+      <workItem from="1590425087794" duration="1736000" />
     </task>
     <servers />
   </component>

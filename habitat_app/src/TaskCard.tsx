@@ -40,17 +40,17 @@ class TaskCard extends Component {
       if(this.props.deleteMode) {
 
         return(
-  
+
           <TouchableWithoutFeedback onPress={this.handleSelect}>
             <View
               style={styles.cardContainer}
             >
-              
+
               <View
                 style={styles.cardTextContainer}
               >
                 <Text style={{textAlign: 'center', fontSize: 24}}>
-                  {this.props.message}
+                  {this.props.title}
                 </Text>
               </View>
               <View
@@ -64,7 +64,7 @@ class TaskCard extends Component {
                   <Image
                     style={styles.taskCardInteract}
                     source={require('./assets/x.png')}>
-  
+
                   </Image>
                 </TouchableOpacity>
 
@@ -109,25 +109,29 @@ class TaskCard extends Component {
         );
       }
       else {
-  
+
         return(
-  
+
           <TouchableWithoutFeedback onPress={this.handleSelect}>
             <View
               style={styles.cardContainer}
             >
-              
+
               <View
                 style={styles.cardTextContainer}
               >
                 <Text style={{textAlign: 'center', fontSize: 24}}>
-                  {this.props.message}
+                  {this.props.title}
                 </Text>
+                <Text style={{textAlign: 'center', fontSize: 18}}>
+                  Due: {this.props.due_date}
+                </Text>
+
               </View>
               <View
                 style={styles.taskCardCheckboxContainer}
               >
-                <CheckBox 
+                <CheckBox
                   style={{
                     alignSelf: 'center',
                     margin: 5
@@ -142,19 +146,19 @@ class TaskCard extends Component {
       }
     }
     else {
-      
+
       return(
 
         <TouchableWithoutFeedback onPress={this.handleSelect}>
           <View
             style={styles.cardContainer}
           >
-            
+
             <View
               style={styles.cardTextContainer}
             >
               <Text style={{textAlign: 'center', fontSize: 24}}>
-                {this.props.message}
+                {this.props.title}
               </Text>
             </View>
             <View
@@ -170,7 +174,7 @@ class TaskCard extends Component {
       );
     }
   }
-          
+
 }
 
 const styles = StyleSheet.create({
@@ -214,7 +218,7 @@ const styles = StyleSheet.create({
   },
 
   scrollViewStyle: {
-    flexDirection: "column", 
+    flexDirection: "column",
     backgroundColor: "#DDDDDD"
   },
 
