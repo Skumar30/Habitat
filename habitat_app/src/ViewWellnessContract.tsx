@@ -139,7 +139,12 @@ class ViewWellnessContract extends Component {
           >
             <FlatList
               data={this.state.myTasks}
-              renderItem={({ item, index }) => <TaskCard title={item.title} due_date={item.due_date} deleteMode={this.state.deleteMode} viewMyTasks={this.state.viewMyTasks} id={item.id} handleDeleteTask={this.deleteTask} />}
+              renderItem={({ item, index }) =>
+                <TaskCard title={item.title} due_date={item.due_date} deleteMode={this.state.deleteMode}
+                  viewMyTasks={this.state.viewMyTasks} id={item.id} handleDeleteTask={this.deleteTask}
+                  currentContractId={this.props.currentContractId}
+                />
+              }
             />
           </ScrollView>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>

@@ -12,12 +12,20 @@ class TaskCard extends Component {
   addReward = async() => {
 
     fetch('http://172.17.59.113:3000/addReward', {
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+
+        contractId: this.props.contractId,
+        taskId: this.props.id
+      })
     })
       .then((response) => response.json()) //gets response body
       .then((output) => {
         console.log(output);
-
       });
   }
 

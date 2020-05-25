@@ -16,85 +16,10 @@ class WellnessContractHome extends Component {
       leaveModalVisible: false,
 
       //user task data
-      myTasks: [
-        {
-          id: '1',
-          message: 'My task #1',
-        },
-        {
-          id: '2',
-          message: 'My task #2',
-        },
-        {
-          id: '3',
-          message: 'My task #3',
-        },
-        {
-          id: '4',
-          message: 'My task #4',
-        },
-        {
-          id: '5',
-          message: 'My task #5',
-        },
-        {
-          id: '6',
-          message: 'My task #6',
-        },
-        {
-          id: '7',
-          message: 'My task #7',
-        },
-        {
-          id: '8',
-          message: 'My task #8',
-        },
-        {
-          id: '9',
-          message: 'My task #9',
-        }
-      ],
+      myTasks: [],
 
       //other user in wellness contract task data
-      theirTasks: [
-
-        {
-          id: '1',
-          message: 'Their task #1',
-        },
-        {
-          id: '2',
-          message: 'Their task #2',
-        },
-        {
-          id: '3',
-          message: 'Their task #3',
-        },
-        {
-          id: '4',
-          message: 'Their task #4',
-        },
-        {
-          id: '5',
-          message: 'Their task #5',
-        },
-        {
-          id: '6',
-          message: 'Their task #6',
-        },
-        {
-          id: '7',
-          message: 'Their task #7',
-        },
-        {
-          id: '8',
-          message: 'Their task #8',
-        },
-        {
-          id: '9',
-          message: 'Their task #9',
-        }
-      ],
+      theirTasks: [],
 
       //pending contract invitations for the user
       pendingContracts: [
