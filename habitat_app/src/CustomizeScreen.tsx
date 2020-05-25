@@ -1,5 +1,4 @@
 import React, { Component, useState, Props } from 'react';
-// import Icon from 'react-native-ionicons';
 // import HeaderScrollView from 'react-native-header-scroll-view';
 import {
   SafeAreaView,
@@ -18,33 +17,33 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 declare const global: { HermesInternal: null | {} };
 
-class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin: boolean }>{
+class Customize extends React.Component<{}, { modalVisible: boolean, rerender: boolean, credits: number }>{
   constructor(props: any) {
     super(props)
 
-    this.state = { modalVisible: false, changedSkin: false };
+    this.state = { modalVisible: false, rerender: false, credits: 0 };
   }
 
-  credits = 1000; // this will eventually come from value in database
+  //credits = 0; // this will eventually come from value in database
 
   currID = '';
   currCategory = '';
 
   itemList = [
-    { id: '0', category: 'skin', name: 'Bear', price: 100, image: require('./assets/bear.png'), owned: true, active: true },
-    { id: '1', category: 'skin', name: 'Cat', price: 100, image: require('./assets/cat.png'), owned: true, active: false },
-    { id: '2', category: 'skin', name: 'Cow', price: 100, image: require('./assets/cow.png'), owned: true, active: false },
-    { id: '3', category: 'skin', name: 'Fox', price: 300, image: require('./assets/fox.png'), owned: false, active: false },
-    { id: '4', category: 'skin', name: 'Pig', price: 600, image: require('./assets/pig.png'), owned: false, active: false },
-    { id: '5', category: 'hat', name: 'ITEM 1', price: 100, image: require('./assets/gary-gillespie.png'), owned: true, active: true },
-    { id: '6', category: 'hat', name: 'ITEM 2', price: 100, image: require('./assets/gary-gillespie.png'), owned: true, active: false },
-    { id: '7', category: 'hat', name: 'ITEM 3', price: 100, image: require('./assets/gary-gillespie.png'), owned: true, active: false },
-    { id: '8', category: 'hat', name: 'ITEM 4', price: 300, image: require('./assets/gary-gillespie.png'), owned: true, active: false },
-    { id: '9', category: 'hat', name: 'ITEM 5', price: 600, image: require('./assets/gary-gillespie.png'), owned: false, active: false },
-    { id: '10', category: 'hat', name: 'ITEM 6', price: 100, image: require('./assets/gary-gillespie.png'), owned: false, active: false },
-    { id: '11', category: 'accessory', name: 'ITEM 1', price: 100, image: require('./assets/gary-gillespie.png'), owned: true, active: true },
-    { id: '12', category: 'accessory', name: 'ITEM 2', price: 100, image: require('./assets/gary-gillespie.png'), owned: false, active: false },
-    { id: '13', category: 'accessory', name: 'ITEM 3', price: 300, image: require('./assets/gary-gillespie.png'), owned: false, active: false },
+    { id: '5ebddb16a428ab3a446f4d9c', category: 'skin', name: 'Bear', price: 0, image: require('./assets/bear.png'), owned: false, active: false },
+    { id: '5ec1849acaf74254f8f6613e', category: 'skin', name: 'Cat', price: 100, image: require('./assets/cat.png'), owned: false, active: false },
+    { id: '5ec184eecaf74254f8f6613f', category: 'skin', name: 'Cow', price: 100, image: require('./assets/cow.png'), owned: false, active: false },
+    { id: '5ec18ab4caf74254f8f66140', category: 'skin', name: 'Fox', price: 300, image: require('./assets/fox.png'), owned: false, active: false },
+    { id: '5ec1bac29a1d3fa4b9a5664b', category: 'skin', name: 'Pig', price: 600, image: require('./assets/pig.png'), owned: false, active: false },
+    { id: '5ec1bc379a1d3fa4b9a5664c', category: 'hat', name: 'NONE', price: 0, image: require('./assets/x.png'), owned: false, active: false },
+    { id: '5ec1bc539a1d3fa4b9a5664d', category: 'hat', name: 'ITEM 1', price: 100, image: require('./assets/questionMark.png'), owned: false, active: false },
+    { id: '5ec1bc5a9a1d3fa4b9a5664e', category: 'hat', name: 'ITEM 2', price: 100, image: require('./assets/questionMark.png'), owned: false, active: false },
+    { id: '5ec1bc6e9a1d3fa4b9a5664f', category: 'hat', name: 'ITEM 3', price: 300, image: require('./assets/questionMark.png'), owned: false, active: false },
+    { id: '5ec1bc749a1d3fa4b9a56650', category: 'hat', name: 'ITEM 4', price: 600, image: require('./assets/questionMark.png'), owned: false, active: false },
+    { id: '5ec1bc7a9a1d3fa4b9a56651', category: 'hat', name: 'ITEM 5', price: 100, image: require('./assets/questionMark.png'), owned: false, active: false },
+    { id: '5ec1bc939a1d3fa4b9a56652', category: 'accessory', name: 'NONE', price: 0, image: require('./assets/x.png'), owned: false, active: false },
+    { id: '5ec1bc999a1d3fa4b9a56653', category: 'accessory', name: 'ITEM 1', price: 100, image: require('./assets/questionMark.png'), owned: false, active: false },
+    { id: '5ec1bc9e9a1d3fa4b9a56654', category: 'accessory', name: 'ITEM 2', price: 300, image: require('./assets/questionMark.png'), owned: false, active: false },
   ];
 
   getCategory(code: string): any {
@@ -92,21 +91,17 @@ class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin
     this.setOwnedStatus(code, true);
     this.setActiveStatus(code, true);
     this.deactivateOthers(code, type);
-    this.credits -= this.getPrice(code);
-    //update database value here:
-    // __________________
+    //this.credits -= this.getPrice(code);
+    this.setState({ credits: this.state.credits - this.getPrice(code) });
   }
 
   deactivateOthers(code: string, type: string) {
-    // the "changedSkin" lines seem unnecessary, but i need them or else the
-    //selection change will not be reflected on screen
-    this.setState({ changedSkin: true });
     for (var i = 0; i < this.itemList.length; i++) {
       if (this.itemList[i].id !== code && this.itemList[i].category === type) {
         this.setActiveStatus(this.itemList[i].id, false);
       }
     }
-    this.setState({ changedSkin: false });
+    this.setState({ rerender: !this.state.rerender });
   }
 
   unownedSelected(code: string, type: string) {
@@ -116,7 +111,7 @@ class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin
   }
 
   purchaseConfirmation = (code: string, type: string) => {
-    if (this.credits - this.getPrice(code) < 0) {
+    if (this.state.credits - this.getPrice(code) < 0) {
       return (
         <View>
           <Modal
@@ -198,7 +193,141 @@ class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin
     }
   }
 
-  //mapping function. begin(inclusive), end(exclusive)
+  //note: initial owned and active values should be initialized to false
+  owned: string[] = [];
+  active: string[] = [];
+  componentDidMount() {
+    this.getOwned().then(res => {
+      console.log(res);
+      this.owned = res;
+      for (var i = 0; i < this.owned.length; i++) {
+        for (var j = 0; j < this.itemList.length; j++) {
+          if (this.owned[i] === this.itemList[j].id) {
+            this.itemList[j].owned = true;
+            this.setState({ rerender: !this.state.rerender });
+          }
+        }
+      }
+    });
+    this.getActive().then(res => {
+      console.log(res);
+      this.active = res;
+      for (var i = 0; i < this.active.length; i++) {
+        for (var j = 0; j < this.itemList.length; j++) {
+          if (this.active[i] === this.itemList[j].id) {
+            this.itemList[j].active = true;
+            this.setState({ rerender: !this.state.rerender });
+          }
+        }
+      }
+    });
+    this.getCredits().then(res => {
+      console.log(res);
+      this.setState({ credits: res });
+    });
+  }
+
+  getOwned = async () => {
+    const response = await fetch('http://192.168.86.193:3000/owned');
+    return await response.json();
+  }
+
+  getActive = async () => {
+    const response = await fetch('http://192.168.86.193:3000/active');
+    return await response.json();
+  }
+
+  getCredits = async () => {
+    const response = await fetch('http://192.168.86.193:3000/credits');
+    return await response.json();
+  }
+
+  updateDB = async () => {
+    this.owned = [];
+    this.active = [];
+    for (var i = 0; i < this.itemList.length; i++) {
+      if (this.itemList[i].owned) this.owned.push(this.itemList[i].id);
+      if (this.itemList[i].active) this.active.push(this.itemList[i].id);
+    }
+
+    console.log(this.owned);
+    console.log(this.active);
+
+    const updateOwned = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        owned: this.owned,
+      })
+    }
+
+    try {
+      const response = await fetch('http://192.168.86.193:3000/setOwned', updateOwned);
+      const data = await response.json();
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+
+    const updateActive = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        active: this.active,
+      })
+    }
+
+    try {
+      const response = await fetch('http://192.168.86.193:3000/setActive', updateActive);
+      const data = await response.json();
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+
+    const updateCredits = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        credits: this.state.credits,
+      })
+    }
+
+    try {
+      const response = await fetch('http://192.168.86.193:3000/setcredits', updateCredits);
+      const data = await response.json();
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+    /////////////////////////////////////////////////////////////////
+    // fetch('http://192.168.86.193:3000/users/signin', {
+    //               method: 'POST',
+    //               headers: {
+    //                 Accept: 'application/json', //expects a JSON
+    //                 'Content-Type': 'application/json',
+    //               },
+    //               body: JSON.stringify({
+    //                 username: values.username,
+    //                 password: values.password,
+    //               }),
+    //             })
+
+    //assign users.cosmetics = this.owned
+    //assign users.cosmetics_on = this.active
+    //assign users.credits = this.credits
+  }
+
+
   list = (begin: number, end: number) => {
     return this.itemList.slice(begin, end).map(e => {
       return (
@@ -226,7 +355,7 @@ class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin
         <SafeAreaView>
           <View style={[styles.body, { zIndex: 3 }]}>
             <Text style={styles.screenTitle}>Customize</Text>
-            <Text style={styles.creditDisplay}>${this.credits}</Text>
+            <Text style={styles.creditDisplay}>${this.state.credits}</Text>
           </View>
 
           <TouchableOpacity onPress={() => this.exit()}
@@ -262,6 +391,7 @@ class Customize extends React.Component<{}, { modalVisible: boolean, changedSkin
   }
 
   exit() {
+    this.updateDB();
     //go back home
   }
 
@@ -391,7 +521,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    marginTop: 300,
+    marginTop: 250,
     width: 375,
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 20,
