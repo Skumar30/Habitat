@@ -431,7 +431,7 @@ router.get('/updateContracts', async(req, res, next) => {
   }
   catch(err) {
 
-    console.log("error removing contract");
+    console.log("error updating contracts");
     res.status(500).send(err);
   }
 });
@@ -520,6 +520,10 @@ router.post('/addReward', async(req, res, next) => {
     //adding credits to user
     var user = await UserModel.findOne({_id: req.user._id});
     var task = await TaskModel.findOne({_id: req.body.taskId});
+
+    //adding today as list of dates for datesCompleted
+    var markAsComplete = await TaskModel.updateOne({_id: req.body.taskId}, { $push: {datesCompleted: new Date()}});
+
     var updatedCredits;
     if(task.daily) {
       updatedCredits = user.credits + Math.floor((10 + task.streak) * 1.5);
@@ -549,68 +553,18 @@ router.post('/addReward', async(req, res, next) => {
     );
 
     //calculating percent task completion bonus
-    var tasksCompleted = 0;
     var contractId = req.body.contractId;
     contractId instanceof mongoose.Types.ObjectId;
     var contract = await ContractModel.findOne({_id: contractId});
 
-    //add current date to datesCompleted
-    var taskId = req.body.taskId;
-    taskId instanceof mongoose.Types.ObjectId;
-    var today = new Date();
-    var pushDate = await TaskModel.updateOne({_id: taskId}, { $push: { datesCompleted: today } });
+    var bonus = Math.floor((1 / contract.tasks.length) * 100);
 
-    //finding all tasks which have been completed
-    for(var i = 0; i < contract.tasks.length; i++) {
-
-      //current task object
-      var currTask = await TaskModel.findOne({_id: contract.tasks[i]});
-
-      var day = today.getDay();
-      var nextDue = today; //assumes task is a daily and is due today
-      var counter = 0;
-
-      //if current task is not daily, find nextDue
-      if(!currTask.daily) {
-
-        //iterate through a week starting from today, setting nextDue
-        for(var j = today; counter < 7; j++) {
-
-          //reset to sunday
-          if(j == 7)
-            j = 0;
-
-          //if task is due on this day of the week and today
-          if(currTask.frequency[j])
-            nextDue = j;
-
-          //increment counter so we don't loop for more than week
-          counter++;
-        }
-      }
-
-      //if the datesCompleted field is not empty
-      if(currTask.datesCompleted.length > 0) {
-
-        var mostRecentCompletion = currTask.datesCompleted[currTask.datesCompleted.length - 1];
-
-        //if task has been completed before the next due date
-        if(mostRecentCompletion.getDay() <= nextDue) {
-          tasksCompleted++;
-        }
-      }
-    }
-
-
-    var percentCompleted = tasksCompleted / contract.tasks.length;
-    var bonus = Math.floor(percentCompleted * 100);
-
+    //updating user credits
     var totalCredits = updatedCredits + bonus;
     var result = await UserModel.updateOne(
         { _id: req.user._id },
         { credits: totalCredits }
     );
-
 
     //adding bonus to other user
     var otherUser;
@@ -620,6 +574,7 @@ router.post('/addReward', async(req, res, next) => {
       otherUser = await UserModel.findOne({_id: contract.participants[0]});
     }
 
+    //updating other user credits
     var otherUserBonus = otherUser.credits + bonus;
     var otherResult = await UserModel.updateOne({_id: otherUser.id}, {credits: otherUserBonus});
     res.send(result);
@@ -636,9 +591,20 @@ router.post('/removeReward', async(req, res, next) => {
   try {
     var UserModel = require('../models/user.js');
     var PetModel = require('../models/pet.js');
-    var user = await UserModel.findOne({_id: req.user._id});
-    var task = TaskModel.findOne({_id: req.body.taskId});
+    var TaskModel = require('../models/task.js');
+    var ContractModel = require('../models/wellnesscontract.js');
 
+    var user = await UserModel.findOne({_id: req.user._id});
+    var taskId = req.body.taskId;
+    taskId instanceof mongoose.Types.ObjectId;
+    var task = await TaskModel.findOne({_id: taskId});
+
+    //removes last date
+
+    var lastCompletion = task.datesCompleted[task.datesCompleted.length - 1];
+    var markAsIncomplete = await TaskModel.updateOne({_id: taskId}, { $pull: {datesCompleted: lastCompletion}});
+
+    //calculating credits to remove from user
     var updatedCredits;
     if(task.daily) {
       updatedCredits = user.credits - Math.floor((10 + task.streak) * 1.5)
@@ -672,61 +638,14 @@ router.post('/removeReward', async(req, res, next) => {
       {happiness: updatedHappiness}
     );
 
-    //calculating percent task completion bonus
-    var tasksCompleted = 0;
-    var contract = ContractModel.findOne({_id: req.body.contractId});
+    //calculating bonus to remove
+    var contractId = req.body.contractId;
+    contractId instanceof mongoose.Types.ObjectId;
+    var contract = await ContractModel.findOne({_id: contractId});
+    var bonus = Math.floor(1 / contract.tasks.length * 100);
 
-    //finding all tasks which have been completed
-    for(var i = 0; i < contract.tasks.length; i++) {
-
-      //current task object
-      var currTask = TaskModel.findOne({_id: contract.tasks[i]});
-      var today = new Date();
-      today = today.getDay();
-      var nextDue = today; //assumes task is a daily and is due today
-      var counter = 0;
-
-      //if current task is not daily, find nextDue
-      if(!currTask.daily) {
-
-        //iterate through a week starting from today, setting nextDue
-        for(var j = today; counter < 7; j++) {
-
-          //reset to sunday
-          if(j == 7)
-            j = 0;
-
-          //if task is due on this day of the week and today
-          if(currTask.frequency[j])
-            nextDue = j;
-
-          //increment counter so we don't loop for more than week
-          counter++;
-        }
-      }
-
-      //if the datesCompleted field is not empty
-      if(currTask.datesCompleted.length > 0) {
-
-        var mostRecentCompletion = currTask.datesCompleted[currTask.datesCompleted.length - 1];
-
-        //if task has been completed before the next due date
-        if(mostRecentCompletion.getDay() <= nextDue) {
-          tasksCompleted++;
-        }
-      }
-    }
-
-    var percentCompletedBefore = tasksCompleted / contract.tasks.length;
-    var bonusBefore = Math.floor(percentCompletedBefore * 100);
-
-    //removes last current date to datesCompleted
-    task.datesCompleted.pop();
-    var percentCompletedAfter = (tasksCompleted - 1) / contract.tasks.length;
-    var bonusAfter = Math.floor(percentCompletedAfter * 100);
-
-    var totalCredits = updatedCredits - bonusBefore + bonusAfter;
-    var result = UserModel.update(
+    var totalCredits = updatedCredits - bonus;
+    var result = await UserModel.update(
         { _id: req.user._id },
         { credits: totalCredits }
     );
@@ -734,13 +653,13 @@ router.post('/removeReward', async(req, res, next) => {
     //removing bonus to other user
     var otherUser;
     if(req.user._id.equals(contract.participants[0]))
-      otherUser = UserModel.findOne({_id: contract.participants[1]});
+      otherUser = await UserModel.findOne({_id: contract.participants[1]});
     else {
-      otherUser = UserModel.findOne({_id: contract.participants[0]});
+      otherUser = await UserModel.findOne({_id: contract.participants[0]});
     }
 
-    var otherUserBonus = otherUser.credits - bonusBefore + bonusAfter;
-    var otherResult = UserModel.update({_id: otherUser.id}, {credits: otherUserBonus});
+    var otherUserBonus = otherUser.credits - bonus;
+    var otherResult = await UserModel.update({_id: otherUser.id}, {credits: otherUserBonus});
     res.send(result);
   }
   catch(err) {
@@ -774,6 +693,73 @@ router.post('/addTaskToContract', async(req, res, next) => {
   }
 
 
+});
+
+router.get('/isDone', async(req, res, next) => {
+
+  try {
+    var TaskModel = require('../models/task.js');
+
+
+    //getting user from userId
+    var taskId = req.query.id;
+    taskId instanceof mongoose.Types.ObjectId;
+    var task = await TaskModel.findOne({ _id: taskId });
+
+    if(task.datesCompleted.length > 0) {
+
+
+      var mostRecentCompletion = task.datesCompleted[task.datesCompleted.length - 1];
+      var today = new Date();
+      if(!task.daily) {
+
+        var counter = 0;
+        for(var i = today; counter < 7; i++) {
+
+          if(task.frequency[i])
+            break;
+
+          //reset i to sunday
+          if(i == 6)
+            i = 0;
+
+          counter++;
+        }
+
+        counter = 0;
+        for(var i = today; counter < 7; i--) {
+
+          if(task.frequency[i])
+            break;
+
+          //reset i to sunday
+          if(i == 0)
+            i = 6;
+
+          counter++;
+        }
+      }
+
+      var nextDue = new Date(today.getYear() + 1900, today.getMonth(), today.getDate() + counter);
+      var pastDue = new Date(today.getYear() + 1900, today.getMonth(), today.getDate() - counter);
+      if(mostRecentCompletion < nextDue && mostRecentCompletion > pastDue) {
+        res.send({done: true});
+      }
+      else {
+        res.send({done: false});
+      }
+    }
+    else {
+
+      res.send({done: false});
+    }
+  }
+  catch(err) {
+
+    console.log("error checking is done");
+    console.log(err);
+    res.status(500).send(err);
+  }
 });
 
 module.exports = router;

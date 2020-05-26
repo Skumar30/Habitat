@@ -91,7 +91,7 @@ class ViewWellnessContract extends Component {
         contractId: this.props.props.currentContractId
       })
     });
-    
+
     var tasksToRemove= await response.json(); //gets response body
 
     for(var i = 0; i < tasksToRemove.length; i++) {
@@ -126,7 +126,7 @@ class ViewWellnessContract extends Component {
           >
             {/* back button to get out of wellness contract home screen */}
             <View
-              style={{flex:0.1}}>
+              style={{flex:0.15}}>
               <TouchableOpacity onPress={() => this.props.routeTo(Screens.WellnessContractHome)}>
                 <Image
                   source={require('./assets/backsmall.png')}>
@@ -158,19 +158,6 @@ class ViewWellnessContract extends Component {
                 My tasks:
               </Text>
             </View>
-            <View
-              style={{
-                flex: 0.1,
-                alignContent: 'center',
-                justifyContent: 'center'
-              }}>
-              <TouchableOpacity
-                onPress={this.toggleDeleteMode} style={{borderWidth: 4}}>
-                <Image
-                  source={require('./assets/delete.png')}>
-                </Image>
-              </TouchableOpacity>
-            </View>
           </View>
 
           <ScrollView
@@ -179,7 +166,7 @@ class ViewWellnessContract extends Component {
             <FlatList
               data={this.state.myTasks}
               renderItem={({ item, index }) =>
-                <TaskCard title={item.title} due_date={item.due_date} deleteMode={this.state.deleteMode}
+                <TaskCard title={item.title} due_date={item.due_date} 
                   viewMyTasks={this.state.viewMyTasks} id={item.id} handleDeleteTask={this.deleteTask}
                   currentContractId={this.props.props.currentContractId}
                 />
@@ -187,12 +174,20 @@ class ViewWellnessContract extends Component {
             />
           </ScrollView>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
+            <TouchableOpacity onPress={() => {this.props.routeTo(Screens.EditWellnessContract)}} style={{alignContent: 'center'}}>
+              <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
+                Edit Contract
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
             <TouchableOpacity onPress={this.toggleViewMyTasks} style={{alignContent: 'center'}}>
               <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
                 View Their Tasks
               </Text>
             </TouchableOpacity>
           </View>
+
         </View>
       );
     }
@@ -242,11 +237,18 @@ class ViewWellnessContract extends Component {
               data={this.state.theirTasks}
               renderItem={({ item, index }) =>
                 <TaskCard
-                  title={item.title} due_date={item.due_date} deleteMode={this.state.deleteMode} viewMyTasks={this.state.viewMyTasks}
+                  title={item.title} due_date={item.due_date} viewMyTasks={this.state.viewMyTasks}
                 />
               }
             />
           </ScrollView>
+          <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
+            <TouchableOpacity onPress={() => {this.props.routeTo(Screens.EditWellnessContract)}} style={{alignContent: 'center'}}>
+              <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
+                Edit Contract
+              </Text>
+            </TouchableOpacity>
+          </View>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
             <TouchableOpacity onPress={this.toggleViewMyTasks} style={{alignContent: 'center'}}>
               <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
