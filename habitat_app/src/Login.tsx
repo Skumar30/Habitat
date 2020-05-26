@@ -36,7 +36,7 @@ interface State {
   errormsg: string;
 }
 
-export default class Login extends React.Component<{}, State> {
+export default class Login extends React.Component<any, State> {
   constructor(props: any) {
     super(props);
     this.state = {errortoggle: false, errormsg: ''};
@@ -58,7 +58,7 @@ export default class Login extends React.Component<{}, State> {
                 password: '',
               }}
               onSubmit={(values, actions) => {
-                fetch('http://INSERT YOUR IPv4 Address:3000/users/signin', {
+                fetch('http://10.0.0.10:3000/users/signin', {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json', //expects a JSON

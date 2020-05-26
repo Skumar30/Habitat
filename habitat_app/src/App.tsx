@@ -103,17 +103,18 @@ class App extends React.Component<{}, State>{
       
 
     return(
+      /*
       <Fragment>
         {console.log(this.state.screen)}
        {this.renderScreen()}
        </Fragment>
-/*
+*/
+
      <Fragment>
      {this.state.trigger && <Login/>}
-     {this.state.trigger == false && <RegTask/>}
+     {this.state.trigger == false && <RegTask routeTo={this.routeTo} props={this.state.toSend} />}
      <Button title="Toggle" onPress={() => this.setState({trigger: !this.state.trigger})} />
  </Fragment>
-*/
     )
 
   }

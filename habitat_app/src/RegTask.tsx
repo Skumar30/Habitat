@@ -18,18 +18,28 @@ interface State {
   isToday: boolean
   date: Date
   allData: any[]
-  data: any[] //TODO
+  data: any[]
+  contract: Contract | null
+  countDailyTasks: number
 }
 
 interface Task{
   _id: any
   title: string
-  due: string
+  due_date: string
   daily: boolean
-  start: string
+  start_date: string
   frequency: boolean[]
 }
 
+interface Contract{
+  _id: string
+  participants: string[]
+  tasks : string[]
+  owner: string
+  pending: boolean
+  due_date: string
+}
 const START_DATE = new Date()
 
 class RegTask extends React.Component<any, State>{
@@ -37,7 +47,7 @@ class RegTask extends React.Component<any, State>{
     constructor(props:any){
       super(props);
       var checks:boolean[]  =[]
-      this.state ={date: new Date(), checked: checks, isToday: true, allData: [], data: []}
+      this.state ={date: new Date(), checked: checks, isToday: true, allData: [], data: [], contract: null, countDailyTasks: 0}
     }
 
     /* Display the alert that allows a user to edit/delete a task */
@@ -63,17 +73,23 @@ class RegTask extends React.Component<any, State>{
       console.log("Delete pressed on" + index)
 
       let id = this.state.data[index]._id;
-      this.deleteTaskFromTable(id).then(res => {
-
+      this.deleteTask(id).then(res => {
         console.log(res)
-        this.getData().then(res => {
-          this.setState({allData: res})
-          //find the data for the list
-         this.updateStateData(res) 
+        let data = this.state.data;
+        data.splice(index, 1);
+        this.setState({data: data})
+
+        let totalData:any = [];
+        this.state.allData.forEach(item => {
+          if(item._id != id){
+            totalData.push(item)
+          }
         })
+        this.setState({allData: totalData})
+
+        
       })
 
-      this.deleteTaskFromUser(id)
     }
 
     /* Create a string for the date */
@@ -100,7 +116,7 @@ class RegTask extends React.Component<any, State>{
       var disabled = !this.state.isToday
       return(
         <View style={styles.itemView}>
-          <TouchableOpacity disabled={disabled} onPress={() => this.editAlert(index)}>
+          <TouchableOpacity onPress={() => this.editAlert(index)}>
             <View style={styles.item}>
               <Text style={styles.title}>{title}</Text>
             </View>
@@ -113,43 +129,96 @@ class RegTask extends React.Component<any, State>{
                 var checked = this.state.checked
                 checked[index] = !checked[index];
                 this.setState({checked: checked})
+                this.toggleTaskComplete(checked[index], index);
             }}/>
         </View>
      )};
+    
+     toggleTaskComplete(complete:boolean, index:number){
 
+      var task = this.state.data[index]
+      var inWellnessContract = false
+      var numTasks = this.state.data.length + this.state.countDailyTasks
+      var numContractTasks = this.state.contract != null ? this.state.contract.tasks.length : 1;
+      var toAward = 30 //base reward
+      toAward += Math.floor(100/numTasks) // all task completion reward
+      if(this.state.contract != null && this.state.contract.tasks.length > 0){
+      this.state.contract.tasks.forEach((element:any) => {
+        console.log(task._id, "and", element)
+        if( task._id == element){
+          inWellnessContract = true;
+        }
+      });
+    }
+      else{
+        console.log("YO")
+      }
+    
+
+      toAward += inWellnessContract ? (15 + Math.floor(100/numContractTasks)) : 0
+
+      toAward *= complete ? 1 : -1;
+
+      console.log(toAward)
+      
+      //now that i have the amount to award:
+      //give the user + cash, +.1x happiness
+      //give other person
+      this.sendRewards(toAward)
+
+     }
     componentDidMount(){
-      this.getData().then(res => {
+      this.getTaskData().then(res => {
+        console.log(res)
         this.setState({allData: res})
         //find the data for the list
+        let dailyCount = 0;
+        let currDate = new Date();
+        res.forEach( (element:Task) => {
+
+          if(element.daily && (new Date(element.start_date) <= currDate)
+             && (currDate <= new Date(element.due_date))){
+              dailyCount++
+          }
+        })
+        this.setState({countDailyTasks: dailyCount})
        this.updateStateData(res) 
       })
-     }  
-    
-    deleteTaskFromUser = async(id:string) => {
 
-      console.log("My id is", id)
+      this.getContractData().then((res:Contract) => {
+        this.setState({contract: res})
+        console.log(res.tasks)
+      })
+     }  
+
+
+
+     sendRewards = async(num:number) => {
+       
+      let toSend = {points: num}
+      
       const settings = {
-        method: 'DELETE',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          my_id: id
-        })
-      };
+      method: 'POST',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(toSend)
+    };
 
       try{
-        const response = await fetch('http://10.0.0.10:3000/deleteTaskFromUser', settings)
+        const response = await fetch('http://10.0.0.10:3000/sendRewards', settings)
         const data = await response.json();
         return data;
       } catch (e) {
         console.log(e);
       }    
+      
 
     }
+ 
 
-    deleteTaskFromTable = async(id:string) => {
+    deleteTask = async(id:string) => {
        
       console.log("My id is", id)
       const settings = {
@@ -174,7 +243,7 @@ class RegTask extends React.Component<any, State>{
 
     }
 
-    getData = async () => {
+    getTaskData = async () => {
        const response = await fetch('http://10.0.0.10:3000/myTask');
        const body = await response.json();
        if (response.status !== 200) {
@@ -184,18 +253,37 @@ class RegTask extends React.Component<any, State>{
        return body;
      }
 
+     getContractData = async () => {
+      const response = await fetch('http://10.0.0.10:3000/tasksInContract');
+      const body = await response.json();
+      if (response.status !== 200) {
+       console.error(body.message) 
+     }
+ 
+      return body;
+    }
+
     updateStateData(res:any[]):void {
       let newData:any[] = [];
       res.forEach((element : Task) => {
 
-        let startDate = new Date(element.start);
-        let endDate = new Date(element.due);
+        let startDate = new Date(element.start_date);
+        let endDate = new Date(element.due_date);
         let day = this.state.date.getDay();
         console.log("The day is ", element.frequency[day], "and the daily is", element.daily)
+        console.log("Today is", this.state.date)
+        console.log("start", startDate);
+        console.log("end", endDate)
+
+        console.log(startDate <= this.state.date, endDate >= this.state.date)
         if(startDate <= this.state.date && endDate >= this.state.date){// start and end dates are valid 
-          if(element.daily  || (element.frequency[this.state.date.getDay()]) ){
+          if(!element.daily  && (element.frequency[this.state.date.getDay()]) ){
             newData.push(element);
           }
+
+        }
+        else{
+          console.log(element + "is not valid")
         }
 
       });

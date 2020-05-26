@@ -16,7 +16,7 @@ interface HomeState {
   mood: number;
 }
 
-class Home extends React.Component<{}, HomeState> {
+class Home extends React.Component<any, HomeState> {
   constructor(props: any) {
     super(props);
     this.state = {
