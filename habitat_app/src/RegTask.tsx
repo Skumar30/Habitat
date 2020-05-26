@@ -62,7 +62,12 @@ class RegTask extends React.Component<any, State>{
             text: "Delete",
             onPress: () => this.handleDelete(index),
           },
-          { text: "Edit", onPress: () => console.log("Edit Pressed") } //TODO Route to Add Task
+          { text: "Edit", onPress: () => {
+            console.log("Edit Pressed") 
+            let toSend = {data: this.state.data[index],
+                          screen: Screens.RegTask}
+            this.props.routeTo(Screens.EditTask, toSend)
+          }} //TODO Route to Add Task
         ]
       )
     }
@@ -114,6 +119,7 @@ class RegTask extends React.Component<any, State>{
     Item = (title:string, index:number) =>{
       console.log(index) 
       var disabled = !this.state.isToday
+      console.log("IS it disabled?", disabled)
       return(
         <View style={styles.itemView}>
           <TouchableOpacity onPress={() => this.editAlert(index)}>
@@ -123,9 +129,9 @@ class RegTask extends React.Component<any, State>{
           </TouchableOpacity>
           <CheckBox 
             value={this.state.checked[index]}
+            disabled={disabled}
             onValueChange={() => {
-                if( disabled) 
-                  return
+
                 var checked = this.state.checked
                 checked[index] = !checked[index];
                 this.setState({checked: checked})
@@ -142,6 +148,9 @@ class RegTask extends React.Component<any, State>{
       var numContractTasks = this.state.contract != null ? this.state.contract.tasks.length : 1;
       var toAward = 30 //base reward
       toAward += Math.floor(100/numTasks) // all task completion reward
+
+      // Wellness contract ones are not implemented
+      /*
       if(this.state.contract != null && this.state.contract.tasks.length > 0){
       this.state.contract.tasks.forEach((element:any) => {
         console.log(task._id, "and", element)
@@ -156,7 +165,7 @@ class RegTask extends React.Component<any, State>{
     
 
       toAward += inWellnessContract ? (15 + Math.floor(100/numContractTasks)) : 0
-
+      */
       toAward *= complete ? 1 : -1;
 
       console.log(toAward)
@@ -164,9 +173,73 @@ class RegTask extends React.Component<any, State>{
       //now that i have the amount to award:
       //give the user + cash, +.1x happiness
       //give other person
-      this.sendRewards(toAward)
+      this.sendRewards(toAward, "sendCash")
+      this.sendRewards(toAward, "sendHappiness")
+      let date = new Date()
+      this.markAsComplete(index, complete, date)
+      if(complete){
+        this.state.allData.forEach(element => {
+          if (element._id == this.state.data[index]._id){
+            element.datesCompleted.push(date)
+          }
+        })
+      }
+      else{
+        let task = this.state.data[index]
 
+        this.state.allData.forEach((element) => {
+          if (element._id == this.state.data[index]._id){
+            element.datesCompleted.forEach((date:string, index:number) => {
+              let currDate = new Date(date)
+              if(this.dateString(currDate) == this.dateString(this.state.date)){
+                
+                element.datesCompleted.splice(index)
+              }
+            })
+          }
+        })
+
+      }
      }
+
+    markAsComplete = async(index:number, complete:boolean, date:Date) => {
+       
+      let toSend = {task_id: this.state.data[index]._id,
+                    complete: complete,
+                    date: date}
+
+      if(!complete){
+        //find the date that I want to remove
+        let task = this.state.data[index]
+
+        task.datesCompleted.forEach((element:string) => {
+          let currDate = new Date(element)
+          if(this.dateString(currDate) == this.dateString(this.state.date)){
+            toSend.date = currDate
+          }
+        });
+      }
+      
+      const settings = {
+      method: 'POST',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(toSend)
+    };
+
+      try{
+        const response = await fetch('http://10.0.0.10:3000/taskCompleted', settings)
+        const data = await response.json();
+        return data;
+      } catch (e) {
+        console.log(e);
+      }    
+      
+
+    }
+
     componentDidMount(){
       this.getTaskData().then(res => {
         console.log(res)
@@ -182,18 +255,20 @@ class RegTask extends React.Component<any, State>{
           }
         })
         this.setState({countDailyTasks: dailyCount})
-       this.updateStateData(res) 
+
+        this.getContractData().then((res2:Contract) => {
+          this.setState({contract: res2})
+          this.updateStateData(res, res2) 
+        })
+
       })
 
-      this.getContractData().then((res:Contract) => {
-        this.setState({contract: res})
-        console.log(res.tasks)
-      })
+      
      }  
 
 
 
-     sendRewards = async(num:number) => {
+    sendRewards = async(num:number, url:string) => {
        
       let toSend = {points: num}
       
@@ -207,7 +282,7 @@ class RegTask extends React.Component<any, State>{
     };
 
       try{
-        const response = await fetch('http://10.0.0.10:3000/sendRewards', settings)
+        const response = await fetch('http://10.0.0.10:3000/'+url, settings)
         const data = await response.json();
         return data;
       } catch (e) {
@@ -216,7 +291,6 @@ class RegTask extends React.Component<any, State>{
       
 
     }
- 
 
     deleteTask = async(id:string) => {
        
@@ -253,7 +327,7 @@ class RegTask extends React.Component<any, State>{
        return body;
      }
 
-     getContractData = async () => {
+    getContractData = async () => {
       const response = await fetch('http://10.0.0.10:3000/tasksInContract');
       const body = await response.json();
       if (response.status !== 200) {
@@ -263,7 +337,7 @@ class RegTask extends React.Component<any, State>{
       return body;
     }
 
-    updateStateData(res:any[]):void {
+    updateStateData(res:any[], res2:Contract|undefined=undefined):void {
       let newData:any[] = [];
       res.forEach((element : Task) => {
 
@@ -287,8 +361,27 @@ class RegTask extends React.Component<any, State>{
         }
 
       });
-      console.log(newData)
-      this.setState({data: newData})
+      if(res2 != undefined){
+        res2.tasks.forEach(element => {
+          newData.forEach((otherItem,index) => {
+            if(element == otherItem._id){
+              newData.splice(index)
+            }
+          })
+        })
+      }
+      var checks:boolean[] = []
+      let today = this.state.date
+      newData.forEach((element, index) => {
+        checks[index] = false;
+        element.datesCompleted.forEach((date:string) => {
+          let actual = new Date(date)
+          if(this.dateString(today) == this.dateString(actual)){
+            checks[index] = true;
+          }
+        })
+      })
+      this.setState({data: newData, checked: checks})
   
     }
     
@@ -332,7 +425,9 @@ class RegTask extends React.Component<any, State>{
               <View style={{flex: 4, opacity: 0}}>
 
               </View>
-              <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}>
+              <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}
+                              onPress={() => this.props.routeTo(Screens.AddTask, {screen: Screens.RegTask})}
+                              >
                 <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
               </TouchableOpacity>
             </View>

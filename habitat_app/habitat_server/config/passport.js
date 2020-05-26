@@ -1,5 +1,6 @@
 var passport = require('passport');
 var User = require('../models/user');
+var mongoose = require('mongoose');
 var LocalStrategy = require('passport-local').Strategy;
 
 passport.serializeUser((user, done) => {
@@ -39,8 +40,11 @@ passport.use(
         newUser.tasks = [];
         newUser.pets = [];
         newUser.cosmetics = [];
+        newUser.credits = 0;
+        newUser.pet_id = mongoose.Types.ObjectId();
         newUser.save(function (error, result) {
           if (error) {
+            console.log(error);
             return done(err);
           }
           return done(null, newUser);
