@@ -19,7 +19,6 @@ router.get('/', function (req, res, next) {
   }
 });
 
-<<<<<<< HEAD
 router.get('/friends', (req, res) => {
   User.find({"_id" : {$in: req.user.friends}}, function(err, user){
     res.json(user);
@@ -32,17 +31,50 @@ router.post('/addFriend', (req, res) => {
   
   var id = mongoose.Types.ObjectId(req.body.friend_id)
   console.log("Friend: " + id);
-  User.findByIdAndUpdate(id, { $set: { friends: req.user._id }}, function(err, result) {
+  User.findByIdAndUpdate(id, { $push: { friends: req.user._id }}, function(err, result) {
     if (err) {
       console.log("Error: " + err);
+
     } else {
+      if (result == null) {
+        console.log("NULL FIND");
+        res.json(result);
+        return
+      }
+  
+      User.findByIdAndUpdate(req.user._id, { $push: { friends: id }}, function(err, result){
+        console.log("EndResult(Curr): " + result.name);
+      });
+
       console.log("Else: " + result);
+
       res.json(result);
     }
   });
 });
 
+router.post('/deleteFriend', (req, res) => {
+  var id = mongoose.Types.ObjectId(req.body.friend_id)
+  console.log("Friend: " + id);
+  User.findByIdAndUpdate(id, { $pull: { friends: req.user._id }}, function(err, result){
+    console.log("EndResult(Friend): " + result.name);
+  });
 
+  User.findByIdAndUpdate(req.user._id, { $pull: { friends: id }}, function(err, result){
+    console.log("EndResult(Curr): " + result.name);
+    res.json(result);
+  });
+  
+});
+
+router.post('/getFriendData', (req, res) => {
+  console.log(req.body.friend_id)
+  var id = mongoose.Types.ObjectId(req.body.friend_id)
+  User.findById(id, function(err, user){
+    res.json(user);
+    console.log(user);
+  })
+})
 
 /*
 router.get('/name', (req, res) => {
@@ -50,7 +82,7 @@ router.get('/name', (req, res) => {
     res.json(user.name);
     console.log(user.name);
   });*/
-=======
+
 router.get('/getTheirTasks', async(req, res, next) => {
   try {
     //reference to user and contract model
@@ -341,7 +373,7 @@ router.post('/removeContract', async(req, res, next) => {
 
     res.send(finalResult);
   }
-  catch(err) {
+  catch(err) { 
 
     console.log("error removing contract");
     res.status(500).send(err);
@@ -378,6 +410,5 @@ router.get('/updateContracts', async(req, res, next) => {
     res.status(500).send(err);
   }
 });
->>>>>>> origin/master
 
 module.exports = router;

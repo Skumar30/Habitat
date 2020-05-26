@@ -9,15 +9,20 @@ import {
   Modal,
   Alert,
   TextInput,
+  Image,
 } from 'react-native';
 import { create } from 'react-test-renderer';
-
+import * as Screens from './Screens';
 
 class temp {
   constructor(key: string, name: string) {}
 }
 
 class FriendList extends Component{
+  
+  constructor(props: any) {
+    super(props);
+  }
 
   state = {
     addModalVisible: false,
@@ -26,55 +31,32 @@ class FriendList extends Component{
     arrayHolder: [],
     textInput_Holder: '',
     invalidCode: false,
+    existingFriend: false,
     data: []
   };
 
-  dummy = [
-    {
-      key: '910',
-      name: 'Alex',
-    },
-    {
-      key: '5678',
-      name: 'Darin',
-    },
-    {
-      key: '1234',
-      name: 'Evan',
-    },
-  ];
-
-  
-
-  findName (code: string): any {
-    return this.dummy.find(data => data.key === code);
-  }; 
-
-  joinData = () => {
-
-    let friend: any = (this.findName(this.state.textInput_Holder));
-
-    if (friend == undefined && this.state.textInput_Holder != '') {
-      this.setState({invalidCode: true});
-    }
-
-    else if (this.state.textInput_Holder != ''){
-      
-      this.state.data.push({key: this.state.textInput_Holder, name: friend.name});
-      
-      //this.setState({ arrayHolder: [...this.state.data] });
-
-      this.setState({textInput_Holder: ''});
-      this.setState({addModalVisible:false});
-    }
-  }
 
   onEnterCode = (input: string) => {
     this.setState({ textInput_Holder: input });
     this.setState({invalidCode: false});
+    this.setState({existingFriend: false});
+  }
+
+  codeInList = (code: string) => {
+    if (this.state.data.find(element => element.key === code)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   addFriend = async () => {
+
+    if (this.codeInList(this.state.textInput_Holder)) {
+      this.setState({existingFriend: true});
+      return;
+    }
+
     console.log(this.state.textInput_Holder)
     const friendID = this.state.textInput_Holder
     const settings = {
@@ -91,19 +73,23 @@ class FriendList extends Component{
     try {
       const response = await fetch('http://192.168.1.233:3000/addFriend', settings);
       console.log("Responce" + response)
+
       const friendData = await response.json();
-      console.log(friendData)
-/*
+
+      if (friendData == null) {
+        this.setState({invalidCode: true});
+        return
+      }
+
       var dataArr = this.state.data;
       dataArr.push( {key: friendData._id, name: friendData.name} )
       this.setState({data: dataArr})
 
-      console.log(friendData);
-      console.log(this.state.textInput_Holder)
-*/
+      this.setState({textInput_Holder: ''});
+      this.setState({addModalVisible:false});
+
     } catch (e) {
       console.log(e);
-      //console.log(this.state.textInput_Holder)
     }
   }
 
@@ -127,6 +113,10 @@ class FriendList extends Component{
               {this.state.invalidCode && <Text style={{color:'red'}}>Invalid Friend Code</Text>}
               </View>
 
+              <View style={styles.centerThis}>
+              {this.state.existingFriend && <Text style={{color:'red'}}>Friend Already Added</Text>}
+              </View>
+
               <View style={{...styles.centerThis}}>
               <TextInput
                 style={styles.inputTxt}
@@ -141,6 +131,8 @@ class FriendList extends Component{
                     style={{...styles.addButton, backgroundColor: "white" }}
                     onPress={() => {
                       this.setState({addModalVisible:false});
+                      this.setState({invalidCode: false});
+                      this.setState({existingFriend: false});
                     }}
                   >
                     <Text style={styles.textStyle}>Cancel</Text>
@@ -177,6 +169,67 @@ class FriendList extends Component{
     );
   }
 
+  viewFriend = async (friend: any) => {
+    console.log("key: " + friend.key)
+    
+    const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        friend_id: friend.key
+      })
+    }
+
+    try {
+      const response = await fetch('http://192.168.1.233:3000/getFriendData', settings);
+
+      console.log("Responce " + response)
+
+      const friendData = await response.json();
+      console.log("friendProfData: " + friendData);
+      
+      //this.setState({friendModalVis:false});
+
+    } catch (e) {
+      console.log("ERROR: " + e);
+    }
+  }
+
+  removeFriend = async (friend: any) => {
+  
+    const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        friend_id: friend.key
+      })
+    }
+    
+    try {
+      await fetch('http://192.168.1.233:3000/deleteFriend', settings);
+
+      const index = this.state.data.indexOf(friend);
+      console.log("Index: " + index)
+      var dataArr = this.state.data
+
+      dataArr = dataArr.filter(pair => pair != friend);
+
+      //dataArr.splice(index, 1);
+      this.setState({data: dataArr});
+      this.setState({friendModalVis:false});
+
+    } catch (e) {
+      console.log("ERROR: " + e);
+    }
+  }
+
+
   renderFriendForm = () => {
     return(
       <View>  
@@ -208,7 +261,7 @@ class FriendList extends Component{
                   <View>
                     <TouchableOpacity
                       style={{...styles.addButton}}
-                      //onPress={}
+                      onPress={() => this.viewFriend(this.state.currFriend)}
                     >
                       <Text style={styles.textStyle}>View Profile</Text>
                     </TouchableOpacity>
@@ -237,13 +290,6 @@ class FriendList extends Component{
 
   onFriendPress = (friend: any) => {
     this.setState({friendModalVis: true, currFriend: friend});
-  }
-
-  removeFriend = (friend: temp) => {
-    
-    const index = this.state.data.indexOf(friend);
-    this.state.data.splice(index, 1);
-    this.setState({friendModalVis:false});
   }
 
   componentDidMount() {
@@ -278,7 +324,14 @@ class FriendList extends Component{
               <View style={styles.sectionContainer}>
 
                 <View style={styles.fixToText}>
-
+                  <View style={{flex:0}}>
+                    <TouchableOpacity 
+                    onPress={() => this.props.routeTo(Screens.Home)}>
+                      <Image
+                        source={require('./assets/backsmall.png')}>
+                      </Image>
+                    </TouchableOpacity>
+                  </View>
                   <Text style={styles.sectionTitle}>Friends List</Text>
                   <TouchableOpacity 
                     style={styles.button}

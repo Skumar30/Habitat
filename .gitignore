@@ -1,1 +1,22 @@
 habitat_app/src/Login.tsx
+habitat_app/__tests__/react-native.config.js
+habitat_app/android/app/src/main/assets/fonts/AntDesign.ttf
+habitat_app/android/app/src/main/assets/fonts/Entypo.ttf
+habitat_app/android/app/src/main/assets/fonts/EvilIcons.ttf
+habitat_app/android/app/src/main/assets/fonts/Feather.ttf
+habitat_app/android/app/src/main/assets/fonts/FontAwesome.ttf
+habitat_app/android/app/src/main/assets/fonts/FontAwesome5_Brands.ttf
+habitat_app/android/app/src/main/assets/fonts/FontAwesome5_Regular.ttf
+habitat_app/android/app/src/main/assets/fonts/FontAwesome5_Solid.ttf
+habitat_app/android/app/src/main/assets/fonts/Fontisto.ttf
+habitat_app/android/app/src/main/assets/fonts/Foundation.ttf
+habitat_app/android/app/src/main/assets/fonts/MARCEL VOCKRODT_The Steady Hand BOLD.ttf
+habitat_app/android/app/src/main/assets/fonts/MARCEL VOCKRODT_The Steady Hand REGULAR.ttf
+habitat_app/android/app/src/main/assets/fonts/MaterialCommunityIcons.ttf
+habitat_app/android/app/src/main/assets/fonts/MaterialIcons.ttf
+habitat_app/android/app/src/main/assets/fonts/Octicons.ttf
+habitat_app/android/app/src/main/assets/fonts/SimpleLineIcons.ttf
+habitat_app/android/app/src/main/assets/fonts/Zocial.ttf
+habitat_app/src/assets/fonts/
+habitat_app/src/Home.tsx
+habitat_app/src/Login.tsx
