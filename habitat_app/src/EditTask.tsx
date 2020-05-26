@@ -14,11 +14,11 @@ declare const global: {HermesInternal: null | {}};
 
 
 export default function EditTask(props){
-  const [title, setTitle] = useState(props.props.title);
-  const [date, setDate] = useState(props.props.due_date);
+  const [title, setTitle] = useState(props.props.data.title);
+  const [date, setDate] = useState(props.props.data.due_date);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [repeat, setRepeat] = useState(props.props.frequency);
+  const [repeat, setRepeat] = useState(props.props.data.frequency);
   const [emptyTitle, setEmpty] = useState(false);
 
 // this.props.props is the json object passed into this screen
@@ -44,13 +44,13 @@ export default function EditTask(props){
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        _id: props.props._id,
+        _id: props.props.data._id,
         title: title,
         due_date: date,
         daily: checkDaily(),
         frequency: repeat,
-        start_date: props.props.start_date,
-        datesCompleted: props.props.datesCompleted
+        start_date: props.props.data.start_date,
+        datesCompleted: props.props.data.datesCompleted
       }),
     });
     // return to previous screen
