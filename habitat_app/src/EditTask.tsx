@@ -8,21 +8,22 @@ import {
   TouchableOpacity
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
+import * as Screens from './Screens';
 declare const global: {HermesInternal: null | {}};
 
 
 
 export default function EditTask(props){
-  const [title, setTitle] = useState(this.props.props.title);
-  const [date, setDate] = useState(this.props.props.date);
+  const [title, setTitle] = useState(props.props.title);
+  const [date, setDate] = useState(props.props.due_date);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [repeat, setRepeat] = useState(this.props.props.repeat);
+  const [repeat, setRepeat] = useState(props.props.frequency);
+  const [emptyTitle, setEmpty] = useState(false);
 
 // this.props.props is the json object passed into this screen
   const checkDaily = () => {
-    for(int i = 0; i < 7; i++){
+    for(let i = 0; i < 7; i++){
       if(repeat[i] === false){
         return false;
       }
@@ -31,20 +32,30 @@ export default function EditTask(props){
   }
 
   const addHandler = () => {
-    fetch('http://192.168.99.1:3000/AddTask', {
+    if(title === ""){
+      setEmpty(true);
+      return;
+    }
+    // edit task
+    fetch('http://192.168.99.1:3000/editTask', {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        title: this.title,
-        due_date: this.date,
+        _id: props.props._id,
+        title: title,
+        due_date: date,
         daily: checkDaily(),
-        frequency: this.repeat
-      })
+        frequency: repeat,
+        start_date: props.props.start_date,
+        datesCompleted: props.props.datesCompleted
+      }),
+    });
+    // return to previous screen
+    props.routeTo(props.props.screen)
   }
-
 
 
   const showMode = currentMode => {
@@ -148,9 +159,9 @@ export default function EditTask(props){
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText} >{"Add Task"}</Text>
+      <Text style={styles.titleText} >{"Edit Task"}</Text>
       {/* Task Title */}
-      <TextInput placeholder="Task Title" onChangeText={(val)=>setTitle(val)} style={styles.titleInput}></TextInput>
+      <TextInput placeholder="Task Title" onChangeText={(val)=>setTitle(val)} style={styles.titleInput} borderColor={emptyTitle ? "#f00" : "000"}>{title}</TextInput>
       {/* Frequency */}
       <View style={{flex: 1}}>
         <View style={{...styles.repeat, flex: 1}}>
@@ -164,7 +175,7 @@ export default function EditTask(props){
         </View>
 
         <View style={{flex: 1}}>
-          <Text style={styles.textContainer}>Current Due Date is {date.getMonth()+1}/{date.getDate()}/{date.getYear()+1900}{repeat}</Text>
+          <Text style={styles.textContainer}>Current Due Date is {date.getMonth()+1}/{date.getDate()}/{date.getYear()+1900}</Text>
         </View>
 
         <View style={{flex: 5}}>
@@ -192,7 +203,7 @@ export default function EditTask(props){
         {/* Add Button */}
         <View style={styles.addButton}>
           <TouchableOpacity onPress={addHandler}>
-            <Text style={styles.buttonText}>Add Task</Text>
+            <Text style={styles.buttonText}>Edit Task</Text>
           </TouchableOpacity>
         </View>
         {/* Back Button */}

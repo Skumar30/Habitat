@@ -8,17 +8,19 @@ import {
   TouchableOpacity
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+var mongoose = require('mongoose');
 
 declare const global: {HermesInternal: null | {}};
 
 
 
-export default function AddTask(){
+export default function AddTask(props){
   const [title, setTitle] = useState('');
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [repeat, setRepeat] = useState([false,false,false,false,false,false,false]);
+  const [emptyTitle, setEmpty] = useState(false);
 
   const checkDaily = () => {
     for(let i = 0; i < 7; i++){
@@ -30,6 +32,12 @@ export default function AddTask(){
   }
 
   const addHandler = () => {
+    if(title === ""){
+      setEmpty(true);
+      return;
+    }
+    var temp_id = new mongoose.Types.ObjectId();
+    // post the task
     fetch('http://192.168.99.1:3000/createTask', {
       method: 'POST',
       headers: {
@@ -37,12 +45,26 @@ export default function AddTask(){
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        _id: temp_id,
         title: title,
         due_date: date,
         daily: checkDaily(),
         frequency: repeat,
       })
   });
+    // link task to user
+    fetch('http://192.168.99.1:3000/addTask', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        taskId: temp_id
+      })
+  });
+    // return to previous screen
+    props.routeTo(props.props.screen)
 }
 
 
@@ -149,7 +171,7 @@ export default function AddTask(){
     <View style={styles.container}>
       <Text style={styles.titleText} >{"Add Task"}</Text>
       {/* Task Title */}
-      <TextInput placeholder="Task Title" onChangeText={(val)=>setTitle(val)} style={styles.titleInput}></TextInput>
+      <TextInput placeholder="Task Title" onChangeText={(val)=>setTitle(val)} style={styles.titleInput} borderColor={emptyTitle ? "#f00" : "000"}></TextInput>
       {/* Frequency */}
       <View style={{flex: 1}}>
         <View style={{...styles.repeat, flex: 1}}>
@@ -224,7 +246,7 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
   titleInput: {
-      marginBottom: 20,
+    marginBottom: 20,
     borderWidth: 5,
     borderColor: '#000',
     width: 390,

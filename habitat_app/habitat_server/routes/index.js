@@ -229,6 +229,22 @@ router.post('/addTask', async(req, res, next) => {
 
 
 });
+router.post('/editTask', async(req, res, next) => {
+   try{
+     var Task = require('../models/task.js');
+     var id = mongoose.Types.ObjectId(req.body._id)
+     var task = new Task(req.body);
+
+     var result = await Task.findByIdAndUpdate(id, task);
+     res.send(result);
+   }
+   catch(err) {
+
+    console.log(err);
+    res.status(500).send(err);
+  }
+
+ });
 
 router.post('/createContract', async(req, res, next) => {
 
