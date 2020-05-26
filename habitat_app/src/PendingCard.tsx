@@ -27,7 +27,7 @@ class PendingCard extends Component {
 
     return(
 
-      <TouchableOpacity onPress={() => alert("popup with wellness contract info")}>
+      <TouchableOpacity>
         <View
           style={styles.cardContainer}
         >

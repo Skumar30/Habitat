@@ -79,6 +79,8 @@ class TaskCard extends Component {
     this.setState({isSelected: body.done});
   }
 
+
+
   componentDidMount() {
 
     this.isDone();
@@ -126,7 +128,7 @@ class TaskCard extends Component {
 
       return(
 
-        <TouchableWithoutFeedback onPress={this.handleSelect}>
+        <TouchableWithoutFeedback>
           <View
             style={styles.cardContainer}
           >
@@ -137,14 +139,21 @@ class TaskCard extends Component {
               <Text style={{textAlign: 'center', fontSize: 24}}>
                 {this.props.title}
               </Text>
+              <Text style={{textAlign: 'center', fontSize: 18}}>
+                Due: {this.props.due_date}
+              </Text>
             </View>
             <View
               style={styles.taskCardCheckboxContainer}
             >
-              <Image
-                style={styles.taskCardInteract}
-                source={require('./assets/checkmark.png')}>
-              </Image>
+              <CheckBox
+                style={{
+                  alignSelf: 'center',
+                  margin: 5
+                }}
+                value={this.state.isSelected}
+                disabled={true}
+              />
             </View>
           </View>
         </TouchableWithoutFeedback>

@@ -166,8 +166,8 @@ class ViewWellnessContract extends Component {
             <FlatList
               data={this.state.myTasks}
               renderItem={({ item, index }) =>
-                <TaskCard title={item.title} due_date={item.due_date} 
-                  viewMyTasks={this.state.viewMyTasks} id={item.id} handleDeleteTask={this.deleteTask}
+                <TaskCard title={item.title} due_date={item.due_date}
+                  viewMyTasks={this.state.viewMyTasks} id={item.id} 
                   currentContractId={this.props.props.currentContractId}
                 />
               }
@@ -237,7 +237,9 @@ class ViewWellnessContract extends Component {
               data={this.state.theirTasks}
               renderItem={({ item, index }) =>
                 <TaskCard
-                  title={item.title} due_date={item.due_date} viewMyTasks={this.state.viewMyTasks}
+                  title={item.title} due_date={item.due_date}
+                  viewMyTasks={this.state.viewMyTasks} id={item.id}
+                  currentContractId={this.props.props.currentContractId}
                 />
               }
             />
