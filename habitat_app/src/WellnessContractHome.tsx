@@ -3,6 +3,7 @@ import { ScrollView, View, Text, Button, Image, TouchableOpacity, Modal, FlatLis
 import PendingCard from "./PendingCard";
 import TaskCard from "./TaskCard";
 import ViewWellnessContract from "./ViewWellnessContract";
+import * as Screens from './Screens';
 
 class WellnessContractHome extends Component {
 
@@ -10,7 +11,6 @@ class WellnessContractHome extends Component {
 
     super(props);
     this.state = {
-      viewingContract:false,
       viewMyTasks:true,
       hasContract:true,
       leaveModalVisible: false,
@@ -28,10 +28,6 @@ class WellnessContractHome extends Component {
       ],
       currentContractId: {}
     }
-  }
-
-  setViewingContract = (val: boolean) => {
-    this.setState({viewingContract: val});
   }
 
   setHasContract = (val: boolean) => {
@@ -143,8 +139,8 @@ class WellnessContractHome extends Component {
 
   createContract = () => {
 
-    this.setState({hasContract: true});
-    Alert.alert("New Contract Confirmation", "You have created a new contract.");
+    //redirect to michael's create contract screen
+    this.props.routeTo(Screens.CreateContract);
   }
 
   handleCreateContract = () => {
@@ -161,16 +157,13 @@ class WellnessContractHome extends Component {
 
   handleViewContract = () => {
 
-    console.log("enter");
     if(this.state.hasContract) {
 
-      this.setState({viewingContract: true});
-      console.log("should be viewing contract");
+      //redirect screen
+      this.props.routeTo(Screens.ViewWellnessContract, {currentContractId: this.state.currentContractId});
     }
     else {
 
-      console.log("should be viewing alert");
-      this.setViewingContract(false);
       Alert.alert("No Existing Wellness Contract", "Please create or accept a wellness contract in order to view it.");
     }
   }
@@ -211,160 +204,158 @@ class WellnessContractHome extends Component {
 
   componentDidMount(){
 
-    this.getPendingContracts();
-    this.checkCurrentContract();
+    //first thing is update contracts which still apply to the user
     this.updateContracts();
+
+    //to display list of pending contracts user has been invited to
+    this.getPendingContracts();
+
+    //to see if the user is currently in a contract
+    this.checkCurrentContract();
   }
 
   render() {
 
-    //if user is viewing their wellness contract
-    if(this.state.viewingContract) {
-
-      return(<ViewWellnessContract onBack={this.setViewingContract} currentContractId={this.state.currentContractId}/>);
-    }
-    else { //if the user is in the wellness contract home screen
-      return (
+    return (
+      <View
+        style={styles.entireScreenContainer}
+      >
         <View
-          style={styles.entireScreenContainer}
+          style={{
+            backgroundColor: 'blanchedalmond',
+            flexDirection: 'row'
+          }}
         >
+          {/* back button to get out of wellness contract home screen */}
           <View
-            style={{
-              backgroundColor: 'blanchedalmond',
-              flexDirection: 'row'
+            style={{flex:0.1}}>
+            <TouchableOpacity onPress={() => this.props.onBack(false)}>
+              <Image
+                source={require('./assets/backsmall.png')}>
+              </Image>
+            </TouchableOpacity>
+          </View>
+
+          <View
+            style={{flex:0.9}}>
+            <Text
+              style={styles.titleText}>
+              Wellness Contracts
+            </Text>
+          </View>
+        </View>
+
+
+        {/* View which holds top three buttons */}
+        <View
+          style={{
+            flexDirection:"row",
+            width: 370,
+            height: 150
+          }}>
+
+          {/* button which allows user to view existing wellness contract */}
+          <TouchableOpacity onPress={this.handleViewContract}>
+            <View
+              style={styles.iconButtonContainer}
+            >
+              <Image
+                style={{
+                  flex: 1
+                }}
+                source={require('./assets/view.png')}
+              >
+              </Image>
+
+            </View>
+          </TouchableOpacity>
+
+          {/* button which allows user to leave existing wellness contract */}
+          <TouchableOpacity onPress={this.handleRemoveContract}>
+            <View
+              style={styles.iconButtonContainer}
+            >
+
+              <Image
+                style={{
+                  flex: 1
+                }}
+                source={require('./assets/leave.png')}
+              >
+              </Image>
+
+            </View>
+          </TouchableOpacity>
+
+          {/* Modal for confirming leave current wellness contract */}
+          <Modal
+            animationType='none'
+            transparent={true}
+            visible={this.state.leaveModalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
             }}
           >
-            {/* back button to get out of wellness contract home screen */}
             <View
-              style={{flex:0.1}}>
-              <TouchableOpacity onPress={() => this.props.onBack(false)}>
-                <Image
-                  source={require('./assets/backsmall.png')}>
-                </Image>
-              </TouchableOpacity>
+              style={{
+                flex:1,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <View
+                  style={styles.popupModalContainer}
+                >
+                  <Text
+                    style={{
+                      fontSize: 20
+                    }}>
+                      Are you sure you want to leave the current wellness contract?
+                  </Text>
+                  <Button
+                    title="Leave contract"
+                    onPress={this.handleRemoveConfirm}>
+                  </Button>
+                  <Button
+                    title="Cancel"
+                    onPress={this.handleLeaveModalVisible}>
+                  </Button>
+                </View>
             </View>
+          </Modal>
 
+          {/* button which allows user to create new wellness contract */}
+          <TouchableOpacity onPress={this.handleCreateContract}>
             <View
-              style={{flex:0.9}}>
-              <Text
-                style={styles.titleText}>
-                Wellness Contracts
-              </Text>
-            </View>
-          </View>
-
-
-          {/* View which holds top three buttons */}
-          <View
-            style={{
-              flexDirection:"row",
-              width: 370,
-              height: 150
-            }}>
-
-            {/* button which allows user to view existing wellness contract */}
-            <TouchableOpacity onPress={this.handleViewContract}>
-              <View
-                style={styles.iconButtonContainer}
-              >
-                <Image
-                  style={{
-                    flex: 1
-                  }}
-                  source={require('./assets/view.png')}
-                >
-                </Image>
-
-              </View>
-            </TouchableOpacity>
-
-            {/* button which allows user to leave existing wellness contract */}
-            <TouchableOpacity onPress={this.handleRemoveContract}>
-              <View
-                style={styles.iconButtonContainer}
-              >
-
-                <Image
-                  style={{
-                    flex: 1
-                  }}
-                  source={require('./assets/leave.png')}
-                >
-                </Image>
-
-              </View>
-            </TouchableOpacity>
-
-            {/* Modal for confirming leave current wellness contract */}
-            <Modal
-              animationType='none'
-              transparent={true}
-              visible={this.state.leaveModalVisible}
-              onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-              }}
+              style={styles.iconButtonContainer}
             >
-              <View
+
+              <Image
                 style={{
-                  flex:1,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>
-                  <View
-                    style={styles.popupModalContainer}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 20
-                      }}>
-                        Are you sure you want to leave the current wellness contract?
-                    </Text>
-                    <Button
-                      title="Leave contract"
-                      onPress={this.handleRemoveConfirm}>
-                    </Button>
-                    <Button
-                      title="Cancel"
-                      onPress={this.handleLeaveModalVisible}>
-                    </Button>
-                  </View>
-              </View>
-            </Modal>
-
-            {/* button which allows user to create new wellness contract */}
-            <TouchableOpacity onPress={this.handleCreateContract}>
-              <View
-                style={styles.iconButtonContainer}
+                  flex: 1
+                }}
+                source={require('./assets/create.png')}
               >
+              </Image>
 
-                <Image
-                  style={{
-                    flex: 1
-                  }}
-                  source={require('./assets/create.png')}
-                >
-                </Image>
-
-              </View>
-            </TouchableOpacity>
-          </View>
-
-          <Text
-            style={{
-              fontSize: 16
-            }}>
-            Pending wellness contracts:
-          </Text>
-          <ScrollView>
-            <FlatList
-                data={this.state.pendingContracts}
-                renderItem={({ item }) => <PendingCard owner={item.owner} handleReject={this.rejectInvitation} handleAccept={this.acceptInvitation} id={item.id} due_date={item.due_date} />}
-              />
-          </ScrollView>
-
+            </View>
+          </TouchableOpacity>
         </View>
-      );
-    }
+
+        <Text
+          style={{
+            fontSize: 16
+          }}>
+          Pending wellness contracts:
+        </Text>
+        <ScrollView>
+          <FlatList
+              data={this.state.pendingContracts}
+              renderItem={({ item }) => <PendingCard owner={item.owner} handleReject={this.rejectInvitation} handleAccept={this.acceptInvitation} id={item.id} due_date={item.due_date} />}
+            />
+        </ScrollView>
+
+      </View>
+    );
   }
 }
 

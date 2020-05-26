@@ -3,6 +3,7 @@ import { ScrollView, View, Text, Button, Image, TouchableOpacity, Modal, FlatLis
 import PendingCard from "./PendingCard";
 import TaskCard from "./TaskCard";
 import { createConfigItem } from "@babel/core";
+import * as Screens from './Screens';
 
 class ViewWellnessContract extends Component {
 
@@ -38,16 +39,29 @@ class ViewWellnessContract extends Component {
     this.setState({deleteMode: !this.state.deleteMode});
   }
 
-  deleteTask = (taskId: number) => {
+  removeTask = async(taskId) => {
+
+    var response = await fetch('http://172.17.59.113:3000/removeTask', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        taskId: taskId,
+        contractId: this.props.props.currentContractId
+      })
+    });
+
+    var result = await response.json(); //gets response body
 
     const newMyTasks = this.state.myTasks.filter(item => item.id !== taskId);
     this.setState({myTasks: newMyTasks});
-    Alert.alert("Task Delete Confirmation", "Task has been deleted.");
   }
 
   getMyTasks = async() => {
 
-    fetch(`http://172.17.59.113:3000/getMyTasks?id=${encodeURIComponent(this.props.currentContractId)}`)
+    fetch(`http://172.17.59.113:3000/getMyTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
       .then((response) => response.json()) //gets response body
       .then((output) => {
         this.setState({myTasks: output});
@@ -57,7 +71,7 @@ class ViewWellnessContract extends Component {
 
   getTheirTasks = async() => {
 
-    fetch(`http://172.17.59.113:3000/getTheirTasks?id=${encodeURIComponent(this.props.currentContractId)}`)
+    fetch(`http://172.17.59.113:3000/getTheirTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
       .then((response) => response.json()) //gets response body
       .then((output) => {
         this.setState({theirTasks: output});
@@ -65,7 +79,33 @@ class ViewWellnessContract extends Component {
 
   }
 
+  updateTasks = async() => {
+
+    var response = await fetch('http://172.17.59.113:3000/updateTasks', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contractId: this.props.props.currentContractId
+      })
+    });
+    
+    var tasksToRemove= await response.json(); //gets response body
+
+    for(var i = 0; i < tasksToRemove.length; i++) {
+
+      this.removeTask(tasksToRemove[i]);
+    }
+  }
+
   componentDidMount(){
+
+    //update list of tasks
+    this.updateTasks();
+
+    //
     this.getMyTasks();
     this.getTheirTasks();
   }
@@ -87,7 +127,7 @@ class ViewWellnessContract extends Component {
             {/* back button to get out of wellness contract home screen */}
             <View
               style={{flex:0.1}}>
-              <TouchableOpacity onPress={() => this.props.onBack(false)}>
+              <TouchableOpacity onPress={() => this.props.routeTo(Screens.WellnessContractHome)}>
                 <Image
                   source={require('./assets/backsmall.png')}>
                 </Image>
@@ -141,7 +181,7 @@ class ViewWellnessContract extends Component {
               renderItem={({ item, index }) =>
                 <TaskCard title={item.title} due_date={item.due_date} deleteMode={this.state.deleteMode}
                   viewMyTasks={this.state.viewMyTasks} id={item.id} handleDeleteTask={this.deleteTask}
-                  currentContractId={this.props.currentContractId}
+                  currentContractId={this.props.props.currentContractId}
                 />
               }
             />
@@ -171,7 +211,7 @@ class ViewWellnessContract extends Component {
             {/* back button to get out of wellness contract home screen */}
             <View
               style={{flex:0.15, backgroundColor: 'blanchedalmond'}}>
-              <TouchableOpacity onPress={() => this.props.onBack(false)}>
+              <TouchableOpacity onPress={() => this.props.routeTo(Screens.WellnessContractHome)}>
                 <Image
                   source={require('./assets/backsmall.png')}>
                 </Image>

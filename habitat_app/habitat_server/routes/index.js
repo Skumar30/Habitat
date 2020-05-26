@@ -11,6 +11,78 @@ router.get('/', function (req, res, next) {
   }
 });
 
+router.post('/updateTasks', async(req, res, next) => {
+
+  try {
+    var UserModel = require('../models/user.js');
+    var ContractModel = require('../models/wellnesscontract.js');
+    var TaskModel = require('../models/task.js');
+
+    //getting user from userId
+    var user = await UserModel.findOne({ _id: req.user._id });
+
+    //current contract user is in
+    var contractId = req.body.contractId;
+    contractId instanceof mongoose.Types.ObjectId;
+    var currentContract = await ContractModel.findOne({_id: contractId});
+
+    //other user object
+    var otherUser;
+    if(req.user._id.equals(currentContract.participants[0]))
+      otherUser = await UserModel.findOne(currentContract.participants[1]);
+    else {
+      otherUser = await UserModel.findOne(currentContract.participants[0]);
+    }
+
+    //possible tasks which need to be removed from the contract because they have expired or deleted
+    var tasksToRemove = [];
+    var currentTime = new Date();
+
+    //first check if the task that is in the contract is still within the user's list of tasks
+    for(var i = 0; i < currentContract.tasks.length; i++) {
+
+      var currTask = await TaskModel.findOne({_id: currentContract.tasks[i]});
+
+      var validTask = false;
+
+      //check the date of the task
+      if(currentTime <= currTask.due_date) {
+
+        //iterating though all the user's tasks to make sure task is still in user's task field
+        for(var k = 0; k < user.tasks.length; k++) {
+
+          //if task matches one of the tasks in the user
+          if(currTask._id.equals(user.tasks[k])) {
+            validTask = true;
+            break;
+          }
+        }
+
+        //iterating through all the other users's tasks
+        for(var k = 0; k < otherUser.tasks.length; k++) {
+
+          //if task matches one of the tasks in the user
+          if(currTask._id.equals(otherUser.tasks[k])) {
+            validTask = true;
+            break;
+          }
+        }
+      }
+
+      //if the task is not valid, add it to the list of tasks to remove
+      if(!validTask)
+        tasksToRemove.push(currTask._id);
+    }
+
+    res.send(tasksToRemove);
+  }
+  catch(err) {
+
+    console.log("error updating tasks");
+    res.status(500).send(err);
+  }
+});
+
 router.get('/getTheirTasks', async(req, res, next) => {
   try {
     //reference to user and contract model
@@ -221,6 +293,33 @@ router.post('/addTask', async(req, res, next) => {
   catch(err) {
 
     console.log(err);
+    res.status(500).send(err);
+  }
+
+
+});
+
+router.post('/removeTask', async(req, res, next) => {
+
+  try {
+    var UserModel = require('../models/user.js');
+    var ContractModel = require('../models/wellnesscontract.js');
+
+    var currContract = await ContractModel.findOne({_id: req.body.contractId});
+
+    var contractId = req.body.contractId;
+    contractId instanceof mongoose.Types.ObjectId;
+    var taskId = req.body.taskId;
+    taskId instanceof mongoose.Types.ObjectId;
+
+    //removing the contract from the other user's contract field
+    var result = await ContractModel.updateOne({_id: req.body.contractId}, {$pull: {tasks: taskId}});
+
+    res.send(result);
+  }
+  catch(err) {
+
+    console.log("error removing task");
     res.status(500).send(err);
   }
 
