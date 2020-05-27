@@ -55,6 +55,7 @@ class EditWellnessContract extends React.Component<any, State>{
                 for(var j = 0; j < this.state.tasks.length; j++) {
                     if(this.state.tasks[j] == this.state.allTasks[i].key) {
                         temp[i] = true;
+                        j++;
                     }
                     else{
                         temp[i] = false;

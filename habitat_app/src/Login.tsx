@@ -85,7 +85,7 @@ export default class Login extends React.Component<Props, State> {
                       });
                     } else {
                       actions.resetForm();
-                      this.props.routeTo(Screens.Home);
+                      this.props.routeTo(Screens.CreateContract, {date: new Date(), tasks: [], friend: 'Not Selected', friendID:''});
                     }
                   });
 
