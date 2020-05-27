@@ -10,8 +10,8 @@ class WellnessContractHome extends Component {
 
     super(props);
     this.state = {
-      viewingContract:false, 
-      viewMyTasks:true, 
+      viewingContract:false,
+      viewMyTasks:true,
       hasContract:true,
       leaveModalVisible: false,
 
@@ -54,7 +54,7 @@ class WellnessContractHome extends Component {
           message: 'My task #9',
         }
       ],
-      
+
       //other user in wellness contract task data
       theirTasks: [
 
@@ -99,67 +99,19 @@ class WellnessContractHome extends Component {
       //pending contract invitations for the user
       pendingContracts: [
 
-        {
-          id: '1',
-          title: 'Pending Wellness Contract #1',
-        },
-        {
-          id: '2',
-          title: 'Pending Wellness Contract #2',
-        },
-        {
-          id: '3',
-          title: 'Pending Wellness Contract #3',
-        },
-        {
-          id: '4',
-          title: 'Pending Wellness Contract #4',
-        },
-        {
-          id: '5',
-          title: 'Pending Wellness Contract #5',
-        },
-        {
-          id: '6',
-          title: 'Pending Wellness Contract #6',
-        },
-        {
-          id: '7',
-          title: 'Pending Wellness Contract #7',
-        },
-        {
-          id: '8',
-          title: 'Pending Wellness Contract #8',
-        },
-        {
-          id: '9',
-          title: 'Pending Wellness Contract #9',
-        }
-      ]
+
+      ],
+      currentContractId: {}
     }
   }
 
   setViewingContract = (val: boolean) => {
-
-    if(this.state.hasContract) {
-
-      this.setState({viewingContract: val});
-    }
-    else {
-
-      Alert.alert("No Existing Wellness Contract", "Please create a wellness contract in order to view it.");
-    }
-    
+    this.setState({viewingContract: val});
   }
 
   setHasContract = (val: boolean) => {
 
     this.setState({hasContract: val});
-  }
-
-  toggleViewMyTasks = () => {
-
-    this.setState({viewMyTasks: !this.state.viewMyTasks});
   }
 
   removeInvitation = (contractId: number) => {
@@ -182,14 +134,33 @@ class WellnessContractHome extends Component {
     this.setState({leaveModalVisible: !this.state.leaveModalVisible});
   }
 
-  leaveContract = () => {
+  handleRemoveConfirm = () => {
 
-    this.setState({hasContract: false});
+    this.removeContract(this.state.currentContractId);
     this.handleLeaveModalVisible();
     Alert.alert("Leave Contract Confirmation", "You have left the current contract.");
   }
+  
+  removeContract = async(contractId) => {
 
-  handleLeaveContract = () => {
+    var response = await fetch('http://172.17.59.113:3000/removeContract', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contractId: contractId
+      })
+    });
+
+    var result = await response.json(); //gets response body
+
+    this.setState({hasContract: false});
+    this.setState({currentContractId: null});
+  }
+
+  handleRemoveContract = () => {
 
     if(this.state.hasContract) {
 
@@ -219,12 +190,68 @@ class WellnessContractHome extends Component {
     }
   }
 
+  handleViewContract = () => {
+
+    console.log("enter");
+    if(this.state.hasContract) {
+
+      this.setState({viewingContract: true});
+      console.log("should be viewing contract");
+    }
+    else {
+
+      console.log("should be viewing alert");
+      this.setViewingContract(false);
+      Alert.alert("No Existing Wellness Contract", "Please create or accept a wellness contract in order to view it.");
+    }
+  }
+
+  getPendingContracts =async() => {
+
+      const response = await fetch('http://172.17.59.113:3000/getPendingContracts');
+      const body = await response.json();
+      var pendingContractData = body;
+      this.setState({pendingContracts: pendingContractData});
+  }
+
+  checkCurrentContract = async() => {
+
+    const response = await fetch('http://172.17.59.113:3000/checkCurrentContract');
+    const body = await response.json();
+    if(body.length > 0) {
+      this.setState({hasContract: true});
+      this.setState({currentContractId: body[0]})
+      console.log(this.state.currentContractId);
+    }
+    else
+      this.setState({hasContract: false});
+  }
+
+  updateContracts = async() => {
+
+    var response = await fetch('http://172.17.59.113:3000/updateContracts');
+    var contractsToRemove= await response.json(); //gets response body
+    console.log(contractsToRemove);
+    for(var i = 0; i < contractsToRemove.length; i++) {
+
+      this.removeContract(contractsToRemove[i]);
+    }
+  }
+
+
+  componentDidMount(){
+
+    this.getPendingContracts();
+    this.checkCurrentContract();
+    this.updateContracts();
+  }
+
   render() {
 
     //if user is viewing their wellness contract
     if(this.state.viewingContract) {
 
-      return(<ViewWellnessContract onBack={this.setViewingContract}/>);
+      return(<ViewWellnessContract onBack={this.setViewingContract} currentContractId={this.state.currentContractId}/>);
     }
     else { //if the user is in the wellness contract home screen
       return (
@@ -233,7 +260,7 @@ class WellnessContractHome extends Component {
         >
           <View
             style={{
-              backgroundColor: 'white',
+              backgroundColor: 'blanchedalmond',
               flexDirection: 'row'
             }}
           >
@@ -242,11 +269,11 @@ class WellnessContractHome extends Component {
               style={{flex:0.1}}>
               <TouchableOpacity onPress={() => this.props.onBack(false)}>
                 <Image
-                  source={require('./Assets/backArrow.png')}>
+                  source={require('./assets/backsmall.png')}>
                 </Image>
               </TouchableOpacity>
             </View>
-              
+
             <View
               style={{flex:0.9}}>
               <Text
@@ -255,8 +282,8 @@ class WellnessContractHome extends Component {
               </Text>
             </View>
           </View>
-      
-          
+
+
           {/* View which holds top three buttons */}
           <View
             style={{
@@ -264,37 +291,37 @@ class WellnessContractHome extends Component {
               width: 370,
               height: 150
             }}>
-            
+
             {/* button which allows user to view existing wellness contract */}
-            <TouchableOpacity onPress={() => {this.setViewingContract(true)}}>
+            <TouchableOpacity onPress={this.handleViewContract}>
               <View
                 style={styles.iconButtonContainer}
               >
-                <Image 
+                <Image
                   style={{
                     flex: 1
                   }}
-                  source={require('./Assets/view.png')}
+                  source={require('./assets/view.png')}
                 >
                 </Image>
-              
+
               </View>
             </TouchableOpacity>
 
             {/* button which allows user to leave existing wellness contract */}
-            <TouchableOpacity onPress={this.handleLeaveContract}>
+            <TouchableOpacity onPress={this.handleRemoveContract}>
               <View
                 style={styles.iconButtonContainer}
               >
-                  
-                <Image 
+
+                <Image
                   style={{
                     flex: 1
                   }}
-                  source={require('./Assets/leave.png')}
+                  source={require('./assets/leave.png')}
                 >
                 </Image>
-              
+
               </View>
             </TouchableOpacity>
 
@@ -324,7 +351,7 @@ class WellnessContractHome extends Component {
                     </Text>
                     <Button
                       title="Leave contract"
-                      onPress={this.leaveContract}>
+                      onPress={this.handleRemoveConfirm}>
                     </Button>
                     <Button
                       title="Cancel"
@@ -339,20 +366,20 @@ class WellnessContractHome extends Component {
               <View
                 style={styles.iconButtonContainer}
               >
-                  
-                <Image 
+
+                <Image
                   style={{
                     flex: 1
                   }}
-                  source={require('./Assets/create.png')}
+                  source={require('./assets/create.png')}
                 >
                 </Image>
-              
+
               </View>
             </TouchableOpacity>
           </View>
-          
-          <Text 
+
+          <Text
             style={{
               fontSize: 16
             }}>
@@ -361,10 +388,10 @@ class WellnessContractHome extends Component {
           <ScrollView>
             <FlatList
                 data={this.state.pendingContracts}
-                renderItem={({ item }) => <PendingCard title={item.title} handleReject={this.removeInvitation} handleAccept={this.acceptInvitation} id={item.id} />}
+                renderItem={({ item }) => <PendingCard owner={item.owner} handleReject={this.removeInvitation} handleAccept={this.acceptInvitation} id={item.id} due_date={item.due_date} />}
               />
           </ScrollView>
-  
+
         </View>
       );
     }
@@ -376,12 +403,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     height: 650,
     width: 410,
-    padding: 20
+    padding: 20,
+    backgroundColor: 'blanchedalmond'
   },
   titleText: {
     textAlign: 'center',
     fontWeight: 'bold',
-    textDecorationLine: 'underline',
     fontSize: 32
   },
 
@@ -394,8 +421,7 @@ const styles = StyleSheet.create({
   iconButtonContainer: {
     width:125,
     height:150,
-    borderColor: '#DDDDDD',
-    borderWidth: 5
+    borderWidth: 5,
   },
 
   popupModalScreen: {
@@ -413,14 +439,13 @@ const styles = StyleSheet.create({
   },
 
   scrollViewStyle: {
-    flexDirection: "column", 
+    flexDirection: "column",
     backgroundColor: "#DDDDDD"
   },
 
   cardContainer: {
     backgroundColor: '#FFFFFF',
-    borderWidth: 4,
-    borderColor: '#CCCCCC',
+    borderWidth: 5,
     flexDirection: 'row',
     margin: 5
   },

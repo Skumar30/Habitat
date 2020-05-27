@@ -40,17 +40,17 @@ class TaskCard extends Component {
       if(this.props.deleteMode) {
 
         return(
-  
+
           <TouchableWithoutFeedback onPress={this.handleSelect}>
             <View
               style={styles.cardContainer}
             >
-              
+
               <View
                 style={styles.cardTextContainer}
               >
                 <Text style={{textAlign: 'center', fontSize: 24}}>
-                  {this.props.message}
+                  {this.props.title}
                 </Text>
               </View>
               <View
@@ -63,8 +63,8 @@ class TaskCard extends Component {
                   onPress={this.handleDeleteTaskModalVisible}>
                   <Image
                     style={styles.taskCardInteract}
-                    source={require('./Assets/x.png')}>
-  
+                    source={require('./assets/x.png')}>
+
                   </Image>
                 </TouchableOpacity>
 
@@ -109,25 +109,29 @@ class TaskCard extends Component {
         );
       }
       else {
-  
+
         return(
-  
+
           <TouchableWithoutFeedback onPress={this.handleSelect}>
             <View
               style={styles.cardContainer}
             >
-              
+
               <View
                 style={styles.cardTextContainer}
               >
                 <Text style={{textAlign: 'center', fontSize: 24}}>
-                  {this.props.message}
+                  {this.props.title}
                 </Text>
+                <Text style={{textAlign: 'center', fontSize: 18}}>
+                  Due: {this.props.due_date}
+                </Text>
+
               </View>
               <View
                 style={styles.taskCardCheckboxContainer}
               >
-                <CheckBox 
+                <CheckBox
                   style={{
                     alignSelf: 'center',
                     margin: 5
@@ -142,19 +146,19 @@ class TaskCard extends Component {
       }
     }
     else {
-      
+
       return(
 
         <TouchableWithoutFeedback onPress={this.handleSelect}>
           <View
             style={styles.cardContainer}
           >
-            
+
             <View
               style={styles.cardTextContainer}
             >
               <Text style={{textAlign: 'center', fontSize: 24}}>
-                {this.props.message}
+                {this.props.title}
               </Text>
             </View>
             <View
@@ -162,8 +166,7 @@ class TaskCard extends Component {
             >
               <Image
                 style={styles.taskCardInteract}
-                source={require('./Assets/checkmark.png')}>
-
+                source={require('./assets/checkmark.png')}>
               </Image>
             </View>
           </View>
@@ -171,7 +174,7 @@ class TaskCard extends Component {
       );
     }
   }
-          
+
 }
 
 const styles = StyleSheet.create({
@@ -197,35 +200,34 @@ const styles = StyleSheet.create({
   iconButtonContainer: {
     width:125,
     height:150,
-    borderColor: '#DDDDDD',
     borderWidth: 5
   },
 
   popupModalScreen: {
     flex:1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'blanchedalmond'
   },
 
   popupModalContainer: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 4,
-    borderColor: '#CCCCCC',
+    backgroundColor: 'blanchedalmond',
+    borderWidth: 5,
     width: 300,
     height: 200
   },
 
   scrollViewStyle: {
-    flexDirection: "column", 
+    flexDirection: "column",
     backgroundColor: "#DDDDDD"
   },
 
   cardContainer: {
     backgroundColor: '#FFFFFF',
-    borderWidth: 4,
-    borderColor: '#CCCCCC',
+    borderWidth: 5,
     flexDirection: 'row',
-    margin: 5
+    margin: 5,
+    borderRadius: 10
   },
 
   cardTextContainer: {
@@ -245,7 +247,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: 30,
     height: 30,
-    margin: 6
+    margin: 6,
   },
 
   pendingCardInteractContainer: {

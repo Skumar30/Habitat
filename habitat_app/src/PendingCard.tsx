@@ -31,16 +31,19 @@ class PendingCard extends Component {
         <View
           style={styles.cardContainer}
         >
-          
+
           {/* View for pending contract title */}
           <View
             style={styles.cardTextContainer}
           >
             <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 24}}>
-              {this.props.title}
+              {this.props.owner}
+            </Text>
+            <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 18}}>
+              Due: {this.props.due_date}
             </Text>
           </View>
-          
+
           {/* View for checkmark region */}
           <View
             style={styles.pendingCardInteractContainer}
@@ -50,11 +53,11 @@ class PendingCard extends Component {
               onPress={this.handleAcceptModalVisible}>
               <Image
                 style={styles.pendingCardImage}
-                source={require('./Assets/checkmark.png')}>
+                source={require('./assets/checkmark.png')}>
               </Image>
             </TouchableOpacity>
           </View>
-          
+
           {/* View for x mark region */}
           <View
             style={styles.pendingCardInteractContainer}
@@ -64,11 +67,11 @@ class PendingCard extends Component {
               onPress={this.handleRejectModalVisible}>
               <Image
                 style={styles.pendingCardImage}
-                source={require('./Assets/x.png')}>
+                source={require('./assets/x.png')}>
               </Image>
             </TouchableOpacity>
           </View>
-          
+
           {/* Modal for confirming accept invitation */}
           <Modal
             animationType='none'
@@ -136,10 +139,10 @@ class PendingCard extends Component {
           </Modal>
         </View>
       </TouchableOpacity>
-      
+
     );
   }
-          
+
 }
 
 const styles = StyleSheet.create({
@@ -165,7 +168,6 @@ const styles = StyleSheet.create({
   iconButtonContainer: {
     width:125,
     height:150,
-    borderColor: '#DDDDDD',
     borderWidth: 5
   },
 
@@ -176,22 +178,21 @@ const styles = StyleSheet.create({
   },
 
   popupModalContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'blanchedalmond',
     borderWidth: 4,
-    borderColor: '#CCCCCC',
     width: 300,
     height: 200
   },
 
   scrollViewStyle: {
-    flexDirection: "column", 
+    flexDirection: "column",
     backgroundColor: "#DDDDDD"
   },
 
   cardContainer: {
     backgroundColor: '#FFFFFF',
-    borderWidth: 4,
-    borderColor: '#CCCCCC',
+    borderWidth: 5,
+    borderRadius: 10,
     flexDirection: 'row',
     margin: 5
   },
@@ -226,12 +227,12 @@ const styles = StyleSheet.create({
   pendingCardInteract: {
     height: 35,
     width: 35,
-    margin: 5
+    margin: 5,
   },
 
   pendingCardImage: {
     height:35,
-    width:35
+    width:35,
   }
 });
 

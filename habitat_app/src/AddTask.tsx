@@ -124,23 +124,36 @@ export default function AddTask(){
 
   return (
     <View style={styles.container}>
-      {/* Back Button */}
-      <View style={styles.backButton}>
-        <Button title="Back"/>
+      <Text style={styles.titleText} >{"Add Task"}</Text>
+      {/* Task Title */}
+      <TextInput placeholder="Task Title" onChangeText={(val)=>setTitle(val)} style={styles.titleInput}></TextInput>
+      {/* Frequency */}
+      <View style={{flex: 1}}>
+        <View style={{...styles.repeat, flex: 1}}>
+          <Button title="S" color={repeat[0] ? "powderblue" : "#999"} onPress={toggleSunday}/>
+          <Button title="M" color={repeat[1] ? "powderblue" : "#999"} onPress={toggleMonday}/>
+          <Button title="T" color={repeat[2] ? "powderblue" : "#999"} onPress={toggleTuesday}/>
+          <Button title="W" color={repeat[3] ? "powderblue" : "#999"} onPress={toggleWednesday}/>
+          <Button title="T" color={repeat[4] ? "powderblue" : "#999"} onPress={toggleThursday}/>
+          <Button title="F" color={repeat[5] ? "powderblue" : "#999"} onPress={toggleFriday}/>
+          <Button title="S" color={repeat[6] ? "powderblue" : "#999"} onPress={toggleSaturday}/>
+        </View>
+
+        <View style={{flex: 1}}>
+          <Text style={styles.textContainer}>Current Due Date is {date.getMonth()+1}/{date.getDate()}/{date.getYear()+1900}{repeat}</Text>
+        </View>
+
+        <View style={{flex: 5}}>
+          <Text>{repeat}</Text>
+        </View>
       </View>
 
-      {/* Task Title */}
-      <TextInput
-        placeholder="Task Title"
-        onChangeText={(val)=>setTitle(val)}
-        style={styles.titleInput}/>
-
+      <View style={{flex: 1}}>
         {/* Due Date Picker */}
         <View style={styles.button}>
-            <Button
-            onPress={showDatepicker}
-            title="Change Due Date"
-            />
+          <TouchableOpacity onPress={showDatepicker}>
+            <Text style={styles.buttonText}>Change Due Date</Text>
+          </TouchableOpacity>
         </View>
         {show && (
             <DateTimePicker
@@ -152,82 +165,94 @@ export default function AddTask(){
                 onChange={changeDate}
             />
         )}
-
-      {/* Frequency */}
-        <View style={styles.repeat}>
-          <Button title="S" color={repeat[0] ? "" : "#999"} onPress={toggleSunday}/>
-          <Button title="M" color={repeat[1] ? "" : "#999"} onPress={toggleMonday}/>
-          <Button title="T" color={repeat[2] ? "" : "#999"} onPress={toggleTuesday}/>
-          <Button title="W" color={repeat[3] ? "" : "#999"} onPress={toggleWednesday}/>
-          <Button title="T" color={repeat[4] ? "" : "#999"} onPress={toggleThursday}/>
-          <Button title="F" color={repeat[5] ? "" : "#999"} onPress={toggleFriday}/>
-          <Button title="S" color={repeat[6] ? "" : "#999"} onPress={toggleSaturday}/>
+        {/* Add Button */}
+        <View style={styles.addButton}>
+          <TouchableOpacity onPress={addHandler}>
+            <Text style={styles.buttonText}>Add Task</Text>
+          </TouchableOpacity>
         </View>
-
-        <View>
-          <Text>Current Due Date is {date.getMonth()+1}/{date.getDate()}/{date.getYear()+1900}{repeat}</Text>
+        {/* Back Button */}
+        <View style={styles.backButton}>
+          <TouchableOpacity>
+            <Text style={styles.buttonText}>Back</Text>
+          </TouchableOpacity>
         </View>
-        <View>
-        <Text>{repeat}</Text>
-        </View>
-
-
-      {/* Add Button */}
-      <View style={styles.addButton}>
-        <Button
-        title="Add Task"
-        onPress={addHandler}/>
       </View>
     </View>
+
   );
 };
 
 const styles = StyleSheet.create({
-  backButton: {
-    marginTop: 0,
-    flex: 0,
-    justifyContent: 'flex-start',
-    alignSelf: 'flex-start',
-    width: 100
-  },
+    titleText: {
+        fontSize: 50,
+        fontWeight: "bold",
+        textAlign: 'center',
+        fontFamily: "serif"
+    },
   container: {
-    marginTop: 0,
     flex: 1,
-    backgroundColor: '#aaeeff',
+    backgroundColor: 'blanchedalmond',
     alignItems: 'center',
     justifyContent: 'flex-start'
   },
+    textContainer: {
+        fontFamily: "serif",
+        fontSize: 15
+    },
   titleInput: {
-    marginTop: 60,
-    borderWidth: 1,
+      marginBottom: 20,
+    borderWidth: 5,
     borderColor: '#000',
     width: 390,
     height: 50,
     padding: 8,
     borderRadius: 7,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
+      fontFamily: "serif"
   },
   repeat: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     width:200,
-    height:100,
+    borderWidth: 5,
+    fontFamily: "serif",
+    borderRadius: 5
   },
   dateText: {
-    marginTop:10
+    marginTop:10,
+    fontFamily: "serif"
   },
   inputTitle: {
-    marginTop: 10
+    marginTop: 10,
+      fontFamily: "serif"
   },
   button: {
-    marginTop: 20,
-    marginBottom: 10,
-    width: 200,
+    marginBottom: 20,
+    borderWidth: 5,
+    borderRadius: 10,
+    alignItems: 'center',
+    backgroundColor: 'powderblue',
+    justifyContent: 'center',
   },
   addButton: {
-    marginTop: 150,
-    marginBottom: 180,
-    width: 200
+    marginBottom: 20,
+    borderWidth: 5,
+    borderRadius: 10,
+    backgroundColor: '#b4ecb4',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  backButton: {
+      marginBottom: 90,
+      borderWidth: 5,
+      borderRadius: 10,
+      backgroundColor: 'mistyrose',
+      alignItems: 'center',
+      justifyContent: 'center'
+  },
+  buttonText: {
+    fontSize: 30
   }
 });

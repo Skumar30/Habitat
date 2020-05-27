@@ -93,7 +93,7 @@ class FriendList extends Component{
               {this.state.invalidCode && <Text style={{color:'red'}}>Invalid Friend Code</Text>}
               </View>
 
-              <View style={styles.centerThis}>
+              <View style={{...styles.centerThis}}>
               <TextInput
                 style={styles.inputTxt}
                 placeholder="Enter Friend Code"
@@ -104,7 +104,7 @@ class FriendList extends Component{
               <View style={styles.buttonSeparation}>
                 <View>
                   <TouchableOpacity
-                    style={{...styles.addButton, backgroundColor: "#2196F3" }}
+                    style={{...styles.addButton, backgroundColor: "white" }}
                     onPress={() => {
                       this.setState({addModalVisible:false});
                     }}
@@ -115,7 +115,7 @@ class FriendList extends Component{
 
                 <View>
                   <TouchableOpacity
-                    style={{...styles.addButton, backgroundColor: "#2196F3" }}
+                    style={{...styles.addButton, backgroundColor: "white" }}
                     onPress={this.joinData}
                   >
                     <Text style={styles.textStyle}>Add</Text>
@@ -215,7 +215,6 @@ class FriendList extends Component{
   render(){
       return (
         <>
-                
           <SafeAreaView>
             <View style={styles.body}>
               <View style={styles.sectionContainer}>
@@ -227,7 +226,7 @@ class FriendList extends Component{
                     style={styles.button}
                     onPress={() => this.setState({addModalVisible: true}) }
                     >
-                      <Text>Add Friend</Text>
+                      <Text style={styles.textBox}>Add Friend</Text>
                   </TouchableOpacity>
 
                 </View>
@@ -268,6 +267,9 @@ const styles = StyleSheet.create({
    paddingTop: 15,
    paddingLeft: 15,
    paddingRight: 15,
+   backgroundColor: 'blanchedalmond',
+   borderWidth: 5,
+   borderTopWidth: 0
   },
   item: {
     padding: 5,
@@ -276,9 +278,11 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: "#DDDDDD",
+    backgroundColor: "#b4ecb4",
+    borderWidth: 5,
     padding: 10,
     borderRadius: 20,
+
   },
 
   fixToText: {
@@ -287,34 +291,42 @@ const styles = StyleSheet.create({
   },
 
   body: {
-    backgroundColor: '#FC886F',
+    backgroundColor: 'mistyrose',
+    borderWidth: 5
   },
   sectionContainer: {
-    marginTop: 32,
+    marginTop: 15,
     paddingHorizontal: 24,
+    paddingRight: 10,
   },
   sectionTitle: {
     fontSize: 32,
     fontWeight: '600',
-    color: 'white',
+    fontFamily: 'serif',
   },
   sectionDescription: {
     marginTop: 8,
-    marginBottom: 8,
-    fontSize: 24,
+    marginBottom: 15,
+    fontSize: 17,
     fontWeight: '400',
-    color: 'white',
+    fontFamily: 'serif'
   },
 
   centerText: {
     textAlign: 'center',
+      fontFamily: "serif"
   },
 
   emptyMessageStyle: {
     textAlign: 'center',
     fontSize: 28,
-    marginTop: '50%', 
+    marginTop: '50%',
+    fontFamily: 'serif'
   },
+  textBox: {
+    fontFamily: 'serif'
+  },
+
 
 // MODAL STYLE
 centeredView: {
@@ -324,8 +336,9 @@ centeredView: {
   modalView: {
     margin: 20,
     width: 375,
-    backgroundColor: "white",
+    backgroundColor: "blanchedalmond",
     borderRadius: 20,
+    borderWidth: 5,
     padding: 35,
     justifyContent: 'center',
     shadowColor: "#000",
@@ -338,20 +351,22 @@ centeredView: {
     elevation: 5
   },
   addButton: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "white",
     borderRadius: 20,
+    borderWidth: 5,
     padding: 10,
     elevation: 2,
   },
   textStyle: {
-    color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
+    fontFamily: 'serif'
   },
   modalText: {
     marginBottom: 10,
     textAlign: "center",
     fontSize: 25,
+    fontFamily: 'serif'
   },
 
   buttonSeparation: {
@@ -363,16 +378,17 @@ centeredView: {
   inputTxt: {
     height: 35, 
     width: 200, 
-    borderColor: 'blue', 
-    borderWidth: 1, 
+    borderColor: 'black', 
+    borderWidth: 5, 
     borderRadius: 5, 
     margin: 10, 
-    textAlign: 'center', 
-    
+    textAlign: 'center',
+    fontFamily: 'serif',
   },
 
   centerThis: {
     alignSelf: 'center',
+
   },
   
 });

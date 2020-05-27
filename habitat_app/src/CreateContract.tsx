@@ -24,18 +24,12 @@ import {
 
 const CreateContract = () => {
 
-    var currDate = "01/01/2020";
-
-    function doSomething() {
+    function submitData() {
 
     }
 
     function updateFriend({friend}: {friend: any}) {
         changeCurrFriend(friend);
-    }
-
-    function displayDate() {
-        currDate = date.toDateString();
     }
 
     const [date, setDate] = useState(new Date(1598051730000));
@@ -59,12 +53,15 @@ const CreateContract = () => {
         showMode({currentMode: 'date'});
     };
 
+    function rerouteScreen() {
+
+    }
+
     // @ts-ignore
     return (
         <View style={styles.container}>
-
             <View>
-                <Text style={styles.titleText}>Create Contract</Text>
+                <Text style={styles.titleText} >{"Create Contract"}</Text>
 
                 <MenuProvider style={{padding: 30, paddingTop: 50 }}>
                     <Menu >
@@ -101,7 +98,7 @@ const CreateContract = () => {
                         </MenuTrigger  >
 
                         <MenuOptions>
-                            <MenuOption value={'Darin'} onSelect={doSomething}>
+                            <MenuOption value={'Darin'} onSelect={rerouteScreen}>
                                 <Text style={styles.menuContent}>Darin</Text>
                             </MenuOption>
                             <MenuOption value={"Register"}>
@@ -120,10 +117,15 @@ const CreateContract = () => {
 
 
                 <Text style={styles.dateInput}>
-                    Current Due Date is {date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}
+                    {"Current Due Date is "}{date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}
                 </Text>
-                <View style={styles.buttonContainer}>
-                    <Button onPress={showDatepicker} title="Change Due Date" />
+            
+                <View style={{flex: 1}}>
+                {/* Due Date Picker */}
+                <View style={styles.changeButton}>
+                <TouchableOpacity onPress={showDatepicker}>
+                    <Text style={styles.buttonText}>Change Due Date</Text>
+                </TouchableOpacity>
                 </View>
                 {show && (
                     <DateTimePicker
@@ -135,12 +137,19 @@ const CreateContract = () => {
                         onChange={changeDate}
                     />
                 )}
-                <View style={styles.buttonContainer}>
-                    <Button onPress={doSomething} title="Create Contract">Create Contract</Button>
+                {/* Add Button */}
+                <View style={styles.addButton}>
+                <TouchableOpacity onPress={submitData}>
+                    <Text style={styles.buttonText}>Create Contract</Text>
+                </TouchableOpacity>
                 </View>
-                <View style={styles.buttonContainer}>
-                    <Button onPress={doSomething} title="Cancel">Cancel</Button>
+                {/* Back Button */}
+                <View style={styles.backButton}>
+                <TouchableOpacity onPress={rerouteScreen}>
+                    <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
                 </View>
+            </View>
             </View>
 
         </View>
@@ -150,20 +159,23 @@ const CreateContract = () => {
 
 const styles = StyleSheet.create({
     titleText: {
-        fontSize: 50,
+        fontSize: 45,
         fontWeight: "bold",
         textAlign: 'center',
-        marginTop: 20,
+        fontFamily: "serif"
     },
     container: {
         marginTop: 10,
-        flex: 2,
-        backgroundColor: '#FFF44F',
+        flex: 1,
+        backgroundColor: 'blanchedalmond',
         alignItems: 'center',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
     },
     buttonContainer: {
         marginBottom: 10,
+        marginLeft:70,
+        marginRight:70,
+        fontFamily: "serif"
     },
     titleInput: {
         marginTop: 10,
@@ -172,28 +184,28 @@ const styles = StyleSheet.create({
         width: 390,
         height: 50,
         padding: 8,
-        borderRadius: 7
+        borderRadius: 7,
+        fontFamily: "serif"
     },
     dateInput: {
         marginTop: 10,
-        width: 390,
         height: 50,
-        padding: 8,
-        borderRadius: 7,
         textAlign: 'center',
         textAlignVertical: 'center',
-        fontSize: 20,
+        fontSize: 15,
+        fontFamily: "serif"
     },
 
     headerText: {
-        fontSize: 20,
+        fontSize: 15,
         height: 40,
         textAlignVertical: 'center',
-        borderWidth: 1,
+        borderWidth: 5,
         borderColor: '#000',
-        borderRadius: 7,
+        borderRadius: 30,
         textAlign: 'center',
-        backgroundColor: '#58CEDF'
+        backgroundColor: 'white',
+        fontFamily: "serif"
     },
     menuContent: {
         color: "#000",
@@ -217,7 +229,41 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 20,
         paddingBottom: 20,
+        fontFamily: "serif"
     },
+    lastButton: {
+        marginBottom: 50,
+        marginLeft:70,
+        marginRight:70,
+        fontFamily: "serif"
+    },
+    changeButton: {
+        marginBottom: 20,
+        borderWidth: 5,
+        borderRadius: 10,
+        alignItems: 'center',
+        backgroundColor: 'powderblue',
+        justifyContent: 'center',
+      },
+      addButton: {
+        marginBottom: 20,
+        borderWidth: 5,
+        borderRadius: 10,
+        backgroundColor: '#b4ecb4',
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+      backButton: {
+          marginBottom: 90,
+          borderWidth: 5,
+          borderRadius: 10,
+          backgroundColor: 'mistyrose',
+          alignItems: 'center',
+          justifyContent: 'center'
+      },
+      buttonText: {
+        fontSize: 20
+      }
 });
 
 export default CreateContract;

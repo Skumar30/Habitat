@@ -14,10 +14,11 @@ import {
 } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import * as Screens from './Screens';
 
 declare const global: { HermesInternal: null | {} };
 
-class Customize extends React.Component<{}, { modalVisible: boolean, rerender: boolean, credits: number }>{
+class Customize extends React.Component<any, { modalVisible: boolean, rerender: boolean, credits: number }>{
   constructor(props: any) {
     super(props)
 
@@ -167,19 +168,19 @@ class Customize extends React.Component<{}, { modalVisible: boolean, rerender: b
 
                   <View>
                     <TouchableOpacity
-                      style={[styles.confirmationButton, { backgroundColor: '#556' }]}
+                      style={[styles.confirmationButton, { backgroundColor: 'indianred' }]}
                       onPress={() => { this.setState({ modalVisible: false }); }}
                     >
-                      <Text style={styles.itemText}>NO</Text>
+                      <Text style={[styles.itemText]}>NO</Text>
                     </TouchableOpacity>
                   </View>
 
                   <View>
                     <TouchableOpacity
-                      style={[styles.confirmationButton, { backgroundColor: 'slategray' }]}
+                      style={[styles.confirmationButton, { backgroundColor: '#b4ecb4' }]}
                       onPress={() => { this.handlePurchase(code, type) }}
                     >
-                      <Text style={styles.itemText}>YES</Text>
+                      <Text style={[styles.itemText, { color: 'black' }]}>YES</Text>
                     </TouchableOpacity>
                   </View>
 
@@ -198,8 +199,8 @@ class Customize extends React.Component<{}, { modalVisible: boolean, rerender: b
   active: string[] = [];
   componentDidMount() {
     this.getOwned().then(res => {
-      console.log(res);
-      this.owned = res;
+      console.log(res.owned);
+      this.owned = res.owned;
       for (var i = 0; i < this.owned.length; i++) {
         for (var j = 0; j < this.itemList.length; j++) {
           if (this.owned[i] === this.itemList[j].id) {
@@ -208,10 +209,11 @@ class Customize extends React.Component<{}, { modalVisible: boolean, rerender: b
           }
         }
       }
+      this.setState({ credits: res.credits });
     });
     this.getActive().then(res => {
-      console.log(res);
-      this.active = res;
+      console.log(res.active);
+      this.active = res.active;
       for (var i = 0; i < this.active.length; i++) {
         for (var j = 0; j < this.itemList.length; j++) {
           if (this.active[i] === this.itemList[j].id) {
@@ -221,15 +223,17 @@ class Customize extends React.Component<{}, { modalVisible: boolean, rerender: b
         }
       }
     });
-    this.getCredits().then(res => {
-      console.log(res);
-      this.setState({ credits: res });
-    });
+    // this.getCredits().then(res => {
+    //   console.log(res.credits);
+    //   this.setState({ credits: res.credits });
+    //   console.log(this.state.credits);
+    // });
   }
 
   getOwned = async () => {
     const response = await fetch('http://192.168.86.193:3000/owned');
-    return await response.json();
+    const body = await response.json();
+    return body;
   }
 
   getActive = async () => {
@@ -239,7 +243,8 @@ class Customize extends React.Component<{}, { modalVisible: boolean, rerender: b
 
   getCredits = async () => {
     const response = await fetch('http://192.168.86.193:3000/credits');
-    return await response.json();
+    const body = await response.json();
+    return body;
   }
 
   updateDB = async () => {
@@ -249,7 +254,7 @@ class Customize extends React.Component<{}, { modalVisible: boolean, rerender: b
       if (this.itemList[i].owned) this.owned.push(this.itemList[i].id);
       if (this.itemList[i].active) this.active.push(this.itemList[i].id);
     }
-
+    console.log(this.state.credits);
     console.log(this.owned);
     console.log(this.active);
 
@@ -309,22 +314,6 @@ class Customize extends React.Component<{}, { modalVisible: boolean, rerender: b
     } catch (e) {
       console.log(e);
     }
-    /////////////////////////////////////////////////////////////////
-    // fetch('http://192.168.86.193:3000/users/signin', {
-    //               method: 'POST',
-    //               headers: {
-    //                 Accept: 'application/json', //expects a JSON
-    //                 'Content-Type': 'application/json',
-    //               },
-    //               body: JSON.stringify({
-    //                 username: values.username,
-    //                 password: values.password,
-    //               }),
-    //             })
-
-    //assign users.cosmetics = this.owned
-    //assign users.cosmetics_on = this.active
-    //assign users.credits = this.credits
   }
 
 
@@ -353,15 +342,17 @@ class Customize extends React.Component<{}, { modalVisible: boolean, rerender: b
       <>
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
-          <View style={[styles.body, { zIndex: 3 }]}>
-            <Text style={styles.screenTitle}>Customize</Text>
-            <Text style={styles.creditDisplay}>${this.state.credits}</Text>
+          <View style={[styles.body, { zIndex: 3, flexDirection: 'row' }]}>
+            <View style={styles.backButton}>
+              <TouchableOpacity onPressIn={() => this.updateDB()} onPressOut={() => this.props.routeTo(Screens.Home).bind(this)}>
+                <Text style={{ fontSize: 30 }}>BACK</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ alignContent: 'center', flexDirection: 'row' }}>
+              <Text style={styles.screenTitle}>Customize</Text>
+              <Text style={styles.creditDisplay}>${this.state.credits}</Text>
+            </View>
           </View>
-
-          <TouchableOpacity onPress={() => this.exit()}
-            style={styles.backButton}>
-            <Text style={{ textAlign: 'center', marginVertical: 11, color: 'white' }}>BACK</Text>
-          </TouchableOpacity>
 
           <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
             {global.HermesInternal == null ? null : (
@@ -390,18 +381,18 @@ class Customize extends React.Component<{}, { modalVisible: boolean, rerender: b
     );
   }
 
-  exit() {
-    this.updateDB();
-    //go back home
-  }
+  // exit() {
+  //   this.updateDB();
+  //   this.props.routeTo(Screens.Home);
+  // }
 
 }
 
 const styles = StyleSheet.create({
   scrollView: {
     //backgroundColor: Colors.lighter,
-    backgroundColor: Colors.white,
-    marginBottom: 155,
+    //backgroundColor: Colors.white,
+    backgroundColor: '#f0ffff',
   },
   engine: {
     position: 'absolute',
@@ -411,15 +402,16 @@ const styles = StyleSheet.create({
     fontSize: 38,
     fontWeight: '700',
     color: Colors.black,
-    textAlign: 'left',
+    textAlign: 'center',
     paddingHorizontal: 20,
     paddingTop: 40,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
+    //fontFamily: 'serif'
   },
   body: {
-    backgroundColor: Colors.white,
+    backgroundColor: '#f0ffff',
   },
   creditDisplay: {
     textAlign: 'right',
@@ -427,6 +419,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     paddingRight: 20,
     paddingBottom: 10,
+    // fontFamily: 'serif',
+    alignSelf: 'center'
   },
   itemsContainer: {
     margin: 10,
@@ -447,6 +441,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     flexDirection: 'column',
     alignContent: 'space-between',
+    borderWidth: 5,
+    justifyContent: 'center'
   },
   itemElementActive: {
     margin: 10,
@@ -460,6 +456,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     flexDirection: 'column',
     alignContent: 'space-between',
+    borderWidth: 5,
+    justifyContent: 'center'
   },
   itemElementNotOwned: {
     margin: 10,
@@ -473,6 +471,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     flexDirection: 'column',
     alignContent: 'space-between',
+    borderWidth: 5,
+    justifyContent: 'center'
   },
   itemText: {
     margin: 5,
@@ -481,6 +481,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     alignContent: 'space-between',
     textAlign: 'center',
+    // fontFamily: 'serif'
   },
   itemImage: {
     height: 80,
@@ -494,22 +495,20 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#202020',
     paddingHorizontal: 35,
+    // fontFamily: 'serif'
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
     fontWeight: '400',
     color: Colors.dark,
+    // fontFamily: 'serif'
   },
   backButton: {
-    position: 'absolute',
     alignSelf: 'center',
-    bottom: 130,
-    backgroundColor: 'rgba(210, 42, 42, 0.8)',
-    borderRadius: 60,
-    height: 40,
-    width: 90,
-    margin: 13,
+    backgroundColor: 'indianred',
+    borderRadius: 10,
+    borderWidth: 5
   },
   footer: {
     color: Colors.dark,
@@ -523,7 +522,8 @@ const styles = StyleSheet.create({
     margin: 20,
     marginTop: 250,
     width: 375,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: '#e0eeee',
+    borderWidth: 5,
     borderRadius: 20,
     padding: 35,
     justifyContent: 'center',
@@ -540,6 +540,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
     fontSize: 20,
+    // fontFamily: 'serif',
+    color: 'black'
   },
   buttonSeparation: {
     flexDirection: 'row',
@@ -553,6 +555,8 @@ const styles = StyleSheet.create({
     height: 50,
     width: 90,
     elevation: 2,
+    justifyContent: 'center',
+    borderWidth: 5
   },
 });
 
