@@ -42,7 +42,6 @@ import WellnessContractHome from './WellnessContractHome';
 import TaskCard from './TaskCard';
 import SignUp from './SignUp';
 import Settings from './Settings';
-import Notifications from './Notifications';
 import ChangePassword from './ChangePassword';
 import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
@@ -139,11 +138,6 @@ class App extends React.Component<{}, State> {
       case Screens.Settings:
         screenToShow = (
           <Settings routeTo={this.routeTo} props={this.state.toSend} />
-        );
-        break;
-      case Screens.Notifications:
-        screenToShow = (
-          <Notifications routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
       case Screens.ChangePassword:

@@ -57,13 +57,6 @@ export default class Settings extends React.Component {
           <View style={styles.buttonSpacing}>
             <TouchableOpacity
               style={styles.TO}
-              onPress={() => this.props.routeTo(Screens.Notifications)}>
-              <Text style={styles.buttonText}>Notification Settings</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.buttonSpacing}>
-            <TouchableOpacity
-              style={styles.TO}
               onPress={() => this.props.routeTo(Screens.ChangePassword)}>
               <Text style={styles.buttonText}>Change Password</Text>
             </TouchableOpacity>
@@ -89,8 +82,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#0094FF',
   },
   buttonSpacing: {
-    paddingTop: 70,
-    paddingBottom: 70,
+    paddingTop: 80,
+    paddingBottom: 200,
     flex: 1,
   },
   TO: {
