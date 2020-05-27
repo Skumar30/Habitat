@@ -22,10 +22,7 @@ class WellnessContractHome extends Component {
       theirTasks: [],
 
       //pending contract invitations for the user
-      pendingContracts: [
-
-
-      ],
+      pendingContracts: [],
       currentContractId: {}
     }
   }
@@ -141,6 +138,14 @@ class WellnessContractHome extends Component {
 
     //redirect to michael's create contract screen
     this.props.routeTo(Screens.CreateContract, {date: new Date(), tasks: [], friend: 'Not Selected', friendID:''});
+    this.props.routeTo(Screens.CreateContract, {
+        date: new Date(),
+        tasks: this.state.myTasks,
+        friend: 'Not Selected', friendID:'',
+        screen: Screens.CreateContract,
+        contractId: this.state.currentContractId
+      }
+    );
   }
 
   handleCreateContract = () => {

@@ -121,7 +121,7 @@ router.get('/getTheirTasks', async(req, res, next) => {
       if(!myTask) {
         var currTask = await TaskModel.findOne({_id: currTaskId});
         var due_date = currTask.due_date.toString().substring(0, 15);
-        theirTasks.push({"title": currTask.title, "due_date": due_date, "id": currTaskId});
+        theirTasks.push(currTask);
       }
     }
 
@@ -167,7 +167,7 @@ router.get('/getMyTasks', async(req, res, next) => {
           var currTask = await TaskModel.findOne({_id: currTaskId});
           var due_date = currTask.due_date.toString().substring(0, 15);
           console.log("due date is: " + currTask.due_date);
-          myTasks.push({"title": currTask.title, "due_date": due_date, "id": currTaskId});
+          myTasks.push(currTask);
         }
       }
     }
