@@ -9,8 +9,7 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import Notifications from './Notifications';
-import ChangePassword from './ChangePassword';
+import * as Screens from './Screens';
 
 export default class Settings extends React.Component {
 
@@ -30,57 +29,56 @@ export default class Settings extends React.Component {
   }
 
   render() {
-    //route to notification settings
-    if (this.state.displayNotifications) {
-      return (
-        <Notifications onBack={this.toNotifications} />
-      );
-    }
-    //route to chagne password
-    else if (this.state.displayChangePassword) {
-      return (
-        <ChangePassword onBack={this.toChangePassword} />
-      );
-    }
-    else {
-      return (
-        <>
+
+    return (
+      <>
+        <View
+          style={{
+            height: 60,
+            backgroundColor: '#485EEC',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <View
             style={{
-              height: 60,
-              backgroundColor: '#485EEC',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Text style={styles.buttonText}>Settings</Text>
+              paddingRight: 365,
+              flex: 0.1
+            }}>
+            <TouchableOpacity onPress={() => this.props.routeTo(Screens.Home)}>
+              <Image
+                source={require('./assets/backArrowTransparent.png')}>
+              </Image>
+            </TouchableOpacity>
           </View>
-          <SafeAreaView style={styles.buttonGroup}>
-            <View style={styles.buttonSpacing}>
-              <TouchableOpacity
-                style={styles.TO}
-                onPress={() => this.toNotifications(true)}>
-                <Text style={styles.buttonText}>Notification Settings</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonSpacing}>
-              <TouchableOpacity
-                style={styles.TO}
-                onPress={() => this.toChangePassword(true)}>
-                <Text style={styles.buttonText}>Change Password</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonSpacing}>
-              <TouchableOpacity
-                style={styles.TO}
-                onPress={() => Alert.alert('Logout logic and redirect to login hereee')}>
-                <Text style={styles.buttonText}>Logout</Text>
-              </TouchableOpacity>
-            </View>
-          </SafeAreaView>
-        </>
-      );
-    };
+          <Text style={styles.buttonText}>Settings</Text>
+        </View>
+        <SafeAreaView style={styles.buttonGroup}>
+          <View style={styles.buttonSpacing}>
+            <TouchableOpacity
+              style={styles.TO}
+              onPress={() => this.props.routeTo(Screens.Notifications)}>
+              <Text style={styles.buttonText}>Notification Settings</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonSpacing}>
+            <TouchableOpacity
+              style={styles.TO}
+              onPress={() => this.props.routeTo(Screens.ChangePassword)}>
+              <Text style={styles.buttonText}>Change Password</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonSpacing}>
+            <TouchableOpacity
+              style={styles.TO}
+              onPress={() => this.props.routeTo(Screens.Login)}>
+              <Text style={styles.buttonText}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </>
+    );
+
   }
 }
 

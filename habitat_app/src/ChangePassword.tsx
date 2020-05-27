@@ -8,6 +8,7 @@ import {
   Alert,
   Image
 } from 'react-native';
+import * as Screens from './Screens';
 
 export default class ChangePassword extends React.Component {
 
@@ -42,13 +43,15 @@ export default class ChangePassword extends React.Component {
           backgroundColor: '#485EEC',
           justifyContent: 'center',
           alignItems: 'center',
-          flex: 0.1
         }}>
           <View
-            style={{ flex: 0.1 }}>
-            <TouchableOpacity onPress={() => this.props.onBack(false)}>
+            style={{
+              paddingRight: 365,
+              flex: 0.1
+            }}>
+            <TouchableOpacity onPress={() => this.props.routeTo(Screens.Settings)}>
               <Image
-                source={require('./assets/backsmall.png')}>
+                source={require('./assets/backArrowTransparent.png')}>
               </Image>
             </TouchableOpacity>
           </View>

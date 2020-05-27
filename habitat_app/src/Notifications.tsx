@@ -8,27 +8,31 @@ import {
   TouchableOpacity,
   Image
 } from 'react-native';
-import Settings from './Settings';
+import * as Screens from './Screens';
+
+interface State {
+  isEnabled: boolean;
+  setIsEnabled: any;
+}
 
 export default class Notifications extends React.Component {
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = {
-      isEnabled: true
-    };
+      isEnabled: false,
+    }
   }
 
-  toggleSwitch = (val: boolean) => {
-    this.setState({ isEnabled: !val });
-    /*
-    if (this.state.isEnabled) {
-      Alert.alert('Notifications are now disabled. Insert logic here.');
+  toggleSwitch = (value: boolean) => {
+    this.setState({ isEnabled: value });
+    console.log('Notifications Enabled:' + value)
+    if (value === true) {
+      Alert.alert("You have enabled notifications.");
     }
     else {
-      Alert.alert('Notifications are now enabled. Insert logic here.');
+      Alert.alert("You have disabled notifications.")
     }
-    */
   }
 
   render() {
@@ -41,14 +45,17 @@ export default class Notifications extends React.Component {
           alignItems: 'center',
         }}>
           <View
-            style={{ flex: 0.1 }}>
-            <TouchableOpacity onPress={() => this.props.onBack(false)}>
+            style={{
+              paddingRight: 365,
+              flex: 0.1
+            }}>
+            <TouchableOpacity onPress={() => this.props.routeTo(Screens.Settings)}>
               <Image
-                source={require('./assets/backsmall.png')}>
+                source={require('./assets/backArrowTransparent.png')}>
               </Image>
             </TouchableOpacity>
           </View>
-          <Text style={styles.buttonText}>Notifications</Text>
+          <Text style={styles.title}>Notifications</Text>
         </View>
         <View style={styles.container}>
           <Text style={styles.buttonText}>Enable Push Notifications </Text>
@@ -56,11 +63,11 @@ export default class Notifications extends React.Component {
             trackColor={{ false: "#767577", true: "#81b0ff" }}
             thumbColor={this.state.isEnabled ? "#77E2FF" : "#ffffff"}
             ios_backgroundColor="#3e3e3e"
-            //onValueChange={this.toggleSwitch(this.state.isEnabled)} TODO
+            onValueChange={this.toggleSwitch}
             value={this.state.isEnabled}
           />
         </View>
-        
+
       </>
     );
   };
@@ -74,12 +81,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#0094FF',
     flexDirection: 'row',
   },
-
+  title: {
+    color: 'white',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    fontSize: 20,
+  },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    fontSize: 20
+    fontSize: 20,
   },
   buttonSpacing: {
     paddingTop: 70,

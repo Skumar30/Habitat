@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import * as Screens from './Screens';
 import {
   SafeAreaView,
@@ -47,7 +47,7 @@ import ChangePassword from './ChangePassword';
 import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
 
-declare const global: {HermesInternal: null | {}};
+declare const global: { HermesInternal: null | {} };
 
 interface State {
   screen: string;
@@ -57,12 +57,12 @@ interface State {
 class App extends React.Component<{}, State> {
   constructor(props: any) {
     super(props);
-    this.state = {screen: Screens.Login, toSend: {}, trigger: true};
+    this.state = { screen: Screens.Login, toSend: {}, trigger: true };
   }
 
   routeTo = (screen: string, props: any = {}) => {
     console.log(screen);
-    this.setState({screen: screen, toSend: props});
+    this.setState({ screen: screen, toSend: props });
   };
 
   renderScreen() {
@@ -136,7 +136,21 @@ class App extends React.Component<{}, State> {
           />
         );
         break;
-
+      case Screens.Settings:
+        screenToShow = (
+          <Settings routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.Notifications:
+        screenToShow = (
+          <Notifications routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.ChangePassword:
+        screenToShow = (
+          <ChangePassword routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
       //) {
     }
     console.log(screenToShow);
