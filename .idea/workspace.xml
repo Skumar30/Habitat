@@ -2,17 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="912dc296-c5c3-4fd8-8a3e-8ba3c824f7c3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/habitat_app/src/Test.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/habitat_app/{" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/models/task.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/models/task.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/users.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/src/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/Login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/Test.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,6 +96,12 @@
           <line>113</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
+          <line>454</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

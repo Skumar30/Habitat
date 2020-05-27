@@ -346,17 +346,17 @@ router.get('/getDailies', async(req, res, next) => {
 
     // Daily Tasks to return
     var tasks = [];
-    console.log('entering loop');
-   console.log (req.user.tasks);
+    //console.log('entering loop');
+    //console.log (req.user.tasks);
     // Find the tasks matching id
     TaskModel.find({"_id": {$in: req.user.tasks}}, function (err, result) {
       for ( var i = 0; i < result.length; i++) {
         if (result[i].daily) {
           tasks.push(result[i]);
-          console.log(tasks);
+          //console.log(tasks);
         }
       }
-      console.log("above return");
+      //console.log("above return");
       res.json(tasks);
     });
     }
@@ -366,6 +366,15 @@ router.get('/getDailies', async(req, res, next) => {
     res.status(500).send(err);
   }
 });
+
+router.get('/getContract', async(req,res, next) => {
+    var ContractModel = require('../models/wellnesscontract.js');
+    ContractModel.findOne({"_id" : {$in : req.user.contracts}}, function(err, data){
+      console.log("inside contract");
+    console.log(data);
+    res.json(data);
+  })
+})
 
 router.delete('/deleteTask', async(req, res, next) => {
     var id = mongoose.Types.ObjectId(req.body.my_id);
@@ -406,6 +415,12 @@ router.post('/incrementStreak', async(req, res, next) => {
     var pet = await PetModel.findOne({_id: req.user.pet_id});
     var streak = req.body.streak
 
+    var contract = req.body.inContract;
+    var bonus = 0;
+    if( contract = true){
+      bonus = .5 * ((10 + streak) / 10);
+    }
+
     console.log("in increment");
     console.log(task);
 
@@ -442,10 +457,10 @@ router.post('/decrementStreak', async(req, res, next) => {
     var UserModel = require('../models/user.js');
     var PetModel = require('../models/pet.js');
     var TaskModel = require('../models/task.js');
+    var ContractModel = require('../models/wellnesscontract.js');
 
     var user = await UserModel.findOne({_id: req.user._id});
     var task = await TaskModel.findOne({_id: req.body.id});
-
     var pet = await PetModel.findOne({_id: req.user.pet_id});
     var streak = req.body.streak + 1;
 
@@ -501,9 +516,5 @@ router.post("/incomplete", async(req, res, next) => {
   }
 })
 
-router.get('/test', function(req, res, next)  {
-  console.log('here')
-  res.json({retval: "hello"})
-});
 
 module.exports = router;

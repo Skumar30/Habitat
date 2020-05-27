@@ -19,10 +19,6 @@ import {
     UIManager, FlatList, Alert,
 } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
-class DailyScreen extends Component {
-    constructor(props) {
-=======
 import * as Screens from './Screens';
 import TaskCard from "./TaskCard";
 
@@ -31,6 +27,8 @@ interface State {
     streaks: number[]
     tasks: any[]
     completes: string[]
+    contract: Contract | null
+    inContract: boolean[]
 }
 
 interface Task{
@@ -42,6 +40,15 @@ interface Task{
     frequency: boolean[]
     start_date: string
     datesCompleted: string[]
+}
+
+interface Contract{
+    _id: string
+    participants: string[]
+    tasks : string[]
+    owner: string
+    pending: boolean
+    due_date: string
 }
 
 const TODAY = new Date();
@@ -61,7 +68,8 @@ class DailyScreen extends Component {
     constructor(props){
         super(props);
         var checks:boolean[] = [];
-        this.state = { checked: checks, streaks: [], tasks: []}
+        var bonus:boolean[] = [];
+        this.state = { checked: checks, streaks: [], tasks: [], contract: null, inContract: bonus}
     }
 
     getDailies = async() => {
@@ -73,31 +81,30 @@ class DailyScreen extends Component {
         return body;
     }
 
+    getContract = async() => {
+        const response = await fetch('http://192.168.1.81:3000/getContract');
+        const body = await response.json();
+        if (response.status !== 200) {
+            console.error(body.message)
+        }
+        return body;
+    }
+
     updateState(res:any[]):void {
         let data: any[] = [];
         let streak: any[] = [];
         let complete: any[] = [];
+        let bonus: any[] = [];
         res.forEach((element: Task) => {
-            data.push(element)
-            streak.push(element.streak)
-            complete.push(element.datesCompleted)
+            data.push(element);
+            streak.push(element.streak);
+            complete.push(element.datesCompleted);
+            bonus.push(false);
         });
         this.setState({tasks: data});
         this.setState({streaks: streak});
         this.setState({completes: complete});
-
-
-
-
-        console.log(TODAY);
-        var today = TODAY.toString();
-        console.log("new date");
-        console.log(newdate);
-        console.log(today);
-        today = today.substring(0, 13);
-        console.log("After set state");
-        console.log(today);
-        console.log(complete);
+        this.setState( {inContract: bonus});
 
         for ( var i = 0; i < complete.length; i++){
             if( complete[i] != []){
@@ -108,14 +115,16 @@ class DailyScreen extends Component {
                 date1 = "";
             }
 
+            /*
             console.log(complete[i]);
             console.log(complete[i].toString());
             console.log("after date1");
             console.log(date1);
-
-                console.log("above comparison");
+            console.log("above comparison");
             console.log(today, date1, newdate);
             console.log(newdate == date1);
+            */
+
             if( newdate == date1){
                 this.state.checked[i] = true;
             }
@@ -124,14 +133,44 @@ class DailyScreen extends Component {
             }
         }
         console.log(this.state.checked);
+    }
 
+    updateContract (res:Contract|undefined=undefined):void{
+        if(res != undefined){
+            console.log(res.tasks.length);
+
+            for (var i = 0; i < this.state.tasks.length; i++){
+                console.log("inside contractUpdate");
+                console.log(res.tasks[i]);
+                console.log(this.state.tasks[i]._id);
+
+                console.log("above 2nd loop");
+                console.log(this.state.tasks.length);
+                for (var j = 0; res.tasks.length; j++){
+                    if( res.tasks[j] == this.state.tasks[i]._id){
+                        console.log("inside 2nd loop");
+                        this.state.inContract[i] = true;
+                        console.log(res.tasks[j]);
+                    }
+                }
+                console.log(this.state.inContract);
+            }
+        }
     }
 
     componentDidMount(){
     this.getDailies().then(res => {
-        this.setState({tasks: res})
-        this.updateState(res)
+        this.setState({tasks: res});
+        this.updateState(res);
+        console.log(this.state.inContract);
         })
+
+    this.getContract().then(res1 => {
+        this.setState({contract: res1})
+        this.updateContract(res1)
+        console.log(this.state.inContract);
+    });
+
     }
 
 
@@ -241,8 +280,9 @@ class DailyScreen extends Component {
             },
             body: JSON.stringify(
                 {streak: this.state.streaks[index],
-                        id: this.state.tasks[index]._id }
-            )
+                        id: this.state.tasks[index]._id ,
+                        inContract: this.state.inContract[index]
+                })
         };
 
         try{
@@ -266,9 +306,9 @@ class DailyScreen extends Component {
             },
             body: JSON.stringify(
                 {streak: this.state.streaks[index],
-                       id: this.state.tasks[index]._id
-                }
-            )
+                       id: this.state.tasks[index]._id,
+                       inContract: this.state.inContract[index]
+                })
         };
 
         try{
@@ -326,38 +366,13 @@ class DailyScreen extends Component {
 
     render() {
         return (
-        <>
-
-        <View style={[styles.header]}>
-            <Text style={{fontSize:40}}> Dailies </Text>
-        </View>
-
-        <View style={[styles.container]}>
-
-            <ScrollView>
-                        <View style={[styles.body]}>
-                            <Text style={{fontSize:28}}> Sample Card </Text>
-                            <CheckBox
-                            checkedIcon='dot-circle-o'
-                            uncheckedIcon='circle-o'
-
-                            />
-                        </View>
-            </ScrollView>
-
-            <TouchableOpacity
-                activeOpacity={0.8}
-                style={[styles.TouchableOpacityStyle]}>
-                <Image
-                    source={require ('./DailyComponent/add-trimmy.png') }
-                    style={[styles.FloatingButtonStyle]}
-                />
-            </TouchableOpacity>
+         <>
 
         <View style={{flex: 1, flexDirection: 'column'}}>
           <View style={[styles.header]}>
               <Text style={styles.textBox}>Dailies</Text>
           </View>
+
           <View style={[styles.container]}>
               <ScrollView style={{flex: 1}}>
                   <FlatList
@@ -381,6 +396,7 @@ class DailyScreen extends Component {
               </View>
           </View>
         </View>
+
         </>
         );
     }
