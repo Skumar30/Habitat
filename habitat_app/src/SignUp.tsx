@@ -20,7 +20,7 @@ import {
   Text,
   ScrollView,
 } from 'react-native';
-
+import * as Screens from './Screens';
 import CustomButton from './components/button';
 
 const dimensions = Dimensions.get('window');
@@ -212,7 +212,10 @@ export default class SignUp extends React.Component<{}, State> {
                     )}
 
                   <View style={styles.buttonGroup}>
-                    <CustomButton text="Login" />
+                     <CustomButton
+                      text="Login"
+                      onPress={() => this.props.routeTo(Screens.Login)}
+                    />
                     <CustomButton text="Submit" onPress={props.handleSubmit} />
                   </View>
                 </View>
