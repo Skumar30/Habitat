@@ -59,6 +59,11 @@ export default function EditTask(props){
     props.routeTo(props.props.screen)
   }
 
+  const backHandler = () => {
+      // return to previous screen
+      props.routeTo(props.props.screen)
+    }
+
   const titleAlert = () => {
       Alert.alert("", "Please input a task title.", [
         {
@@ -218,7 +223,7 @@ export default function EditTask(props){
         {/* Back Button */}
         <View style={styles.backButton}>
           <TouchableOpacity>
-            <Text style={styles.buttonText}>Back</Text>
+            <Text style={styles.buttonText} onPress={backHandler}>Back</Text>
           </TouchableOpacity>
         </View>
       </View>
