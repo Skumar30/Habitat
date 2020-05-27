@@ -39,17 +39,22 @@ import PendingCard from './PendingCard'
 import WellnessContractHome from './WellnessContractHome';
 import TaskCard from './TaskCard'
 import SignUp from './SignUp';
+import Settings from './Settings';
+import Notifications from './Notifications';
+import ChangePassword from './ChangePassword';
 
 declare const global: { HermesInternal: null | {} };
 
 const App = () => {
     return (
-      <MyApp></MyApp>
+        <MyApp></MyApp>
+
     );
 };
 
+
 const styles = StyleSheet.create({
-   
+
 });
 
 export default App;
