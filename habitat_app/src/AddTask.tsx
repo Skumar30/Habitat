@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  Alert,
   StyleSheet,
   View,
   Text,
@@ -34,6 +35,7 @@ export default function AddTask(props){
   const addHandler = () => {
     if(title === ""){
       setEmpty(true);
+      titleAlert();
       return;
     }
     var temp_id = new mongoose.Types.ObjectId();
@@ -67,6 +69,15 @@ export default function AddTask(props){
     props.routeTo(props.props.screen)
 }
 
+
+  const titleAlert = () => {
+      Alert.alert("", "Please input a task title.", [
+        {
+          text: "OK",
+        }//TODO Route to Add Task
+      ]
+    )
+  }
 
   const showMode = currentMode => {
       setShow(true);

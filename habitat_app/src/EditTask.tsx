@@ -5,7 +5,8 @@ import {
   Text,
   Button,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Screens from './Screens';
@@ -34,6 +35,7 @@ export default function EditTask(props){
   const addHandler = () => {
     if(title === ""){
       setEmpty(true);
+      titleAlert();
       return;
     }
     // edit task
@@ -57,7 +59,14 @@ export default function EditTask(props){
     props.routeTo(props.props.screen)
   }
 
-
+  const titleAlert = () => {
+      Alert.alert("", "Please input a task title.", [
+        {
+          text: "OK",
+        }//TODO Route to Add Task
+      ]
+    )
+  }
   const showMode = currentMode => {
       setShow(true);
       setMode(currentMode);
