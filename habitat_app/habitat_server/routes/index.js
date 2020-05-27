@@ -339,4 +339,28 @@ router.get('/updateContracts', async(req, res, next) => {
   }
 });
 
+router.get('/home', async(req, res) => {
+  var petModel = require('../models/pet.js');
+  var pet = await petModel.findOne( {_id: req.user.pet_id});
+  var cosmeticModel = require('../models/cosmetic.js');
+  var cosmetic = await cosmeticModel.findOne( {_id: pet.cosmetics[0]});
+  var cosmetics = [cosmetic.name];
+  console.log(cosmetic);
+  console.log(cosmetics);
+  res.json({name: req.user.name, petName: pet.name, credits: req.user.credits, mood: pet.happiness, pet: pet.type, cosmetics: cosmetics});
+});
+
+router.post('/petName', function (req, res) {
+  var petModel = require('../models/pet.js');
+  console.log(req.body);
+  petModel.findByIdAndUpdate(req.user.pet_id, { $set: { name: req.body.name } }, function (err, result) {
+    if (err) {
+      console.log("Error: " + err);
+    } else {
+      console.log("Else: " + result);
+      res.json(result);
+    }
+  });
+});
+
 module.exports = router;

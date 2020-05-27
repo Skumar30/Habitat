@@ -9,42 +9,54 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import * as Screens from './Screens'
+
 interface HomeState {
   petName: string;
   playerName: string;
-  friendshipPoints: number;
+  credits: number;
   mood: number;
+  pet: string;
+  cosmetics: any[];
 }
+
+// Assets
+const full = require('./assets/full.png');
+const empty = require('./assets/empty.png');
+const store = require('./assets/store.png');
+const settings = require('./assets/settings.png');
+const points = require('./assets/points.png');
+const head = require('./assets/head.png');
+const happy = require('./assets/happy.png');
+const sad = require('./assets/sad.png');
+const background = require('./assets/background.png');
+// Doesnt load as a local for some reason
+const blank = 'blank';
+const bear = 'https://i.imgur.com/6H0QDqq.png';
+const cat = 'https://imgur.com/PvPRg5I.png';
+const pig = 'https://imgur.com/PPoEQZR.png';
+const fox = 'https://imgur.com/lduNgbL.png';
+const cow = 'https://imgur.com/bQhlxB6.png';
+
+const crown = require('./assets/crown.png');
+
+const bars = [];
 
 class Home extends React.Component<{}, HomeState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      // Placeholder values to pull from database
-      petName: "Pet Name",
-      playerName: "Joe",
-      friendshipPoints: 1312,
-      mood: 4
+      petName: "",
+      playerName: "",
+      credits: 10,
+      mood: 4,
+      pet: blank,
+      cosmetics: []
     };
   }
-  render() {
-    // Assets
-    const full = require('./assets/full.png');
-    const empty = require('./assets/empty.png');
-    const store = require('./assets/store.png');
-    const settings = require('./assets/settings.png');
-    const points = require('./assets/points.png');
-    const head = require('./assets/head.png');
-    const happy = require('./assets/happy.png');
-    const sad = require('./assets/sad.png');
-    const background = require('./assets/background.png');
-    // Doesnt load as a local for some reason
-    const bear = 'https://i.imgur.com/6H0QDqq.png';
-    const feeling = this.state.mood >= 3 ? happy : sad;
 
-
+  calculateBars() {
     // Calculate how much of the healthbar to fill
-    const bars = [];
     for (var i = 0; i < 5; i++) {
       if (i < this.state.mood) {
         bars[i] = full;
@@ -53,6 +65,58 @@ class Home extends React.Component<{}, HomeState> {
         bars[i] = empty;
       }
     }
+  }
+
+  getData = async() => {
+    const response = await fetch('http://192.168.1.98:3000/home');
+    const body = await response.json();
+    return body;
+  }
+
+  getPet() {
+    var pet = this.state.pet;
+    if (pet === 'bear') {
+      pet = bear;
+    }
+    else if (pet === 'cat') {
+      pet = cat;
+    }
+    else if (pet === 'cow') {
+      pet = cow;
+    }
+    else if (pet === 'fox') {
+      pet = fox;
+    }
+    else if (pet === 'pig') {
+      pet = pig;
+    }
+    pet = fox;
+    return pet;
+  }
+
+  getCosmetics() {
+    console.log(this.state.cosmetics);
+    var cosmetics:any[];
+    cosmetics = [];
+    if (this.state.cosmetics[0] === 'crown') {
+      cosmetics[0] = crown;
+    }
+    return cosmetics;
+  }
+
+  componentDidMount(){
+    this.getData().then(res => {
+      console.log(res);
+      this.setState({playerName: res.name, petName: res.petName, credits: res.credits, mood: (res.mood/20), pet: res.pet, cosmetics: res.cosmetics});
+    })
+   }  
+
+  render() {
+    console.log(this.state.mood);
+    const feeling = this.state.mood >= 3 ? happy : sad;
+    this.calculateBars();
+    const petType = this.getPet();
+    const cosmetics = this.getCosmetics();
 
     // Didn't make style class for the different flex values
     return(
@@ -70,7 +134,7 @@ class Home extends React.Component<{}, HomeState> {
             <View style={styles.singleRow}>
               <Image source={points} style={styles.stretchImage}></Image>
               <View style={styles.friendshipPoints}>
-                <Text style={styles.textBox}>{this.state.friendshipPoints}</Text>
+                <Text style={styles.textBox}>{this.state.credits}</Text>
               </View>
             </View>
           </View>
@@ -79,21 +143,32 @@ class Home extends React.Component<{}, HomeState> {
               <View style={{flex: 2, flexDirection: 'row'}}>
                 <View style={{flex: 5}}></View>
                 <View style={[styles.singleColumn, styles.border5]}>
-                  <TouchableOpacity style={{flex: 1}}>
+                  <TouchableOpacity style={{flex: 1}} onPress={() => this.props.routeTo(Screens.CustomizeScreen)}>
                     <Image source={store} style={styles.stretchImage}></Image>
                   </TouchableOpacity>
-                  <TouchableOpacity style={{flex: 1}}>
+                  <TouchableOpacity style={{flex: 1}} onPress={() => this.props.routeTo(Screens.Setting)}>
                     <Image source={settings} style={styles.stretchImage}></Image>
                   </TouchableOpacity>
                 </View>
               </View>
               <View style={{flex: 4}}>
-                <Image source={{uri: bear}} style={styles.containImage}/>
+                <ImageBackground source={{uri: petType}} style={styles.containImage} imageStyle={styles.containImage}>
+                  <ImageBackground source={cosmetics[0]} style={styles.containImage} imageStyle={styles.containImage}/>
+                </ImageBackground>
               </View>
             </ImageBackground>
           </View>
           <View style={styles.petName}>
-            <TextInput style={styles.textBox}>{this.state.petName}</TextInput>
+            <TextInput style={styles.textBox} onSubmitEditing={event => fetch(`http://${Screens.ADDRESS}/petName`, {
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json', //expects a JSON
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    name: event.nativeEvent.text
+                  }),
+                })}>{this.state.petName}</TextInput>
           </View>
           <View style={styles.singleRow}>
             <Image source={feeling} style={styles.stretchImage}></Image>
