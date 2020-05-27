@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="912dc296-c5c3-4fd8-8a3e-8ba3c824f7c3" name="Default Changelist" comment="" />
+    <list default="true" id="912dc296-c5c3-4fd8-8a3e-8ba3c824f7c3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/Test.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/{" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/models/task.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/models/task.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,10 +37,11 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/CSE110_Firebase" />
-    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.3.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="ts.external.directory.path" value="C:\Users\Student\Documents\GitHub\Habitat\UI\habitat_app\node_modules\typescript\lib" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -56,5 +69,41 @@
       <screen x="0" y="0" width="1418" height="759" />
     </state>
     <state x="381" y="168" key="com.intellij.ide.util.TipDialog/0.0.1418.759@0.0.1418.759" timestamp="1587622978292" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
+          <line>231</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
+          <line>147</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
+          <line>206</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
+          <line>11</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
+          <line>113</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
