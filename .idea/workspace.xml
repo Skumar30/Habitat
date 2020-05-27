@@ -6,6 +6,7 @@
       <change afterPath="$PROJECT_DIR$/habitat_app/src/EditWellnessContract.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/MyApp.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/WellnessContractFriends.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/.eslintrc.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/.prettierrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/.prettierrc.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/__tests__/App-test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/__tests__/App-test.tsx" afterDir="false" />
@@ -76,7 +77,7 @@
       <workItem from="1590361785481" duration="1943000" />
       <workItem from="1590425087794" duration="40708000" />
       <workItem from="1590542446341" duration="3339000" />
-      <workItem from="1590551258330" duration="1545000" />
+      <workItem from="1590551258330" duration="3441000" />
     </task>
     <servers />
   </component>

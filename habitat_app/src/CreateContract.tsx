@@ -46,6 +46,7 @@ class CreateContract extends React.Component<any, State> {
     };
 
     submitData = async() => {
+        var currDate = new Date();
         if(this.state.friendID == '') {
 
 
@@ -54,7 +55,16 @@ class CreateContract extends React.Component<any, State> {
                 text: "Cancel",
                 style: "cancel"
             }
-        ]);
+            ]);
+        }
+        else if((this.state.date.getFullYear() < currDate.getFullYear()) || ((this.state.date.getMonth() < currDate.getMonth()) &&(currDate.getFullYear() == this.state.date.getFullYear()))
+            || ((this.state.date.getDate() < currDate.getDate()) && (this.state.date.getMonth() == currDate.getMonth()) && (this.state.date.getFullYear() == currDate.getFullYear()))){
+            Alert.alert("", "Please select a future due date", [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                }
+            ]);
         }
         else {
             var temp_id = new mongoose.Types.ObjectId();
