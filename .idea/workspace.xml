@@ -2,25 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="912dc296-c5c3-4fd8-8a3e-8ba3c824f7c3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/habitat_app/.eslintrc.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/habitat_app/.prettierrc.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/CustomizeScreen.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/EditWellnessContract.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/habitat_app/src/Screens.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/MyApp.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/WellnessContractFriends.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/.eslintrc.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/.prettierrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/.prettierrc.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/__tests__/App-test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/__tests__/App-test.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/config/passport.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/config/passport.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/models/cosmetic.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/models/cosmetic.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/models/pet.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/models/pet.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/models/task.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/models/task.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/models/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/models/wellnesscontract.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/models/wellnesscontract.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/users.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcodeproj/project.pbxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/ios/habitat_app/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/ios/habitat_app/Info.plist" afterDir="false" />
@@ -29,13 +18,9 @@
       <change beforePath="$PROJECT_DIR$/habitat_app/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/CreateContract.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/CreateContract.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/Login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/src/PendingCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/PendingCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/src/RegTask.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/RegTask.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/Screens.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/Screens.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/src/TaskCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/TaskCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/src/ViewWellnessContract.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/ViewWellnessContract.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/src/WellnessContractHome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/WellnessContractHome.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/src/assets/create.png" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/assets/create.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/WellnessContractFriends.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/WellnessContractFriends.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/components/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/components/button.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/helloworld.js" beforeDir="false" />
     </list>
@@ -49,6 +34,7 @@
       <list>
         <option value="JavaScript File" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -91,7 +77,8 @@
       <workItem from="1590292795971" duration="11953000" />
       <workItem from="1590306424360" duration="1971000" />
       <workItem from="1590361785481" duration="1943000" />
-      <workItem from="1590425087794" duration="1736000" />
+      <workItem from="1590425087794" duration="40708000" />
+      <workItem from="1590542446341" duration="3339000" />
     </task>
     <servers />
   </component>
@@ -103,14 +90,34 @@
       <screen x="0" y="0" width="1418" height="759" />
     </state>
     <state x="489" y="134" key="FileChooserDialogImpl/0.0.1418.759@0.0.1418.759" timestamp="1587623049593" />
-    <state x="413" y="182" key="com.intellij.ide.util.TipDialog" timestamp="1590425549189">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1590439689041">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590439689041" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1590439689041">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1590439689041" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1590439689040">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1590439689040" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1590439689041">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1590439689041" />
+    <state x="413" y="182" key="com.intellij.ide.util.TipDialog" timestamp="1590544208233">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="381" y="168" key="com.intellij.ide.util.TipDialog/0.0.1418.759@0.0.1418.759" timestamp="1587622978292" />
-    <state x="413" y="182" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1590425549189" />
-    <state x="431" y="145" key="search.everywhere.popup" timestamp="1590305124901">
+    <state x="413" y="182" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1590544208233" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1590443424531">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1590305124901" />
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1590443424531" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1590430533546">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1590430533546" />
   </component>
 </project>

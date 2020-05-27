@@ -1,5 +1,5 @@
 var User = require('../models/user');
-var mongoose = require('mongoose');
+var Task = require('../models/task');
 var Contract = require('../models/wellnesscontract')
 var express = require('express');
 var router = express.Router();
@@ -233,10 +233,13 @@ router.post('/addTask', async(req, res, next) => {
 });
 
 router.post('/createContract', async(req, res, next) => {
-
   try {
+    console.log(req.body.contractId);
     var ContractModel = require('../models/wellnesscontract.js');
     var contractToCreate = new ContractModel(req.body);
+    contractToCreate.participants = [req.user._id, mongoose.Types.ObjectId(req.body.friend)];
+    contractToCreate.owner = req.user._id;
+    contractToCreate.pending = true;
     var result = await contractToCreate.save();
     res.send(result);
   }
@@ -249,7 +252,90 @@ router.post('/createContract', async(req, res, next) => {
 
 });
 
+router.get('/getTasks', (req, res) => {
+    Task.find({"_id" : {$in: req.user.tasks}}, function(err, user){
+        console.log('yo');
+        res.json(user);
+        console.log(user);
+    })
+});
+
+//get friends
+router.get('/getFriends', (req, res) => {
+    User.find({"_id" : {$in: req.user.friends}}, function(err, user){
+        res.json(user);
+        console.log(user);
+    })
+});
+
+router.get('/getWCTasks', async(req, res, next) => {
+  try {
+    var TaskModel = require('../models/task.js');
+
+    //getting contract from passed in query id
+    var currContract = await Contract.findOne({_id: req.query.id});
+
+    //given this contract, return a list of the users tasks and a list of the other user's tasks
+    var currContractTaskIds = currContract.tasks;
+    var userTaskIds = req.user.tasks;
+    var myTasks = [];
+
+    //iterating through each task id in the contract
+    for (var i = 0; i < currContractTaskIds.length; i++) {
+
+      //current task id
+      var currTaskId = currContractTaskIds[i];
+
+      //iterating through all of the user's task ids to find the current task
+      for(var j = 0; j < userTaskIds.length; j++) {
+
+        //if the current task is found within user's task id list
+        if(currTaskId.equals(userTaskIds[j])) {
+
+          //get the actual task from the current task id
+          var currTask = await TaskModel.findOne({_id: currTaskId});
+          var due_date = currTask.due_date.toString().substring(0, 15);
+          console.log("due date is: " + currTask.due_date);
+          myTasks.push({"title": currTask.title, "due_date": due_date, "id": currTaskId});
+        }
+      }
+    }
+
+    //returning whether or not the user is currently in a wellness contract
+    res.send(myTasks);
+  }
+  catch(err) {
+
+    console.log("error getting my tasks");
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
 router.post('/addContract', async(req, res, next) => {
+
+  try {
+    var UserModel = require('../models/user.js');
+
+
+    //console.log("userId is: " + req.user._id);
+    //console.log("contractId is: " + req.body.contractId);
+    //var Model = mongoose.model("model", schema, "users");
+    var result = await UserModel.update(
+        { _id: req.user._id },
+        { $push: { contracts: mongoose.Types.ObjectId(req.body.contractId) } }
+    );
+
+    res.send(result);
+  }
+  catch(err) {
+
+    console.log("error adding contract");
+    res.status(500).send(err);
+  }
+});
+
+router.post('/addContractToFriend', async(req, res, next) => {
 
   try {
     var UserModel = require('../models/user.js');
@@ -258,9 +344,10 @@ router.post('/addContract', async(req, res, next) => {
     //console.log("contractId is: " + req.body.contractId);
     //var Model = mongoose.model("model", schema, "users");
     var result = await UserModel.update(
-        { _id: req.user._id },
-        { $push: { contracts: req.body.contractId } }
+        { _id: req.body.friendID },
+        { $push: { contracts: mongoose.Types.ObjectId(req.body.contractId) } }
     );
+
     res.send(result);
   }
   catch(err) {
@@ -268,8 +355,6 @@ router.post('/addContract', async(req, res, next) => {
     console.log("error adding contract");
     res.status(500).send(err);
   }
-
-
 });
 
 router.post('/removeContract', async(req, res, next) => {
@@ -279,7 +364,7 @@ router.post('/removeContract', async(req, res, next) => {
     var ContractModel = require('../models/wellnesscontract.js');
 
     //removing the contract from the user's contract field
-    var result = await UserModel.update(
+    var result = await ContractModel.update(
         { _id: req.user._id },
         { $pull: { contracts: req.body.contractId } }
     );
@@ -303,6 +388,24 @@ router.post('/removeContract', async(req, res, next) => {
     var finalResult = await ContractModel.deleteOne({_id: req.body.contractId});
 
     res.send(finalResult);
+  }
+  catch(err) {
+
+    console.log("error removing contract");
+    res.status(500).send(err);
+  }
+
+
+});
+
+router.post('/updateContract', async(req, res, next) => {
+
+  try {
+    var ContractModel = require('../models/wellnesscontract.js');
+
+
+    var result = await ContractModel.findByIdAndUpdate(req.body.contractId, {tasks: req.body.tasks});
+    res.send(result);
   }
   catch(err) {
 
@@ -341,5 +444,7 @@ router.get('/updateContracts', async(req, res, next) => {
     res.status(500).send(err);
   }
 });
+
+
 
 module.exports = router;

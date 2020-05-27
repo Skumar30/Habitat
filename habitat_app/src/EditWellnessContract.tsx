@@ -1,59 +1,109 @@
 import React, {useLayoutEffect} from 'react';
 import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, Alert, TouchableHighlight, Image, CheckBox} from 'react-native'
-import {Header, Button, Icon, Tooltip} from 'react-native-elements'
 import {Dimensions} from 'react-native';
+import * as Screens from "./Screens";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const daysInWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept',
-    'Oct', 'Nov', 'Dec']
-
 interface State {
-
     checked: boolean[]
-    data: any[] //TODO
+    allTasks:{key: any; title: any;}[];
+    tasks:{key: any;}[];
+    screen: any;
+    friend: any;
+    friendID: any;
+    date: any;
+    post: boolean;
+    contractId?: any;
 }
 
-class EditWellnessContract extends React.Component<{}, State>{
+class EditWellnessContract extends React.Component<any, State>{
 
     constructor(props:any){
         super(props);
-        var checks  =[]
-        var found = false;
-        for(var i = 0; i < (User tasks).length; i++){
-            for(var j = 0; j < (WC tasks).length; j++){
-                if((User task) == (WC task))
-                {
-                    found = true;
-                }
-            }
-            checks.push(found);
-            found = false;
-        }
-        this.state ={checked: checks, data: FAKE_DATA}
-        // TODO REMEMBER TO DO
+
+        var checks:boolean[] = [];
+        this.state = {checked: checks,  allTasks: [], tasks: this.props.props.tasks, screen: Screens.EditWellnessContract,
+            date: this.props.props.date, friend: this.props.props.friend, friendID: this.props.props.friendID, post: false};
     }
 
+    getTasks = async() => {
+        const response = await fetch('http://192.168.4.21:3000/getTasks');
+
+        const body = await response.json();
+        if(response.status != 200) {
+            console.error(body.message);
+        }
+        return body;
+    };
+
+    componentDidMount() {
+        this.getTasks().then(res => {
+            var tasks:{key: any; title: any;}[] = [];
+            var checks:boolean[] = [];
+            res.forEach((element: { _id: any; title: any; }) => {
+                var temp = {key: element._id, title: element.title};
+                checks.push(false);
+                tasks.push(temp);
+            });
+            this.setState({allTasks: tasks});
+            this.setState({checked: checks});
+            var temp:boolean[] = [];
+
+            for(var i = 0; i < this.state.allTasks.length; i++) {
+                for(var j = 0; j < this.state.tasks.length; j++) {
+                    if(this.state.tasks[j] == this.state.allTasks[i].key) {
+                        temp[i] = true;
+                    }
+                    else{
+                        temp[i] = false;
+                    }
+                }
+            }
+            this.setState({checked:temp});
+        });
+    }
+
+
+
     /* Create the individual items for the flatlist */
-    Item = (title:string, index:number) =>{
-        console.log(index)
+    Item = (title:string, index:number) => {
         return(
             <View style={styles.itemView}>
+                <View style={styles.item}>
+                    <Text style={styles.title}>{title}</Text>
+                </View>
             <CheckBox
                 value={this.state.checked[index]}
                 onValueChange={() => {
-            var checked = this.state.checked
-            checked[index] = !checked[index];
-            this.setState({checked: checked})
+            var checks = this.state.checked;
+            checks[index] = !checks[index];
+            this.setState({checked: checks})
         }}/>
         </View>
     )};
 
-    submitForm = () => {
-        // go back to create contract
-        // post/update request (?)
+    submitForm = async() => {
+        for (var i = 0; i < this.state.allTasks.length; i++) {
+            if (this.state.checked[i] == true) {
+                this.state.tasks.push(this.state.allTasks[i].key);
+            }
+            if (this.state.post) {
+                await fetch('http://192.168.4.21:3000/updateContract', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json', //expects a JSON
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contractId: this.state.contractId,
+                        tasks: this.state.tasks,
+                    })
+                });
+            }
+            this.props.routeTo(this.props.props.screen, this.state);
+        }
     }
 
     render(){
@@ -66,22 +116,21 @@ class EditWellnessContract extends React.Component<{}, State>{
             <View style={styles.listContainer}>
                 <View style={{flex: 9}}>
         <FlatList
-            data={this.state.data} //TODO
+            data={this.state.allTasks}
             renderItem={({ item, index }) => this.Item(item.title, index)}
-            keyExtractor={item => item.id}
         />
         </View>
                 <View style={{flex: 1, flexDirection: 'row'}}>
-                    <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}>
-                        <Image source={require ('./assets/back.png') } style={styles.TouchableOpacityStyle} onPress={}/>
-                        // TODO link to CreateContract
+                    <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}} onPress={() => this.props.routeTo(this.props.props.screen, this.state)}>
+                        <Image source={require ('./assets/back.png') } style={styles.TouchableOpacityStyle} />
+
                     </TouchableOpacity>
                     <View style={{flex: 4, opacity: 0}}>
 
                     </View>
-                    <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}>
-                        <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle} onPress={this.submitForm}/>
-                        // TODO link to CreateContract
+                    <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}  onPress={this.submitForm}>
+                        <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
+
                     </TouchableOpacity>
                 </View>
         </View>

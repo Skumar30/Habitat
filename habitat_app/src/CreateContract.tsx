@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+var mongoose = require('mongoose');
 import {
     SafeAreaView,
     StyleSheet,
@@ -13,127 +14,166 @@ import {
 import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger} from "react-native-popup-menu";
 
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as Screens from './Screens';
 
-import {
-    Header,
-    LearnMoreLinks,
-    Colors,
-    DebugInstructions,
-    ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+interface State{
+    date: any;
+    mode: any;
+    show: any;
+    friendID: any;
+    friend: String;
+    tasks:any[];
+    screen: any;
+}
 
-const CreateContract = () => {
+class CreateContract extends React.Component<any, State> {
 
-    function submitData() {
-        fetch('http://192.168.4.21:3000/createContract', {
+    constructor(props:any) {
+        super(props);
+
+        this.state = {date: this.props.props.date, mode: 'date', show: false, tasks: this.props.props.tasks,
+            friendID:this.props.props.friendID, friend: this.props.props.friend, screen: Screens.CreateContract}
+
+    }
+    updateFriend() {
+        this.props.routeTo(Screens.WellnessContractFriends, this.state)
+    }
+
+    changeDate = (event: any, selectedDate: any) => {
+        const currentDate = selectedDate || this.state.date;
+        this.setState({show: (Platform.OS === 'ios')});
+        this.setState({date:(currentDate)});
+    };
+
+    submitData = async() => {
+        if(this.state.friendID == '') {
+
+
+        Alert.alert("", "Please select a friend", [
+            {
+                text: "Cancel",
+                style: "cancel"
+            }
+        ]);
+        }
+        else {
+            var temp_id = new mongoose.Types.ObjectId();
+            await fetch('http://192.168.4.21:3000/createContract', {
             method: 'POST',
             headers: {
                 Accept: 'application/json', //expects a JSON
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                friend: friend ,
-                tasks: [ tasks ],
-                //pending: true
-            })
-    }
+                _id: temp_id,
+                friend: this.state.friendID,
+                tasks: this.state.tasks,
+                due_date: this.state.date
+             })
+            });
+            await fetch('http://192.168.4.21:3000/addContract', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json', //expects a JSON
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contractId: temp_id,
+                })
+            });
 
-    function updateFriend({friend}: {friend: any}) {
-        changeCurrFriend(friend);
-    }
+            await fetch('http://192.168.4.21:3000/addContractToFriend', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json', //expects a JSON
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contractId: temp_id,
+                    friendID: this.state.friendID
+                })
+            });
+            this.props.routeTo(Screens.ViewWellnessContract);
+        }
 
-    const [date, setDate] = useState(new Date(1598051730000));
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
-    const [friend, changeCurrFriend] = useState('Not Selected');
-
-    // @ts-ignore
-    const changeDate = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
-        setDate(currentDate);
     };
 
-    function showMode({currentMode}: { currentMode: any }) {
-        setShow(true);
-        setMode(currentMode);
+    showMode({currentMode}: { currentMode: any }) {
+        this.setState({show:true});
     };
 
-    const showDatepicker = () => {
-        showMode({currentMode: 'date'});
+    showDatepicker = () => {
+        this.showMode({currentMode: 'date'});
     };
 
-    function rerouteScreen() {
-        // reroute to WellnessContractHome
-    }
 
-    // @ts-ignore
-    return (
-        <View style={styles.container}>
-            <View>
-                <Text style={styles.titleText} >{"Create Contract"}</Text>
-                    <TouchableOpacity onPress={}> // LINK TO EditWellnessContract.tsx
-                            <Text style={styles.headerText}>Tasks to Add</Text>
+    render() {
+        return (
+            <View style={styles.container}>
+                <View>
+                    <Text style={styles.titleText} >{"Create Contract"}</Text>
+                    <TouchableOpacity onPress={() => this.props.routeTo(Screens.EditWellnessContract, this.state)}>
+                        <Text style={styles.headerText}>Tasks to Add</Text>
                     </TouchableOpacity>
 
-                <Text style={styles.dateInput}>
-                    Friend to Invite: {friend}
-                </Text>
-                    <TouchableOpacity onPress={}> // LINK TO WellnessContractFriends
-                            <Text style={styles.headerText}>Friend to Invite</Text>
+                    <Text style={styles.dateInput}>
+                        {"Friend to Invite: "}{this.state.friend}
+                    </Text>
+                    <TouchableOpacity onPress={() => this.updateFriend()}>
+                        <Text style={styles.headerText}>Friend to Invite</Text>
                     </TouchableOpacity>
 
 
-                <Text style={styles.dateInput}>
-                    {"Current Due Date is "}{date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}
-                </Text>
-            
-                <View style={{flex: 1}}>
-                {/* Due Date Picker */}
-                <View style={styles.changeButton}>
-                <TouchableOpacity onPress={showDatepicker}>
-                    <Text style={styles.buttonText}>Change Due Date</Text>
-                </TouchableOpacity>
+                    <Text style={styles.dateInput}>
+                        {"Current Due Date is "}{this.state.date.getMonth() + 1}/{this.state.date.getDate()}/{this.state.date.getFullYear()}
+                    </Text>
+
+                    <View style={{flex: 1}}>
+                        {/* Due Date Picker */}
+                        <View style={styles.changeButton}>
+                            <TouchableOpacity onPress={this.showDatepicker}>
+                                <Text style={styles.buttonText}>Change Due Date</Text>
+                            </TouchableOpacity>
+                        </View>
+                        {this.state.show && (
+                            <DateTimePicker
+                                testID="dateTimePicker"
+                                timeZoneOffsetInMinutes={0}
+                                value={this.state.date}
+                                is24Hour={true}
+                                display="default"
+                                onChange={this.changeDate}
+                            />
+                        )}
+                        {/* Add Button */}
+                        <View style={styles.addButton}>
+                            <TouchableOpacity onPress={this.submitData}>
+                                <Text style={styles.buttonText}>Create Contract</Text>
+                            </TouchableOpacity>
+                        </View>
+                        {/* Back Button */}
+                        <View style={styles.backButton}>
+                            <TouchableOpacity onPress={ () => this.props.routeTo(Screens.WellnessContractHome)}>
+                                <Text style={styles.buttonText}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
-                {show && (
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        timeZoneOffsetInMinutes={0}
-                        value={date}
-                        is24Hour={true}
-                        display="default"
-                        onChange={changeDate}
-                    />
-                )}
-                {/* Add Button */}
-                <View style={styles.addButton}>
-                <TouchableOpacity onPress={submitData}>
-                    <Text style={styles.buttonText}>Create Contract</Text>
-                </TouchableOpacity>
-                </View>
-                {/* Back Button */}
-                <View style={styles.backButton}>
-                <TouchableOpacity onPress={rerouteScreen}>
-                    <Text style={styles.buttonText}>Cancel</Text>
-                </TouchableOpacity>
-                </View>
-            </View>
+
             </View>
 
-        </View>
-
-    );
+        );}
 };
 
 const styles = StyleSheet.create({
     titleText: {
+        marginTop: 30,
         fontSize: 45,
         fontWeight: "bold",
         textAlign: 'center',
         fontFamily: "serif"
     },
     container: {
-        marginTop: 10,
         flex: 1,
         backgroundColor: 'blanchedalmond',
         alignItems: 'center',
@@ -146,7 +186,7 @@ const styles = StyleSheet.create({
         fontFamily: "serif"
     },
     titleInput: {
-        marginTop: 10,
+        marginTop: 50,
         borderWidth: 1,
         borderColor: '#000',
         width: 390,
@@ -165,6 +205,7 @@ const styles = StyleSheet.create({
     },
 
     headerText: {
+        marginTop: 30,
         fontSize: 15,
         height: 40,
         textAlignVertical: 'center',
@@ -206,32 +247,35 @@ const styles = StyleSheet.create({
         fontFamily: "serif"
     },
     changeButton: {
+        marginTop: 70,
         marginBottom: 20,
         borderWidth: 5,
         borderRadius: 10,
         alignItems: 'center',
         backgroundColor: 'powderblue',
         justifyContent: 'center',
-      },
-      addButton: {
+    },
+    addButton: {
+        marginTop: 15,
         marginBottom: 20,
         borderWidth: 5,
         borderRadius: 10,
         backgroundColor: '#b4ecb4',
         alignItems: 'center',
         justifyContent: 'center'
-      },
-      backButton: {
-          marginBottom: 90,
-          borderWidth: 5,
-          borderRadius: 10,
-          backgroundColor: 'mistyrose',
-          alignItems: 'center',
-          justifyContent: 'center'
-      },
-      buttonText: {
+    },
+    backButton: {
+        marginTop: 15,
+        marginBottom: 90,
+        borderWidth: 5,
+        borderRadius: 10,
+        backgroundColor: 'mistyrose',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    buttonText: {
         fontSize: 20
-      }
+    }
 });
 
 export default CreateContract;

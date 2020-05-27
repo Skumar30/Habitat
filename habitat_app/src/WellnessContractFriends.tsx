@@ -1,19 +1,29 @@
 import React from 'react';
 import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, Alert, TouchableHighlight, Image, CheckBox} from 'react-native'
 import {Dimensions} from 'react-native';
+import * as Screens from './Screens';
+import {CreateContract} from "./Screens";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 
 interface State {
-
+    friends: {key: any; name: any;}[];
+    screen: any;
+    friend: any;
+    friendID: any;
+    date: any;
+    tasks: any[];
+    post: false;
 }
 
-class WellnessContractFriends extends React.Component<{}, State>{
+class WellnessContractFriends extends React.Component<any, State>{
 
     constructor(props:any){
-        super(props);
+            super(props);
+            this.state = {friendID: this.props.props.friendID, friends: [], screen: Screens.WellnessContractFriends,
+                friend: props.props.friend, date: props.props.date, tasks: props.props.tasks, post: false};
     }
 
 
@@ -23,17 +33,29 @@ class WellnessContractFriends extends React.Component<{}, State>{
         if(response.status != 200) {
             console.error(body.message);
         }
-
         return body;
     }
 
-    friends: string[] = [];
+
 
     componentDidMount() {
         this.getFriends().then(res => {
-            console.log(res);
-            this.friends = res;
+            var newFriends:{key: any; name: any;}[] = [];
+            res.forEach((element: { _id: any; name: any; }) => {
+                var temp = {key: element._id, name: element.name};
+                newFriends.push(temp);
+            });
+            this.setState({friends: newFriends});
         });
+    }
+
+    updateScreen(getFriend:boolean, index?:any) {
+        if(getFriend)
+        {
+            this.setState({friend: this.state.friends[index].name});
+            this.setState({friendID: this.state.friends[index].key});
+        }
+        this.props.routeTo(Screens.CreateContract, this.state)
     }
 
     editAlert(index: number){
@@ -42,15 +64,15 @@ class WellnessContractFriends extends React.Component<{}, State>{
                     text: "Cancel",
                     style: "cancel"
                 },
-                { text: "Select", onPress: () => console.log("Edit Pressed") }
-                // TODO return prior screen && pass friend ID (friends[index].name)
+                { text: "Select", onPress: () => this.updateScreen(true, index)}
+
             ]
+
         )
     }
 
     /* Create the individual items for the flatlist */
     Item = (title:string, index:number) =>{
-        console.log(index)
         return(
             <View style={styles.itemView}>
                 <TouchableOpacity onPress={() => this.editAlert(index)}>
@@ -71,12 +93,13 @@ class WellnessContractFriends extends React.Component<{}, State>{
         <View style={styles.listContainer}>
         <View style={{flex: 9}}>
         <FlatList
-            data={this.friends}
-            renderItem={({ item, index }) => this.Item(item, index)}
+            data={this.state.friends}
+            renderItem={({ item, index }) => this.Item(item.name, index)}
+
         />
         </View>
         <View style={{flex: 1, flexDirection: 'row'}}>
-        <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}>
+        <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}} onPress={() => this.updateScreen(false)}>
         <Image source={require ('./assets/back.png') } style={styles.TouchableOpacityStyle}/>
         </TouchableOpacity>
         <View style={{flex: 4, opacity: 0}}>
