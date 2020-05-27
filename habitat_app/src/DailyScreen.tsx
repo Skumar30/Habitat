@@ -17,9 +17,8 @@ import {
   TouchableOpacity,
   UIManager,
 } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-export class DailyScreen extends Component {
+class DailyScreen extends Component {
     constructor(props) {
         super(props);
         this.state = { tasks: [] }
@@ -30,32 +29,28 @@ export class DailyScreen extends Component {
 
         return (
         <>
-        <View style={[styles.header]}>
-            <Text style={{fontSize:40}}> Dailies </Text>
-        </View>
-
-        <View style={[styles.container]}>
-
-            <ScrollView>
-                        <View style={[styles.body]}>
-                            <Text style={{fontSize:28}}> Sample Card </Text>
-                            <CheckBox
-                            checkedIcon='dot-circle-o'
-                            uncheckedIcon='circle-o'
-
-                            />
-                        </View>
-            </ScrollView>
-
-            <TouchableOpacity
-                activeOpacity={0.8}
-                style={[styles.TouchableOpacityStyle]}>
-                <Image
-                    source={require ('./DailyComponent/add-trimmy.png') }
-                    style={[styles.FloatingButtonStyle]}
-                />
-            </TouchableOpacity>
-
+        <View style={{flex: 1, flexDirection: 'column'}}>
+          <View style={[styles.header]}>
+              <Text style={styles.textBox}>Dailies</Text>
+          </View>
+          <View style={[styles.container]}>
+              <ScrollView style={{flex: 1}}>
+                <View style={[styles.body]}>
+                    <Text style={styles.card}> Sample Card </Text>
+                    <CheckBox checkedIcon='dot-circle-o' uncheckedIcon='circle-o'/>
+                </View>
+              </ScrollView>
+              <View style={{flex: 0.15, flexDirection: 'row'}}>
+                <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}>
+                  <Image source={require ('./assets/back.png') } style={styles.TouchableOpacityStyle}/>
+                </TouchableOpacity>
+                <View style={{flex: 4, opacity: 0}}>
+                </View>
+                <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}>
+                  <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
+                </TouchableOpacity>
+              </View>
+          </View>
         </View>
         </>
         );
@@ -65,52 +60,44 @@ export class DailyScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 6,
-    backgroundColor: '#DDDDDD',
+    backgroundColor: 'blanchedalmond',
+    borderWidth: 5,
+    borderTopWidth: 0
   },
+    textBox: {
+        fontSize:40,
+        fontFamily: "serif",
+    },
+    card: {
+        fontSize:30,
+        fontFamily: "serif",
+    },
   header: {
     flex: 1,
-    height: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#AAAAAA',
-    borderRadius: 6,
-    marginVertical: 2,
-    marginHorizontal: 2,
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: '#333',
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
+    backgroundColor: '#b4ecb4',
+    borderWidth: 5
   },
 
   body:{
-    height: 100,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#f7bf86',
-    borderRadius: 6,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 60,
     marginVertical: 20,
     marginHorizontal: 20,
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: '#333',
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
+    borderColor: '#000000',
+    borderWidth: 5,
+    flexDirection: 'row'
   },
 
 TouchableOpacityStyle: {
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 30,
-    bottom: 30,
-  },
-
-  FloatingButtonStyle: {
-    resizeMode: 'contain',
-    width: 50,
-    height: 50,
-  },
+  flex: 1,
+  resizeMode: 'stretch',
+  width: 'auto',
+  height: 'auto'
+}
 
 
 });
