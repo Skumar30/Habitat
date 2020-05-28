@@ -25,7 +25,7 @@ router.get('/active', async (req, res) => {
 });
 
 router.post('/setOwned', function (req, res) {
-  User.findByIdAndUpdate(req.user._id, { $set: { cosmetics: req.body.owned, credits: req.body.credits } }, function (err, result) {
+  User.findByIdAndUpdate(req.user._id, { $set: { cosmetics: req.body.owned } }, function (err, result) {
     if (err) {
       console.log("Error: " + err);
     } else {
