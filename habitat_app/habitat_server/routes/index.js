@@ -15,57 +15,17 @@ router.get('/', function (req, res, next) {
   }
 });
 
-
-// router.get('/cosmetics', (req, res) => {
-//   Cosmetic.findById(mongoose.Types.ObjectId('5ebddb16a428ab3a446f4d9c'), function (err, cosmetic) {
-//     res.json(cosmetic);
-//     console.log(cosmetic);
-//   });
-// });
-
-var currentUser = '5eba30c69234b45a84410736';
-//mongoose.Types.ObjectId(currentUser)
-// get owned
-
-router.get('/owned', (req, res) => {
-  console.log(req.user);
+router.get('/ownedAndCredits', (req, res) => {
   res.json({ owned: req.user.cosmetics, credits: req.user.credits });
-  //console.log(req.user._id);
-  // Cosmetics.find(req.user.cosmet, function (err, user) {
-  //   res.json(req.user.cosmetics);
-  //   console.log(user.cosmetics);
-  // });
 });
 
-//get active
 router.get('/active', async (req, res) => {
   var p = await Pet.findOne({ _id: req.user.pet_id });
   res.json({ active: p.cosmetics });
-  //console.log(req.user._id);
-  // var id = req.user._id;
-  // User.findById(mongoose.Types.ObjectId(id), function (err, user) {
-  //   res.json(user.cosmetics_on);
-  //   console.log(user.cosmetics_on);
-  // });
 });
-
-//get credits
-router.get('/credits', (req, res) => {
-  res.json({ credits: req.user.credits });
-
-  //console.log(req.user._id);
-  // var id = req.user._id;
-  // User.findById(mongoose.Types.ObjectId(currentUser), function (err, user) {
-  //   res.json(user.credits);
-  //   console.log(user.credits);
-  // });
-});
-
-//set owned
 
 router.post('/setOwned', function (req, res) {
-  var id = mongoose.Types.ObjectId(currentUser);
-  User.findByIdAndUpdate(req.user._id, { $set: { cosmetics: req.body.owned } }, function (err, result) {
+  User.findByIdAndUpdate(req.user._id, { $set: { cosmetics: req.body.owned, credits: req.body.credits } }, function (err, result) {
     if (err) {
       console.log("Error: " + err);
     } else {
@@ -76,7 +36,6 @@ router.post('/setOwned', function (req, res) {
 });
 
 router.post('/setActive', function (req, res) {
-  var id = mongoose.Types.ObjectId(currentUser);
   Pet.findByIdAndUpdate(req.user.pet_id, { $set: { cosmetics: req.body.active } }, function (err, result) {
     if (err) {
       console.log("Error: " + err);
@@ -88,7 +47,6 @@ router.post('/setActive', function (req, res) {
 });
 
 router.post('/setCredits', function (req, res) {
-  var id = mongoose.Types.ObjectId(currentUser);
   User.findByIdAndUpdate(req.user._id, { $set: { credits: req.body.credits } }, function (err, result) {
     if (err) {
       console.log("Error: " + err);
@@ -98,41 +56,6 @@ router.post('/setCredits', function (req, res) {
     }
   });
 });
-
-router.get('/home', async (req, res) => {
-  var petModel = require('../models/pet.js');
-  var pet = await petModel.findOne({ _id: req.user.pet_id });
-  var cosmeticModel = require('../models/cosmetic.js');
-  var cosmetic = await cosmeticModel.findOne({ _id: pet.cosmetics[0] });
-  var cosmetics = [cosmetic.name];
-  console.log(cosmetic);
-  console.log(cosmetics);
-  res.json({ name: req.user.name, petName: pet.name, credits: req.user.credits, mood: pet.happiness, pet: pet.type, cosmetics: cosmetics });
-});
-
-// // get owned
-// router.get('/cosmetics', (req, res) => {
-//   Cosmetic.find(mongoose.Types.Array, function (err, cosmetic) {
-//     res.json(cosmetic);
-//     console.log(cosmetic);
-//   });
-// });
-
-// // get equipped
-// router.get('/cosmetics', (req, res) => {
-//   Cosmetic.find(req.pet.cosmetics, function (err, cosmetic) {
-//     res.json(cosmetic);
-//     console.log(cosmetic);
-//   });
-// });
-
-// // // get equipped
-// // router.get('/cosmetics', (req, res) => {
-// //   Cosmetic.find({ "_id": { $in: req.pet.cosmetics } }, function (err, cosmetic) {
-// //     res.json(cosmetic);
-// //     console.log(cosmetic);
-// //   });
-// // });
 
 
 router.get('/getTheirTasks', async (req, res, next) => {
