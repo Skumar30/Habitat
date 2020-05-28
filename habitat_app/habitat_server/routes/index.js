@@ -254,7 +254,6 @@ router.post('/createContract', async(req, res, next) => {
 
 router.get('/getTasks', (req, res) => {
     Task.find({"_id" : {$in: req.user.tasks}}, function(err, user){
-        console.log('yo');
         res.json(user);
         console.log(user);
     })
@@ -266,50 +265,6 @@ router.get('/getFriends', (req, res) => {
         res.json(user);
         console.log(user);
     })
-});
-
-router.get('/getWCTasks', async(req, res, next) => {
-  try {
-    var TaskModel = require('../models/task.js');
-
-    //getting contract from passed in query id
-    var currContract = await Contract.findOne({_id: req.query.id});
-
-    //given this contract, return a list of the users tasks and a list of the other user's tasks
-    var currContractTaskIds = currContract.tasks;
-    var userTaskIds = req.user.tasks;
-    var myTasks = [];
-
-    //iterating through each task id in the contract
-    for (var i = 0; i < currContractTaskIds.length; i++) {
-
-      //current task id
-      var currTaskId = currContractTaskIds[i];
-
-      //iterating through all of the user's task ids to find the current task
-      for(var j = 0; j < userTaskIds.length; j++) {
-
-        //if the current task is found within user's task id list
-        if(currTaskId.equals(userTaskIds[j])) {
-
-          //get the actual task from the current task id
-          var currTask = await TaskModel.findOne({_id: currTaskId});
-          var due_date = currTask.due_date.toString().substring(0, 15);
-          console.log("due date is: " + currTask.due_date);
-          myTasks.push({"title": currTask.title, "due_date": due_date, "id": currTaskId});
-        }
-      }
-    }
-
-    //returning whether or not the user is currently in a wellness contract
-    res.send(myTasks);
-  }
-  catch(err) {
-
-    console.log("error getting my tasks");
-    console.log(err);
-    res.status(500).send(err);
-  }
 });
 
 router.post('/addContract', async(req, res, next) => {
@@ -352,7 +307,6 @@ router.post('/addContractToFriend', async(req, res, next) => {
   }
   catch(err) {
 
-    console.log("error adding contract");
     res.status(500).send(err);
   }
 });
@@ -408,8 +362,6 @@ router.post('/updateContract', async(req, res, next) => {
     res.send(result);
   }
   catch(err) {
-
-    console.log("error removing contract");
     res.status(500).send(err);
   }
 
