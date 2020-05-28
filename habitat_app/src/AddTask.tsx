@@ -33,9 +33,13 @@ export default function AddTask(props){
   }
 
   const addHandler = () => {
-    if(title === ""){
+    if(title.trim() === ""){
       setEmpty(true);
       titleAlert();
+      return;
+    }
+    if(date.getTime() < new Date().getTime()){
+      dateAlert();
       return;
     }
     var temp_id = new mongoose.Types.ObjectId();
@@ -65,6 +69,7 @@ export default function AddTask(props){
         taskId: temp_id
       })
   });
+
     // return to previous screen
     // props.routeTo(props.props.screen)
 }
@@ -75,14 +80,23 @@ export default function AddTask(props){
     }
 
   const titleAlert = () => {
-      Alert.alert("", "Please input a task title.", [
+      Alert.alert("", "Please input a valid task title.", [
         {
           text: "OK",
-        }//TODO Route to Add Task
+        }
       ]
     )
   }
 
+  const dateAlert = () => {
+      Alert.alert("", "Please input a valid due date.", [
+        {
+          text: "OK",
+        }
+      ]
+    )
+  }
+  // datetimepicker functions
   const showMode = currentMode => {
       setShow(true);
       setMode(currentMode);
@@ -98,6 +112,7 @@ export default function AddTask(props){
     showMode({currentMode: 'date'});
   };
 
+  // handles toggle for frequency
   const toggleRepeat = (day) => {
     let newRepeat = [].concat(repeat);
     if (newRepeat[day] === true){
