@@ -98,86 +98,14 @@ export default function AddTask(props){
     showMode({currentMode: 'date'});
   };
 
-  const toggleSunday = () => {
+  const toggleRepeat = (day) => {
     let newRepeat = [].concat(repeat);
-    if (newRepeat[0] === true){
-        newRepeat[0] = false;
+    if (newRepeat[day] === true){
+        newRepeat[day] = false;
         setRepeat(newRepeat);
     }
     else {
-        newRepeat[0] = true;
-        setRepeat(newRepeat);
-    }
-  };
-
-  const toggleMonday = () => {
-    let newRepeat = [].concat(repeat);
-    if (newRepeat[1] === true){
-        newRepeat[1] = false;
-        setRepeat(newRepeat);
-    }
-    else {
-        newRepeat[1] = true;
-        setRepeat(newRepeat);
-    }
-  };
-
-  const toggleTuesday = () => {
-    let newRepeat = [].concat(repeat);
-    if (newRepeat[2] === true){
-        newRepeat[2] = false;
-        setRepeat(newRepeat);
-    }
-    else {
-        newRepeat[2] = true;
-        setRepeat(newRepeat);
-    }
-  };
-
-  const toggleWednesday = () => {
-    let newRepeat = [].concat(repeat);
-    if (newRepeat[3] === true){
-        newRepeat[3] = false;
-        setRepeat(newRepeat);
-    }
-    else {
-        newRepeat[3] = true;
-        setRepeat(newRepeat);
-    }
-  };
-
-  const toggleThursday = () => {
-    let newRepeat = [].concat(repeat);
-    if (newRepeat[4] === true){
-        newRepeat[4] = false;
-        setRepeat(newRepeat);
-    }
-    else {
-        newRepeat[4] = true;
-        setRepeat(newRepeat);
-    }
-  };
-
-  const toggleFriday = () => {
-    let newRepeat = [].concat(repeat);
-    if (newRepeat[5] === true){
-        newRepeat[5] = false;
-        setRepeat(newRepeat);
-    }
-    else {
-        newRepeat[5] = true;
-        setRepeat(newRepeat);
-    }
-  };
-
-  const toggleSaturday = () => {
-    let newRepeat = [].concat(repeat);
-    if (newRepeat[6] === true){
-        newRepeat[6] = false;
-        setRepeat(newRepeat);
-    }
-    else {
-        newRepeat[6] = true;
+        newRepeat[day] = true;
         setRepeat(newRepeat);
     }
   };
@@ -190,13 +118,13 @@ export default function AddTask(props){
       {/* Frequency */}
       <View style={{flex: 1}}>
         <View style={{...styles.repeat, flex: 1}}>
-          <Button title="S" color={repeat[0] ? "powderblue" : "#999"} onPress={toggleSunday}/>
-          <Button title="M" color={repeat[1] ? "powderblue" : "#999"} onPress={toggleMonday}/>
-          <Button title="T" color={repeat[2] ? "powderblue" : "#999"} onPress={toggleTuesday}/>
-          <Button title="W" color={repeat[3] ? "powderblue" : "#999"} onPress={toggleWednesday}/>
-          <Button title="T" color={repeat[4] ? "powderblue" : "#999"} onPress={toggleThursday}/>
-          <Button title="F" color={repeat[5] ? "powderblue" : "#999"} onPress={toggleFriday}/>
-          <Button title="S" color={repeat[6] ? "powderblue" : "#999"} onPress={toggleSaturday}/>
+          <Button title="S" color={repeat[0] ? "powderblue" : "#999"} onPress={() => toggleRepeat(0)}/>
+          <Button title="M" color={repeat[1] ? "powderblue" : "#999"} onPress={() => toggleRepeat(1)}/>
+          <Button title="T" color={repeat[2] ? "powderblue" : "#999"} onPress={() => toggleRepeat(2)}/>
+          <Button title="W" color={repeat[3] ? "powderblue" : "#999"} onPress={() => toggleRepeat(3)}/>
+          <Button title="T" color={repeat[4] ? "powderblue" : "#999"} onPress={() => toggleRepeat(4)}/>
+          <Button title="F" color={repeat[5] ? "powderblue" : "#999"} onPress={() => toggleRepeat(5)}/>
+          <Button title="S" color={repeat[6] ? "powderblue" : "#999"} onPress={() => toggleRepeat(6)}/>
         </View>
 
         <View style={{flex: 1}}>
