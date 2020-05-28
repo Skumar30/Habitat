@@ -49,7 +49,7 @@ export default function AddTask(props){
       body: JSON.stringify({
         _id: temp_id,
         title: title,
-        due_date: date,
+        due_date: date.setHours(23,59,59),
         daily: checkDaily(),
         frequency: repeat,
       })
@@ -66,7 +66,7 @@ export default function AddTask(props){
       })
   });
     // return to previous screen
-    props.routeTo(props.props.screen)
+    // props.routeTo(props.props.screen)
 }
 
     const backHandler = () => {
