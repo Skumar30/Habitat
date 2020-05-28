@@ -73,7 +73,7 @@ export default class SignUp extends React.Component<{}, State> {
                 confirm_password: '',
               }}
               onSubmit={(values, actions) => {
-                fetch('http://INSERT YOUR IPv4 HERE:3000/users/signup', {
+                fetch('http://192.168.99.1:3000/users/signup', {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json', //expects a JSON
@@ -265,4 +265,3 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
->>>>>>> bf2e9bef20e3d8c93af4564d6b828c97014998dc
