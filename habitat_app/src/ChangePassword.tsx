@@ -12,17 +12,19 @@ import {
 import * as Screens from './Screens';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-
+import { IP_ADDRESS } from './IP_Address';
 
 
 const checkingSchema = yup.object({
+  old_password: yup
+    .string(),
   password: yup
     .string()
     .required()
     .min(5)
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/,
-      'Password must have at least one number, one letter, and one special character',
+      'Password must have at least one number, \none letter, and one special character',
     ),
   //Minimum five characters, at least one letter, one number and one special character
   confirm_password: yup
@@ -33,32 +35,15 @@ const checkingSchema = yup.object({
 
 interface State {
   errormsg: boolean;
+  error_message: String;
 }
 
-export default class ChangePassword extends React.Component {
+export default class ChangePassword extends React.Component<{}, State> {
 
   constructor(props) {
     super(props);
-    this.state = {
-      oldPassword: "",
-      newPassword: "",
-      confirm: ""
-    };
+    this.state = { errormsg: false, error_message: '' };
   }
-
-  //temporary fix
-  onTextInput = (val: string, stateID: number) => {
-    if (stateID == 0) {
-      this.setState({ oldPassword: val });
-    }
-    else if (stateID == 1) {
-      this.setState({ newPassword: val });
-    }
-    else {
-      this.setState({ reEntered: val });
-    }
-
-  };
 
   render() {
     return (
@@ -82,7 +67,7 @@ export default class ChangePassword extends React.Component {
           </View>
           <Text style={styles.buttonText}>Change Password</Text>
         </View>
-        <View>
+        <View style={styles.buttonGroup}>
           <ScrollView>
             <Formik
               validationSchema={checkingSchema}
@@ -92,13 +77,16 @@ export default class ChangePassword extends React.Component {
                 confirm_password: '',
               }}
               onSubmit={(values, actions) => {
-                fetch('http://INSERT YOUR IPv4 HERE:3000/users/signup', {
+                console.log("fetch request")
+                fetch(`http://${IP_ADDRESS}:3000/changePassword`, {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json', //expects a JSON
                     'Content-Type': 'application/json',
                   },
                   body: JSON.stringify({
+                    //get user id
+                    old_password: values.old_password,
                     password: values.password,
                   }),
                 })
@@ -106,71 +94,92 @@ export default class ChangePassword extends React.Component {
                   .then((output) => {
                     console.log(output);
                     if (output.message) {
-                      //used to check if error message exists
-                      this.setState({ errormsg: true });
+                      //used to check if error message exists 
+                      this.setState({ errormsg: true, error_message: output.message });
                     } else {
+                      this.props.routeTo(Screens.Login);
                       actions.resetForm();
-                      this.props.routeTo(Screens.Home);
+                      Alert.alert("Password changed successfully!")
                     }
                   });
-
                 actions.resetForm();
               }}>
 
               {(props) => (
-                <View>
+                <View
+                  style={{
+                    paddingTop: 20
+                  }}>
 
-                  <Text style={styles.textStyle}>Enter Old Password</Text>
+                  {this.state.errormsg && (
+                    <Text style={styles.errorText}>
+                      {this.state.error_message}
+                    </Text>
+                  )}
                   <TextInput
                     style={{
-                      ...styles.input,
+                      ...styles.textInput,
                       backgroundColor:
-                        props.touched.oldPassword && props.errors.oldPassword
+                        props.touched.old_password && props.errors.old_password
                           ? 'red'
                           : 'white',
                     }}
-                    placeholder=""
-                    onChangeText={props.handleChange('oldPassword')}
-                    onBlur={props.handleBlur('oldPassword')}
-                    value={props.values.oldPassword}
+                    placeholder="Old Password"
+                    onChangeText={props.handleChange('old_password')}
+                    onBlur={props.handleBlur('old_password')}
+                    value={props.values.old_password}
                     underlineColorAndroid="transparent"
+                    secureTextEntry={true}
                   />
 
-                  <Text style={styles.textStyle}>Enter New Password</Text>
+                  {props.touched.password && props.errors.password && (
+                    <Text style={styles.errorText}>
+                      {props.touched.password && props.errors.password}
+                    </Text>
+                  )}
                   <TextInput
                     style={{
-                      ...styles.input,
+                      ...styles.textInput,
                       backgroundColor:
                         props.touched.password && props.errors.password
                           ? 'red'
                           : 'white',
                     }}
-                    placeholder=""
+                    placeholder="New Password"
                     onChangeText={props.handleChange('password')}
                     onBlur={props.handleBlur('password')}
                     value={props.values.password}
                     underlineColorAndroid="transparent"
+                    secureTextEntry={true}
                   />
 
-                  <Text style={styles.textStyle}>Confirm New Password</Text>
+                  {props.touched.confirm_password &&
+                    props.errors.confirm_password && (
+                      <Text style={styles.errorText}>
+                        {props.touched.confirm_password &&
+                          props.errors.confirm_password}
+                      </Text>
+                    )}
                   <TextInput
                     style={{
-                      ...styles.input,
+                      ...styles.textInput,
                       backgroundColor:
                         props.touched.confirm_password && props.errors.confirm_password
                           ? 'red'
                           : 'white',
                     }}
-                    placeholder=""
+                    placeholder="Confirm New Password"
                     onChangeText={props.handleChange('confirm_password')}
                     onBlur={props.handleBlur('confirm_password')}
                     value={props.values.confirm_password}
                     underlineColorAndroid="transparent"
+                    secureTextEntry={true}
                   />
+
                   <View style={styles.buttonSpacing}>
                     <TouchableOpacity
                       style={styles.TO}
-                      onPress={() => this.props.routeTo(Screens.Login)}>
+                      onPress={props.handleSubmit}>
                       <Text style={styles.buttonText}>Submit</Text>
                     </TouchableOpacity>
                   </View>
@@ -199,6 +208,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   textInput: {
+    margin: 20,
     height: 50,
     width: 300,
     borderRadius: 7,
@@ -207,9 +217,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   textStyle: {
-    color: 'black',
+    color: 'white',
     textTransform: 'uppercase',
-    fontSize: 21
+    fontSize: 21,
+    paddingTop: 20
   },
   buttonStyle: {
     backgroundColor: '#485EEC',
@@ -238,14 +249,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   buttonGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 20,
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#0094FF'
   },
   buttonSpacing: {
-    paddingTop: 80,
-    paddingBottom: 200,
+    paddingTop: 20,
     flex: 1,
+    alignItems: 'center'
   },
   TO: {
     backgroundColor: '#485EEC',
