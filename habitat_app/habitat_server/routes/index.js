@@ -42,29 +42,29 @@ router.post('/updateTasks', async(req, res, next) => {
     for(var i = 0; i < currentContract.tasks.length; i++) {
 
       var currTask = await TaskModel.findOne({_id: currentContract.tasks[i]});
-
       var validTask = false;
-      //check the date of the task
-      if(currentTime <= currTask.due_date) {
 
-        //iterating though all the user's tasks to make sure task is still in user's task field
-        for(var k = 0; k < user.tasks.length; k++) {
+      if(currTask != null) {
+        if(currentTime <= currTask.due_date) {
 
-          //if task matches one of the tasks in the user
-          if(currTask._id.equals(user.tasks[k])) {
-            validTask = true;
-            break;
+          //iterating though all the user's tasks to make sure task is still in user's task field
+          for(var k = 0; k < user.tasks.length; k++) {
+
+            //if task matches one of the tasks in the user
+            if(currTask._id.equals(user.tasks[k])) {
+              validTask = true;
+              break;
+            }
           }
-        }
 
-        //iterating through all the other users's tasks
-        for(var k = 0; k < otherUser.tasks.length; k++) {
+          //iterating through all the other users's tasks
+          for(var k = 0; k < otherUser.tasks.length; k++) {
 
-          //if task matches one of the tasks in the user
-          if(currTask._id.equals(otherUser.tasks[k])) {
-            validTask = true;
-
-            break;
+            //if task matches one of the tasks in the user
+            if(currTask._id.equals(otherUser.tasks[k])) {
+              validTask = true;
+              break;
+            }
           }
         }
       }
@@ -73,19 +73,19 @@ router.post('/updateTasks', async(req, res, next) => {
       if(!validTask) {
 
         //get rid of task in contractToCreate
-        var removeContract = await ContractModel.updateOne({_id: currentContract._id}, { $pull: {tasks: currTask._id}});
+        var removeContract = await ContractModel.updateOne({_id: currentContract._id}, { $pull: {tasks: currentContract.tasks[i]}});
 
         //get rid of task from user field, call remove for both, 1 will call 500 error but should be fine
-        var findUser = await UserModel.findOne({_id: user._id}, {tasks: currTask._id});
+        var findUser = await UserModel.findOne({_id: user._id}, {tasks: currentContract.tasks[i]});
         if(findUser != null) {
-          var removeUser = await UserModel.updateOne({_id: user._id}, { $pull: {tasks: currTask._id}});
+          var removeUser = await UserModel.updateOne({_id: user._id}, { $pull: {tasks: currentContract.tasks[i]}});
         }
         else {
-          var removeOtherUser = await UserModel.updateOne({_id: otherUser._id}, { $pull: {tasks: currTask._id}});
+          var removeOtherUser = await UserModel.updateOne({_id: otherUser._id}, { $pull: {tasks: currentContract.tasks[i]}});
         }
 
         //delete task from task model
-        var removeTask = await TaskModel.deleteOne({_id: currTask._id});
+        var removeTask = await TaskModel.deleteOne({_id: currentContract.tasks[i]});
       }
     }
 
