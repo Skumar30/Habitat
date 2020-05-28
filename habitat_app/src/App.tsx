@@ -45,7 +45,7 @@ import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
 import WellnessContractFriends from "./WellnessContractFriends";
 import EditWellnessContract from "./EditWellnessContract";
-
+export const IP_ADDRESS = 'YOUR IPv4 HERE';
 declare const global: {HermesInternal: null | {}};
 
 interface State {

@@ -2,6 +2,7 @@ import React, {useLayoutEffect} from 'react';
 import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, Alert, TouchableHighlight, Image, CheckBox} from 'react-native'
 import {Dimensions} from 'react-native';
 import * as Screens from "./Screens";
+import {IP_ADDRESS} from './IP_Address';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -29,7 +30,7 @@ class EditWellnessContract extends React.Component<any, State>{
     }
 
     getTasks = async() => {
-        const response = await fetch('http://192.168.4.21:3000/getTasks');
+        const response = await fetch(`http://${IP_ADDRESS}:3000/getTasks`);
 
         const body = await response.json();
         if(response.status != 200) {
@@ -91,7 +92,7 @@ class EditWellnessContract extends React.Component<any, State>{
                 this.state.tasks.push(this.state.allTasks[i].key);
             }
             if (this.state.post) {
-                await fetch('http://192.168.4.21:3000/updateContract', {
+                await fetch(`http://${IP_ADDRESS}:3000/updateContract`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json', //expects a JSON

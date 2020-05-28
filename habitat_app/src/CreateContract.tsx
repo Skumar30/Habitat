@@ -15,6 +15,7 @@ import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger} from "react-n
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Screens from './Screens';
+import {IP_ADDRESS} from './IP_Address';
 
 interface State{
     date: any;
@@ -68,7 +69,7 @@ class CreateContract extends React.Component<any, State> {
         }
         else {
             var temp_id = new mongoose.Types.ObjectId();
-            await fetch('http://192.168.4.21:3000/createContract', {
+            await fetch(`http://${IP_ADDRESS}:3000/createContract`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json', //expects a JSON
@@ -81,7 +82,7 @@ class CreateContract extends React.Component<any, State> {
                 due_date: this.state.date
              })
             });
-            await fetch('http://192.168.4.21:3000/addContract', {
+            await fetch(`http://${IP_ADDRESS}/addContract`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json', //expects a JSON
@@ -92,7 +93,7 @@ class CreateContract extends React.Component<any, State> {
                 })
             });
 
-            await fetch('http://192.168.4.21:3000/addContractToFriend', {
+            await fetch(`http://${IP_ADDRESS}:3000/addContractToFriend`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json', //expects a JSON

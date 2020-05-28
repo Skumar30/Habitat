@@ -3,6 +3,7 @@ import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, 
 import {Dimensions} from 'react-native';
 import * as Screens from './Screens';
 import {CreateContract} from "./Screens";
+import {IP_ADDRESS} from './IP_Address';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -28,7 +29,7 @@ class WellnessContractFriends extends React.Component<any, State>{
 
 
     getFriends = async() => {
-        const response = await fetch('http://192.168.4.21:3000/getFriends');
+        const response = await fetch(`http://${IP_ADDRESS}:3000/getFriends`);
         const body = await response.json();
         if(response.status != 200) {
             console.error(body.message);
