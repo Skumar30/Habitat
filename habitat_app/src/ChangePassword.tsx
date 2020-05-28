@@ -81,20 +81,18 @@ export default class ChangePassword extends React.Component<{}, State> {
                 fetch(`http://${IP_ADDRESS}:3000/changePassword`, {
                   method: 'POST',
                   headers: {
-                    Accept: 'application/json', //expects a JSON
+                    Accept: 'application/json',
                     'Content-Type': 'application/json',
                   },
                   body: JSON.stringify({
-                    //get user id
                     old_password: values.old_password,
                     password: values.password,
                   }),
                 })
-                  .then((response) => response.json()) //gets response body
+                  .then((response) => response.json())
                   .then((output) => {
                     console.log(output);
                     if (output.message) {
-                      //used to check if error message exists 
                       this.setState({ errormsg: true, error_message: output.message });
                     } else {
                       this.props.routeTo(Screens.Login);
