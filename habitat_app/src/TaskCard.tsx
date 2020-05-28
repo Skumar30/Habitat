@@ -86,7 +86,7 @@ class TaskCard extends Component {
     const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Nov", "Dec"];
     var formatted = daysOfWeek[temp.getDay()] + ", " + monthsOfYear[temp.getMonth()] + " " + temp.getDate();
 
-    console.log("formatted is: " + due_date);
+  
     return formatted;
   }
 

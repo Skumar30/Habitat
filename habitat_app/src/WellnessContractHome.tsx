@@ -32,6 +32,15 @@ class WellnessContractHome extends Component {
     this.setState({hasContract: val});
   }
 
+  updateInvites = async() => {
+    const response = await fetch(`http://192.168.96.145:3000/updateInvites?id=${encodeURIComponent(this.state.currentContractId)}`);
+    const invitesToRemove = await response.json();
+    for(var i = 0; i < invitesToRemove.length; i++) {
+
+      this.removeContract(invitesToRemove[i]);
+    }
+  }
+
   rejectInvitation = async(contractId) => {
 
     var response = await fetch('http://192.168.96.145:3000/removeContract', {
@@ -85,6 +94,10 @@ class WellnessContractHome extends Component {
       //update currentContractId
       this.state.currentContractId = contractId;
 
+      //update invitations
+      this.updateInvites();
+      this.updateContracts();
+
       //call checkCurrentContract
       Alert.alert("Invitation Accept Confirmation", "Invitation has been accepted.");
     }
@@ -137,7 +150,7 @@ class WellnessContractHome extends Component {
   createContract = () => {
 
     //redirect to michael's create contract screen
-    this.props.routeTo(Screens.CreateContract, {date: new Date(), tasks: [], friend: 'Not Selected', friendID:''});
+
     this.props.routeTo(Screens.CreateContract, {
         date: new Date(),
         tasks: this.state.myTasks,
@@ -212,7 +225,6 @@ class WellnessContractHome extends Component {
     //first thing is update contracts which still apply to the user
     this.updateContracts();
 
-    //to display list of pending contracts user has been invited to
     this.getPendingContracts();
 
     //to see if the user is currently in a contract

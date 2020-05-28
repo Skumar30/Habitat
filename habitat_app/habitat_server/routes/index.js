@@ -44,11 +44,9 @@ router.post('/updateTasks', async(req, res, next) => {
       var currTask = await TaskModel.findOne({_id: currentContract.tasks[i]});
 
       var validTask = false;
-
       //check the date of the task
       if(currentTime <= currTask.due_date) {
 
-        console.log(currTask._id + " is not due yet");
         //iterating though all the user's tasks to make sure task is still in user's task field
         for(var k = 0; k < user.tasks.length; k++) {
 
@@ -65,17 +63,32 @@ router.post('/updateTasks', async(req, res, next) => {
           //if task matches one of the tasks in the user
           if(currTask._id.equals(otherUser.tasks[k])) {
             validTask = true;
+
             break;
           }
         }
       }
 
       //if the task is not valid, add it to the list of tasks to remove
-      if(!validTask)
-        tasksToRemove.push(currTask._id);
+      if(!validTask) {
+
+        //get rid of task in contractToCreate
+        var removeContract = await ContractModel.updateOne({_id: currentContract._id}, { $pull: {tasks: currTask._id}});
+
+        //get rid of task from user field, call remove for both, 1 will call 500 error but should be fine
+        var findUser = await UserModel.findOne({_id: user._id}, {tasks: currTask._id});
+        if(findUser != null) {
+          var removeUser = await UserModel.updateOne({_id: user._id}, { $pull: {tasks: currTask._id}});
+        }
+        else {
+          var removeOtherUser = await UserModel.updateOne({_id: otherUser._id}, { $pull: {tasks: currTask._id}});
+        }
+
+        //delete task from task model
+        var removeTask = await TaskModel.deleteOne({_id: currTask._id});
+      }
     }
 
-    console.log("tasks to remove: " + tasksToRemove);
     res.send(tasksToRemove);
   }
   catch(err) {
@@ -162,7 +175,7 @@ router.get('/getMyTasks', async(req, res, next) => {
 
       //current task id
       var currTaskId = currContractTaskIds[i];
-
+      console.log("currTaskId: " + currTaskId);
       //iterating through all of the user's task ids to find the current task
       for(var j = 0; j < userTaskIds.length; j++) {
 
@@ -289,7 +302,8 @@ router.post('/addTask', async(req, res, next) => {
   try {
     var User = require('../models/user.js');
 
-    var userId = req.user._id;
+    var userId = req.body.userId;
+    userId instanceof mongoose.Types.ObjectId;
 
     var taskId = req.body.taskId;
     taskId instanceof mongoose.Types.ObjectId;
@@ -442,6 +456,56 @@ router.get('/updateContracts', async(req, res, next) => {
   catch(err) {
 
     console.log("error updating contracts");
+    res.status(500).send(err);
+  }
+});
+
+router.get('/updateInvites', async(req, res, next) => {
+
+  try {
+    var UserModel = require('../models/user.js');
+    var ContractModel = require('../models/wellnesscontract.js');
+
+    //getting user from userId
+    var user = await UserModel.findOne({ _id: req.user._id });
+
+    var contractsToRemove = [];
+
+    for(var i = 0; i < user.contracts.length; i++) {
+
+      var currentContract = await ContractModel.findOne({_id: user.contracts[i]});
+
+      //removes all other pending contracts from user
+      if(currentContract.pending) {
+        contractsToRemove.push(user.contracts[i]);
+      }
+    }
+
+    var contractId = req.query.id;
+    contractId instanceof mongoose.Types.ObjectId;
+    var contract = await ContractModel.findOne({_id: contractId});
+    var otherUser;
+    if(contract.participants[0].equals(req.user._id))
+      otherUser = await UserModel.findOne({_id: contract.participants[1]});
+    else {
+      otherUser = await UserModel.findOne({_id: contract.participants[0]});
+    }
+
+    for(var i = 0; i < otherUser.contracts.length; i++) {
+
+      var currentContract = await ContractModel.findOne({_id: otherUser.contracts[i]});
+
+      //removes all other pending contracts from other user
+      if(currentContract.pending) {
+        contractsToRemove.push(otherUser.contracts[i]);
+      }
+    }
+
+    res.send(contractsToRemove);
+  }
+  catch(err) {
+
+    console.log("error updating invites");
     res.status(500).send(err);
   }
 });

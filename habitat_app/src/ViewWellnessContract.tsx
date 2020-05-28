@@ -64,9 +64,11 @@ class ViewWellnessContract extends Component {
     fetch(`http://192.168.96.145:3000/getMyTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
       .then((response) => response.json()) //gets response body
       .then((output) => {
+        console.log("my tasks are: " + output);
         this.setState({myTasks: output});
       });
 
+      return true;
   }
 
   getTheirTasks = async() => {
@@ -77,6 +79,7 @@ class ViewWellnessContract extends Component {
         this.setState({theirTasks: output});
       });
 
+      return true;
   }
 
   updateTasks = async() => {
@@ -92,22 +95,15 @@ class ViewWellnessContract extends Component {
       })
     });
 
-    var tasksToRemove= await response.json(); //gets response body
-
-    for(var i = 0; i < tasksToRemove.length; i++) {
-
-      this.removeTask(tasksToRemove[i]);
-    }
+    return true;
   }
 
-  componentDidMount(){
+  componentDidMount = async() =>  {
 
     //update list of tasks
-    this.updateTasks();
-
-    //
-    this.getMyTasks();
-    this.getTheirTasks();
+    var result1 = await this.updateTasks();
+    var result2 = await this.getMyTasks();
+    var result3 = await this.getTheirTasks();
   }
 
   render() {
