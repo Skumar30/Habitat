@@ -150,12 +150,12 @@ class ViewWellnessContract extends Component {
           </ScrollView>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
             <TouchableOpacity onPress={() => {
-              this.props.routeTo(Screens.CreateContract, {
+              this.props.routeTo(Screens.EditWellnessContract, {
                   date: new Date(),
                   tasks: this.state.myTasks,
                   friend: 'Not Selected',
                   friendID:'',
-                  screen: Screens.EditWellnessContract,
+                  screen: Screens.ViewWellnessContract,
                   contractId: this.state.currentContractId
                 }
               );}} style={{alignContent: 'center'}}>
@@ -230,12 +230,12 @@ class ViewWellnessContract extends Component {
           </ScrollView>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
             <TouchableOpacity onPress={() => {
-              this.props.routeTo(Screens.CreateContract, {
+              this.props.routeTo(Screens.EditWellnessContract, {
                   date: new Date(),
                   tasks: this.state.myTasks,
                   friend: 'Not Selected',
                   friendID:'',
-                  screen: Screens.EditWellnessContract,
+                  screen: Screens.ViewWellnessContract,
                   contractId: this.state.currentContractId
                 }
               );}} style={{alignContent: 'center'}}>
