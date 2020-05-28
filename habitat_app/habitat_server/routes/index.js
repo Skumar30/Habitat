@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
 router.get('/myTask', function(req,res) {
   Task.find({"_id" : {$in : req.user.tasks}}, function(err, user){
 
-
+      console.log(user)
       res.json(user)
   })
 });
@@ -60,12 +60,23 @@ router.post('/taskCompleted', function(req, res){
     })
   }
   else{
+
+    if(req.body.oneTimeOnly){
+      Task.updateOne({'_id': task_id}, {'datesCompleted': []}, function(err,data){
+        if(err)
+        console.log(err)
+        else
+        res.send("Success Pulled") 
+       })
+    }
+    else{
     Task.updateOne({'_id': task_id}, {$pull : {'datesCompleted': req.body.date}}, function(err,data){
       if(err)
       console.log(err)
       else
       res.send("Success Pulled") 
      })
+    }
   }
 
 })

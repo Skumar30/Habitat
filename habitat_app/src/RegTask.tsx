@@ -1,9 +1,9 @@
 import React from 'react';
-import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, Alert, TouchableHighlight, Image, CheckBox} from 'react-native'
-import {Header, Button, Icon, Tooltip} from 'react-native-elements'
+import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, Alert, TouchableHighlight, Image, } from 'react-native'
+import {Header, Button,CheckBox, Icon, Tooltip} from 'react-native-elements'
 import {Dimensions} from 'react-native';
 import * as Screens from './Screens';
-
+import {IP_ADDRESS} from './App'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -48,6 +48,7 @@ class RegTask extends React.Component<any, State>{
       super(props);
       var checks:boolean[]  =[]
       this.state ={date: new Date(), checked: checks, isToday: true, allData: [], data: [], contract: null, countDailyTasks: 0}
+      console.log(IP_ADDRESS)
     }
 
     /* Display the alert that allows a user to edit/delete a task */
@@ -99,7 +100,6 @@ class RegTask extends React.Component<any, State>{
 
     /* Create a string for the date */
     dateString(date:Date):string {
-      console.log(date.toString());
       var ret = daysInWeek[date.getDay()] + ', ' + months[date.getMonth()] + ' '
                 + date.getDate()      
       return ret;
@@ -110,6 +110,7 @@ class RegTask extends React.Component<any, State>{
       const offset = inc ? 1 : -1
       var date = this.state.date
       date.setDate(date.getDate() + offset)
+      date.setHours(0,0,0)
       var today = this.dateString(date) == this.dateString(START_DATE) ? true : false
       this.setState({date: date, isToday: today})
       this.updateStateData(this.state.allData)
@@ -128,10 +129,14 @@ class RegTask extends React.Component<any, State>{
             </View>
           </TouchableOpacity>
           <CheckBox 
-            value={this.state.checked[index]}
-            disabled={disabled}
-            onValueChange={() => {
-
+            checked={this.state.checked[index]}
+            //disabled={disabled && !this.state.data[index].oneTimeOnly}
+            onPress={() => {
+              if(disabled && !this.state.data[index].oneTimeOnly){
+                Alert.alert('Invalid completion', 'Repeating tasks cannot be marked complete in advance', [{text: 'OK'}])
+                this.state.checked[index] = false
+                return
+              }
                 var checked = this.state.checked
                 checked[index] = !checked[index];
                 this.setState({checked: checked})
@@ -176,17 +181,28 @@ class RegTask extends React.Component<any, State>{
       this.sendRewards(toAward, "sendCash")
       this.sendRewards(toAward, "sendHappiness")
       let date = new Date()
+      let oneTimeOnly = this.state.data[index].oneTimeOnly
+
+      if(!oneTimeOnly)
       this.markAsComplete(index, complete, date)
+      else{
+        this.markAsComplete(index, complete, date, oneTimeOnly)
+      }
       if(complete){
-        this.state.allData.forEach(element => {
+        this.state.allData.forEach((element,ind) => {
           if (element._id == this.state.data[index]._id){
+            console.log(date)
             element.datesCompleted.push(date)
+            console.log(this.state.allData[ind])
           }
         })
       }
       else{
         let task = this.state.data[index]
-
+        if(this.state.data[index].oneTimeOnly){
+          this.state.data[index].datesCompleted = []
+        }
+        else{
         this.state.allData.forEach((element) => {
           if (element._id == this.state.data[index]._id){
             element.datesCompleted.forEach((date:string, index:number) => {
@@ -198,15 +214,16 @@ class RegTask extends React.Component<any, State>{
             })
           }
         })
-
+      }
       }
      }
 
-    markAsComplete = async(index:number, complete:boolean, date:Date) => {
+    markAsComplete = async(index:number, complete:boolean, date:Date, oneTimeOnly:boolean = false) => {
        
       let toSend = {task_id: this.state.data[index]._id,
                     complete: complete,
-                    date: date}
+                    date: date,
+                    oneTimeOnly: oneTimeOnly}
 
       if(!complete){
         //find the date that I want to remove
@@ -230,7 +247,7 @@ class RegTask extends React.Component<any, State>{
     };
 
       try{
-        const response = await fetch('http://10.0.0.10:3000/taskCompleted', settings)
+        const response = await fetch('http://10.0.1.57:3000/taskCompleted', settings)
         const data = await response.json();
         return data;
       } catch (e) {
@@ -282,8 +299,8 @@ class RegTask extends React.Component<any, State>{
     };
 
       try{
-        const response = await fetch('http://10.0.0.10:3000/'+url, settings)
-        const data = await response.json();
+        const response = await fetch('http://10.0.1.57:3000/'+url, settings)
+        const data = await response;
         return data;
       } catch (e) {
         console.log(e);
@@ -307,7 +324,7 @@ class RegTask extends React.Component<any, State>{
       };
 
       try{
-        const response = await fetch('http://10.0.0.10:3000/deleteTask', settings)
+        const response = await fetch('http://10.0.1.57:3000/deleteTask', settings)
         const data = await response.json();
         return data;
       } catch (e) {
@@ -318,7 +335,7 @@ class RegTask extends React.Component<any, State>{
     }
 
     getTaskData = async () => {
-       const response = await fetch('http://10.0.0.10:3000/myTask');
+       const response = await fetch('http://10.0.1.57:3000/myTask');
        const body = await response.json();
        if (response.status !== 200) {
         console.error(body.message) 
@@ -328,7 +345,7 @@ class RegTask extends React.Component<any, State>{
      }
 
     getContractData = async () => {
-      const response = await fetch('http://10.0.0.10:3000/tasksInContract');
+      const response = await fetch('http://10.0.1.57:3000/tasksInContract');
       const body = await response.json();
       if (response.status !== 200) {
        console.error(body.message) 
@@ -344,20 +361,23 @@ class RegTask extends React.Component<any, State>{
         let startDate = new Date(element.start_date);
         let endDate = new Date(element.due_date);
         let day = this.state.date.getDay();
-        console.log("The day is ", element.frequency[day], "and the daily is", element.daily)
-        console.log("Today is", this.state.date)
-        console.log("start", startDate);
-        console.log("end", endDate)
-
-        console.log(startDate <= this.state.date, endDate >= this.state.date)
-        if(startDate <= this.state.date && endDate >= this.state.date){// start and end dates are valid 
-          if(!element.daily  && (element.frequency[this.state.date.getDay()]) ){
-            newData.push(element);
+        let oneTimeOnly = true
+        element.frequency.forEach((element:boolean) => {
+          if(element == true)
+            oneTimeOnly = false;
+        });
+        console.log(oneTimeOnly)
+        let newElem:any = element;
+        newElem.oneTimeOnly = oneTimeOnly
+        if(/*startDate <= this.state.date &&*/ endDate >= this.state.date ){// start and end dates are valid 
+          if(!element.daily  && (element.frequency[this.state.date.getDay()] || (oneTimeOnly && 
+                (this.dateString(this.state.date) == this.dateString(endDate)))) ){
+            newData.push(newElem);
           }
 
         }
         else{
-          console.log(element + "is not valid")
+          console.log(element.title + "is not valid")
         }
 
       });
@@ -374,9 +394,19 @@ class RegTask extends React.Component<any, State>{
       let today = this.state.date
       newData.forEach((element, index) => {
         checks[index] = false;
+        let oneTimeOnly = true
+        element.frequency.forEach((element:boolean) => {
+          if(element)
+            oneTimeOnly = false;
+        });
+
         element.datesCompleted.forEach((date:string) => {
           let actual = new Date(date)
-          if(this.dateString(today) == this.dateString(actual)){
+
+          if(oneTimeOnly){
+            checks[index] = true
+          }
+          else if(this.dateString(today) == this.dateString(actual)){
             checks[index] = true;
           }
         })

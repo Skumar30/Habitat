@@ -45,6 +45,8 @@ import WellnessContract from './WellnessContract';
 
 declare const global: {HermesInternal: null | {}};
 
+export const IP_ADDRESS = "YOUR IP HERE"
+
 interface State {
   screen: string;
   toSend: any;
