@@ -34,7 +34,7 @@ class WellnessContractHome extends Component {
 
   rejectInvitation = async(contractId) => {
 
-    var response = await fetch('http://172.17.59.113:3000/removeContract', {
+    var response = await fetch('http://192.168.96.145:3000/removeContract', {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -62,7 +62,7 @@ class WellnessContractHome extends Component {
       this.setState({hasContract: true});
 
       //switch pending field from true to false
-      fetch('http://172.17.59.113:3000/acceptContract', {
+      fetch('http://192.168.96.145:3000/acceptContract', {
         method: 'POST',
         headers: {
           Accept: 'application/json', //expects a JSON
@@ -105,7 +105,7 @@ class WellnessContractHome extends Component {
 
   removeContract = async(contractId) => {
 
-    var response = await fetch('http://172.17.59.113:3000/removeContract', {
+    var response = await fetch('http://192.168.96.145:3000/removeContract', {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -175,7 +175,7 @@ class WellnessContractHome extends Component {
 
   getPendingContracts =async() => {
 
-      const response = await fetch('http://172.17.59.113:3000/getPendingContracts');
+      const response = await fetch('http://192.168.96.145:3000/getPendingContracts');
       const body = await response.json();
       var pendingContractData = body;
       console.log(pendingContractData);
@@ -184,7 +184,7 @@ class WellnessContractHome extends Component {
 
   checkCurrentContract = async() => {
 
-    const response = await fetch('http://172.17.59.113:3000/checkCurrentContract');
+    const response = await fetch('http://192.168.96.145:3000/checkCurrentContract');
     const body = await response.json();
     if(body.length > 0) {
       this.setState({hasContract: true});
@@ -197,7 +197,7 @@ class WellnessContractHome extends Component {
 
   updateContracts = async() => {
 
-    var response = await fetch('http://172.17.59.113:3000/updateContracts');
+    var response = await fetch('http://192.168.96.145:3000/updateContracts');
     var contractsToRemove= await response.json(); //gets response body
     console.log(contractsToRemove);
     for(var i = 0; i < contractsToRemove.length; i++) {

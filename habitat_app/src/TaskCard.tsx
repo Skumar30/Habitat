@@ -12,7 +12,7 @@ class TaskCard extends Component {
   addReward = async() => {
 
 
-    fetch('http://172.17.59.113:3000/addReward', {
+    fetch('http://192.168.96.145:3000/addReward', {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -21,7 +21,7 @@ class TaskCard extends Component {
       body: JSON.stringify({
 
         contractId: this.props.currentContractId,
-        taskId: this.props.id
+        taskId: this.props.task._id
       })
     })
       .then((response) => response.json()) //gets response body
@@ -32,7 +32,7 @@ class TaskCard extends Component {
 
   removeReward = async() => {
 
-    fetch('http://172.17.59.113:3000/removeReward', {
+    fetch('http://192.168.96.145:3000/removeReward', {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -41,7 +41,7 @@ class TaskCard extends Component {
       body: JSON.stringify({
 
         contractId: this.props.currentContractId,
-        taskId: this.props.id
+        taskId: this.props.task._id
       })
     })
       .then((response) => response.json()) //gets response body
@@ -73,13 +73,22 @@ class TaskCard extends Component {
 
   isDone = async() => {
 
-    const response = await fetch(`http://172.17.59.113:3000/isDone?id=${encodeURIComponent(this.props.id)}`);
+    const response = await fetch(`http://192.168.96.145:3000/isDone?id=${encodeURIComponent(this.props.task._id)}`);
     const body = await response.json();
 
     this.setState({isSelected: body.done});
   }
 
+  dueDateString = (due_date) => {
 
+    var temp = new Date(due_date);
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Nov", "Dec"];
+    var formatted = daysOfWeek[temp.getDay()] + ", " + monthsOfYear[temp.getMonth()] + " " + temp.getDate();
+
+    console.log("formatted is: " + due_date);
+    return formatted;
+  }
 
   componentDidMount() {
 
@@ -101,10 +110,10 @@ class TaskCard extends Component {
               style={styles.cardTextContainer}
             >
               <Text style={{textAlign: 'center', fontSize: 24}}>
-                {this.props.title}
+                {this.props.task.title}
               </Text>
               <Text style={{textAlign: 'center', fontSize: 18}}>
-                Due: {this.props.due_date}
+                Due: {this.dueDateString(this.props.task.due_date)}
               </Text>
 
             </View>
@@ -137,10 +146,10 @@ class TaskCard extends Component {
               style={styles.cardTextContainer}
             >
               <Text style={{textAlign: 'center', fontSize: 24}}>
-                {this.props.title}
+                {this.props.task.title}
               </Text>
               <Text style={{textAlign: 'center', fontSize: 18}}>
-                Due: {this.props.due_date}
+                Due: {this.dueDateString(this.props.task.due_date)}
               </Text>
             </View>
             <View

@@ -41,7 +41,7 @@ class ViewWellnessContract extends Component {
 
   removeTask = async(taskId) => {
 
-    var response = await fetch('http://172.17.59.113:3000/removeTask', {
+    var response = await fetch('http://192.168.96.145:3000/removeTask', {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -61,7 +61,7 @@ class ViewWellnessContract extends Component {
 
   getMyTasks = async() => {
 
-    fetch(`http://172.17.59.113:3000/getMyTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
+    fetch(`http://192.168.96.145:3000/getMyTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
       .then((response) => response.json()) //gets response body
       .then((output) => {
         this.setState({myTasks: output});
@@ -71,7 +71,7 @@ class ViewWellnessContract extends Component {
 
   getTheirTasks = async() => {
 
-    fetch(`http://172.17.59.113:3000/getTheirTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
+    fetch(`http://192.168.96.145:3000/getTheirTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
       .then((response) => response.json()) //gets response body
       .then((output) => {
         this.setState({theirTasks: output});
@@ -81,7 +81,7 @@ class ViewWellnessContract extends Component {
 
   updateTasks = async() => {
 
-    var response = await fetch('http://172.17.59.113:3000/updateTasks', {
+    var response = await fetch('http://192.168.96.145:3000/updateTasks', {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -166,8 +166,8 @@ class ViewWellnessContract extends Component {
             <FlatList
               data={this.state.myTasks}
               renderItem={({ item, index }) =>
-                <TaskCard title={item.title} due_date={item.due_date}
-                  viewMyTasks={this.state.viewMyTasks} id={item.id} 
+                <TaskCard task={item}
+                  viewMyTasks={this.state.viewMyTasks}
                   currentContractId={this.props.props.currentContractId}
                 />
               }
@@ -237,8 +237,8 @@ class ViewWellnessContract extends Component {
               data={this.state.theirTasks}
               renderItem={({ item, index }) =>
                 <TaskCard
-                  title={item.title} due_date={item.due_date}
-                  viewMyTasks={this.state.viewMyTasks} id={item.id}
+                  task={item}
+                  viewMyTasks={this.state.viewMyTasks}
                   currentContractId={this.props.props.currentContractId}
                 />
               }

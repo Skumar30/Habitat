@@ -48,6 +48,7 @@ router.post('/updateTasks', async(req, res, next) => {
       //check the date of the task
       if(currentTime <= currTask.due_date) {
 
+        console.log(currTask._id + " is not due yet");
         //iterating though all the user's tasks to make sure task is still in user's task field
         for(var k = 0; k < user.tasks.length; k++) {
 
@@ -74,6 +75,7 @@ router.post('/updateTasks', async(req, res, next) => {
         tasksToRemove.push(currTask._id);
     }
 
+    console.log("tasks to remove: " + tasksToRemove);
     res.send(tasksToRemove);
   }
   catch(err) {
@@ -121,7 +123,11 @@ router.get('/getTheirTasks', async(req, res, next) => {
       if(!myTask) {
         var currTask = await TaskModel.findOne({_id: currTaskId});
         var due_date = currTask.due_date.toString().substring(0, 15);
-        theirTasks.push(currTask);
+        theirTasks.push({_id: currTaskId, frequency: currTask.frequency, datesCompleted: currTask.datesCompleted,
+            title: currTask.title, due_date: currTask.due_date, daily: currTask.daily, start_date: currTask.start_date,
+            streak: currTask.streak
+          }
+        );
       }
     }
 
@@ -166,8 +172,12 @@ router.get('/getMyTasks', async(req, res, next) => {
           //get the actual task from the current task id
           var currTask = await TaskModel.findOne({_id: currTaskId});
           var due_date = currTask.due_date.toString().substring(0, 15);
-          console.log("due date is: " + currTask.due_date);
-          myTasks.push(currTask);
+
+          myTasks.push({_id: currTaskId, frequency: currTask.frequency, datesCompleted: currTask.datesCompleted,
+              title: currTask.title, due_date: currTask.due_date, daily: currTask.daily, start_date: currTask.start_date,
+              streak: currTask.streak
+            }
+          );
         }
       }
     }
@@ -534,9 +544,11 @@ router.post('/addReward', async(req, res, next) => {
 
     //updating pet's happiness
     var pet = await PetModel.findOne({_id: req.user.pet_id});
+
     var updatedHappiness;
     if(task.daily) {
-      var temp = 1.5 * ((10 + task.streak) / 10);
+      var temp = (1.5 * ((10 + task.streak) / 10));
+
       updatedHappiness = pet.happiness + temp;
     }
     else {
@@ -546,6 +558,7 @@ router.post('/addReward', async(req, res, next) => {
     //happiness can be a max of 100
     if(updatedHappiness > 100)
       updatedHappiness = 100;
+
 
     var result2 = await PetModel.updateOne(
       {_id: req.user.pet_id},
@@ -577,6 +590,10 @@ router.post('/addReward', async(req, res, next) => {
     //updating other user credits
     var otherUserBonus = otherUser.credits + bonus;
     var otherResult = await UserModel.updateOne({_id: otherUser.id}, {credits: otherUserBonus});
+    var otherUserPet = await PetModel.findOne({_id: otherUser.pet_id});
+    var otherUserHappiness = otherUserPet.happiness + Math.floor(bonus / 10);
+    otherResult = await PetModel.updateOne({_id: otherUser.pet_id}, {happiness: otherUserHappiness});
+
     res.send(result);
   }
   catch(err) {
@@ -659,8 +676,10 @@ router.post('/removeReward', async(req, res, next) => {
     }
 
     var otherUserBonus = otherUser.credits - bonus;
-    var otherResult = await UserModel.update({_id: otherUser.id}, {credits: otherUserBonus});
-    res.send(result);
+    var otherResult = await UserModel.updateOne({_id: otherUser.id}, {credits: otherUserBonus});
+    var otherUserPet = await PetModel.findOne({_id: otherUser.pet_id});
+    var otherUserHappiness = otherUserPet.happiness - Math.floor(bonus / 10);
+    otherResult = await PetModel.updateOne({_id: otherUser.pet_id}, {happiness: otherUserHappiness});
   }
   catch(err) {
 
@@ -706,11 +725,14 @@ router.get('/isDone', async(req, res, next) => {
     taskId instanceof mongoose.Types.ObjectId;
     var task = await TaskModel.findOne({ _id: taskId });
 
+
     if(task.datesCompleted.length > 0) {
 
-
       var mostRecentCompletion = task.datesCompleted[task.datesCompleted.length - 1];
+      var pastDue = new Date();
       var today = new Date();
+      var nextDue = new Date();
+
       if(!task.daily) {
 
         var counter = 0;
@@ -726,6 +748,7 @@ router.get('/isDone', async(req, res, next) => {
           counter++;
         }
 
+        nextDue.setDate(today.getDate() + counter);
         counter = 0;
         for(var i = today; counter < 7; i--) {
 
@@ -738,11 +761,13 @@ router.get('/isDone', async(req, res, next) => {
 
           counter++;
         }
+        nextDue.setDate(today.getDate() + counter);
       }
 
-      var nextDue = new Date(today.getYear() + 1900, today.getMonth(), today.getDate() + counter);
-      var pastDue = new Date(today.getYear() + 1900, today.getMonth(), today.getDate() - counter);
-      if(mostRecentCompletion < nextDue && mostRecentCompletion > pastDue) {
+      if(mostRecentCompletion.getDate() == today.getDate())
+        mostRecentCompletion = today;
+
+      if(mostRecentCompletion <= nextDue && mostRecentCompletion >= pastDue) {
         res.send({done: true});
       }
       else {
