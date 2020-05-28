@@ -22,6 +22,7 @@ import {
 } from 'react-native';
 import * as Screens from './Screens';
 import CustomButton from './components/button';
+import {IP_ADDRESS} from './App';
 
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round((dimensions.width * 1) / 4);
@@ -58,7 +59,7 @@ export default class Login extends React.Component<{}, State> {
                 password: '',
               }}
               onSubmit={(values, actions) => {
-                fetch('http://INSERT YOUR IPv4 HERE:3000/users/signin', {
+                fetch(`http://${IP_ADDRESS}:3000/users/signin`, {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json', //expects a JSON
