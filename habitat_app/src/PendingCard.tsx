@@ -1,6 +1,6 @@
 import React, {useState, Component} from "react";
 import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, Modal, StyleSheet } from "react-native";
-
+import {IP_ADDRESS} from './App';
 class PendingCard extends Component {
 
   constructor(props){

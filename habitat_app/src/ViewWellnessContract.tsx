@@ -4,7 +4,7 @@ import PendingCard from "./PendingCard";
 import TaskCard from "./TaskCard";
 import { createConfigItem } from "@babel/core";
 import * as Screens from './Screens';
-
+import {IP_ADDRESS} from './App';
 class ViewWellnessContract extends Component {
 
   constructor(props){
@@ -41,7 +41,7 @@ class ViewWellnessContract extends Component {
 
   removeTask = async(taskId) => {
 
-    var response = await fetch('http://192.168.96.145:3000/removeTask', {
+    var response = await fetch(`http://${IP_ADDRESS}:3000/removeTask`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -61,7 +61,7 @@ class ViewWellnessContract extends Component {
 
   getMyTasks = async() => {
 
-    fetch(`http://192.168.96.145:3000/getMyTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
+    fetch(`http://${IP_ADDRESS}:3000/getMyTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
       .then((response) => response.json()) //gets response body
       .then((output) => {
         console.log("my tasks are: " + output);
@@ -73,7 +73,7 @@ class ViewWellnessContract extends Component {
 
   getTheirTasks = async() => {
 
-    fetch(`http://192.168.96.145:3000/getTheirTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
+    fetch(`http://${IP_ADDRESS}:3000/getTheirTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
       .then((response) => response.json()) //gets response body
       .then((output) => {
         this.setState({theirTasks: output});
@@ -84,7 +84,7 @@ class ViewWellnessContract extends Component {
 
   updateTasks = async() => {
 
-    var response = await fetch('http://192.168.96.145:3000/updateTasks', {
+    var response = await fetch(`http://${IP_ADDRESS}:3000/updateTasks`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON

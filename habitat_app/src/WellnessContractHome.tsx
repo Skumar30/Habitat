@@ -4,7 +4,7 @@ import PendingCard from "./PendingCard";
 import TaskCard from "./TaskCard";
 import ViewWellnessContract from "./ViewWellnessContract";
 import * as Screens from './Screens';
-
+import {IP_ADDRESS} from './App';
 class WellnessContractHome extends Component {
 
   constructor(props){
@@ -33,14 +33,14 @@ class WellnessContractHome extends Component {
   }
 
   updateInvites = async() => {
-    const response = await fetch(`http://192.168.96.145:3000/updateInvites?id=${encodeURIComponent(this.state.currentContractId)}`);
+    const response = await fetch(`http://${IP_ADDRESS}:3000/updateInvites?id=${encodeURIComponent(this.state.currentContractId)}`);
     const invitesToRemove = await response.json();
-    
+
   }
 
   rejectInvitation = async(contractId) => {
 
-    var response = await fetch('http://192.168.96.145:3000/removeContract', {
+    var response = await fetch(`http://${IP_ADDRESS}:3000/removeContract`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -68,7 +68,7 @@ class WellnessContractHome extends Component {
       this.setState({hasContract: true});
 
       //switch pending field from true to false
-      fetch('http://192.168.96.145:3000/acceptContract', {
+      fetch(`http://${IP_ADDRESS}:3000/acceptContract`, {
         method: 'POST',
         headers: {
           Accept: 'application/json', //expects a JSON
@@ -115,7 +115,7 @@ class WellnessContractHome extends Component {
 
   removeContract = async(contractId) => {
 
-    var response = await fetch('http://192.168.96.145:3000/removeContract', {
+    var response = await fetch(`http://${IP_ADDRESS}:3000/removeContract`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -185,7 +185,7 @@ class WellnessContractHome extends Component {
 
   getPendingContracts =async() => {
 
-      const response = await fetch('http://192.168.96.145:3000/getPendingContracts');
+      const response = await fetch(`http://${IP_ADDRESS}:3000/getPendingContracts`);
       const body = await response.json();
       var pendingContractData = body;
       console.log(pendingContractData);
@@ -194,7 +194,7 @@ class WellnessContractHome extends Component {
 
   checkCurrentContract = async() => {
 
-    const response = await fetch('http://192.168.96.145:3000/checkCurrentContract');
+    const response = await fetch(`http://${IP_ADDRESS}:3000/checkCurrentContract`);
     const body = await response.json();
     if(body.length > 0) {
       this.setState({hasContract: true});
@@ -207,7 +207,7 @@ class WellnessContractHome extends Component {
 
   updateContracts = async() => {
 
-    var response = await fetch('http://192.168.96.145:3000/updateContracts', {
+    var response = await fetch(`http://${IP_ADDRESS}:3000/updateContracts`, {
       method: 'POST'
     });
   }

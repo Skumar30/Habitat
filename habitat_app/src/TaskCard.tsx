@@ -1,6 +1,6 @@
 import React, {useState, Component} from "react";
 import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, CheckBox, TouchableHighlightBase, TabBarIOS, Modal, StyleSheet } from "react-native";
-
+import {IP_ADDRESS} from './App';
 class TaskCard extends Component {
 
   constructor(props){
@@ -12,7 +12,7 @@ class TaskCard extends Component {
   addReward = async() => {
 
 
-    fetch('http://192.168.96.145:3000/addReward', {
+    fetch(`http://${IP_ADDRESS}:3000/addReward`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -32,7 +32,7 @@ class TaskCard extends Component {
 
   removeReward = async() => {
 
-    fetch('http://192.168.96.145:3000/removeReward', {
+    fetch(`http://${IP_ADDRESS}:3000/removeReward`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -73,7 +73,7 @@ class TaskCard extends Component {
 
   isDone = async() => {
 
-    const response = await fetch(`http://192.168.96.145:3000/isDone?id=${encodeURIComponent(this.props.task._id)}`);
+    const response = await fetch(`http://${IP_ADDRESS}:3000/isDone?id=${encodeURIComponent(this.props.task._id)}`);
     const body = await response.json();
 
     this.setState({isSelected: body.done});
@@ -86,7 +86,7 @@ class TaskCard extends Component {
     const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Nov", "Dec"];
     var formatted = daysOfWeek[temp.getDay()] + ", " + monthsOfYear[temp.getMonth()] + " " + temp.getDate();
 
-  
+
     return formatted;
   }
 
