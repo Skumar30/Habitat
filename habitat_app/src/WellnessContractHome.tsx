@@ -35,10 +35,7 @@ class WellnessContractHome extends Component {
   updateInvites = async() => {
     const response = await fetch(`http://192.168.96.145:3000/updateInvites?id=${encodeURIComponent(this.state.currentContractId)}`);
     const invitesToRemove = await response.json();
-    for(var i = 0; i < invitesToRemove.length; i++) {
-
-      this.removeContract(invitesToRemove[i]);
-    }
+    
   }
 
   rejectInvitation = async(contractId) => {
@@ -59,7 +56,7 @@ class WellnessContractHome extends Component {
     Alert.alert("Inviation Reject Confirmation", "Invitation has been rejected.");
   }
 
-  acceptInvitation = (contractId) => {
+  acceptInvitation = async(contractId) => {
 
     if(this.state.hasContract) {
 
@@ -95,8 +92,8 @@ class WellnessContractHome extends Component {
       this.state.currentContractId = contractId;
 
       //update invitations
-      this.updateInvites();
-      this.updateContracts();
+      var result1 = await this.updateInvites();
+      var result2 = await this.getPendingContracts();
 
       //call checkCurrentContract
       Alert.alert("Invitation Accept Confirmation", "Invitation has been accepted.");
@@ -210,25 +207,22 @@ class WellnessContractHome extends Component {
 
   updateContracts = async() => {
 
-    var response = await fetch('http://192.168.96.145:3000/updateContracts');
-    var contractsToRemove= await response.json(); //gets response body
-    console.log(contractsToRemove);
-    for(var i = 0; i < contractsToRemove.length; i++) {
-
-      this.removeContract(contractsToRemove[i]);
-    }
+    var response = await fetch('http://192.168.96.145:3000/updateContracts', {
+      method: 'POST'
+    });
   }
 
 
-  componentDidMount(){
+  componentDidMount = async() =>{
 
     //first thing is update contracts which still apply to the user
-    this.updateContracts();
+    var result1 = await this.updateContracts();
 
-    this.getPendingContracts();
+    //get pending contracts which are still valid
+    var result2 = await this.getPendingContracts();
 
     //to see if the user is currently in a contract
-    this.checkCurrentContract();
+    var result3 = await this.checkCurrentContract();
   }
 
   render() {

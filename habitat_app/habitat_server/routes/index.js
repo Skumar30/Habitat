@@ -94,6 +94,7 @@ router.post('/updateTasks', async(req, res, next) => {
   catch(err) {
 
     console.log("error updating tasks");
+    console.log(err);
     res.status(500).send(err);
   }
 });
@@ -375,9 +376,14 @@ router.post('/addContract', async(req, res, next) => {
     //console.log("userId is: " + req.user._id);
     //console.log("contractId is: " + req.body.contractId);
     //var Model = mongoose.model("model", schema, "users");
+    var userId = req.body.userId;
+    userId instanceof mongoose.Types.ObjectId;
+    var contractId = req.body.contractId;
+    contractId instanceof mongoose.Types.ObjectId;
+
     var result = await UserModel.update(
-        { _id: req.user._id },
-        { $push: { contracts: req.body.contractId } }
+        { _id: userId },
+        { $push: { contracts: contractId } }
     );
     res.send(result);
   }
@@ -431,7 +437,7 @@ router.post('/removeContract', async(req, res, next) => {
 
 });
 
-router.get('/updateContracts', async(req, res, next) => {
+router.post('/updateContracts', async(req, res, next) => {
 
   try {
     var UserModel = require('../models/user.js');
@@ -445,9 +451,30 @@ router.get('/updateContracts', async(req, res, next) => {
 
     for(var i = 0; i < user.contracts.length; i++) {
 
+      var validContract = false;
       var currentContract = await ContractModel.findOne({_id: user.contracts[i]});
-      if(currentTime > currentContract.due_date) {
-        contractsToRemove.push(user.contracts[i]);
+      if(currentContract != null && currentTime < currentContract.due_date) {
+
+        validContract = true;
+      }
+      else {
+
+        //other user
+        var otherUser;
+        if(req.user._id.equals(currentContract.participants[0]))
+          otherUser = await UserModel.findOne({_id: currentContract.participants[1]});
+        else {
+          otherUser = await UserModel.findOne({_id: currentContract.participants[0]});
+        }
+
+        //removing contract from user field
+        var removeUser = await UserModel.updateOne({_id: req.user._id}, {$pull: {contracts: user.contracts[i]}})
+
+        //removing contract from other user field
+        var removeOtherUser = await UserModel.updateOne({_id: otherUser._id}, {$pull: {contracts: user.contracts[i]}})
+
+        //removing contract from contracts collection
+        var removeContract = await ContractModel.deleteOne({_id: user.contracts[i]});
       }
     }
 
@@ -456,6 +483,7 @@ router.get('/updateContracts', async(req, res, next) => {
   catch(err) {
 
     console.log("error updating contracts");
+    console.log(err);
     res.status(500).send(err);
   }
 });
@@ -501,11 +529,24 @@ router.get('/updateInvites', async(req, res, next) => {
       }
     }
 
+    for(var i = 0; i < contractsToRemove.length; i++) {
+
+      //remove from user contract field
+      var removeUser = await UserModel.updateOne({_id: req.user._id}, {$pull : {contracts: contractsToRemove[i]}});
+
+      //remove from other user contract field
+      var removeOtherUser = await UserModel.updateOne({_id: otherUser._id}, {$pull: {contracts: contractsToRemove[i]}});
+
+      //remove from contract collection
+      var removeContract = await ContractModel.deleteOne({_id: contractsToRemove[i]});
+    }
+
     res.send(contractsToRemove);
   }
   catch(err) {
 
     console.log("error updating invites");
+    console.log(err);
     res.status(500).send(err);
   }
 });
