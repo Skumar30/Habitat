@@ -4,7 +4,7 @@ import PendingCard from "./PendingCard";
 import TaskCard from "./TaskCard";
 import { createConfigItem } from "@babel/core";
 import * as Screens from './Screens';
-import {IP_ADDRESS} from './App';
+import {IP_ADDRESS} from './IP_ADDRESS';
 class ViewWellnessContract extends Component {
 
   constructor(props){
@@ -39,32 +39,11 @@ class ViewWellnessContract extends Component {
     this.setState({deleteMode: !this.state.deleteMode});
   }
 
-  removeTask = async(taskId) => {
-
-    var response = await fetch(`http://${IP_ADDRESS}:3000/removeTask`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json', //expects a JSON
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        taskId: taskId,
-        contractId: this.props.props.currentContractId
-      })
-    });
-
-    var result = await response.json(); //gets response body
-
-    const newMyTasks = this.state.myTasks.filter(item => item.id !== taskId);
-    this.setState({myTasks: newMyTasks});
-  }
-
   getMyTasks = async() => {
 
     fetch(`http://${IP_ADDRESS}:3000/getMyTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
       .then((response) => response.json()) //gets response body
       .then((output) => {
-        console.log("my tasks are: " + output);
         this.setState({myTasks: output});
       });
 
@@ -170,7 +149,16 @@ class ViewWellnessContract extends Component {
             />
           </ScrollView>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
-            <TouchableOpacity onPress={() => {this.props.routeTo(Screens.EditWellnessContract)}} style={{alignContent: 'center'}}>
+            <TouchableOpacity onPress={() => {
+              this.props.routeTo(Screens.CreateContract, {
+                  date: new Date(),
+                  tasks: this.state.myTasks,
+                  friend: 'Not Selected',
+                  friendID:'',
+                  screen: Screens.EditWellnessContract,
+                  contractId: this.state.currentContractId
+                }
+              );}} style={{alignContent: 'center'}}>
               <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
                 Edit Contract
               </Text>
@@ -241,7 +229,16 @@ class ViewWellnessContract extends Component {
             />
           </ScrollView>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
-            <TouchableOpacity onPress={() => {this.props.routeTo(Screens.EditWellnessContract)}} style={{alignContent: 'center'}}>
+            <TouchableOpacity onPress={() => {
+              this.props.routeTo(Screens.CreateContract, {
+                  date: new Date(),
+                  tasks: this.state.myTasks,
+                  friend: 'Not Selected',
+                  friendID:'',
+                  screen: Screens.EditWellnessContract,
+                  contractId: this.state.currentContractId
+                }
+              );}} style={{alignContent: 'center'}}>
               <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
                 Edit Contract
               </Text>
@@ -266,7 +263,7 @@ const styles = StyleSheet.create({
   entireScreenContainer: {
     flexDirection: "column",
     backgroundColor: 'blanchedalmond',
-    height: 650,
+    height: 660,
     width: 410,
     padding: 20
   },
@@ -299,7 +296,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'blanchedalmond',
     borderWidth: 5,
     width: 300,
-    height: 200
+    height: 130
   },
 
   scrollViewStyle: {

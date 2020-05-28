@@ -1,6 +1,6 @@
 import React, {useState, Component} from "react";
 import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, CheckBox, TouchableHighlightBase, TabBarIOS, Modal, StyleSheet } from "react-native";
-import {IP_ADDRESS} from './App';
+import {IP_ADDRESS} from './IP_ADDRESS';
 class TaskCard extends Component {
 
   constructor(props){
@@ -26,7 +26,7 @@ class TaskCard extends Component {
     })
       .then((response) => response.json()) //gets response body
       .then((output) => {
-        console.log(output);
+
       });
   }
 
@@ -46,7 +46,7 @@ class TaskCard extends Component {
     })
       .then((response) => response.json()) //gets response body
       .then((output) => {
-        console.log(output);
+
       });
   }
 
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'blanchedalmond',
     borderWidth: 5,
     width: 300,
-    height: 200
+    height: 130
   },
 
   scrollViewStyle: {

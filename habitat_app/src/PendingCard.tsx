@@ -1,6 +1,6 @@
 import React, {useState, Component} from "react";
 import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, Modal, StyleSheet } from "react-native";
-import {IP_ADDRESS} from './App';
+import {IP_ADDRESS} from './IP_ADDRESS';
 class PendingCard extends Component {
 
   constructor(props){
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'blanchedalmond',
     borderWidth: 4,
     width: 300,
-    height: 200
+    height: 130
   },
 
   scrollViewStyle: {

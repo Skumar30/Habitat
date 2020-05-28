@@ -176,7 +176,7 @@ router.get('/getMyTasks', async(req, res, next) => {
 
       //current task id
       var currTaskId = currContractTaskIds[i];
-      console.log("currTaskId: " + currTaskId);
+
       //iterating through all of the user's task ids to find the current task
       for(var j = 0; j < userTaskIds.length; j++) {
 
@@ -280,120 +280,6 @@ router.get('/getPendingContracts', async(req, res, next) => {
     console.log(err);
     res.status(500).send(err);
   }
-});
-
-router.post('/createTask', async(req, res, next) => {
-
-  try {
-    var TaskModel = require('../models/task.js');
-    var taskToCreate = new TaskModel(req.body);
-
-    var result = await taskToCreate.save();
-    res.send(result);
-  }
-  catch(err) {
-
-    console.log("error when creating task");
-    res.status(500).send(err);
-  }
-});
-
-router.post('/addTask', async(req, res, next) => {
-
-  try {
-    var User = require('../models/user.js');
-
-    var userId = req.body.userId;
-    userId instanceof mongoose.Types.ObjectId;
-
-    var taskId = req.body.taskId;
-    taskId instanceof mongoose.Types.ObjectId;
-
-    var result = await User.update(
-        { _id: userId },
-        { $push: { tasks: taskId } }
-    );
-    res.send(result);
-  }
-  catch(err) {
-
-    console.log(err);
-    res.status(500).send(err);
-  }
-
-
-});
-
-router.post('/removeTask', async(req, res, next) => {
-
-  try {
-    var UserModel = require('../models/user.js');
-    var ContractModel = require('../models/wellnesscontract.js');
-
-    var currContract = await ContractModel.findOne({_id: req.body.contractId});
-
-    var contractId = req.body.contractId;
-    contractId instanceof mongoose.Types.ObjectId;
-    var taskId = req.body.taskId;
-    taskId instanceof mongoose.Types.ObjectId;
-
-    //removing the contract from the other user's contract field
-    var result = await ContractModel.updateOne({_id: req.body.contractId}, {$pull: {tasks: taskId}});
-
-    res.send(result);
-  }
-  catch(err) {
-
-    console.log("error removing task");
-    res.status(500).send(err);
-  }
-
-
-});
-
-router.post('/createContract', async(req, res, next) => {
-
-  try {
-    var ContractModel = require('../models/wellnesscontract.js');
-    var contractToCreate = new ContractModel(req.body);
-    var result = await contractToCreate.save();
-    res.send(result);
-  }
-  catch(err) {
-
-    console.log("error creating contract");
-    res.status(500).send(err);
-  }
-
-
-});
-
-router.post('/addContract', async(req, res, next) => {
-
-  try {
-    var UserModel = require('../models/user.js');
-
-    //console.log("userId is: " + req.user._id);
-    //console.log("contractId is: " + req.body.contractId);
-    //var Model = mongoose.model("model", schema, "users");
-    var userId = req.body.userId;
-    userId instanceof mongoose.Types.ObjectId;
-    var contractId = req.body.contractId;
-    contractId instanceof mongoose.Types.ObjectId;
-
-    var result = await UserModel.update(
-        { _id: userId },
-        { $push: { contracts: contractId } }
-    );
-    res.send(result);
-  }
-  catch(err) {
-
-    console.log("error adding contract");
-    res.status(500).send(err);
-  }
-
-
 });
 
 router.post('/removeContract', async(req, res, next) => {
@@ -567,63 +453,6 @@ router.post('/acceptContract', async(req, res, next) => {
   }
 });
 
-router.post('/createPet', async(req, res, next) => {
-
-  try {
-    var PetModel = require('../models/pet.js');
-    var petToCreate = new PetModel(req.body);
-
-    var result = await petToCreate.save();
-    res.send(result);
-  }
-  catch(err) {
-
-    console.log("error when creating pet");
-    res.status(500).send(err);
-  }
-});
-
-router.post('/addPet', async(req, res, next) => {
-
-  try {
-    var User = require('../models/user.js');
-
-    var userId = req.user._id;
-
-    var petId = req.body.petId;
-    petId instanceof mongoose.Types.ObjectId;
-
-    var result = await User.update(
-        { _id: userId },
-        { $push: { pets: petId } }
-    );
-    res.send(result);
-  }
-  catch(err) {
-
-    console.log(err);
-    res.status(500).send(err);
-  }
-
-
-});
-
-router.post('/createUser', async(req, res, next) => {
-
-  try {
-    var UserModel = require('../models/user.js');
-    var userToCreate = new UserModel(req.body);
-
-    var result = await userToCreate.save();
-    res.send(result);
-  }
-  catch(err) {
-
-    console.log("error when creating user");
-    res.status(500).send(err);
-  }
-});
-
 router.post('/addReward', async(req, res, next) => {
 
   try {
@@ -791,32 +620,6 @@ router.post('/removeReward', async(req, res, next) => {
     console.log(err);
     res.status(500).send(err);
   }
-});
-
-router.post('/addTaskToContract', async(req, res, next) => {
-
-  try {
-    var User = require('../models/user.js');
-    var ContractModel = require('../models/wellnesscontract.js');
-    var contractId = req.body.contractId;
-    contractId instanceof mongoose.Types.ObjectId;
-
-    var taskId = req.body.taskId;
-    taskId instanceof mongoose.Types.ObjectId;
-
-    var result = await ContractModel.update(
-        { _id: contractId },
-        { $push: { tasks: taskId } }
-    );
-    res.send(result);
-  }
-  catch(err) {
-
-    console.log(err);
-    res.status(500).send(err);
-  }
-
-
 });
 
 router.get('/isDone', async(req, res, next) => {

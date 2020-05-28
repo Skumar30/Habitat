@@ -4,7 +4,7 @@ import PendingCard from "./PendingCard";
 import TaskCard from "./TaskCard";
 import ViewWellnessContract from "./ViewWellnessContract";
 import * as Screens from './Screens';
-import {IP_ADDRESS} from './App';
+import {IP_ADDRESS} from './IP_ADDRESS';
 class WellnessContractHome extends Component {
 
   constructor(props){
@@ -53,14 +53,18 @@ class WellnessContractHome extends Component {
 
     const newPendingContracts = this.state.pendingContracts.filter(item => item.id !== contractId);
     this.setState({pendingContracts: newPendingContracts});
-    Alert.alert("Inviation Reject Confirmation", "Invitation has been rejected.");
+    Alert.alert("Inviation Reject Confirmation",
+      "Invitation has been rejected.",
+      [{text: "Cancel", style: "cancel"}]);
   }
 
   acceptInvitation = async(contractId) => {
 
     if(this.state.hasContract) {
 
-      Alert.alert("Exiting Wellness Contract", "Please leave current wellness contract before accepting invitation.");
+      Alert.alert("Exiting Wellness Contract",
+        "Please leave current wellness contract before accepting invitation.",
+        [{text: "Cancel", style: "cancel"}]);
     }
     else {
 
@@ -80,7 +84,6 @@ class WellnessContractHome extends Component {
       })
         .then((response) => response.json()) //gets response body
         .then((output) => {
-          console.log(output);
 
         });
 
@@ -96,7 +99,9 @@ class WellnessContractHome extends Component {
       var result2 = await this.getPendingContracts();
 
       //call checkCurrentContract
-      Alert.alert("Invitation Accept Confirmation", "Invitation has been accepted.");
+      Alert.alert("Invitation Accept Confirmation",
+        "Invitation has been accepted.",
+        [{text: "Cancel", style: "cancel"}]);
     }
   }
 
@@ -110,7 +115,9 @@ class WellnessContractHome extends Component {
 
     this.removeContract(this.state.currentContractId);
     this.handleLeaveModalVisible();
-    Alert.alert("Leave Contract Confirmation", "You have left the current contract.");
+    Alert.alert("Leave Contract Confirmation",
+      "You have left the current contract.",
+      [{text: "Cancel", style: "cancel"}]);
   }
 
   removeContract = async(contractId) => {
@@ -140,29 +147,25 @@ class WellnessContractHome extends Component {
     }
     else {
 
-      Alert.alert("No Existing Wellness Contract", "You do not have a current contract.");
+      Alert.alert("No Existing Wellness Contract",
+        "You do not have a current contract.",
+        [{text: "Cancel", style: "cancel"}]);
     }
   }
 
   createContract = () => {
 
     //redirect to michael's create contract screen
-
-    this.props.routeTo(Screens.CreateContract, {
-        date: new Date(),
-        tasks: this.state.myTasks,
-        friend: 'Not Selected', friendID:'',
-        screen: Screens.CreateContract,
-        contractId: this.state.currentContractId
-      }
-    );
+    this.props.routeTo(Screens.CreateContract, {date: new Date(), tasks: [], friend: 'Not Selected', friendID:''});
   }
 
   handleCreateContract = () => {
 
     if(this.state.hasContract) {
 
-      Alert.alert("Existing Wellness Contract","You are already in a wellness contract. Please leave the current contract before creating a new one.");
+      Alert.alert("Existing Wellness Contract",
+        "You are already in a wellness contract. Please leave the current contract before creating a new one.",
+        [{text: "Cancel", style: "cancel"}]);
     }
     else {
 
@@ -179,7 +182,9 @@ class WellnessContractHome extends Component {
     }
     else {
 
-      Alert.alert("No Existing Wellness Contract", "Please create or accept a wellness contract in order to view it.");
+      Alert.alert("No Existing Wellness Contract",
+        "Please create or accept a wellness contract in order to view it.",
+        [{text: "Cancel", style: "cancel"}]);
     }
   }
 
@@ -188,7 +193,6 @@ class WellnessContractHome extends Component {
       const response = await fetch(`http://${IP_ADDRESS}:3000/getPendingContracts`);
       const body = await response.json();
       var pendingContractData = body;
-      console.log(pendingContractData);
       this.setState({pendingContracts: pendingContractData});
   }
 
@@ -199,7 +203,6 @@ class WellnessContractHome extends Component {
     if(body.length > 0) {
       this.setState({hasContract: true});
       this.setState({currentContractId: body[0]})
-      console.log(this.state.currentContractId);
     }
     else
       this.setState({hasContract: false});
@@ -373,7 +376,7 @@ class WellnessContractHome extends Component {
 const styles = StyleSheet.create({
   entireScreenContainer: {
     flexDirection: "column",
-    height: 650,
+    height: 660,
     width: 410,
     padding: 20,
     backgroundColor: 'blanchedalmond'
@@ -407,7 +410,7 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: '#CCCCCC',
     width: 300,
-    height: 200
+    height: 130
   },
 
   scrollViewStyle: {
