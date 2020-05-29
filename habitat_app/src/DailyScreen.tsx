@@ -21,6 +21,7 @@ import {
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import * as Screens from './Screens';
 import TaskCard from "./TaskCard";
+const IP_ADDRESS = "192.168.1.81";
 
 interface State {
     checked: boolean[]
@@ -50,26 +51,14 @@ interface Contract{
     pending: boolean
     due_date: string
 }
-
 const TODAY = new Date();
-var month = TODAY.getUTCMonth() + 1; //months from 1-12
-var day = TODAY.getUTCDate();
-var year = TODAY.getUTCFullYear();
-var newdate;
-
-if (month < 10) {
-    newdate = year + "-0" + month + "-" + day;
-}
-else{
-    newdate = year + "-" + month + "-" + day
-}
 
 class DailyScreen extends Component {
     constructor(props){
         super(props);
         var checks:boolean[] = [];
         var bonus:boolean[] = [];
-        this.state = { checked: checks, streaks: [], tasks: [], contract: null, inContract: bonus}
+        this.state = { checked: checks, streaks: [], tasks: [], completes: [], contract: null, inContract: bonus}
     }
 
     getDailies = async() => {
@@ -104,35 +93,9 @@ class DailyScreen extends Component {
         this.setState({tasks: data});
         this.setState({streaks: streak});
         this.setState({completes: complete});
+        console.log(this.state.completes);
         this.setState( {inContract: bonus});
-
-        for ( var i = 0; i < complete.length; i++){
-            if( complete[i] != []){
-                var date1 = complete[i].toString();
-                date1 = date1.substring(0,10);
-            }
-            else{
-                date1 = "";
-            }
-
-            /*
-            console.log(complete[i]);
-            console.log(complete[i].toString());
-            console.log("after date1");
-            console.log(date1);
-            console.log("above comparison");
-            console.log(today, date1, newdate);
-            console.log(newdate == date1);
-            */
-
-            if( newdate == date1){
-                this.state.checked[i] = true;
-            }
-            else{
-                this.state.checked[i] = false;
-            }
-        }
-        console.log(this.state.checked);
+        this.updateCheckbox();
     }
 
     updateContract (res:Contract|undefined=undefined):void{
@@ -158,21 +121,124 @@ class DailyScreen extends Component {
         }
     }
 
+    updateCheckbox(){
+        const TODAY = new Date();
+        var month = TODAY.getUTCMonth() + 1; //months from 1-12
+        var day = TODAY.getUTCDate();
+        var year = TODAY.getUTCFullYear();
+        var newdate;
+
+        if (month < 10) {
+            newdate = year + "-0" + month + "-" + day;
+        }
+        else{
+            newdate = year + "-" + month + "-" + day
+        }
+
+        for ( var i = 0; i < this.state.tasks.length; i++){
+            if( this.state.completes[i] != []){
+                var date1 = this.state.completes[i].toString();
+                date1 = date1.substring(0,10);
+            }
+            else
+                date1 = "";
+
+            if( newdate == date1)
+                this.state.checked[i] = true;
+            else
+                this.state.checked[i] = false;
+
+        }
+        console.log(this.state.checked);
+    }
+
+    checkStreak(){
+        // Get Today's date in string format
+        var TODAY = new Date();
+        var month1 = TODAY.getUTCMonth() + 1; //months from 1-12
+        var day1 = TODAY.getUTCDate();
+        var year1 = TODAY.getUTCFullYear();
+        var today;
+
+        if (month1 < 10) {
+            today = year1 + "-0" + month1 + "-" + day1;
+        }
+        else{
+            today = year1 + "-" + month1 + "-" + day1;
+        }
+
+        // Get Yesterday's date in string format
+        var YESTERDAY = new Date();
+        YESTERDAY.setDate(TODAY.getDate() - 1);
+        var month2 = YESTERDAY.getUTCMonth() + 1; //months from 1-12
+        var day2 = YESTERDAY.getUTCDate();
+        var year2 = YESTERDAY.getUTCFullYear();
+        var yesterday;
+
+        if (month2 < 10) {
+            yesterday = year2 + "-0" + month2 + "-" + day2;
+        }
+        else{
+            yesterday = year2 + "-" + month2 + "-" + day2;
+        }
+
+        // Go through each task and their last completed day
+        for ( var i = 0; i < this.state.tasks.length; i++){
+            var lastDay = this.state.tasks[i].datesCompleted[this.state.tasks.datesComplete.length-1];
+            lastDay = lastDay.substring(0,10);
+            console.log(lastDay);
+
+            // If the last completed date was not today or yesterday, streak resets
+            if( lastDay == today || lastDay == yesterday)
+                console.log(lastDay);
+            // Else, reset streak
+            else{
+                this.state.tasks[i].streak = 0;
+                this.updateStreak(i);
+            }
+        }
+    }
+
+    updateStreak = async(index: number) => {
+        const settings = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+                {streak: 0,
+                        id: this.state.tasks[index]._id
+                }
+            )
+        };
+        try{
+            const response = await fetch('http://192.168.1.81:3000/updateStreak', settings)
+            const data = await response.json();
+            return data;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     componentDidMount(){
     this.getDailies().then(res => {
         this.setState({tasks: res});
         this.updateState(res);
-        console.log(this.state.inContract);
         })
 
-    this.getContract().then(res1 => {
+        console.log("above contract, mount");
+        console.log(this.state.inContract);
+
+     this.getContract().then(res1 => {
         this.setState({contract: res1})
         this.updateContract(res1)
+        console.log("in contract, mount");
         console.log(this.state.inContract);
-    });
+        });
 
+     this.checkStreak();
     }
-
 
     alert(index: number){
         Alert.alert("Title", "Select an option", [

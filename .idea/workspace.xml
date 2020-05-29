@@ -6,7 +6,6 @@
       <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/src/Test.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +33,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/CSE110_Firebase" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="ts.external.directory.path" value="C:\Users\Student\Documents\GitHub\Habitat\UI\habitat_app\node_modules\typescript\lib" />
   </component>
   <component name="SvnConfiguration">
@@ -48,6 +47,7 @@
       <option name="presentableId" value="Default" />
       <updated>1587622969505</updated>
       <workItem from="1587622977939" duration="1288000" />
+      <workItem from="1590707361168" duration="7994000" />
     </task>
     <servers />
   </component>
@@ -63,45 +63,74 @@
       <screen x="0" y="0" width="1418" height="759" />
     </state>
     <state x="381" y="168" key="com.intellij.ide.util.TipDialog/0.0.1418.759@0.0.1418.759" timestamp="1587622978292" />
+    <state x="371" y="80" width="672" height="678" key="search.everywhere.popup" timestamp="1590709005364">
+      <screen x="0" y="0" width="1418" height="759" />
+    </state>
+    <state x="371" y="80" width="672" height="678" key="search.everywhere.popup/0.0.1418.759@0.0.1418.759" timestamp="1590709005364" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
-          <line>231</line>
-          <properties lambdaOrdinal="-1" />
+          <line>234</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
-          <line>147</line>
-          <properties lambdaOrdinal="-1" />
+          <line>150</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
-          <line>206</line>
-          <properties lambdaOrdinal="-1" />
+          <line>209</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
-          <line>11</line>
-          <properties lambdaOrdinal="-1" />
+          <line>14</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
-          <line>113</line>
-          <properties lambdaOrdinal="-1" />
+          <line>116</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
-          <line>454</line>
+          <url>file://$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx</url>
+          <line>275</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="7" />
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx</url>
+          <line>148</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx</url>
+          <line>72</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx</url>
+          <line>90</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx</url>
+          <line>63</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx</url>
+          <line>388</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

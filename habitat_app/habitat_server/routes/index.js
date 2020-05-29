@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+const BASE_DAILY_REWARD = 10;
+const WELLNESS_BONUS = 1.5;
+const MAX_HAPPINESS_BONUS = 100;
 
 
 router.get('/', function (req, res, next) {
@@ -358,6 +361,7 @@ router.get('/getDailies', async(req, res, next) => {
       }
       //console.log("above return");
       res.json(tasks);
+      console.log(tasks);
     });
     }
     catch (err) {
@@ -370,11 +374,11 @@ router.get('/getDailies', async(req, res, next) => {
 router.get('/getContract', async(req,res, next) => {
     var ContractModel = require('../models/wellnesscontract.js');
     ContractModel.findOne({"_id" : {$in : req.user.contracts}}, function(err, data){
-      console.log("inside contract");
+    console.log("inside contract");
     console.log(data);
     res.json(data);
   })
-})
+});
 
 router.delete('/deleteTask', async(req, res, next) => {
     var id = mongoose.Types.ObjectId(req.body.my_id);
@@ -414,19 +418,31 @@ router.post('/incrementStreak', async(req, res, next) => {
     var task = await TaskModel.findOne({_id: req.body.id});
     var pet = await PetModel.findOne({_id: req.user.pet_id});
     var streak = req.body.streak
+    var streak_bonus = streak;
+    if( streak_bonus >= 50){
+      streak_bonus = 50;
+    }
 
     var contract = req.body.inContract;
-    var bonus = 0;
-    if( contract = true){
-      bonus = .5 * ((10 + streak) / 10);
+    var wellness_bonus = 1;
+    if( contract == true){
+      wellness_bonus = WELLNESS_BONUS;
     }
 
     console.log("in increment");
     console.log(task);
 
-    var temp = 1.5 * ((10 + streak) / 10);
-    var updatedCredits = user.credits + Math.floor((10 + streak) * 1.5);
-    var updatedHappiness = pet.happiness + temp;
+    // Daily Task reward + streak bonus + Wellness_Bonus
+    var rewards = Math.floor((BASE_DAILY_REWARD + streak_bonus) * wellness_bonus);
+
+    // Happiness Bonus for Max Happiness
+    var updatedHappiness = pet.happiness + rewards;
+    var happiness_bonus = 0;
+    if( updatedHappiness >= 100 && pet.happiness < 100){
+      happiness_bonus = MAX_HAPPINESS_BONUS;
+      updatedHappiness = 100;
+    }
+    var updatedCredits = user.credits + rewards + happiness_bonus;
 
     var result = await UserModel.updateOne(
         { _id: req.user._id },
@@ -463,10 +479,27 @@ router.post('/decrementStreak', async(req, res, next) => {
     var task = await TaskModel.findOne({_id: req.body.id});
     var pet = await PetModel.findOne({_id: req.user.pet_id});
     var streak = req.body.streak + 1;
+    var streak_bonus = streak;
+    if( streak_bonus >= 50){
+      streak_bonus = 50;
+    }
 
-    var temp = 1.5 * ((10 + streak) / 10);
-    var updatedCredits = user.credits - Math.floor((10 + streak) * 1.5);
-    var updatedHappiness = pet.happiness - temp;
+    var contract = req.body.inContract;
+    var wellness_bonus = 1;
+    if( contract == true){
+      wellness_bonus = WELLNESS_BONUS;
+    }
+
+    // Daily Task reward + streak bonus + Wellness_Bonus
+    var rewards = Math.floor((BASE_DAILY_REWARD + streak_bonus) * wellness_bonus);
+
+    // Happiness Bonus for Max Happiness
+    var updatedHappiness = pet.happiness - rewards;
+    var happiness_bonus = 0;
+    if( pet.happiness >= 100 && updatedHappiness < 100){
+      happiness_bonus = MAX_HAPPINESS_BONUS;
+    }
+    var updatedCredits = user.credits - rewards - happiness_bonus;
 
     var result = await UserModel.updateOne(
         { _id: req.user._id },
@@ -491,7 +524,7 @@ router.post('/decrementStreak', async(req, res, next) => {
   }
 });
 
-router.post("/complete", async(req, res, next) => {
+router.post('/complete', async(req, res, next) => {
   try{
     var TaskModel = require('../models/task.js');
     console.log(new Date());
@@ -502,9 +535,9 @@ router.post("/complete", async(req, res, next) => {
     console.log("error completing");
     res.status(500).send(err);
   }
-})
+});
 
-router.post("/incomplete", async(req, res, next) => {
+router.post('/incomplete', async(req, res, next) => {
   try{
     var TaskModel = require('../models/task.js');
     var result = await TaskModel.updateOne({_id: req.body.id}, { $pop: {datesCompleted: 1}});
@@ -514,7 +547,22 @@ router.post("/incomplete", async(req, res, next) => {
     console.log("error completing");
     res.status(500).send(err);
   }
-})
+});
+
+router.post('/updateStreak'), async(req, res, next) => {
+  try{
+    var TaskModel = require('../models/task.js');
+    var result = await TaskModel.updateOne(
+        { _id: req.body.id },
+        { streak: req.body.streak }
+    );
+    res.json(result);
+  }
+  catch (err){
+    console.log("error updating streaks");
+    res.status(500).send(err);
+  }
+};
 
 
 module.exports = router;
