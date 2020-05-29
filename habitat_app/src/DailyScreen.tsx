@@ -71,7 +71,7 @@ class DailyScreen extends Component {
     }
 
     getContract = async() => {
-        const response = await fetch('http://192.168.1.81:3000/getContract');
+        const response = await fetch(`http://${IP_ADDRESS}:3000/getContract`);
         const body = await response.json();
         if (response.status !== 200) {
             console.error(body.message)
@@ -145,9 +145,9 @@ class DailyScreen extends Component {
 
             if( newdate == date1)
                 this.state.checked[i] = true;
-            else
+            else {
                 this.state.checked[i] = false;
-
+            }
         }
         console.log(this.state.checked);
     }
