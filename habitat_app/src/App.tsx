@@ -43,7 +43,7 @@ import TaskCard from './TaskCard';
 import SignUp from './SignUp';
 import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
-
+export const IP_ADDRESS = 'YOUR IPv4 HERE';
 declare const global: {HermesInternal: null | {}};
 
 interface State {

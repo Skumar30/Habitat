@@ -75,7 +75,6 @@ export default class SignUp extends React.Component<{}, State> {
               }}
               onSubmit={(values, actions) => {
                 fetch(`http://${IP_ADDRESS}:3000/users/signup`, {
-
                   method: 'POST',
                   headers: {
                     Accept: 'application/json', //expects a JSON
