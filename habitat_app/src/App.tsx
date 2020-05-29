@@ -42,10 +42,7 @@ import TaskCard from './TaskCard';
 import SignUp from './SignUp';
 import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
-
 declare const global: {HermesInternal: null | {}};
-
-export const IP_ADDRESS = "YOUR IP HERE"
 
 interface State {
   screen: string;
@@ -62,7 +59,7 @@ class App extends React.Component<{}, State> {
     console.log(screen);
     this.setState({screen: screen, toSend: props});
   };
-/*
+
   renderScreen() {
     var screenToShow;
     switch (this.state.screen) {
@@ -140,25 +137,20 @@ class App extends React.Component<{}, State> {
     console.log(screenToShow);
     return screenToShow;
   }
-  */
-  render(){
-      
-
-    return(
-      /*
+  render() {
+    return (
       <Fragment>
         {console.log(this.state.screen)}
-       {this.renderScreen()}
-       </Fragment>
-*/
-
+        {this.renderScreen()}
+      </Fragment>
+      /*
      <Fragment>
      {this.state.trigger && <Login/>}
-     {this.state.trigger == false && <RegTask routeTo={this.routeTo} props={this.state.toSend} />}
+     {this.state.trigger == false && <RegTask/>}
      <Button title="Toggle" onPress={() => this.setState({trigger: !this.state.trigger})} />
  </Fragment>
-    )
-
+*/
+    );
   }
 }
 

@@ -3,7 +3,7 @@ import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, 
 import {Header, Button,CheckBox, Icon, Tooltip} from 'react-native-elements'
 import {Dimensions} from 'react-native';
 import * as Screens from './Screens';
-import {IP_ADDRESS} from './App'
+import {IP_ADDRESS} from './IP_Address'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -247,7 +247,7 @@ class RegTask extends React.Component<any, State>{
     };
 
       try{
-        const response = await fetch('http://10.0.1.57:3000/taskCompleted', settings)
+        const response = await fetch(`http://${IP_ADDRESS}:3000/taskCompleted`, settings)
         const data = await response.json();
         return data;
       } catch (e) {
