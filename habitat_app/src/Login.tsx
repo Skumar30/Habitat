@@ -38,7 +38,7 @@ interface State {
   errormsg: string;
 }
 
-export default class Login extends React.Component<{}, State> {
+export default class Login extends React.Component<any, State> {
   constructor(props: any) {
     super(props);
     this.state = {errortoggle: false, errormsg: ''};
