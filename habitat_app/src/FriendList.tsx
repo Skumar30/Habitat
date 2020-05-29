@@ -9,15 +9,20 @@ import {
   Modal,
   Alert,
   TextInput,
+  Image,
 } from 'react-native';
 import { create } from 'react-test-renderer';
-
-
+import * as Screens from './Screens';
+import {IP_ADDRESS} from './IP_Address'
 class temp {
-  constructor(name: string, key: string) {}
+  constructor(key: string, name: string, username: string) {}
 }
 
 class FriendList extends Component{
+  
+  constructor(props: any) {
+    super(props);
+  }
 
   state = {
     addModalVisible: false,
@@ -26,51 +31,69 @@ class FriendList extends Component{
     arrayHolder: [],
     textInput_Holder: '',
     invalidCode: false,
+    existingFriend: false,
+    data: []
   };
 
-  dummy = [
-    {
-      key: '910',
-      name: 'Alex',
-    },
-    {
-      key: '5678',
-      name: 'Darin',
-    },
-    {
-      key: '1234',
-      name: 'Evan',
-    },
-  ];
-
-  data: temp[] = [];
-
-  findName (code: string): any {
-    return this.dummy.find(data => data.key === code);
-  }; 
-
-  joinData = () => {
-
-    let friend: any = (this.findName(this.state.textInput_Holder));
-
-    if (friend == undefined && this.state.textInput_Holder != '') {
-      this.setState({invalidCode: true});
-    }
-
-    else if (this.state.textInput_Holder != ''){
-      
-      this.data.push({key: this.state.textInput_Holder, name: friend.name});
-      
-      this.setState({ arrayHolder: [...this.data] });
-
-      this.setState({textInput_Holder: ''});
-      this.setState({addModalVisible:false});
-    }
-  }
 
   onEnterCode = (input: string) => {
     this.setState({ textInput_Holder: input });
     this.setState({invalidCode: false});
+    this.setState({existingFriend: false});
+  }
+
+  codeInList = (code: string) => {
+    if (this.state.data.find(element => element.username === code)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  addFriend = async () => {
+
+    if (this.codeInList(this.state.textInput_Holder)) {
+      this.setState({existingFriend: true});
+      return;
+    }
+    else if (this.state.textInput_Holder.length == 0) {
+      return;
+    }
+
+    console.log(this.state.textInput_Holder)
+    const friendUsername = this.state.textInput_Holder
+    const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        friend_username: friendUsername
+      }) 
+    }
+    
+    try {
+      const response = await fetch(`http://${IP_ADDRESS}:3000/addFriend`, settings);
+      console.log("Responce" + response)
+
+      const friendData = await response.json();
+
+      if (friendData == null) {
+        this.setState({invalidCode: true});
+        return
+      }
+
+      var dataArr = this.state.data;
+      dataArr.push( {key: friendData._id, name: friendData.name, username: friendData.username} )
+      this.setState({data: dataArr})
+
+      this.setState({textInput_Holder: ''});
+      this.setState({addModalVisible:false});
+
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   renderAddForm = () => {
@@ -86,17 +109,21 @@ class FriendList extends Component{
             <View style={styles.modalView}>
 
               <View>
-                <Text style={styles.modalText}>Add Friend!</Text>
+                <Text style={styles.modalText}>Add Friends!</Text>
               </View>
 
               <View style={styles.centerThis}>
-              {this.state.invalidCode && <Text style={{color:'red'}}>Invalid Friend Code</Text>}
+              {this.state.invalidCode && <Text style={{color:'red'}}>Invalid Username</Text>}
+              </View>
+
+              <View style={styles.centerThis}>
+              {this.state.existingFriend && <Text style={{color:'red'}}>Friend Already Added</Text>}
               </View>
 
               <View style={{...styles.centerThis}}>
               <TextInput
                 style={styles.inputTxt}
-                placeholder="Enter Friend Code"
+                placeholder="Enter Friend Username"
                 onChangeText={input => this.onEnterCode(input)}
               />
               </View>
@@ -107,6 +134,8 @@ class FriendList extends Component{
                     style={{...styles.addButton, backgroundColor: "white" }}
                     onPress={() => {
                       this.setState({addModalVisible:false});
+                      this.setState({invalidCode: false});
+                      this.setState({existingFriend: false});
                     }}
                   >
                     <Text style={styles.textStyle}>Cancel</Text>
@@ -116,7 +145,7 @@ class FriendList extends Component{
                 <View>
                   <TouchableOpacity
                     style={{...styles.addButton, backgroundColor: "white" }}
-                    onPress={this.joinData}
+                    onPress={this.addFriend}
                   >
                     <Text style={styles.textStyle}>Add</Text>
                   </TouchableOpacity>
@@ -142,6 +171,67 @@ class FriendList extends Component{
       />
     );
   }
+
+  viewFriend = async (friend: any) => {
+    console.log("key: " + friend.key)
+    
+    const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        friend_id: friend.key
+      })
+    }
+
+    try {
+      const response = await fetch(`http://${IP_ADDRESS}:3000/getFriendData`, settings);
+
+      console.log("Responce " + response)
+
+      const friendData = await response.json();
+      console.log("friendProfData: " + friendData);
+      
+      //this.setState({friendModalVis:false});
+
+    } catch (e) {
+      console.log("ERROR: " + e);
+    }
+  }
+
+  removeFriend = async (friend: any) => {
+  
+    const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        friend_id: friend.key
+      })
+    }
+    
+    try {
+      await fetch(`http://${IP_ADDRESS}:3000/deleteFriend`, settings);
+
+      const index = this.state.data.indexOf(friend);
+      console.log("Index: " + index)
+      var dataArr = this.state.data
+
+      dataArr = dataArr.filter(pair => pair != friend);
+
+      //dataArr.splice(index, 1);
+      this.setState({data: dataArr});
+      this.setState({friendModalVis:false});
+
+    } catch (e) {
+      console.log("ERROR: " + e);
+    }
+  }
+
 
   renderFriendForm = () => {
     return(
@@ -174,7 +264,7 @@ class FriendList extends Component{
                   <View>
                     <TouchableOpacity
                       style={{...styles.addButton}}
-                      //onPress={}
+                      onPress={() => this.viewFriend(this.state.currFriend)}
                     >
                       <Text style={styles.textStyle}>View Profile</Text>
                     </TouchableOpacity>
@@ -205,11 +295,28 @@ class FriendList extends Component{
     this.setState({friendModalVis: true, currFriend: friend});
   }
 
-  removeFriend = (friend: temp) => {
-    
-    const index = this.data.indexOf(friend);
-    this.data.splice(index, 1);
-    this.setState({friendModalVis:false});
+  componentDidMount() {
+    this.createFriendList();
+  }
+
+  createFriendList() {
+    this.getFriends().then(res => {
+
+      //    res -> data
+      var friendData: { key: any; name: any; }[] = [];
+      res.forEach((element: { _id: any; name: any; username: any}) => {
+        var temp = {key: element._id, name: element.name, username: element.username}
+        friendData.push(temp)
+      });
+
+      this.setState({data: friendData});
+      console.log(this.state.data);
+    });
+  }
+
+  getFriends = async () => {
+    const response = await fetch(`http://${IP_ADDRESS}:3000/friends`);
+    return await response.json();
   }
 
   render(){
@@ -220,13 +327,21 @@ class FriendList extends Component{
               <View style={styles.sectionContainer}>
 
                 <View style={styles.fixToText}>
-
+                  <View style={{flex:0}}>
+                    <TouchableOpacity 
+                    onPress={() => this.props.routeTo(Screens.Home)}>
+                      <Image 
+                        style = {{ borderRadius: 15}}
+                        source={require('./assets/backsmall.png')}>
+                      </Image>
+                    </TouchableOpacity>
+                  </View>
                   <Text style={styles.sectionTitle}>Friends List</Text>
                   <TouchableOpacity 
                     style={styles.button}
                     onPress={() => this.setState({addModalVisible: true}) }
-                    >
-                      <Text style={styles.textBox}>Add Friend</Text>
+                  >
+                    <Text style={styles.textBox}>Add Friend</Text>
                   </TouchableOpacity>
 
                 </View>
@@ -238,12 +353,12 @@ class FriendList extends Component{
           </SafeAreaView>
 
           <View style={styles.container}>
-              <FlatList
-                data={this.data}
+              <FlatList 
+                data={this.state.data} 
                 renderItem={({item}) => 
-                <TouchableOpacity onPress={() => this.onFriendPress(item)}>  
-                  <Text style={styles.item}>{item.name}</Text>
-                </TouchableOpacity>
+                  <TouchableOpacity onPress={() => this.onFriendPress(item)}>  
+                    <Text style={styles.item}>{item.name}</Text>
+                  </TouchableOpacity>
                 }
                 ItemSeparatorComponent = {this.FlatListItemSeparator}
                 ListEmptyComponent = {() => (<Text style={styles.emptyMessageStyle}>Add Some Friends!</Text>)}
@@ -302,29 +417,29 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 32,
     fontWeight: '600',
-    fontFamily: 'serif',
+    //fontFamily: '',
   },
   sectionDescription: {
     marginTop: 8,
     marginBottom: 15,
     fontSize: 17,
     fontWeight: '400',
-    fontFamily: 'serif'
+    //fontFamily: ''
   },
 
   centerText: {
     textAlign: 'center',
-      fontFamily: "serif"
+    //fontFamily: ""
   },
 
   emptyMessageStyle: {
     textAlign: 'center',
     fontSize: 28,
     marginTop: '50%',
-    fontFamily: 'serif'
+    //fontFamily: ''
   },
   textBox: {
-    fontFamily: 'serif'
+    //fontFamily: ''
   },
 
 
@@ -360,13 +475,13 @@ centeredView: {
   textStyle: {
     fontWeight: "bold",
     textAlign: "center",
-    fontFamily: 'serif'
+    //fontFamily: ''
   },
   modalText: {
     marginBottom: 10,
     textAlign: "center",
     fontSize: 25,
-    fontFamily: 'serif'
+    //fontFamily: ''
   },
 
   buttonSeparation: {
@@ -383,7 +498,7 @@ centeredView: {
     borderRadius: 5, 
     margin: 10, 
     textAlign: 'center',
-    fontFamily: 'serif',
+    //fontFamily: 'serif',
   },
 
   centerThis: {

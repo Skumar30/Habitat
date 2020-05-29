@@ -78,7 +78,7 @@ export default class ChangePassword extends React.Component<{}, State> {
               }}
               onSubmit={(values, actions) => {
                 console.log("fetch request")
-                fetch(`http://${IP_ADDRESS}:3000/changePassword`, {
+                fetch(`http://${IP_ADDRESS}:3000/settings/changePassword`, {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json',
