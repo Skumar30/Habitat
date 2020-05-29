@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Screens from './Screens';
+import {IP_ADDRESS} from './App'
 declare const global: {HermesInternal: null | {}};
 
 
@@ -43,7 +44,7 @@ export default function EditTask(props){
       return;
     }
     // edit task
-    fetch('http://192.168.99.1:3000/editTask', {
+    fetch('http://${IP_ADDRESS}:3000/editTask', {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON

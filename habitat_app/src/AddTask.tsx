@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 var mongoose = require('mongoose');
-
+import {IP_ADDRESS} from './App'
 declare const global: {HermesInternal: null | {}};
 
 
@@ -44,7 +44,7 @@ export default function AddTask(props){
     }
     var temp_id = new mongoose.Types.ObjectId();
     // post the task
-    fetch('http://192.168.99.1:3000/createTask', {
+    fetch('http://${IP_ADDRESS}:3000/createTask', {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
