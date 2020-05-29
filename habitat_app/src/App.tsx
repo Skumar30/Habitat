@@ -20,7 +20,7 @@ import {
   Button,
 } from 'react-native';
 import RegTask from './RegTask';
-import Test from './Test';
+
 import {
   Header,
   LearnMoreLinks,
@@ -32,7 +32,6 @@ import {
 import Home from './Home';
 import Login from './Login';
 import FriendList from './FriendList';
-import MyApp from './MyApp';
 import DailyScreen from './DailyScreen';
 import AddTask from './AddTask';
 import CreateContract from './CreateContract';
@@ -43,7 +42,6 @@ import TaskCard from './TaskCard';
 import SignUp from './SignUp';
 import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
-export const IP_ADDRESS = 'YOUR IPv4 HERE';
 declare const global: {HermesInternal: null | {}};
 
 interface State {
@@ -67,126 +65,84 @@ class App extends React.Component<{}, State> {
     switch (this.state.screen) {
       case Screens.AddTask:
         screenToShow = (
-            <AddTask routeTo={this.routeTo} props={this.state.toSend}/>
+          <AddTask routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
       case Screens.CreateContract:
         screenToShow = (
-            <CreateContract routeTo={this.routeTo} props={this.state.toSend}/>
+          <CreateContract routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
       case Screens.CustomizeScreen:
         screenToShow = (
-            <CustomizeScreen routeTo={this.routeTo} props={this.state.toSend}/>
+          <CustomizeScreen routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
       case Screens.DailyScreen:
         screenToShow = (
-            <DailyScreen routeTo={this.routeTo} props={this.state.toSend}/>
+          <DailyScreen routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
       case Screens.FriendList:
         screenToShow = (
-            <FriendList routeTo={this.routeTo} props={this.state.toSend}/>
+          <FriendList routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
       case Screens.Login:
         screenToShow = (
-            <Login routeTo={this.routeTo} props={this.state.toSend}/>
+          <Login routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
 
       case Screens.Home:
         screenToShow = (
-            <Home routeTo={this.routeTo} props={this.state.toSend}/>
+          <Home routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
       case Screens.RegTask:
         screenToShow = (
-            <RegTask routeTo={this.routeTo} props={this.state.toSend}/>
+          <RegTask routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
 
       case Screens.SignUp:
         screenToShow = (
-            <SignUp routeTo={this.routeTo} props={this.state.toSend}/>
+          <SignUp routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
       case Screens.ViewWellnessContract:
         screenToShow = (
-            <ViewWellnessContract
-                routeTo={this.routeTo}
-                props={this.state.toSend}
-            />
+          <ViewWellnessContract
+            routeTo={this.routeTo}
+            props={this.state.toSend}
+          />
         );
         break;
       case Screens.WellnessContract:
         screenToShow = (
-            <WellnessContract routeTo={this.routeTo} props={this.state.toSend}/>
+          <WellnessContract routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
       case Screens.WellnessContractHome:
         screenToShow = (
-            <WellnessContractHome
-                routeTo={this.routeTo}
-                props={this.state.toSend}
-            />
+          <WellnessContractHome
+            routeTo={this.routeTo}
+            props={this.state.toSend}
+          />
         );
         break;
-    }}
-        /*
-  renderScreen() {
-    var screenToShow;
-    switch (
-      this.state.screen
-      /*
-      case Screens.AddTask : screenToShow = <AddTask routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.CreateContract : screenToShow = <CreateContract routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.CustomizeScreen : screenToShow = <CustomizeScreen routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.DailyScreen : screenToShow = <DailyScreen routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.FriendList : screenToShow = <FriendList routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.Login : screenToShow = <Login routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
 
-      case Screens.Home : screenToShow = <Home routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.RegTask : screenToShow = <RegTask routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-
-      case Screens.SignUp : screenToShow = <SignUp routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.ViewWellnessContract : screenToShow = <ViewWellnessContract routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.WellnessContract : screenToShow = <WellnessContract routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-      case Screens.WellnessContractHome : screenToShow = <WellnessContractHome routeTo={this.routeTo} props={this.state.toSend} />
-                          break;
-
-    ) {
       //) {
     }
     console.log(screenToShow);
     return screenToShow;
   }
-  */
-
   render() {
     return (
-
-        /*
       <Fragment>
         {console.log(this.state.screen)}
         {this.renderScreen()}
       </Fragment>
-      */
-        <Fragment>
-        {this.state.trigger && <DailyScreen/>}
-        </Fragment>
       /*
      <Fragment>
      {this.state.trigger && <Login/>}

@@ -49,7 +49,7 @@ interface State {
   errormsg: boolean;
 }
 
-export default class SignUp extends React.Component<{}, State> {
+export default class SignUp extends React.Component<any, State> {
   constructor(props: any) {
     super(props);
     this.state = {errormsg: false};
@@ -74,7 +74,6 @@ export default class SignUp extends React.Component<{}, State> {
                 confirm_password: '',
               }}
               onSubmit={(values, actions) => {
-
                 fetch(`http://${IP_ADDRESS}:3000/users/signup`, {
                   method: 'POST',
                   headers: {
