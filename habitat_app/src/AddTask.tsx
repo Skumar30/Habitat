@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 var mongoose = require('mongoose');
-import {IP_ADDRESS} from './IP_Adress'
+import {IP_ADDRESS} from './IP_Address'
 declare const global: {HermesInternal: null | {}};
 
 
