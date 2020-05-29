@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, { Fragment } from 'react';
+import React, {Fragment} from 'react';
 import * as Screens from './Screens';
 import {
   SafeAreaView,
@@ -44,8 +44,8 @@ import Settings from './Settings';
 import ChangePassword from './ChangePassword';
 import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
-import WellnessContractFriends from "./WellnessContractFriends";
-import EditWellnessContract from "./EditWellnessContract";
+import WellnessContractFriends from './WellnessContractFriends';
+import EditWellnessContract from './EditWellnessContract';
 declare const global: {HermesInternal: null | {}};
 
 interface State {
@@ -56,12 +56,12 @@ interface State {
 class App extends React.Component<{}, State> {
   constructor(props: any) {
     super(props);
-    this.state = { screen: Screens.Login, toSend: {}, trigger: true };
+    this.state = {screen: Screens.Login, toSend: {}, trigger: true};
   }
 
   routeTo = (screen: string, props: any = {}) => {
     console.log(screen);
-    this.setState({ screen: screen, toSend: props });
+    this.setState({screen: screen, toSend: props});
   };
 
   renderScreen() {
@@ -129,12 +129,18 @@ class App extends React.Component<{}, State> {
         break;
       case Screens.EditWellnessContract:
         screenToShow = (
-            <EditWellnessContract routeTo={this.routeTo} props={this.state.toSend} />
+          <EditWellnessContract
+            routeTo={this.routeTo}
+            props={this.state.toSend}
+          />
         );
         break;
       case Screens.WellnessContractFriends:
         screenToShow = (
-            <WellnessContractFriends routeTo={this.routeTo} props={this.state.toSend} />
+          <WellnessContractFriends
+            routeTo={this.routeTo}
+            props={this.state.toSend}
+          />
         );
         break;
       case Screens.WellnessContractHome:

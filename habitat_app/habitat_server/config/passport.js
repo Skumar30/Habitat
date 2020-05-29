@@ -38,7 +38,6 @@ passport.use(
         newUser.friends = [];
         newUser.contracts = [];
         newUser.tasks = [];
-        newUser.pets = [];
         newUser.cosmetics = [];
         newUser.credits = 0;
         newUser.pet_id = mongoose.Types.ObjectId();

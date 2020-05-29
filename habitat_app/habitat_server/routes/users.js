@@ -23,14 +23,11 @@ router.post(
         res.json({message: 'Default Pet Error'});
       }
 
-      User.findByIdAndUpdate(req.user._id, {pet_id: pet._id, pets: [pet.type]}, function (
-        err
-      ) {
+      User.findByIdAndUpdate(req.user._id, {pet_id: pet._id}, function (err) {
         if (err) {
           res.json({message: "Could not update user's pet id"});
         }
         req.user.pet_id = pet._id;
-        req.user.pets = [pet.type];
         res.json(req.user);
       });
     });
