@@ -247,7 +247,7 @@ class RegTask extends React.Component<any, State>{
     };
 
       try{
-        const response = await fetch(`http://${IP_ADDRESS}:3000/taskCompleted`, settings)
+        const response = await fetch(`http://${IP_ADDRESS}:3000/regTask/taskCompleted`, settings)
         const data = await response.json();
         return data;
       } catch (e) {
@@ -299,7 +299,7 @@ class RegTask extends React.Component<any, State>{
     };
 
       try{
-        const response = await fetch(`http://${IP_ADDRESS}:3000/`+url, settings)
+        const response = await fetch(`http://${IP_ADDRESS}:3000/regTask/`+url, settings)
         const data = await response;
         return data;
       } catch (e) {
@@ -324,7 +324,7 @@ class RegTask extends React.Component<any, State>{
       };
 
       try{
-        const response = await fetch(`http://${IP_ADDRESS}:3000/deleteTask`, settings)
+        const response = await fetch(`http://${IP_ADDRESS}:3000/regTask/deleteTask`, settings)
         const data = await response.json();
         return data;
       } catch (e) {
@@ -335,7 +335,7 @@ class RegTask extends React.Component<any, State>{
     }
 
     getTaskData = async () => {
-       const response = await fetch(`http://${IP_ADDRESS}:3000/myTask`);
+       const response = await fetch(`http://${IP_ADDRESS}:3000/regTask/myTask`);
        const body = await response.json();
        if (response.status !== 200) {
         console.error(body.message) 
@@ -345,7 +345,7 @@ class RegTask extends React.Component<any, State>{
      }
 
     getContractData = async () => {
-      const response = await fetch(`http://${IP_ADDRESS}:3000/tasksInContract`);
+      const response = await fetch(`http://${IP_ADDRESS}:3000/regTask/tasksInContract`);
       const body = await response.json();
       if (response.status !== 200) {
        console.error(body.message) 
