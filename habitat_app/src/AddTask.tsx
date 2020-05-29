@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  Alert,
   StyleSheet,
   View,
   Text,
@@ -8,21 +9,96 @@ import {
   TouchableOpacity
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
+var mongoose = require('mongoose');
+import {IP_ADDRESS} from './IP_Address'
 declare const global: {HermesInternal: null | {}};
 
-const addHandler = () => {
-  //TODO
-}
 
-export default function AddTask(){
+
+export default function AddTask(props){
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [repeat, setRepeat] = useState([false,false,false,false,false,false,false])
+  const [repeat, setRepeat] = useState([false,false,false,false,false,false,false]);
+  const [emptyTitle, setEmpty] = useState(false);
 
+  const checkDaily = () => {
+    for(let i = 0; i < 7; i++){
+      if(repeat[i] === false){
+        return false;
+      }
+    }
+    return true;
+  }
+
+  const addHandler = () => {
+    if(title.trim() === ""){
+      setEmpty(true);
+      titleAlert();
+      return;
+    }
+    var today = new Date();
+    today.setHours(0,0,0);
+    if(date.getTime() < today.getTime()){
+      dateAlert();
+      return;
+    }
+    var temp_id = new mongoose.Types.ObjectId();
+    // post the task
+    fetch(`http://${IP_ADDRESS}:3000/createTask`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        _id: temp_id,
+        title: title,
+        due_date: date.setHours(23,59,59),
+        daily: checkDaily(),
+        frequency: repeat,
+      })
+  });
+    // link task to user
+    fetch(`http://${IP_ADDRESS}:3000/addTask`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        taskId: temp_id
+      })
+  });
+
+    // return to previous screen
+    // props.routeTo(props.props.screen)
+}
+
+    const backHandler = () => {
+      // return to previous screen
+      props.routeTo(props.props.screen)
+    }
+
+  const titleAlert = () => {
+      Alert.alert("", "Please input a valid task title.", [
+        {
+          text: "OK",
+        }
+      ]
+    )
+  }
+
+  const dateAlert = () => {
+      Alert.alert("", "Please input a valid due date.", [
+        {
+          text: "OK",
+        }
+      ]
+    )
+  }
+  // datetimepicker functions
   const showMode = currentMode => {
       setShow(true);
       setMode(currentMode);
@@ -38,86 +114,15 @@ export default function AddTask(){
     showMode({currentMode: 'date'});
   };
 
-  const toggleSunday = () => {
+  // handles toggle for frequency
+  const toggleRepeat = (day) => {
     let newRepeat = [].concat(repeat);
-    if (newRepeat[0] === true){
-        newRepeat[0] = false;
+    if (newRepeat[day] === true){
+        newRepeat[day] = false;
         setRepeat(newRepeat);
     }
     else {
-        newRepeat[0] = true;
-        setRepeat(newRepeat);
-    }
-  };
-
-  const toggleMonday = () => {
-    let newRepeat = [].concat(repeat);
-    if (newRepeat[1] === true){
-        newRepeat[1] = false;
-        setRepeat(newRepeat);
-    }
-    else {
-        newRepeat[1] = true;
-        setRepeat(newRepeat);
-    }
-  };
-
-  const toggleTuesday = () => {
-    let newRepeat = [].concat(repeat);
-    if (newRepeat[2] === true){
-        newRepeat[2] = false;
-        setRepeat(newRepeat);
-    }
-    else {
-        newRepeat[2] = true;
-        setRepeat(newRepeat);
-    }
-  };
-
-  const toggleWednesday = () => {
-    let newRepeat = [].concat(repeat);
-    if (newRepeat[3] === true){
-        newRepeat[3] = false;
-        setRepeat(newRepeat);
-    }
-    else {
-        newRepeat[3] = true;
-        setRepeat(newRepeat);
-    }
-  };
-
-  const toggleThursday = () => {
-    let newRepeat = [].concat(repeat);
-    if (newRepeat[4] === true){
-        newRepeat[4] = false;
-        setRepeat(newRepeat);
-    }
-    else {
-        newRepeat[4] = true;
-        setRepeat(newRepeat);
-    }
-  };
-
-  const toggleFriday = () => {
-    let newRepeat = [].concat(repeat);
-    if (newRepeat[5] === true){
-        newRepeat[5] = false;
-        setRepeat(newRepeat);
-    }
-    else {
-        newRepeat[5] = true;
-        setRepeat(newRepeat);
-    }
-  };
-
-  const toggleSaturday = () => {
-    let newRepeat = [].concat(repeat);
-    if (newRepeat[6] === true){
-        newRepeat[6] = false;
-        setRepeat(newRepeat);
-    }
-    else {
-        newRepeat[6] = true;
+        newRepeat[day] = true;
         setRepeat(newRepeat);
     }
   };
@@ -126,17 +131,17 @@ export default function AddTask(){
     <View style={styles.container}>
       <Text style={styles.titleText} >{"Add Task"}</Text>
       {/* Task Title */}
-      <TextInput placeholder="Task Title" onChangeText={(val)=>setTitle(val)} style={styles.titleInput}></TextInput>
+      <TextInput placeholder="Task Title" onChangeText={(val)=>setTitle(val)} style={styles.titleInput} borderColor={emptyTitle ? "#f00" : "000"}></TextInput>
       {/* Frequency */}
       <View style={{flex: 1}}>
         <View style={{...styles.repeat, flex: 1}}>
-          <Button title="S" color={repeat[0] ? "powderblue" : "#999"} onPress={toggleSunday}/>
-          <Button title="M" color={repeat[1] ? "powderblue" : "#999"} onPress={toggleMonday}/>
-          <Button title="T" color={repeat[2] ? "powderblue" : "#999"} onPress={toggleTuesday}/>
-          <Button title="W" color={repeat[3] ? "powderblue" : "#999"} onPress={toggleWednesday}/>
-          <Button title="T" color={repeat[4] ? "powderblue" : "#999"} onPress={toggleThursday}/>
-          <Button title="F" color={repeat[5] ? "powderblue" : "#999"} onPress={toggleFriday}/>
-          <Button title="S" color={repeat[6] ? "powderblue" : "#999"} onPress={toggleSaturday}/>
+          <Button title="S" color={repeat[0] ? "powderblue" : "#999"} onPress={() => toggleRepeat(0)}/>
+          <Button title="M" color={repeat[1] ? "powderblue" : "#999"} onPress={() => toggleRepeat(1)}/>
+          <Button title="T" color={repeat[2] ? "powderblue" : "#999"} onPress={() => toggleRepeat(2)}/>
+          <Button title="W" color={repeat[3] ? "powderblue" : "#999"} onPress={() => toggleRepeat(3)}/>
+          <Button title="T" color={repeat[4] ? "powderblue" : "#999"} onPress={() => toggleRepeat(4)}/>
+          <Button title="F" color={repeat[5] ? "powderblue" : "#999"} onPress={() => toggleRepeat(5)}/>
+          <Button title="S" color={repeat[6] ? "powderblue" : "#999"} onPress={() => toggleRepeat(6)}/>
         </View>
 
         <View style={{flex: 1}}>
@@ -174,7 +179,7 @@ export default function AddTask(){
         {/* Back Button */}
         <View style={styles.backButton}>
           <TouchableOpacity>
-            <Text style={styles.buttonText}>Back</Text>
+            <Text style={styles.buttonText} onPress={backHandler}>Back</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -201,7 +206,7 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
   titleInput: {
-      marginBottom: 20,
+    marginBottom: 20,
     borderWidth: 5,
     borderColor: '#000',
     width: 390,

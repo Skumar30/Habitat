@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="912dc296-c5c3-4fd8-8a3e-8ba3c824f7c3" name="Default Changelist" comment="" />
+    <list default="true" id="912dc296-c5c3-4fd8-8a3e-8ba3c824f7c3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/CustomizeScreen.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/EditWellnessContract.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/MyApp.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/WellnessContractFriends.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/.eslintrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/.prettierrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/.prettierrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/__tests__/App-test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/__tests__/App-test.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/ios/habitat_app/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/ios/habitat_app/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/CreateContract.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/CreateContract.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/components/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/components/button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/helloworld.js" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -11,13 +31,16 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/habitat_app" />
   </component>
   <component name="ProjectId" id="1avjTSh2wbIxdOcbS3zPtLhYjxk" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -27,8 +50,15 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/CSE110_Firebase" />
-    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.3.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="C:\Users\zhang\Desktop\Habitat\habitat_app\node_modules\typescript\lib" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -41,6 +71,16 @@
       <option name="presentableId" value="Default" />
       <updated>1587622969505</updated>
       <workItem from="1587622977939" duration="1288000" />
+      <workItem from="1590208015903" duration="880000" />
+      <workItem from="1590292795971" duration="11953000" />
+      <workItem from="1590306424360" duration="1971000" />
+      <workItem from="1590361785481" duration="1943000" />
+      <workItem from="1590425087794" duration="40708000" />
+      <workItem from="1590542446341" duration="3339000" />
+      <workItem from="1590551258330" duration="3441000" />
+      <workItem from="1590634897876" duration="1780000" />
+      <workItem from="1590690558390" duration="162000" />
+      <workItem from="1590721214304" duration="250000" />
     </task>
     <servers />
   </component>
@@ -52,9 +92,34 @@
       <screen x="0" y="0" width="1418" height="759" />
     </state>
     <state x="489" y="134" key="FileChooserDialogImpl/0.0.1418.759@0.0.1418.759" timestamp="1587623049593" />
-    <state x="381" y="168" key="com.intellij.ide.util.TipDialog" timestamp="1587622978292">
-      <screen x="0" y="0" width="1418" height="759" />
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1590439689041">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590439689041" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1590439689041">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1590439689041" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1590439689040">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1590439689040" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1590439689041">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1590439689041" />
+    <state x="413" y="182" key="com.intellij.ide.util.TipDialog" timestamp="1590721214287">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="381" y="168" key="com.intellij.ide.util.TipDialog/0.0.1418.759@0.0.1418.759" timestamp="1587622978292" />
+    <state x="413" y="182" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1590721214287" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1590443424531">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1590443424531" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1590430533546">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1590430533546" />
   </component>
 </project>

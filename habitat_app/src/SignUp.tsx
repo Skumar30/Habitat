@@ -49,7 +49,7 @@ interface State {
   errormsg: boolean;
 }
 
-export default class SignUp extends React.Component<{}, State> {
+export default class SignUp extends React.Component<any, State> {
   constructor(props: any) {
     super(props);
     this.state = {errormsg: false};
