@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="912dc296-c5c3-4fd8-8a3e-8ba3c824f7c3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/MyApp.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/ios/habitat_app/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/ios/habitat_app/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/FriendList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/FriendList.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +38,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="ts.external.directory.path" value="C:\Users\Student\Documents\GitHub\Habitat\UI\habitat_app\node_modules\typescript\lib" />
   </component>
   <component name="SvnConfiguration">
@@ -52,6 +60,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="439" y="126" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1590729624475">
+      <screen x="0" y="0" width="1418" height="759" />
+    </state>
+    <state x="439" y="126" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1418.759@0.0.1418.759" timestamp="1590729624475" />
     <state x="489" y="134" key="FileChooserDialogImpl" timestamp="1587623049593">
       <screen x="0" y="0" width="1418" height="759" />
     </state>
@@ -68,31 +80,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
-          <line>234</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
-          <line>150</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
-          <line>209</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
-          <line>14</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js</url>
-          <line>116</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx</url>
           <line>275</line>
@@ -126,7 +113,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx</url>
           <line>435</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
