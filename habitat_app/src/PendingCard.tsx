@@ -1,6 +1,6 @@
 import React, {useState, Component} from "react";
 import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, Modal, StyleSheet } from "react-native";
-
+import {IP_ADDRESS} from './IP_Address';
 class PendingCard extends Component {
 
   constructor(props){
@@ -27,7 +27,7 @@ class PendingCard extends Component {
 
     return(
 
-      <TouchableOpacity onPress={() => alert("popup with wellness contract info")}>
+      <TouchableOpacity>
         <View
           style={styles.cardContainer}
         >
@@ -95,7 +95,10 @@ class PendingCard extends Component {
                   </Text>
                   <Button
                     title="Accept Invitation"
-                    onPress={() => this.props.handleAccept(this.props.id)}>
+                    onPress={() => {
+                      this.props.handleAccept(this.props.id);
+                      this.handleAcceptModalVisible();
+                    }}>
                   </Button>
                   <Button
                     title="Cancel"
@@ -128,7 +131,10 @@ class PendingCard extends Component {
                   </Text>
                   <Button
                     title="Reject Invitation"
-                    onPress={() => this.props.handleReject(this.props.id)}>
+                    onPress={() => {
+                      this.props.handleReject(this.props.id);
+                      this.handleRejectModalVisible();
+                    }}>
                   </Button>
                   <Button
                     title="Cancel"
@@ -181,7 +187,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'blanchedalmond',
     borderWidth: 4,
     width: 300,
-    height: 200
+    height: 130
   },
 
   scrollViewStyle: {
