@@ -76,7 +76,7 @@ class CreateContract extends React.Component<any, State> {
         }
         else {
             var temp_id = new mongoose.Types.ObjectId();
-            await fetch(`http://${IP_ADDRESS}:3000/CreateContract/createContract`, {
+            await fetch(`http://${IP_ADDRESS}:3000/createContract/createContract`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json', //expects a JSON
@@ -89,7 +89,7 @@ class CreateContract extends React.Component<any, State> {
                 due_date: this.state.date
              })
             });
-            await fetch(`http://${IP_ADDRESS}/CreateContract/addContract`, {
+            await fetch(`http://${IP_ADDRESS}:3000/createContract/addContract`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json', //expects a JSON
@@ -100,7 +100,7 @@ class CreateContract extends React.Component<any, State> {
                 })
             });
 
-            await fetch(`http://${IP_ADDRESS}:3000/CreateContract/addContractToFriend`, {
+            await fetch(`http://${IP_ADDRESS}:3000/createContract/addContractToFriend`, {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json', //expects a JSON

@@ -1,11 +1,13 @@
-const MongoClient = require('mongodb').MongoClient;
 var express = require('express');
-var mongoose = require('mongoose')
 var router = express.Router();
+var mongoose = require('mongoose')
+
+var UserModel = require('../models/user');
+var ContractModel = require('../models/wellnesscontract');
+var Task = require('../models/task')
 
 router.post('/createContract', async(req, res, next) => {
     try {
-        var ContractModel = require('../models/wellnesscontract.js');
         var contractToCreate = new ContractModel(req.body);
         contractToCreate.participants = [req.user._id, mongoose.Types.ObjectId(req.body.friend)];
         contractToCreate.owner = req.user._id;
@@ -14,15 +16,12 @@ router.post('/createContract', async(req, res, next) => {
         res.send(result);
     }
     catch(err) {
-
         console.log(err);
         res.status(500).send(err);
     }
-
 });
 
 router.get('/getTasks', (req, res) => {
-    var Task = require('../models/task')
     Task.find({"_id" : {$in: req.user.tasks}}, function(err, user){
         res.json(user);
         console.log(user);
@@ -31,16 +30,15 @@ router.get('/getTasks', (req, res) => {
 
 //get friends
 router.get('/getFriends', (req, res) => {
-    User.find({"_id" : {$in: req.user.friends}}, function(err, user){
+    console.log('hi');
+    UserModel.find({"_id" : {$in: req.user.friends}}, function(err, user){
         res.json(user);
         console.log(user);
     })
 });
 
 router.post('/addContract', async(req, res, next) => {
-
     try {
-        var UserModel = require('../models/user.js');
 
         var result = await UserModel.update(
             { _id: req.user._id },
@@ -59,8 +57,6 @@ router.post('/addContract', async(req, res, next) => {
 router.post('/addContractToFriend', async(req, res, next) => {
 
     try {
-        var UserModel = require('../models/user.js');
-
         var result = await UserModel.update(
             {_id: req.body.friendID},
             {$push: {contracts: mongoose.Types.ObjectId(req.body.contractId)}}
@@ -76,9 +72,6 @@ router.post('/addContractToFriend', async(req, res, next) => {
 router.post('/updateContract', async(req, res, next) => {
 
     try {
-        var ContractModel = require('../models/wellnesscontract.js');
-
-
         var result = await ContractModel.findByIdAndUpdate(req.body.contractId, {tasks: req.body.tasks});
         res.send(result);
     }
@@ -88,3 +81,5 @@ router.post('/updateContract', async(req, res, next) => {
 
 
 });
+
+module.exports = router;
