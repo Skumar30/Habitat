@@ -38,13 +38,15 @@ export default function AddTask(props){
       titleAlert();
       return;
     }
-    if(date.getTime() < new Date().getTime()){
+    var today = new Date();
+    today.setHours(0,0,0);
+    if(date.getTime() < today.getTime()){
       dateAlert();
       return;
     }
     var temp_id = new mongoose.Types.ObjectId();
     // post the task
-    fetch('http://${IP_ADDRESS}:3000/createTask', {
+    fetch(`http://${IP_ADDRESS}:3000/createTask`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -59,7 +61,7 @@ export default function AddTask(props){
       })
   });
     // link task to user
-    fetch('http://192.168.99.1:3000/addTask', {
+    fetch(`http://${IP_ADDRESS}:3000/addTask`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
