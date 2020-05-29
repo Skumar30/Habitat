@@ -74,7 +74,7 @@ class FriendList extends Component{
     }
     
     try {
-      const response = await fetch(`http://${IP_ADDRESS}/addFriend`, settings);
+      const response = await fetch(`http://${IP_ADDRESS}:3000/addFriend`, settings);
       console.log("Responce" + response)
 
       const friendData = await response.json();
@@ -187,7 +187,7 @@ class FriendList extends Component{
     }
 
     try {
-      const response = await fetch(`http://${IP_ADDRESS}/getFriendData`, settings);
+      const response = await fetch(`http://${IP_ADDRESS}:3000/getFriendData`, settings);
 
       console.log("Responce " + response)
 
@@ -215,7 +215,7 @@ class FriendList extends Component{
     }
     
     try {
-      await fetch(`http://${IP_ADDRESS}/deleteFriend`, settings);
+      await fetch(`http://${IP_ADDRESS}:3000/deleteFriend`, settings);
 
       const index = this.state.data.indexOf(friend);
       console.log("Index: " + index)
@@ -315,7 +315,7 @@ class FriendList extends Component{
   }
 
   getFriends = async () => {
-    const response = await fetch(`http://${IP_ADDRESS}/friends`);
+    const response = await fetch(`http://${IP_ADDRESS}:3000/friends`);
     return await response.json();
   }
 
