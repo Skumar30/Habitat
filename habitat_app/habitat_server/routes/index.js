@@ -8,48 +8,104 @@ var Pet = require('../models/pet')
 var Cosmetic = require('../models/cosmetic');
 const MongoClient = require('mongodb').MongoClient;
 
-
 /*TBD*/
 router.post('/createContract', async (req, res, next) => {
 
-    try {
-      var ContractModel = require('../models/wellnesscontract.js');
-      var contractToCreate = new ContractModel(req.body);
-      var result = await contractToCreate.save();
-      res.send(result);
-    }
-    catch (err) {
-  
-      console.log("error creating contract");
-      res.status(500).send(err);
-    }
-  
-  
-  });
-  
+  try {
+    var ContractModel = require('../models/wellnesscontract.js');
+    var contractToCreate = new ContractModel(req.body);
+    var result = await contractToCreate.save();
+    res.send(result);
+  }
+  catch (err) {
+
+    console.log("error creating contract");
+    res.status(500).send(err);
+  }
+
+
+});
+
 router.post('/addContract', async (req, res, next) => {
-  
-    try {
-      var UserModel = require('../models/user.js');
-  
-      //console.log("userId is: " + req.user._id);
-      //console.log("contractId is: " + req.body.contractId);
-      //var Model = mongoose.model("model", schema, "users");
-      var result = await UserModel.update(
-        { _id: req.user._id },
-        { $push: { contracts: req.body.contractId } }
-      );
-      res.send(result);
+
+  try {
+    var UserModel = require('../models/user.js');
+
+    //console.log("userId is: " + req.user._id);
+    //console.log("contractId is: " + req.body.contractId);
+    //var Model = mongoose.model("model", schema, "users");
+    var result = await UserModel.update(
+      { _id: req.user._id },
+      { $push: { contracts: req.body.contractId } }
+    );
+    res.send(result);
+  }
+  catch (err) {
+
+    console.log("error adding contract");
+    res.status(500).send(err);
+  }
+
+
+});
+
+/*Friend Screen*/
+router.get('/friends', (req, res) => {
+  User.find({"_id" : {$in: req.user.friends}}, function(err, user){
+    res.json(user);
+    console.log(user);
+  })
+});
+
+router.post('/addFriend', (req, res) => {
+  console.log("FriendUSRNM: " + req.body.friend_username);
+  var userName = req.body.friend_username
+
+  User.findOneAndUpdate({username: userName}, { $push: { friends: req.user._id }}, function(err, resultFriend) {
+    if (err) {
+      console.log("Error: " + err);
+
+    } else {
+      if (resultFriend == null) {
+        console.log("NULL FIND");
+        res.json(resultFriend);
+        return
+      }
+      console.log("FriendId: " + resultFriend._id);
+      
+      User.findByIdAndUpdate(req.user._id, { $push: { friends: resultFriend._id }}, function(err, result){
+        console.log("EndResult(Curr): " + result.name);
+      });
+
+      console.log("Else: " + resultFriend);
+
+      res.json(resultFriend);
     }
-    catch (err) {
-  
-      console.log("error adding contract");
-      res.status(500).send(err);
-    }
-  
-  
+  });
+});
+
+router.post('/deleteFriend', (req, res) => {
+  var id = mongoose.Types.ObjectId(req.body.friend_id)
+  console.log("Friend: " + id);
+  User.findByIdAndUpdate(id, { $pull: { friends: req.user._id }}, function(err, result){
+    console.log("EndResult(Friend): " + result.name);
   });
 
+  User.findByIdAndUpdate(req.user._id, { $pull: { friends: id }}, function(err, result){
+    console.log("EndResult(Curr): " + result.name);
+    res.json(result);
+  });
+  
+});
+
+router.post('/getFriendData', (req, res) => {
+  console.log(req.body.friend_id)
+  var id = mongoose.Types.ObjectId(req.body.friend_id)
+  User.findById(id, function(err, user){
+    res.json(user);
+    console.log(user);
+  })
+})
 
 /*Customize Screen*/
 router.get('/ownedAndCredits', (req, res) => {
@@ -155,8 +211,6 @@ router.post('/editTask', async(req, res, next) => {
   }
 
  });
-
-
 
 /*Home Screen*/
 router.get('/home', async(req, res) => {
@@ -425,7 +479,6 @@ router.get('/updateContracts', async (req, res, next) => {
       }
     });
     
-  
 /*RegTask Requests */
 router.get('/myTask', async (req, res, next) => {
 
