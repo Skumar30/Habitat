@@ -42,6 +42,8 @@ import TaskCard from './TaskCard';
 import SignUp from './SignUp';
 import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
+import WellnessContractFriends from "./WellnessContractFriends";
+import EditWellnessContract from "./EditWellnessContract";
 declare const global: {HermesInternal: null | {}};
 
 interface State {
@@ -121,6 +123,16 @@ class App extends React.Component<{}, State> {
       case Screens.WellnessContract:
         screenToShow = (
           <WellnessContract routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.EditWellnessContract:
+        screenToShow = (
+            <EditWellnessContract routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.WellnessContractFriends:
+        screenToShow = (
+            <WellnessContractFriends routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
       case Screens.WellnessContractHome:
