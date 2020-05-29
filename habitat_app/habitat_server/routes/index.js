@@ -29,26 +29,30 @@ router.get('/friends', (req, res) => {
 router.post('/addFriend', (req, res) => {
   //await Model.findOneAndUpdate({ foo: 'bar' }, { name: 'test' }).orFail(() => Error('Not found'));
   
-  var id = mongoose.Types.ObjectId(req.body.friend_id)
-  console.log("Friend: " + id);
-  User.findByIdAndUpdate(id, { $push: { friends: req.user._id }}, function(err, result) {
+  /*var id = mongoose.Types.ObjectId(req.body.friend_id)
+  console.log("Friend: " + id);*/
+  console.log("FriendUSRNM: " + req.body.friend_username);
+  var userName = req.body.friend_username
+
+  User.findOneAndUpdate({username: userName}, { $push: { friends: req.user._id }}, function(err, resultFriend) {
     if (err) {
       console.log("Error: " + err);
 
     } else {
-      if (result == null) {
+      if (resultFriend == null) {
         console.log("NULL FIND");
-        res.json(result);
+        res.json(resultFriend);
         return
       }
-  
-      User.findByIdAndUpdate(req.user._id, { $push: { friends: id }}, function(err, result){
+      console.log("FriendId: " + resultFriend._id);
+      
+      User.findByIdAndUpdate(req.user._id, { $push: { friends: resultFriend._id }}, function(err, result){
         console.log("EndResult(Curr): " + result.name);
       });
 
-      console.log("Else: " + result);
+      console.log("Else: " + resultFriend);
 
-      res.json(result);
+      res.json(resultFriend);
     }
   });
 });

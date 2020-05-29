@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 import { create } from 'react-test-renderer';
 import * as Screens from './Screens';
-
+import {IP_ADDRESS} from './IP_Address'
 class temp {
-  constructor(key: string, name: string) {}
+  constructor(key: string, name: string, username: string) {}
 }
 
 class FriendList extends Component{
@@ -43,7 +43,7 @@ class FriendList extends Component{
   }
 
   codeInList = (code: string) => {
-    if (this.state.data.find(element => element.key === code)) {
+    if (this.state.data.find(element => element.username === code)) {
       return true;
     } else {
       return false;
@@ -56,9 +56,12 @@ class FriendList extends Component{
       this.setState({existingFriend: true});
       return;
     }
+    else if (this.state.textInput_Holder.length == 0) {
+      return;
+    }
 
     console.log(this.state.textInput_Holder)
-    const friendID = this.state.textInput_Holder
+    const friendUsername = this.state.textInput_Holder
     const settings = {
       method: 'POST',
       headers: {
@@ -66,12 +69,12 @@ class FriendList extends Component{
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        friend_id: friendID
-      })
+        friend_username: friendUsername
+      }) 
     }
     
     try {
-      const response = await fetch('http://192.168.1.233:3000/addFriend', settings);
+      const response = await fetch(`http://${IP_ADDRESS}/addFriend`, settings);
       console.log("Responce" + response)
 
       const friendData = await response.json();
@@ -82,7 +85,7 @@ class FriendList extends Component{
       }
 
       var dataArr = this.state.data;
-      dataArr.push( {key: friendData._id, name: friendData.name} )
+      dataArr.push( {key: friendData._id, name: friendData.name, username: friendData.username} )
       this.setState({data: dataArr})
 
       this.setState({textInput_Holder: ''});
@@ -106,11 +109,11 @@ class FriendList extends Component{
             <View style={styles.modalView}>
 
               <View>
-                <Text style={styles.modalText}>Add Friend!</Text>
+                <Text style={styles.modalText}>Add Friends!</Text>
               </View>
 
               <View style={styles.centerThis}>
-              {this.state.invalidCode && <Text style={{color:'red'}}>Invalid Friend Code</Text>}
+              {this.state.invalidCode && <Text style={{color:'red'}}>Invalid Username</Text>}
               </View>
 
               <View style={styles.centerThis}>
@@ -120,7 +123,7 @@ class FriendList extends Component{
               <View style={{...styles.centerThis}}>
               <TextInput
                 style={styles.inputTxt}
-                placeholder="Enter Friend Code"
+                placeholder="Enter Friend Username"
                 onChangeText={input => this.onEnterCode(input)}
               />
               </View>
@@ -184,7 +187,7 @@ class FriendList extends Component{
     }
 
     try {
-      const response = await fetch('http://192.168.1.233:3000/getFriendData', settings);
+      const response = await fetch(`http://${IP_ADDRESS}/getFriendData`, settings);
 
       console.log("Responce " + response)
 
@@ -212,7 +215,7 @@ class FriendList extends Component{
     }
     
     try {
-      await fetch('http://192.168.1.233:3000/deleteFriend', settings);
+      await fetch(`http://${IP_ADDRESS}/deleteFriend`, settings);
 
       const index = this.state.data.indexOf(friend);
       console.log("Index: " + index)
@@ -301,8 +304,8 @@ class FriendList extends Component{
 
       //    res -> data
       var friendData: { key: any; name: any; }[] = [];
-      res.forEach((element: { _id: any; name: any; }) => {
-        var temp = {key: element._id, name: element.name}
+      res.forEach((element: { _id: any; name: any; username: any}) => {
+        var temp = {key: element._id, name: element.name, username: element.username}
         friendData.push(temp)
       });
 
@@ -312,7 +315,7 @@ class FriendList extends Component{
   }
 
   getFriends = async () => {
-    const response = await fetch('http://192.168.1.233:3000/friends');
+    const response = await fetch(`http://${IP_ADDRESS}/friends`);
     return await response.json();
   }
 
