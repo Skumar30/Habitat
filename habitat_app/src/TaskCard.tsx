@@ -1,151 +1,103 @@
 import React, {useState, Component} from "react";
 import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, CheckBox, TouchableHighlightBase, TabBarIOS, Modal, StyleSheet } from "react-native";
-
+import {IP_ADDRESS} from './IP_ADDRESS';
 class TaskCard extends Component {
 
   constructor(props){
 
     super(props);
-    this.state = {isSelected: false, deleteTaskModalVisible:false}
+    this.state = {isSelected: false}
+  }
+
+  addReward = async() => {
+
+
+    fetch(`http://${IP_ADDRESS}:3000/addReward`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+
+        contractId: this.props.currentContractId,
+        taskId: this.props.task._id
+      })
+    })
+      .then((response) => response.json()) //gets response body
+      .then((output) => {
+
+      });
+  }
+
+  removeReward = async() => {
+
+    fetch(`http://${IP_ADDRESS}:3000/removeReward`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+
+        contractId: this.props.currentContractId,
+        taskId: this.props.task._id
+      })
+    })
+      .then((response) => response.json()) //gets response body
+      .then((output) => {
+
+      });
   }
 
   checkboxHandler = () => {
+
+    //if user is unmarking the task as complete
+    if(this.state.isSelected) {
+
+      this.removeReward();
+    }
+    else { //if user is marking task as complete
+
+      this.addReward();
+    }
 
     this.setState({isSelected: !this.state.isSelected});
   }
 
   handleSelect = () => {
 
-    if(this.props.deleteMode) {
-
-      //cannot edit task if in delete mode
-      Alert.alert("Exit Delete Mode", "Please exit delete mode in order to edit a task.");
-    }
-    else {
-
-      //present task info
-      Alert.alert("Task title", "Task Description");
-    }
+    //present task info
+    this.props.routeTo(Screens.EditTask, {screen: Screens.ViewWellnessContract});
   }
 
-  handleDeleteTaskModalVisible = () => {
+  isDone = async() => {
 
-    this.setState({deleteTaskModalVisible: !this.state.deleteTaskModalVisible})
+    const response = await fetch(`http://${IP_ADDRESS}:3000/isDone?id=${encodeURIComponent(this.props.task._id)}`);
+    const body = await response.json();
+
+    this.setState({isSelected: body.done});
+  }
+
+  dueDateString = (due_date) => {
+
+    var temp = new Date(due_date);
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Nov", "Dec"];
+    var formatted = daysOfWeek[temp.getDay()] + ", " + monthsOfYear[temp.getMonth()] + " " + temp.getDate();
+
+
+    return formatted;
+  }
+
+  componentDidMount() {
+
+    this.isDone();
   }
 
   render() {
 
     if(this.props.viewMyTasks){
-
-      if(this.props.deleteMode) {
-
-        return(
-
-          <TouchableWithoutFeedback onPress={this.handleSelect}>
-            <View
-              style={styles.cardContainer}
-            >
-
-              <View
-                style={styles.cardTextContainer}
-              >
-                <Text style={{textAlign: 'center', fontSize: 24}}>
-                  {this.props.title}
-                </Text>
-              </View>
-              <View
-                style={styles.taskCardCheckboxContainer}
-              >
-                <TouchableOpacity
-                  style={{
-                    alignSelf: "center"
-                  }}
-                  onPress={this.handleDeleteTaskModalVisible}>
-                  <Image
-                    style={styles.taskCardInteract}
-                    source={require('./assets/x.png')}>
-
-                  </Image>
-                </TouchableOpacity>
-
-                {/* Modal for confirming delete task */}
-                <Modal
-                    animationType='none'
-                    transparent={true}
-                    visible={this.state.deleteTaskModalVisible}
-                    onRequestClose={() => {
-                      Alert.alert("Modal has been closed.");
-                    }}
-                  >
-                    <View
-                      style={{
-                        flex:1,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}>
-                        <View
-                          style={styles.popupModalContainer}
-                        >
-                          <Text
-                            style={{
-                              fontSize: 20
-                            }}>
-                              Are you sure you want to delete this task?
-                          </Text>
-                          <Button
-                            title="Delete task"
-                            onPress={() => this.props.handleDeleteTask(this.props.id)}>
-                          </Button>
-                          <Button
-                            title="Cancel"
-                            onPress={this.handleDeleteTaskModalVisible}>
-                          </Button>
-                        </View>
-                    </View>
-                  </Modal>
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-        );
-      }
-      else {
-
-        return(
-
-          <TouchableWithoutFeedback onPress={this.handleSelect}>
-            <View
-              style={styles.cardContainer}
-            >
-
-              <View
-                style={styles.cardTextContainer}
-              >
-                <Text style={{textAlign: 'center', fontSize: 24}}>
-                  {this.props.title}
-                </Text>
-                <Text style={{textAlign: 'center', fontSize: 18}}>
-                  Due: {this.props.due_date}
-                </Text>
-
-              </View>
-              <View
-                style={styles.taskCardCheckboxContainer}
-              >
-                <CheckBox
-                  style={{
-                    alignSelf: 'center',
-                    margin: 5
-                  }}
-                  value={this.state.isSelected}
-                  onValueChange={this.checkboxHandler}
-                />
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-        );
-      }
-    }
-    else {
 
       return(
 
@@ -158,16 +110,59 @@ class TaskCard extends Component {
               style={styles.cardTextContainer}
             >
               <Text style={{textAlign: 'center', fontSize: 24}}>
-                {this.props.title}
+                {this.props.task.title}
+              </Text>
+              <Text style={{textAlign: 'center', fontSize: 18}}>
+                Due: {this.dueDateString(this.props.task.due_date)}
+              </Text>
+
+            </View>
+            <View
+              style={styles.taskCardCheckboxContainer}
+            >
+              <CheckBox
+                style={{
+                  alignSelf: 'center',
+                  margin: 5
+                }}
+                value={this.state.isSelected}
+                onValueChange={this.checkboxHandler}
+              />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      );
+    }
+    else {
+
+      return(
+
+        <TouchableWithoutFeedback>
+          <View
+            style={styles.cardContainer}
+          >
+
+            <View
+              style={styles.cardTextContainer}
+            >
+              <Text style={{textAlign: 'center', fontSize: 24}}>
+                {this.props.task.title}
+              </Text>
+              <Text style={{textAlign: 'center', fontSize: 18}}>
+                Due: {this.dueDateString(this.props.task.due_date)}
               </Text>
             </View>
             <View
               style={styles.taskCardCheckboxContainer}
             >
-              <Image
-                style={styles.taskCardInteract}
-                source={require('./assets/checkmark.png')}>
-              </Image>
+              <CheckBox
+                style={{
+                  alignSelf: 'center',
+                  margin: 5
+                }}
+                value={this.state.isSelected}
+                disabled={true}
+              />
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -214,7 +209,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'blanchedalmond',
     borderWidth: 5,
     width: 300,
-    height: 200
+    height: 130
   },
 
   scrollViewStyle: {
