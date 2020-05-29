@@ -32,7 +32,6 @@ import {
 import Home from './Home';
 import Login from './Login';
 import FriendList from './FriendList';
-import MyApp from './MyApp';
 import DailyScreen from './DailyScreen';
 import AddTask from './AddTask';
 import CreateContract from './CreateContract';
@@ -43,7 +42,6 @@ import TaskCard from './TaskCard';
 import SignUp from './SignUp';
 import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
-
 declare const global: {HermesInternal: null | {}};
 
 interface State {
