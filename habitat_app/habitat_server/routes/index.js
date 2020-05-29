@@ -5,6 +5,9 @@ var mongoose = require('mongoose')
 var User = require('../models/user')
 var Contract = require('../models/wellnesscontract')
 var Pet = require('../models/pet')
+var Cosmetic = require('../models/cosmetic');
+const MongoClient = require('mongodb').MongoClient;
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.write('fdsa');
@@ -12,22 +15,6 @@ router.get('/', function (req, res, next) {
   if (req.message) {
     console.log('FDS');
   }
-});
-
-router.get('/myTask', function(req,res) {
-  Task.find({"_id" : {$in : req.user.tasks}}, function(err, user){
-
-      console.log(user)
-      res.json(user)
-  })
-});
-
-router.get('/tasksInContract', function(req,res) {
-  Contract.findOne({"_id" : {$in : req.user.contracts}}, function(err, data){
-
-      console.log(data)
-      res.json(data)
-  })
 });
 
 router.post('/sendCash', function(req,res){
@@ -42,21 +29,21 @@ router.post('/sendCash', function(req,res){
       res.send("Success")
     }
   })
-  
-  
-  
+
+
+
 });
 
 router.post('/taskCompleted', function(req, res){
   console.log(req.body.complete, req.body.date)
   var task_id = mongoose.Types.ObjectId(req.body.task_id)
-  
+
   if(req.body.complete){
     Task.updateOne({'_id': task_id}, {$push : {'datesCompleted': req.body.date}}, function(err,data){
      if(err)
      console.log(err)
      else
-     res.send("Success Pushed") 
+     res.send("Success Pushed")
     })
   }
   else{
@@ -66,7 +53,7 @@ router.post('/taskCompleted', function(req, res){
         if(err)
         console.log(err)
         else
-        res.send("Success Pulled") 
+        res.send("Success Pulled")
        })
     }
     else{
@@ -74,7 +61,7 @@ router.post('/taskCompleted', function(req, res){
       if(err)
       console.log(err)
       else
-      res.send("Success Pulled") 
+      res.send("Success Pulled")
      })
     }
   }
@@ -93,18 +80,18 @@ router.post('/sendHappiness', function(req,res){
         res.send("Success")
       }
   })
-  
-  
-  
+
+
+
 });
 
 
 router.delete('/deleteTask', function(req,res){
 
-    
+
     var id = mongoose.Types.ObjectId(req.body.my_id)
     console.log(id)
-    
+
     Task.findByIdAndRemove(id, function(err, task){
       if(err)
       console.log(err)
@@ -117,8 +104,8 @@ router.delete('/deleteTask', function(req,res){
       if(err)
         console.log(err)
     })
-    
-    
+
+
 });
 
 router.get('/getTheirTasks', async(req, res, next) => {
@@ -449,14 +436,6 @@ router.get('/updateContracts', async(req, res, next) => {
   }
 });
 
-module.exports = router;
-var express = require('express');
-var router = express.Router();
-var Cosmetic = require('../models/cosmetic');
-var User = require('../models/user');
-var Pet = require('../models/pet');
-var mongoose = require('mongoose');
-const MongoClient = require('mongodb').MongoClient;
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -857,4 +836,21 @@ router.post('/petName', function (req, res) {
   });
 });
 
+router.get('/myTask', async (req, res, next) => {
+
+  Task.find({"_id" : {$in : req.user.tasks}}, function(err, user){
+
+      console.log(user)
+      res.json(user)
+  })
+
+
+});
+router.get('/tasksInContract', function(req,res) {
+  Contract.findOne({"_id" : {$in : req.user.contracts}}, function(err, data){
+
+      console.log(data)
+      res.json(data)
+  })
+});
 module.exports = router;
