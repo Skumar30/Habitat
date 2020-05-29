@@ -76,7 +76,7 @@ class Home extends React.Component<{}, HomeState> {
     this.state = {
       petName: "",
       playerName: "",
-      credits: 10,
+      credits: 0,
       mood: 4,
       cosmetics: [],
       temp: ""
@@ -106,10 +106,13 @@ class Home extends React.Component<{}, HomeState> {
     return bear;
   }
   componentDidMount(){
-    this.getData().then(res => {
-      console.log(res);
-      this.setState({playerName: res.name, petName: res.petName, credits: res.credits, mood: (res.mood/20), cosmetics: res.cosmetics, temp: res.petName});
-    })
+    setTimeout( () => {
+      this.getData().then(res => {
+        console.log(res);
+        var vcredits = res.credits < 0 ? 0 : res.credits;
+        this.setState({playerName: res.name, petName: res.petName, credits: vcredits, mood: (res.mood/20), cosmetics: res.cosmetics, temp: res.petName});
+      })
+    },1000);
    }  
 
   render() {
