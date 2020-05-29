@@ -313,6 +313,7 @@ class DailyScreen extends Component {
                 <TouchableOpacity onPress={() => this.alert(index)}>
                     <View style={[styles.body]}>
                         <Text >{title}</Text>
+                        <Text>{"   streak:"}</Text>
                         <Text >{this.state.streaks[index]}</Text>
                         <CheckBox
                             value={this.state.checked[index]}
@@ -455,7 +456,7 @@ class DailyScreen extends Component {
                 <View style={{flex: 4, opacity: 0}}>
                 </View>
                 <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}
-                                  onPress={() => this.props.routeTo(Screens.AddTask, {screen: Screens.RegTask})}>
+                                  onPress={() => this.props.routeTo(Screens.AddTask, {screen: Screens.DailyScreen})}>
                   <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
                 </TouchableOpacity>
               </View>
