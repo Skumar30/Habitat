@@ -36,7 +36,7 @@ class EditWellnessContract extends React.Component<any, State>{
     }
 
     getTasks = async() => {
-        const response = await fetch(`http://${IP_ADDRESS}:3000/getTasks`);
+        const response = await fetch(`http://${IP_ADDRESS}:3000/CreateContract/getTasks`);
 
         const body = await response.json();
         if(response.status != 200) {
@@ -98,7 +98,7 @@ class EditWellnessContract extends React.Component<any, State>{
                 this.state.tasks.push(this.state.allTasks[i].key);
             }
             if (this.state.post) {
-                await fetch(`http://${IP_ADDRESS}:3000/updateContract`, {
+                await fetch(`http://${IP_ADDRESS}:3000/CreateContract/updateContract`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json', //expects a JSON

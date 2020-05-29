@@ -32,7 +32,6 @@ import {
 import Home from './Home';
 import Login from './Login';
 import FriendList from './FriendList';
-import MyApp from './MyApp';
 import DailyScreen from './DailyScreen';
 import AddTask from './AddTask';
 import CreateContract from './CreateContract';
@@ -45,7 +44,6 @@ import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
 import WellnessContractFriends from "./WellnessContractFriends";
 import EditWellnessContract from "./EditWellnessContract";
-export const IP_ADDRESS = 'YOUR IPv4 HERE';
 declare const global: {HermesInternal: null | {}};
 
 interface State {
