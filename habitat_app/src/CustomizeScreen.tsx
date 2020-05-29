@@ -331,7 +331,10 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
               </TouchableOpacity>
             </View>
             <Text style={styles.screenTitle}>Customize</Text>
-            <Text style={styles.creditDisplay}>${this.state.credits}</Text>
+            {/* <Text style={styles.creditDisplay}>${this.state.credits}</Text> */}
+            {/* add logic to make negative nums appear as 0*/}
+            {this.state.credits < 0 ? <Text style={styles.creditDisplay}>$0</Text> :
+              <Text style={styles.creditDisplay}>${this.state.credits}</Text>}
           </View>
 
           <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
