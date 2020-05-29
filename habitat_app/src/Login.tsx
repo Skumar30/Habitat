@@ -58,7 +58,7 @@ export default class Login extends React.Component<{}, State> {
                 password: '',
               }}
               onSubmit={(values, actions) => {
-                fetch('http://192.168.1.81:3000/users/signin', {
+                fetch(`http://${IP_ADDRESS}:3000/users/signin`, {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json', //expects a JSON

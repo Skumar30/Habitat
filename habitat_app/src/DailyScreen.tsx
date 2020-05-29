@@ -21,7 +21,7 @@ import {
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import * as Screens from './Screens';
 import TaskCard from "./TaskCard";
-const IP_ADDRESS = "192.168.1.81";
+import {IP_ADDRESS} from './IP_Address';
 
 interface State {
     checked: boolean[]
@@ -62,7 +62,7 @@ class DailyScreen extends Component {
     }
 
     getDailies = async() => {
-        const response = await fetch('http://192.168.1.81:3000/getDailies');
+        const response = await fetch(`http://${IP_ADDRESS}:3000/getDailies`);
         const body = await response.json();
         if (response.status !== 200) {
             console.error(body.message)
@@ -213,7 +213,7 @@ class DailyScreen extends Component {
             )
         };
         try{
-            const response = await fetch('http://192.168.1.81:3000/updateStreak', settings)
+            const response = await fetch(`http://${IP_ADDRESS}:3000/updateStreak`, settings)
             const data = await response.json();
             return data;
         } catch (e) {
@@ -289,7 +289,7 @@ class DailyScreen extends Component {
 
         console.log('above deleteTask try');
         try {
-            const response = await fetch('http://192.168.1.81:3000/deleteTask', settings);
+            const response = await fetch(`http://${IP_ADDRESS}:3000/deleteTask`, settings);
             //console.log(response);
             //const data = await response.json();
             //console.log(data);
@@ -352,7 +352,7 @@ class DailyScreen extends Component {
         };
 
         try{
-            const response = await fetch('http://192.168.1.81:3000/incrementStreak', settings)
+            const response = await fetch(`http://${IP_ADDRESS}:3000/incrementStreak`, settings)
             const data = await response.json();
             return data;
         } catch (e) {
@@ -363,7 +363,6 @@ class DailyScreen extends Component {
     decrementStreak = async(index: number) =>{
         this.incomplete( index );
         this.state.streaks[index] = this.state.streaks[index] - 1;
-        //const response = await fetch('http://192.168.1.81:3000/deleteTask', settings);
         const settings = {
             method: 'POST',
             headers: {
@@ -378,7 +377,7 @@ class DailyScreen extends Component {
         };
 
         try{
-            const response = await fetch('http://192.168.1.81:3000/decrementStreak', settings)
+            const response = await fetch(`http://${IP_ADDRESS}:3000/decrementStreak`, settings)
             const data = await response.json();
             return data;
         } catch (e) {
@@ -400,7 +399,7 @@ class DailyScreen extends Component {
             )
         };
         try{
-            const response = await fetch('http://192.168.1.81:3000/complete', settings)
+            const response = await fetch(`http://${IP_ADDRESS}:3000/complete`, settings)
             const data = await response.json();
             return data;
         } catch (e) {
@@ -422,7 +421,7 @@ class DailyScreen extends Component {
             )
         };
         try{
-            const response = await fetch('http://192.168.1.81:3000/incomplete', settings)
+            const response = await fetch(`http://${IP_ADDRESS}:3000/incomplete`, settings)
             const data = await response.json();
             return data;
         } catch (e) {
