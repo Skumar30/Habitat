@@ -1,3 +1,6 @@
+var User = require('../models/user');
+var Task = require('../models/task');
+var Contract = require('../models/wellnesscontract')
 var express = require('express');
 var router = express.Router();
 var Task = require('../models/task')
@@ -340,6 +343,17 @@ router.post('/addReward', async(req, res, next) => {
     var otherUserHappiness = otherUserPet.happiness + Math.floor(bonus / 10);
     otherResult = await PetModel.updateOne({_id: otherUser.pet_id}, {happiness: otherUserHappiness});
 
+
+router.post('/createContract', async(req, res, next) => {
+  try {
+    console.log(req.body.contractId);
+    var ContractModel = require('../models/wellnesscontract.js');
+    var contractToCreate = new ContractModel(req.body);
+    contractToCreate.participants = [req.user._id, mongoose.Types.ObjectId(req.body.friend)];
+    contractToCreate.owner = req.user._id;
+    contractToCreate.pending = true;
+    var result = await contractToCreate.save();
+
     res.send(result);
   }
   catch(err) {
@@ -349,7 +363,26 @@ router.post('/addReward', async(req, res, next) => {
   }
 });
 
+
 router.post('/removeReward', async(req, res, next) => {
+=======
+router.get('/getTasks', (req, res) => {
+    Task.find({"_id" : {$in: req.user.tasks}}, function(err, user){
+        res.json(user);
+        console.log(user);
+    })
+});
+
+//get friends
+router.get('/getFriends', (req, res) => {
+    User.find({"_id" : {$in: req.user.friends}}, function(err, user){
+        res.json(user);
+        console.log(user);
+    })
+});
+
+router.post('/addContract', async(req, res, next) => {
+
 
   try {
     var UserModel = require('../models/user.js');
@@ -378,6 +411,7 @@ router.post('/removeReward', async(req, res, next) => {
 
     var result = await UserModel.update(
         { _id: req.user._id },
+
         { credits: updatedCredits }
     );
 
@@ -403,6 +437,37 @@ router.get('/getMyTasks', async (req, res, next) => {
       //getting contract from passed in query id
       var currContract = await ContractModel.findOne({ _id: req.query.id });
 
+        { $push: { contracts: mongoose.Types.ObjectId(req.body.contractId) } }
+    );
+
+    res.send(result);
+  }
+  catch(err) {
+
+    console.log("error adding contract");
+    res.status(500).send(err);
+  }
+});
+
+router.post('/addContractToFriend', async(req, res, next) => {
+
+  try {
+    var UserModel = require('../models/user.js');
+
+    var result = await UserModel.update(
+        { _id: req.body.friendID },
+        { $push: { contracts: mongoose.Types.ObjectId(req.body.contractId) } }
+    );
+
+    res.send(result);
+  }
+  catch(err) {
+
+    res.status(500).send(err);
+  }
+});
+
+
       //given this contract, return a list of the users tasks and a list of the other user's tasks
       var currContractTaskIds = currContract.tasks;
       var userTaskIds = req.user.tasks;
@@ -410,6 +475,7 @@ router.get('/getMyTasks', async (req, res, next) => {
 
       //iterating through each task id in the contract
       for (var i = 0; i < currContractTaskIds.length; i++) {
+
 
         //current task id
         var currTaskId = currContractTaskIds[i];
@@ -606,6 +672,10 @@ router.get('/myTask', async (req, res, next) => {
 
     var totalCredits = updatedCredits - bonus;
     var result = await UserModel.update(
+
+    //removing the contract from the user's contract field
+    var result = await ContractModel.update(
+
         { _id: req.user._id },
         { credits: totalCredits }
     );
@@ -631,7 +701,9 @@ router.get('/myTask', async (req, res, next) => {
   }
 });
 
+
 router.get('/isDone', async(req, res, next) => {
+
 
   try {
     var TaskModel = require('../models/task.js');
@@ -769,5 +841,7 @@ router.delete('/deleteTask', function(req,res){
 
 
   });
+
+
 
 module.exports = router;
