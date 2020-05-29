@@ -1,6 +1,6 @@
 import React, {useState, Component} from "react";
 import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, CheckBox, TouchableHighlightBase, TabBarIOS, Modal, StyleSheet } from "react-native";
-import {IP_ADDRESS} from './IP_ADDRESS';
+import {IP_ADDRESS} from './IP_Address';
 class TaskCard extends Component {
 
   constructor(props){
@@ -12,7 +12,7 @@ class TaskCard extends Component {
   addReward = async() => {
 
 
-    fetch(`http://${IP_ADDRESS}:3000/addReward`, {
+    fetch(`http://${IP_ADDRESS}:3000/wellnessContract/addReward`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -32,7 +32,7 @@ class TaskCard extends Component {
 
   removeReward = async() => {
 
-    fetch(`http://${IP_ADDRESS}:3000/removeReward`, {
+    fetch(`http://${IP_ADDRESS}:3000/wellnessContract/removeReward`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -73,7 +73,7 @@ class TaskCard extends Component {
 
   isDone = async() => {
 
-    const response = await fetch(`http://${IP_ADDRESS}:3000/isDone?id=${encodeURIComponent(this.props.task._id)}`);
+    const response = await fetch(`http://${IP_ADDRESS}:3000/wellnessContract/isDone?id=${encodeURIComponent(this.props.task._id)}`);
     const body = await response.json();
 
     this.setState({isSelected: body.done});
