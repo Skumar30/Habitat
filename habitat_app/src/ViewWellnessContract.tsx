@@ -3,7 +3,8 @@ import { ScrollView, View, Text, Button, Image, TouchableOpacity, Modal, FlatLis
 import PendingCard from "./PendingCard";
 import TaskCard from "./TaskCard";
 import { createConfigItem } from "@babel/core";
-
+import * as Screens from './Screens';
+import {IP_ADDRESS} from './IP_ADDRESS';
 class ViewWellnessContract extends Component {
 
   constructor(props){
@@ -38,37 +39,50 @@ class ViewWellnessContract extends Component {
     this.setState({deleteMode: !this.state.deleteMode});
   }
 
-  deleteTask = (taskId: number) => {
-
-    const newMyTasks = this.state.myTasks.filter(item => item.id !== taskId);
-    this.setState({myTasks: newMyTasks});
-    Alert.alert("Task Delete Confirmation", "Task has been deleted.");
-  }
-
   getMyTasks = async() => {
 
-    fetch(`http://172.17.59.113:3000/getMyTasks?id=${encodeURIComponent(this.props.currentContractId)}`)
+    fetch(`http://${IP_ADDRESS}:3000/getMyTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
       .then((response) => response.json()) //gets response body
       .then((output) => {
         this.setState({myTasks: output});
       });
 
+      return true;
   }
 
   getTheirTasks = async() => {
 
-    fetch(`http://172.17.59.113:3000/getTheirTasks?id=${encodeURIComponent(this.props.currentContractId)}`)
+    fetch(`http://${IP_ADDRESS}:3000/getTheirTasks?id=${encodeURIComponent(this.props.props.currentContractId)}`)
       .then((response) => response.json()) //gets response body
       .then((output) => {
         this.setState({theirTasks: output});
       });
 
+      return true;
   }
 
-  componentDidMount(){
+  updateTasks = async() => {
 
-    this.getMyTasks();
-    this.getTheirTasks();
+    var response = await fetch(`http://${IP_ADDRESS}:3000/updateTasks`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json', //expects a JSON
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contractId: this.props.props.currentContractId
+      })
+    });
+
+    return true;
+  }
+
+  componentDidMount = async() =>  {
+
+    //update list of tasks
+    var result1 = await this.updateTasks();
+    var result2 = await this.getMyTasks();
+    var result3 = await this.getTheirTasks();
   }
 
   render() {
@@ -87,8 +101,8 @@ class ViewWellnessContract extends Component {
           >
             {/* back button to get out of wellness contract home screen */}
             <View
-              style={{flex:0.1}}>
-              <TouchableOpacity onPress={() => this.props.onBack(false)}>
+              style={{flex:0.15}}>
+              <TouchableOpacity onPress={() => this.props.routeTo(Screens.WellnessContractHome)}>
                 <Image
                   source={require('./assets/backsmall.png')}>
                 </Image>
@@ -119,19 +133,6 @@ class ViewWellnessContract extends Component {
                 My tasks:
               </Text>
             </View>
-            <View
-              style={{
-                flex: 0.1,
-                alignContent: 'center',
-                justifyContent: 'center'
-              }}>
-              <TouchableOpacity
-                onPress={this.toggleDeleteMode} style={{borderWidth: 4}}>
-                <Image
-                  source={require('./assets/delete.png')}>
-                </Image>
-              </TouchableOpacity>
-            </View>
           </View>
 
           <ScrollView
@@ -139,9 +140,30 @@ class ViewWellnessContract extends Component {
           >
             <FlatList
               data={this.state.myTasks}
-              renderItem={({ item, index }) => <TaskCard title={item.title} due_date={item.due_date} deleteMode={this.state.deleteMode} viewMyTasks={this.state.viewMyTasks} id={item.id} handleDeleteTask={this.deleteTask} />}
+              renderItem={({ item, index }) =>
+                <TaskCard task={item}
+                  viewMyTasks={this.state.viewMyTasks}
+                  currentContractId={this.props.props.currentContractId}
+                />
+              }
             />
           </ScrollView>
+          <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
+            <TouchableOpacity onPress={() => {
+              this.props.routeTo(Screens.EditWellnessContract, {
+                  date: new Date(),
+                  tasks: this.state.myTasks,
+                  friend: 'Not Selected',
+                  friendID:'',
+                  screen: Screens.ViewWellnessContract,
+                  contractId: this.state.currentContractId
+                }
+              );}} style={{alignContent: 'center'}}>
+              <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
+                Edit Contract
+              </Text>
+            </TouchableOpacity>
+          </View>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
             <TouchableOpacity onPress={this.toggleViewMyTasks} style={{alignContent: 'center'}}>
               <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
@@ -149,6 +171,7 @@ class ViewWellnessContract extends Component {
               </Text>
             </TouchableOpacity>
           </View>
+
         </View>
       );
     }
@@ -167,7 +190,7 @@ class ViewWellnessContract extends Component {
             {/* back button to get out of wellness contract home screen */}
             <View
               style={{flex:0.15, backgroundColor: 'blanchedalmond'}}>
-              <TouchableOpacity onPress={() => this.props.onBack(false)}>
+              <TouchableOpacity onPress={() => this.props.routeTo(Screens.WellnessContractHome)}>
                 <Image
                   source={require('./assets/backsmall.png')}>
                 </Image>
@@ -196,9 +219,31 @@ class ViewWellnessContract extends Component {
 
             <FlatList
               data={this.state.theirTasks}
-              renderItem={({ item, index }) => <TaskCard title={item.title} due_date={item.due_date} deleteMode={this.state.deleteMode} viewMyTasks={this.state.viewMyTasks} />}
+              renderItem={({ item, index }) =>
+                <TaskCard
+                  task={item}
+                  viewMyTasks={this.state.viewMyTasks}
+                  currentContractId={this.props.props.currentContractId}
+                />
+              }
             />
           </ScrollView>
+          <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
+            <TouchableOpacity onPress={() => {
+              this.props.routeTo(Screens.EditWellnessContract, {
+                  date: new Date(),
+                  tasks: this.state.myTasks,
+                  friend: 'Not Selected',
+                  friendID:'',
+                  screen: Screens.ViewWellnessContract,
+                  contractId: this.state.currentContractId
+                }
+              );}} style={{alignContent: 'center'}}>
+              <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
+                Edit Contract
+              </Text>
+            </TouchableOpacity>
+          </View>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
             <TouchableOpacity onPress={this.toggleViewMyTasks} style={{alignContent: 'center'}}>
               <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
@@ -218,7 +263,7 @@ const styles = StyleSheet.create({
   entireScreenContainer: {
     flexDirection: "column",
     backgroundColor: 'blanchedalmond',
-    height: 650,
+    height: 660,
     width: 410,
     padding: 20
   },
@@ -251,7 +296,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'blanchedalmond',
     borderWidth: 5,
     width: 300,
-    height: 200
+    height: 130
   },
 
   scrollViewStyle: {
