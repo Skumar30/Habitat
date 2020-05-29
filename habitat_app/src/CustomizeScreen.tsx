@@ -218,12 +218,12 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
   }
 
   getOwnedandCredits = async () => {
-    const response = await fetch(`http://${IP_ADDRESS}:3000/ownedAndCredits`);
+    const response = await fetch(`http://${IP_ADDRESS}:3000/customize/ownedAndCredits`);
     return await response.json();
   }
 
   getActive = async () => {
-    const response = await fetch(`http://${IP_ADDRESS}:3000/active`);
+    const response = await fetch(`http://${IP_ADDRESS}:3000/customize/active`);
     return await response.json();
   }
 
@@ -250,7 +250,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
     }
 
     try {
-      const response = await fetch(`http://${IP_ADDRESS}:3000/setOwned`, updateOwned);
+      const response = await fetch(`http://${IP_ADDRESS}:3000/customize/setOwned`, updateOwned);
       const data = await response.json();
       console.log(data);
     } catch (e) {
@@ -269,7 +269,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
     }
 
     try {
-      const response = await fetch(`http://${IP_ADDRESS}:3000/setActive`, updateActive);
+      const response = await fetch(`http://${IP_ADDRESS}:3000/customize/setActive`, updateActive);
       const data = await response.json();
       console.log(data);
     } catch (e) {
@@ -288,7 +288,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
     }
 
     try {
-      const response = await fetch(`http://${IP_ADDRESS}:3000/setcredits`, updateCredits);
+      const response = await fetch(`http://${IP_ADDRESS}:3000/customize/setcredits`, updateCredits);
       const data = await response.json();
       console.log(data);
     } catch (e) {
@@ -331,7 +331,10 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
               </TouchableOpacity>
             </View>
             <Text style={styles.screenTitle}>Customize</Text>
-            <Text style={styles.creditDisplay}>${this.state.credits}</Text>
+            {/* <Text style={styles.creditDisplay}>${this.state.credits}</Text> */}
+            {/* add logic to make negative nums appear as 0*/}
+            {this.state.credits < 0 ? <Text style={styles.creditDisplay}>$0</Text> :
+              <Text style={styles.creditDisplay}>${this.state.credits}</Text>}
           </View>
 
           <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>

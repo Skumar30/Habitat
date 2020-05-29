@@ -21,11 +21,13 @@ router.post(
     defaultPet.save(function (error, pet) {
       if (error) {
         res.json({message: 'Default Pet Error'});
+        return;
       }
 
       User.findByIdAndUpdate(req.user._id, {pet_id: pet._id}, function (err) {
         if (err) {
           res.json({message: "Could not update user's pet id"});
+          return;
         }
         req.user.pet_id = pet._id;
         res.json(req.user);
