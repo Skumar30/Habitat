@@ -342,12 +342,7 @@ router.get('/updateContracts', async(req, res, next) => {
 router.get('/home', async(req, res) => {
   var petModel = require('../models/pet.js');
   var pet = await petModel.findOne( {_id: req.user.pet_id});
-  var cosmeticModel = require('../models/cosmetic.js');
-  var cosmetic = await cosmeticModel.findOne( {_id: pet.cosmetics[0]});
-  var cosmetics = [cosmetic.name];
-  console.log(cosmetic);
-  console.log(cosmetics);
-  res.json({name: req.user.name, petName: pet.name, credits: req.user.credits, mood: pet.happiness, pet: pet.type, cosmetics: cosmetics});
+  res.json({name: req.user.name, petName: pet.name, credits: req.user.credits, mood: pet.happiness, cosmetics: pet.cosmetics});
 });
 
 router.post('/petName', function (req, res) {
