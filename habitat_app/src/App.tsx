@@ -40,8 +40,12 @@ import PendingCard from './PendingCard';
 import WellnessContractHome from './WellnessContractHome';
 import TaskCard from './TaskCard';
 import SignUp from './SignUp';
+import Settings from './Settings';
+import ChangePassword from './ChangePassword';
 import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
+import WellnessContractFriends from './WellnessContractFriends';
+import EditWellnessContract from './EditWellnessContract';
 declare const global: {HermesInternal: null | {}};
 
 interface State {
@@ -123,6 +127,22 @@ class App extends React.Component<{}, State> {
           <WellnessContract routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
+      case Screens.EditWellnessContract:
+        screenToShow = (
+          <EditWellnessContract
+            routeTo={this.routeTo}
+            props={this.state.toSend}
+          />
+        );
+        break;
+      case Screens.WellnessContractFriends:
+        screenToShow = (
+          <WellnessContractFriends
+            routeTo={this.routeTo}
+            props={this.state.toSend}
+          />
+        );
+        break;
       case Screens.WellnessContractHome:
         screenToShow = (
           <WellnessContractHome
@@ -131,7 +151,16 @@ class App extends React.Component<{}, State> {
           />
         );
         break;
-
+      case Screens.Settings:
+        screenToShow = (
+          <Settings routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.ChangePassword:
+        screenToShow = (
+          <ChangePassword routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
       //) {
     }
     console.log(screenToShow);
