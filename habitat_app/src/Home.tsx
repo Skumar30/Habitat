@@ -9,8 +9,7 @@ import {
   TouchableOpacity,
   Modal
 } from 'react-native';
-
-import * as Screens from './Screens'
+import * as Screens from './Screens';
 import { BabelFileResult } from '@babel/core';
 import {IP_ADDRESS} from './IP_Address';
 
@@ -125,17 +124,17 @@ class Home extends React.Component<{}, HomeState> {
     //const cosmetics = this.getCosmetics();
 
     // Didn't make style class for the different flex values
-    return(
+    return (
       <>
         <View style={styles.singleColumn}>
           <View style={styles.infoBar}>
-            <TouchableOpacity style={{flex: 1}}> 
-            <View style={styles.singleRow}>
-                  <Image source={head} style={styles.stretchImage}></Image>
+            <TouchableOpacity style={{ flex: 1 }}>
+              <View style={styles.singleRow}>
+                <Image source={head} style={styles.stretchImage}></Image>
                 <View style={styles.playerName}>
                   <Text style={styles.textBox}>{this.state.playerName}</Text>
                 </View>
-            </View>
+              </View>
             </TouchableOpacity>
             <View style={styles.singleRow}>
               <Image source={points} style={styles.stretchImage}></Image>
@@ -144,10 +143,10 @@ class Home extends React.Component<{}, HomeState> {
               </View>
             </View>
           </View>
-          <View style={{flex: 9}}>
+          <View style={{ flex: 9 }}>
             <ImageBackground source={background} style={styles.imageBackground} imageStyle={styles.imageBackground}>
-              <View style={{flex: 2, flexDirection: 'row'}}>
-                <View style={{flex: 5}}></View>
+              <View style={{ flex: 2, flexDirection: 'row' }}>
+                <View style={{ flex: 5 }}></View>
                 <View style={[styles.singleColumn, styles.border5]}>
                   <TouchableOpacity style={{flex: 1}} onPress={() => this.props.routeTo(Screens.CustomizeScreen)}>
                     <Image source={store} style={styles.stretchImage}></Image>
@@ -218,7 +217,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 5,
     backgroundColor:
-    'blanchedalmond',
+      'blanchedalmond',
   },
   singleRow: {
     flex: 1,
