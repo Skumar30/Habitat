@@ -1,9 +1,9 @@
 import React from 'react';
-import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, Alert, TouchableHighlight, Image, CheckBox} from 'react-native'
-import {Header, Button, Icon, Tooltip} from 'react-native-elements'
+import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, Alert, TouchableHighlight, Image, } from 'react-native'
+import {Header, Button,CheckBox, Icon, Tooltip} from 'react-native-elements'
 import {Dimensions} from 'react-native';
 import * as Screens from './Screens';
-
+import {IP_ADDRESS} from './IP_Address'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -18,18 +18,28 @@ interface State {
   isToday: boolean
   date: Date
   allData: any[]
-  data: any[] //TODO
+  data: any[]
+  contract: Contract | null
+  countDailyTasks: number
 }
 
 interface Task{
   _id: any
   title: string
-  due: string
+  due_date: string
   daily: boolean
-  start: string
+  start_date: string
   frequency: boolean[]
 }
 
+interface Contract{
+  _id: string
+  participants: string[]
+  tasks : string[]
+  owner: string
+  pending: boolean
+  due_date: string
+}
 const START_DATE = new Date()
 
 class RegTask extends React.Component<any, State>{
@@ -37,7 +47,8 @@ class RegTask extends React.Component<any, State>{
     constructor(props:any){
       super(props);
       var checks:boolean[]  =[]
-      this.state ={date: new Date(), checked: checks, isToday: true, allData: [], data: []}
+      this.state ={date: new Date(), checked: checks, isToday: true, allData: [], data: [], contract: null, countDailyTasks: 0}
+      console.log(IP_ADDRESS)
     }
 
     /* Display the alert that allows a user to edit/delete a task */
@@ -52,7 +63,12 @@ class RegTask extends React.Component<any, State>{
             text: "Delete",
             onPress: () => this.handleDelete(index),
           },
-          { text: "Edit", onPress: () => console.log("Edit Pressed") } //TODO Route to Add Task
+          { text: "Edit", onPress: () => {
+            console.log("Edit Pressed") 
+            let toSend = {data: this.state.data[index],
+                          screen: Screens.RegTask}
+            this.props.routeTo(Screens.EditTask, toSend)
+          }} //TODO Route to Add Task
         ]
       )
     }
@@ -63,22 +79,27 @@ class RegTask extends React.Component<any, State>{
       console.log("Delete pressed on" + index)
 
       let id = this.state.data[index]._id;
-      this.deleteTaskFromTable(id).then(res => {
-
+      this.deleteTask(id).then(res => {
         console.log(res)
-        this.getData().then(res => {
-          this.setState({allData: res})
-          //find the data for the list
-         this.updateStateData(res) 
+        let data = this.state.data;
+        data.splice(index, 1);
+        this.setState({data: data})
+
+        let totalData:any = [];
+        this.state.allData.forEach(item => {
+          if(item._id != id){
+            totalData.push(item)
+          }
         })
+        this.setState({allData: totalData})
+
+        
       })
 
-      this.deleteTaskFromUser(id)
     }
 
     /* Create a string for the date */
     dateString(date:Date):string {
-      console.log(date.toString());
       var ret = daysInWeek[date.getDay()] + ', ' + months[date.getMonth()] + ' '
                 + date.getDate()      
       return ret;
@@ -89,6 +110,7 @@ class RegTask extends React.Component<any, State>{
       const offset = inc ? 1 : -1
       var date = this.state.date
       date.setDate(date.getDate() + offset)
+      date.setHours(0,0,0)
       var today = this.dateString(date) == this.dateString(START_DATE) ? true : false
       this.setState({date: date, isToday: today})
       this.updateStateData(this.state.allData)
@@ -98,58 +120,196 @@ class RegTask extends React.Component<any, State>{
     Item = (title:string, index:number) =>{
       console.log(index) 
       var disabled = !this.state.isToday
+      console.log("IS it disabled?", disabled)
       return(
         <View style={styles.itemView}>
-          <TouchableOpacity disabled={disabled} onPress={() => this.editAlert(index)}>
+          <TouchableOpacity onPress={() => this.editAlert(index)}>
             <View style={styles.item}>
               <Text style={styles.title}>{title}</Text>
             </View>
           </TouchableOpacity>
           <CheckBox 
-            value={this.state.checked[index]}
-            onValueChange={() => {
-                if( disabled) 
-                  return
+            checked={this.state.checked[index]}
+            //disabled={disabled && !this.state.data[index].oneTimeOnly}
+            onPress={() => {
+              if(disabled && !this.state.data[index].oneTimeOnly){
+                Alert.alert('Invalid completion', 'Repeating tasks cannot be marked complete in advance', [{text: 'OK'}])
+                this.state.checked[index] = false
+                return
+              }
                 var checked = this.state.checked
                 checked[index] = !checked[index];
                 this.setState({checked: checked})
+                this.toggleTaskComplete(checked[index], index);
             }}/>
         </View>
      )};
-
-    componentDidMount(){
-      this.getData().then(res => {
-        this.setState({allData: res})
-        //find the data for the list
-       this.updateStateData(res) 
-      })
-     }  
     
-    deleteTaskFromUser = async(id:string) => {
+     toggleTaskComplete(complete:boolean, index:number){
 
-      console.log("My id is", id)
-      const settings = {
-        method: 'DELETE',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          my_id: id
+      var task = this.state.data[index]
+      var inWellnessContract = false
+      var numTasks = this.state.data.length + this.state.countDailyTasks
+      var numContractTasks = this.state.contract != null ? this.state.contract.tasks.length : 1;
+      var toAward = 30 //base reward
+      toAward += Math.floor(100/numTasks) // all task completion reward
+
+      // Wellness contract ones are not implemented
+      /*
+      if(this.state.contract != null && this.state.contract.tasks.length > 0){
+      this.state.contract.tasks.forEach((element:any) => {
+        console.log(task._id, "and", element)
+        if( task._id == element){
+          inWellnessContract = true;
+        }
+      });
+    }
+      else{
+        console.log("YO")
+      }
+    
+
+      toAward += inWellnessContract ? (15 + Math.floor(100/numContractTasks)) : 0
+      */
+      toAward *= complete ? 1 : -1;
+
+      console.log(toAward)
+      
+      //now that i have the amount to award:
+      //give the user + cash, +.1x happiness
+      //give other person
+      this.sendRewards(toAward, "sendCash")
+      this.sendRewards(toAward, "sendHappiness")
+      let date = new Date()
+      let oneTimeOnly = this.state.data[index].oneTimeOnly
+
+      if(!oneTimeOnly)
+      this.markAsComplete(index, complete, date)
+      else{
+        this.markAsComplete(index, complete, date, oneTimeOnly)
+      }
+      if(complete){
+        this.state.allData.forEach((element,ind) => {
+          if (element._id == this.state.data[index]._id){
+            console.log(date)
+            element.datesCompleted.push(date)
+            console.log(this.state.allData[ind])
+          }
         })
-      };
+      }
+      else{
+        let task = this.state.data[index]
+        if(this.state.data[index].oneTimeOnly){
+          this.state.data[index].datesCompleted = []
+        }
+        else{
+        this.state.allData.forEach((element) => {
+          if (element._id == this.state.data[index]._id){
+            element.datesCompleted.forEach((date:string, index:number) => {
+              let currDate = new Date(date)
+              if(this.dateString(currDate) == this.dateString(this.state.date)){
+                
+                element.datesCompleted.splice(index)
+              }
+            })
+          }
+        })
+      }
+      }
+     }
+
+    markAsComplete = async(index:number, complete:boolean, date:Date, oneTimeOnly:boolean = false) => {
+       
+      let toSend = {task_id: this.state.data[index]._id,
+                    complete: complete,
+                    date: date,
+                    oneTimeOnly: oneTimeOnly}
+
+      if(!complete){
+        //find the date that I want to remove
+        let task = this.state.data[index]
+
+        task.datesCompleted.forEach((element:string) => {
+          let currDate = new Date(element)
+          if(this.dateString(currDate) == this.dateString(this.state.date)){
+            toSend.date = currDate
+          }
+        });
+      }
+      
+      const settings = {
+      method: 'POST',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(toSend)
+    };
 
       try{
-        const response = await fetch('http://10.0.0.10:3000/deleteTaskFromUser', settings)
+        const response = await fetch(`http://${IP_ADDRESS}:3000/taskCompleted`, settings)
         const data = await response.json();
         return data;
       } catch (e) {
         console.log(e);
       }    
+      
 
     }
 
-    deleteTaskFromTable = async(id:string) => {
+    componentDidMount(){
+      this.getTaskData().then(res => {
+        console.log(res)
+        this.setState({allData: res})
+        //find the data for the list
+        let dailyCount = 0;
+        let currDate = new Date();
+        res.forEach( (element:Task) => {
+
+          if(element.daily && (new Date(element.start_date) <= currDate)
+             && (currDate <= new Date(element.due_date))){
+              dailyCount++
+          }
+        })
+        this.setState({countDailyTasks: dailyCount})
+
+        this.getContractData().then((res2:Contract) => {
+          this.setState({contract: res2})
+          this.updateStateData(res, res2) 
+        })
+
+      })
+
+      
+     }  
+
+
+
+    sendRewards = async(num:number, url:string) => {
+       
+      let toSend = {points: num}
+      
+      const settings = {
+      method: 'POST',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(toSend)
+    };
+
+      try{
+        const response = await fetch('http://10.0.1.57:3000/'+url, settings)
+        const data = await response;
+        return data;
+      } catch (e) {
+        console.log(e);
+      }    
+      
+
+    }
+
+    deleteTask = async(id:string) => {
        
       console.log("My id is", id)
       const settings = {
@@ -164,7 +324,7 @@ class RegTask extends React.Component<any, State>{
       };
 
       try{
-        const response = await fetch('http://10.0.0.10:3000/deleteTask', settings)
+        const response = await fetch('http://10.0.1.57:3000/deleteTask', settings)
         const data = await response.json();
         return data;
       } catch (e) {
@@ -174,8 +334,8 @@ class RegTask extends React.Component<any, State>{
 
     }
 
-    getData = async () => {
-       const response = await fetch('http://10.0.0.10:3000/myTask');
+    getTaskData = async () => {
+       const response = await fetch('http://10.0.1.57:3000/myTask');
        const body = await response.json();
        if (response.status !== 200) {
         console.error(body.message) 
@@ -184,23 +344,74 @@ class RegTask extends React.Component<any, State>{
        return body;
      }
 
-    updateStateData(res:any[]):void {
+    getContractData = async () => {
+      const response = await fetch('http://10.0.1.57:3000/tasksInContract');
+      const body = await response.json();
+      if (response.status !== 200) {
+       console.error(body.message) 
+     }
+ 
+      return body;
+    }
+
+    updateStateData(res:any[], res2:Contract|undefined=undefined):void {
       let newData:any[] = [];
       res.forEach((element : Task) => {
 
-        let startDate = new Date(element.start);
-        let endDate = new Date(element.due);
+        let startDate = new Date(element.start_date);
+        let endDate = new Date(element.due_date);
         let day = this.state.date.getDay();
-        console.log("The day is ", element.frequency[day], "and the daily is", element.daily)
-        if(startDate <= this.state.date && endDate >= this.state.date){// start and end dates are valid 
-          if(element.daily  || (element.frequency[this.state.date.getDay()]) ){
-            newData.push(element);
+        let oneTimeOnly = true
+        element.frequency.forEach((element:boolean) => {
+          if(element == true)
+            oneTimeOnly = false;
+        });
+        console.log(oneTimeOnly)
+        let newElem:any = element;
+        newElem.oneTimeOnly = oneTimeOnly
+        if(/*startDate <= this.state.date &&*/ endDate >= this.state.date ){// start and end dates are valid 
+          if(!element.daily  && (element.frequency[this.state.date.getDay()] || (oneTimeOnly && 
+                (this.dateString(this.state.date) == this.dateString(endDate)))) ){
+            newData.push(newElem);
           }
+
+        }
+        else{
+          console.log(element.title + "is not valid")
         }
 
       });
-      console.log(newData)
-      this.setState({data: newData})
+      if(res2 != undefined){
+        res2.tasks.forEach(element => {
+          newData.forEach((otherItem,index) => {
+            if(element == otherItem._id){
+              newData.splice(index)
+            }
+          })
+        })
+      }
+      var checks:boolean[] = []
+      let today = this.state.date
+      newData.forEach((element, index) => {
+        checks[index] = false;
+        let oneTimeOnly = true
+        element.frequency.forEach((element:boolean) => {
+          if(element)
+            oneTimeOnly = false;
+        });
+
+        element.datesCompleted.forEach((date:string) => {
+          let actual = new Date(date)
+
+          if(oneTimeOnly){
+            checks[index] = true
+          }
+          else if(this.dateString(today) == this.dateString(actual)){
+            checks[index] = true;
+          }
+        })
+      })
+      this.setState({data: newData, checked: checks})
   
     }
     
@@ -244,7 +455,9 @@ class RegTask extends React.Component<any, State>{
               <View style={{flex: 4, opacity: 0}}>
 
               </View>
-              <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}>
+              <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}
+                              onPress={() => this.props.routeTo(Screens.AddTask, {screen: Screens.RegTask})}
+                              >
                 <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
               </TouchableOpacity>
             </View>
