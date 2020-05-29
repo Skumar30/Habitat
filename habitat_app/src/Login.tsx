@@ -38,13 +38,8 @@ interface State {
   errormsg: string;
 }
 
- interface Props {
-  routeTo: any;
-  props: any;
-}
-
-export default class Login extends React.Component<Props, State> {
-  constructor(props: Props) {
+export default class Login extends React.Component<any, State> {
+  constructor(props: any) {
     super(props);
     this.state = {errortoggle: false, errormsg: ''};
   }

@@ -272,10 +272,6 @@ router.post('/addContract', async(req, res, next) => {
   try {
     var UserModel = require('../models/user.js');
 
-
-    //console.log("userId is: " + req.user._id);
-    //console.log("contractId is: " + req.body.contractId);
-    //var Model = mongoose.model("model", schema, "users");
     var result = await UserModel.update(
         { _id: req.user._id },
         { $push: { contracts: mongoose.Types.ObjectId(req.body.contractId) } }
@@ -295,9 +291,6 @@ router.post('/addContractToFriend', async(req, res, next) => {
   try {
     var UserModel = require('../models/user.js');
 
-    //console.log("userId is: " + req.user._id);
-    //console.log("contractId is: " + req.body.contractId);
-    //var Model = mongoose.model("model", schema, "users");
     var result = await UserModel.update(
         { _id: req.body.friendID },
         { $push: { contracts: mongoose.Types.ObjectId(req.body.contractId) } }

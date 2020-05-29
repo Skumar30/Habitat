@@ -23,8 +23,13 @@ class WellnessContractFriends extends React.Component<any, State>{
 
     constructor(props:any){
             super(props);
-            this.state = {friendID: this.props.props.friendID, friends: [], screen: Screens.WellnessContractFriends,
-                friend: props.props.friend, date: props.props.date, tasks: props.props.tasks, post: false};
+            this.state = {friendID: this.props.props.friendID,
+                friends: [],
+                screen: Screens.WellnessContractFriends,
+                friend: props.props.friend,
+                date: props.props.date,
+                tasks: props.props.tasks,
+                post: false};
     }
 
 

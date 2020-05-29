@@ -32,8 +32,13 @@ class CreateContract extends React.Component<any, State> {
     constructor(props:any) {
         super(props);
 
-        this.state = {date: this.props.props.date, mode: 'date', show: false, tasks: this.props.props.tasks,
-            friendID:this.props.props.friendID, friend: this.props.props.friend, screen: Screens.CreateContract}
+        this.state = {date: this.props.props.date,
+            mode: 'date',
+            show: false,
+            tasks: this.props.props.tasks,
+            friendID:this.props.props.friendID,
+            friend: this.props.props.friend,
+            screen: Screens.CreateContract}
 
     }
     updateFriend() {
@@ -58,8 +63,10 @@ class CreateContract extends React.Component<any, State> {
             }
             ]);
         }
-        else if((this.state.date.getFullYear() < currDate.getFullYear()) || ((this.state.date.getMonth() < currDate.getMonth()) &&(currDate.getFullYear() == this.state.date.getFullYear()))
-            || ((this.state.date.getDate() < currDate.getDate()) && (this.state.date.getMonth() == currDate.getMonth()) && (this.state.date.getFullYear() == currDate.getFullYear()))){
+        else if((this.state.date.getFullYear() < currDate.getFullYear()) || ((this.state.date.getMonth() < currDate.getMonth())
+            &&(currDate.getFullYear() == this.state.date.getFullYear()))
+            || ((this.state.date.getDate() < currDate.getDate()) && (this.state.date.getMonth() == currDate.getMonth())
+                && (this.state.date.getFullYear() == currDate.getFullYear()))){
             Alert.alert("", "Please select a future due date", [
                 {
                     text: "Cancel",

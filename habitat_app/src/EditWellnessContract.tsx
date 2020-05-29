@@ -25,8 +25,14 @@ class EditWellnessContract extends React.Component<any, State>{
         super(props);
 
         var checks:boolean[] = [];
-        this.state = {checked: checks,  allTasks: [], tasks: this.props.props.tasks, screen: Screens.EditWellnessContract,
-            date: this.props.props.date, friend: this.props.props.friend, friendID: this.props.props.friendID, post: false};
+        this.state = {checked: checks,
+            allTasks: [],
+            tasks: this.props.props.tasks,
+            screen: Screens.EditWellnessContract,
+            date: this.props.props.date,
+            friend: this.props.props.friend,
+            friendID: this.props.props.friendID,
+            post: false};
     }
 
     getTasks = async() => {
