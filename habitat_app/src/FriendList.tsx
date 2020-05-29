@@ -330,7 +330,8 @@ class FriendList extends Component{
                   <View style={{flex:0}}>
                     <TouchableOpacity 
                     onPress={() => this.props.routeTo(Screens.Home)}>
-                      <Image
+                      <Image 
+                        style = {{ borderRadius: 15}}
                         source={require('./assets/backsmall.png')}>
                       </Image>
                     </TouchableOpacity>
