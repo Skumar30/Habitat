@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import * as Screens from './Screens';
 import {
   SafeAreaView,
@@ -40,6 +40,8 @@ import PendingCard from './PendingCard';
 import WellnessContractHome from './WellnessContractHome';
 import TaskCard from './TaskCard';
 import SignUp from './SignUp';
+import Settings from './Settings';
+import ChangePassword from './ChangePassword';
 import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
 import WellnessContractFriends from "./WellnessContractFriends";
@@ -54,12 +56,12 @@ interface State {
 class App extends React.Component<{}, State> {
   constructor(props: any) {
     super(props);
-    this.state = {screen: Screens.Login, toSend: {}, trigger: true};
+    this.state = { screen: Screens.Login, toSend: {}, trigger: true };
   }
 
   routeTo = (screen: string, props: any = {}) => {
     console.log(screen);
-    this.setState({screen: screen, toSend: props});
+    this.setState({ screen: screen, toSend: props });
   };
 
   renderScreen() {
@@ -143,7 +145,16 @@ class App extends React.Component<{}, State> {
           />
         );
         break;
-
+      case Screens.Settings:
+        screenToShow = (
+          <Settings routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.ChangePassword:
+        screenToShow = (
+          <ChangePassword routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
       //) {
     }
     console.log(screenToShow);
