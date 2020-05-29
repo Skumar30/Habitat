@@ -12,6 +12,7 @@ import {
   Modal,
 } from 'react-native';
 import * as Screens from './Screens';
+import { IP_ADDRESS } from './IP_Address';
 
 declare const global: { HermesInternal: null | {} };
 
@@ -217,12 +218,12 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
   }
 
   getOwnedandCredits = async () => {
-    const response = await fetch('http://192.168.86.193:3000/ownedAndCredits');
+    const response = await fetch(`http://${IP_ADDRESS}:3000/ownedAndCredits`);
     return await response.json();
   }
 
   getActive = async () => {
-    const response = await fetch('http://192.168.86.193:3000/active');
+    const response = await fetch(`http://${IP_ADDRESS}:3000/active`);
     return await response.json();
   }
 
@@ -249,7 +250,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
     }
 
     try {
-      const response = await fetch('http://192.168.86.193:3000/setOwned', updateOwned);
+      const response = await fetch(`http://${IP_ADDRESS}:3000/setOwned`, updateOwned);
       const data = await response.json();
       console.log(data);
     } catch (e) {
@@ -268,7 +269,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
     }
 
     try {
-      const response = await fetch('http://192.168.86.193:3000/setActive', updateActive);
+      const response = await fetch(`http://${IP_ADDRESS}:3000/setActive`, updateActive);
       const data = await response.json();
       console.log(data);
     } catch (e) {
@@ -287,7 +288,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
     }
 
     try {
-      const response = await fetch('http://192.168.86.193:3000/setcredits', updateCredits);
+      const response = await fetch(`http://${IP_ADDRESS}:3000/setcredits`, updateCredits);
       const data = await response.json();
       console.log(data);
     } catch (e) {
@@ -324,7 +325,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
           <View style={styles.header}>
             <View style={{ flex: 1, alignSelf: 'center' }}>
               <TouchableOpacity onPressIn={() => this.updateDB()}
-                onPressOut={() => this.props.routeTo(Screens.Home).bind(this)}
+                onPressOut={() => this.props.routeTo(Screens.Home)}
                 style={styles.backButton}>
                 <Image style={{ width: 50, height: 50, borderRadius: 25 }} source={require('./assets/back.png')} />
               </TouchableOpacity>
