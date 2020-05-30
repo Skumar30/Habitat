@@ -24,7 +24,6 @@ import * as Screens from './Screens';
 import CustomButton from './components/button';
 import {IP_ADDRESS} from './IP_Address';
 
-
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round((dimensions.width * 1) / 4);
 const imageWidth = dimensions.width;
@@ -38,7 +37,7 @@ interface State {
   errormsg: string;
 }
 
-export default class Login extends React.Component<any, State> {
+export default class Login extends React.Component<{}, State> {
   constructor(props: any) {
     super(props);
     this.state = {errortoggle: false, errormsg: ''};

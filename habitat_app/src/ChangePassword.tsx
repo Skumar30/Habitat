@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -7,23 +7,21 @@ import {
   TouchableOpacity,
   Alert,
   Image,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import * as Screens from './Screens';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import * as yup from 'yup';
-import { IP_ADDRESS } from './IP_Address';
-
+import {IP_ADDRESS} from './IP_Address';
 
 const checkingSchema = yup.object({
-  old_password: yup
-    .string(),
+  old_password: yup.string(),
   password: yup
     .string()
     .required()
     .min(5)
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/,
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&_-])[A-Za-z\d@$!%*#?&_-]{5,}$/,
       'Password must have at least one number, \none letter, and one special character',
     ),
   //Minimum five characters, at least one letter, one number and one special character
@@ -39,30 +37,30 @@ interface State {
 }
 
 export default class ChangePassword extends React.Component<{}, State> {
-
   constructor(props) {
     super(props);
-    this.state = { errormsg: false, error_message: '' };
+    this.state = {errormsg: false, error_message: ''};
   }
 
   render() {
     return (
       <>
-        <View style={{
-          height: 60,
-          backgroundColor: '#485EEC',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
+        <View
+          style={{
+            height: 60,
+            backgroundColor: '#485EEC',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <View
             style={{
               paddingRight: 365,
-              flex: 0.1
+              flex: 0.1,
             }}>
-            <TouchableOpacity onPress={() => this.props.routeTo(Screens.Settings)}>
+            <TouchableOpacity
+              onPress={() => this.props.routeTo(Screens.Settings)}>
               <Image
-                source={require('./assets/backArrowTransparent.png')}>
-              </Image>
+                source={require('./assets/backArrowTransparent.png')}></Image>
             </TouchableOpacity>
           </View>
           <Text style={styles.buttonText}>Change Password</Text>
@@ -77,7 +75,7 @@ export default class ChangePassword extends React.Component<{}, State> {
                 confirm_password: '',
               }}
               onSubmit={(values, actions) => {
-                console.log("fetch request")
+                console.log('fetch request');
                 fetch(`http://${IP_ADDRESS}:3000/settings/changePassword`, {
                   method: 'POST',
                   headers: {
@@ -93,22 +91,23 @@ export default class ChangePassword extends React.Component<{}, State> {
                   .then((output) => {
                     console.log(output);
                     if (output.message) {
-                      this.setState({ errormsg: true, error_message: output.message });
+                      this.setState({
+                        errormsg: true,
+                        error_message: output.message,
+                      });
                     } else {
                       this.props.routeTo(Screens.Login);
                       actions.resetForm();
-                      Alert.alert("Password changed successfully!")
+                      Alert.alert('Password changed successfully!');
                     }
                   });
                 actions.resetForm();
               }}>
-
               {(props) => (
                 <View
                   style={{
-                    paddingTop: 20
+                    paddingTop: 20,
                   }}>
-
                   {this.state.errormsg && (
                     <Text style={styles.errorText}>
                       {this.state.error_message}
@@ -162,7 +161,8 @@ export default class ChangePassword extends React.Component<{}, State> {
                     style={{
                       ...styles.textInput,
                       backgroundColor:
-                        props.touched.confirm_password && props.errors.confirm_password
+                        props.touched.confirm_password &&
+                        props.errors.confirm_password
                           ? 'red'
                           : 'white',
                     }}
@@ -188,14 +188,14 @@ export default class ChangePassword extends React.Component<{}, State> {
         </View>
       </>
     );
-  };
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#0094FF',
     flexDirection: 'column',
   },
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textTransform: 'uppercase',
-    fontSize: 20
+    fontSize: 20,
   },
   textInput: {
     margin: 20,
@@ -212,13 +212,13 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     borderColor: 'white',
     borderWidth: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   textStyle: {
     color: 'white',
     textTransform: 'uppercase',
     fontSize: 21,
-    paddingTop: 20
+    paddingTop: 20,
   },
   buttonStyle: {
     backgroundColor: '#485EEC',
@@ -249,12 +249,12 @@ const styles = StyleSheet.create({
   buttonGroup: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#0094FF'
+    backgroundColor: '#0094FF',
   },
   buttonSpacing: {
     paddingTop: 20,
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   TO: {
     backgroundColor: '#485EEC',
@@ -265,5 +265,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
 });

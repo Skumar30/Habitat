@@ -38,7 +38,11 @@ passport.use(
         newUser.friends = [];
         newUser.contracts = [];
         newUser.tasks = [];
-        newUser.cosmetics = [];
+        newUser.cosmetics = [
+          mongoose.Types.ObjectId('5ebddb16a428ab3a446f4d9c'),
+          mongoose.Types.ObjectId('5ec1bc379a1d3fa4b9a5664c'),
+          mongoose.Types.ObjectId('5ec1bc939a1d3fa4b9a56652')
+        ];
         newUser.credits = 0;
         newUser.pet_id = mongoose.Types.ObjectId();
         newUser.save(function (error, result) {

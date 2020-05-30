@@ -111,7 +111,6 @@ class CreateContract extends React.Component<any, State> {
                     friendID: this.state.friendID
                 })
             });
-
             Alert.alert("", "You'll be able to view the contract once the other user accepts, until then"
                 + " this contract will only appear under Pending Contracts", [
                 {
@@ -119,7 +118,7 @@ class CreateContract extends React.Component<any, State> {
                     style: "cancel"
                 }
             ]);
-            this.props.routeTo(Screens.ViewWellnessContract);
+            this.props.routeTo(Screens.WellnessContractHome);
         }
 
     };
