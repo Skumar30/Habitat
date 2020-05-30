@@ -95,7 +95,7 @@ class Home extends React.Component<{}, HomeState> {
   }
 
   getData = async () => {
-    const response = await fetch(`http://${IP_ADDRESS}:3000/home`);
+    const response = await fetch(`http://${IP_ADDRESS}:3000/Home/home`);
     const body = await response.json();
     return body;
   }
@@ -167,7 +167,7 @@ class Home extends React.Component<{}, HomeState> {
           </View>
           <View style={styles.petName}>
             <TextInput style={styles.textBox} onSubmitEditing={event => {
-              fetch(`http://${IP_ADDRESS}/petName`, {
+              fetch(`http://${IP_ADDRESS}/Home/petName`, {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json', //expects a JSON
