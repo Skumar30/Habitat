@@ -13,12 +13,12 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 
 //Routers
-var addRouter = require('./routes/AddTask');
+//var addRouter = require('./routes/AddTask');
 var createRouter = require('./routes/CreateContract');
 var customizeRouter = require('./routes/Customize');
 var dailyRouter = require('./routes/DailyTask');
 var friendsRouter = require('./routes/Friends');
-var homeRouter = require('./routes/Home');
+//var homeRouter = require('./routes/Home');
 var regRouter = require('./routes/RegTask');
 var settingRouter = require('./routes/Settings');
 var wellnessRouter = require('./routes/WellnessContractHome');
@@ -54,12 +54,12 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //app.use('/', indexRouter);
-app.use('/addTask', addRouter);
+//app.use('/addTask', addRouter);
 app.use('/createContract', createRouter);
 app.use('/customize', customizeRouter);
 app.use('/dailyTask', dailyRouter);
 app.use('/friends', friendsRouter);
-app.use('/home', homeRouter);
+//app.use('/home', homeRouter);
 app.use('/regTask', regRouter);
 app.use('/settings', settingRouter);
 app.use('/wellnessContract', wellnessRouter);

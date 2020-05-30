@@ -37,7 +37,7 @@ interface State {
   errormsg: string;
 }
 
-export default class Login extends React.Component<any, State> {
+export default class Login extends React.Component<{}, State> {
   constructor(props: any) {
     super(props);
     this.state = {errortoggle: false, errormsg: ''};
@@ -81,12 +81,7 @@ export default class Login extends React.Component<any, State> {
                       });
                     } else {
                       actions.resetForm();
-                      this.props.routeTo(Screens.CreateContract, {
-                        date: new Date(),
-                        tasks: [],
-                        friend: 'Not Selected',
-                        friendID: '',
-                      });
+                      this.props.routeTo(Screens.Home);
                     }
                   });
 
