@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+var mongoose = require('mongoose');
 import {
     SafeAreaView,
     StyleSheet,
@@ -13,159 +14,184 @@ import {
 import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger} from "react-native-popup-menu";
 
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as Screens from './Screens';
+import {IP_ADDRESS} from './IP_Address';
 
-import {
-    Header,
-    LearnMoreLinks,
-    Colors,
-    DebugInstructions,
-    ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+interface State{
+    date: any;
+    mode: any;
+    show: any;
+    friendID: any;
+    friend: String;
+    tasks:any[];
+    screen: any;
+}
 
-const CreateContract = () => {
+class CreateContract extends React.Component<any, State> {
 
-    function submitData() {
+    constructor(props:any) {
+        super(props);
 
-    }
-
-    function updateFriend({friend}: {friend: any}) {
-        changeCurrFriend(friend);
-    }
-
-    const [date, setDate] = useState(new Date(1598051730000));
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
-    const [friend, changeCurrFriend] = useState('Not Selected');
-
-    // @ts-ignore
-    const changeDate = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
-        setDate(currentDate);
-    };
-
-    function showMode({currentMode}: { currentMode: any }) {
-        setShow(true);
-        setMode(currentMode);
-    };
-
-    const showDatepicker = () => {
-        showMode({currentMode: 'date'});
-    };
-
-    function rerouteScreen() {
+        this.state = {date: this.props.props.date,
+            mode: 'date',
+            show: false,
+            tasks: this.props.props.tasks,
+            friendID:this.props.props.friendID,
+            friend: this.props.props.friend,
+            screen: Screens.CreateContract}
 
     }
+    updateFriend() {
+        this.props.routeTo(Screens.WellnessContractFriends, this.state)
+    }
 
-    // @ts-ignore
-    return (
-        <View style={styles.container}>
-            <View>
-                <Text style={styles.titleText} >{"Create Contract"}</Text>
+    changeDate = (event: any, selectedDate: any) => {
+        const currentDate = selectedDate || this.state.date;
+        this.setState({show: (Platform.OS === 'ios')});
+        this.setState({date:(currentDate)});
+    };
 
-                <MenuProvider style={{padding: 30, paddingTop: 50 }}>
-                    <Menu >
-
-                        <MenuTrigger  >
-                            <Text style={styles.headerText}>Tasks to Add</Text>
-                        </MenuTrigger  >
-
-                        <MenuOptions>
-                            <MenuOption value={"Login"}>
-                                <Text style={styles.menuContent}>Login</Text>
-                            </MenuOption>
-                            <MenuOption value={"Register"}>
-                                <Text style={styles.menuContent}>Register</Text>
-                            </MenuOption>
-                            <MenuOption value={"Download"}>
-                                <Text style={styles.menuContent}>Download</Text>
-                            </MenuOption>
-                            <MenuOption value={"Logout"}>
-                                <Text style={styles.menuContent}>Logout</Text>
-                            </MenuOption>
-                        </MenuOptions>
-
-                    </Menu>
-                </MenuProvider>
-
-                <Text style={styles.dateInput}>
-                    Friend to Invite: {friend}
-                </Text>
-                <MenuProvider style={{paddingLeft: 30, paddingRight:30 }}>
-                    <Menu >
-                        <MenuTrigger  >
-                            <Text style={styles.headerText}>Friend to Invite</Text>
-                        </MenuTrigger  >
-
-                        <MenuOptions>
-                            <MenuOption value={'Darin'} onSelect={rerouteScreen}>
-                                <Text style={styles.menuContent}>Darin</Text>
-                            </MenuOption>
-                            <MenuOption value={"Register"}>
-                                <Text style={styles.menuContent}>Register</Text>
-                            </MenuOption>
-                            <MenuOption value={"Download"}>
-                                <Text style={styles.menuContent}>Download</Text>
-                            </MenuOption>
-                            <MenuOption value={"Logout"}>
-                                <Text style={styles.menuContent}>Logout</Text>
-                            </MenuOption>
-                        </MenuOptions>
-
-                    </Menu>
-                </MenuProvider>
+    submitData = async() => {
+        var currDate = new Date();
+        if(this.state.friendID == '') {
 
 
-                <Text style={styles.dateInput}>
-                    {"Current Due Date is "}{date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}
-                </Text>
-            
-                <View style={{flex: 1}}>
-                {/* Due Date Picker */}
-                <View style={styles.changeButton}>
-                <TouchableOpacity onPress={showDatepicker}>
-                    <Text style={styles.buttonText}>Change Due Date</Text>
-                </TouchableOpacity>
+        Alert.alert("", "Please select a friend", [
+            {
+                text: "Cancel",
+                style: "cancel"
+            }
+            ]);
+        }
+        else if((this.state.date.getFullYear() < currDate.getFullYear()) || ((this.state.date.getMonth() < currDate.getMonth())
+            &&(currDate.getFullYear() == this.state.date.getFullYear()))
+            || ((this.state.date.getDate() < currDate.getDate()) && (this.state.date.getMonth() == currDate.getMonth())
+                && (this.state.date.getFullYear() == currDate.getFullYear()))){
+            Alert.alert("", "Please select a future due date", [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                }
+            ]);
+        }
+        else {
+            var temp_id = new mongoose.Types.ObjectId();
+            await fetch(`http://${IP_ADDRESS}:3000/CreateContract/createContract`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json', //expects a JSON
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                _id: temp_id,
+                friend: this.state.friendID,
+                tasks: this.state.tasks,
+                due_date: this.state.date
+             })
+            });
+            await fetch(`http://${IP_ADDRESS}/CreateContract/addContract`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json', //expects a JSON
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contractId: temp_id,
+                })
+            });
+
+            await fetch(`http://${IP_ADDRESS}:3000/CreateContract/addContractToFriend`, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json', //expects a JSON
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contractId: temp_id,
+                    friendID: this.state.friendID
+                })
+            });
+            this.props.routeTo(Screens.ViewWellnessContract);
+        }
+
+    };
+
+    showMode({currentMode}: { currentMode: any }) {
+        this.setState({show:true});
+    };
+
+    showDatepicker = () => {
+        this.showMode({currentMode: 'date'});
+    };
+
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <View>
+                    <Text style={styles.titleText} >{"Create Contract"}</Text>
+                    <TouchableOpacity onPress={() => this.props.routeTo(Screens.EditWellnessContract, this.state)}>
+                        <Text style={styles.headerText}>Tasks to Add</Text>
+                    </TouchableOpacity>
+
+                    <Text style={styles.dateInput}>
+                        {"Friend to Invite: "}{this.state.friend}
+                    </Text>
+                    <TouchableOpacity onPress={() => this.updateFriend()}>
+                        <Text style={styles.headerText}>Friend to Invite</Text>
+                    </TouchableOpacity>
+
+
+                    <Text style={styles.dateInput}>
+                        {"Current Due Date is "}{this.state.date.getMonth() + 1}/{this.state.date.getDate()}/{this.state.date.getFullYear()}
+                    </Text>
+
+                    <View style={{flex: 1}}>
+                        {/* Due Date Picker */}
+                        <View style={styles.changeButton}>
+                            <TouchableOpacity onPress={this.showDatepicker}>
+                                <Text style={styles.buttonText}>Change Due Date</Text>
+                            </TouchableOpacity>
+                        </View>
+                        {this.state.show && (
+                            <DateTimePicker
+                                testID="dateTimePicker"
+                                timeZoneOffsetInMinutes={0}
+                                value={this.state.date}
+                                is24Hour={true}
+                                display="default"
+                                onChange={this.changeDate}
+                            />
+                        )}
+                        {/* Add Button */}
+                        <View style={styles.addButton}>
+                            <TouchableOpacity onPress={this.submitData}>
+                                <Text style={styles.buttonText}>Create Contract</Text>
+                            </TouchableOpacity>
+                        </View>
+                        {/* Back Button */}
+                        <View style={styles.backButton}>
+                            <TouchableOpacity onPress={ () => this.props.routeTo(Screens.WellnessContractHome)}>
+                                <Text style={styles.buttonText}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
-                {show && (
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        timeZoneOffsetInMinutes={0}
-                        value={date}
-                        is24Hour={true}
-                        display="default"
-                        onChange={changeDate}
-                    />
-                )}
-                {/* Add Button */}
-                <View style={styles.addButton}>
-                <TouchableOpacity onPress={submitData}>
-                    <Text style={styles.buttonText}>Create Contract</Text>
-                </TouchableOpacity>
-                </View>
-                {/* Back Button */}
-                <View style={styles.backButton}>
-                <TouchableOpacity onPress={rerouteScreen}>
-                    <Text style={styles.buttonText}>Cancel</Text>
-                </TouchableOpacity>
-                </View>
+
             </View>
-            </View>
 
-        </View>
-
-    );
+        );}
 };
 
 const styles = StyleSheet.create({
     titleText: {
+        marginTop: 30,
         fontSize: 45,
         fontWeight: "bold",
         textAlign: 'center',
         fontFamily: "serif"
     },
     container: {
-        marginTop: 10,
         flex: 1,
         backgroundColor: 'blanchedalmond',
         alignItems: 'center',
@@ -178,7 +204,7 @@ const styles = StyleSheet.create({
         fontFamily: "serif"
     },
     titleInput: {
-        marginTop: 10,
+        marginTop: 50,
         borderWidth: 1,
         borderColor: '#000',
         width: 390,
@@ -197,6 +223,7 @@ const styles = StyleSheet.create({
     },
 
     headerText: {
+        marginTop: 30,
         fontSize: 15,
         height: 40,
         textAlignVertical: 'center',
@@ -238,32 +265,35 @@ const styles = StyleSheet.create({
         fontFamily: "serif"
     },
     changeButton: {
+        marginTop: 70,
         marginBottom: 20,
         borderWidth: 5,
         borderRadius: 10,
         alignItems: 'center',
         backgroundColor: 'powderblue',
         justifyContent: 'center',
-      },
-      addButton: {
+    },
+    addButton: {
+        marginTop: 15,
         marginBottom: 20,
         borderWidth: 5,
         borderRadius: 10,
         backgroundColor: '#b4ecb4',
         alignItems: 'center',
         justifyContent: 'center'
-      },
-      backButton: {
-          marginBottom: 90,
-          borderWidth: 5,
-          borderRadius: 10,
-          backgroundColor: 'mistyrose',
-          alignItems: 'center',
-          justifyContent: 'center'
-      },
-      buttonText: {
+    },
+    backButton: {
+        marginTop: 15,
+        marginBottom: 90,
+        borderWidth: 5,
+        borderRadius: 10,
+        backgroundColor: 'mistyrose',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    buttonText: {
         fontSize: 20
-      }
+    }
 });
 
 export default CreateContract;
