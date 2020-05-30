@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,10 +9,9 @@ import {
   TouchableOpacity,
   Modal
 } from 'react-native';
-
-import * as Screens from './Screens'
+import * as Screens from './Screens';
 import { BabelFileResult } from '@babel/core';
-import {IP_ADDRESS} from './IP_Address';
+import { IP_ADDRESS } from './IP_Address';
 
 interface HomeState {
   petName: string;
@@ -51,7 +50,7 @@ const balloon = require('./assets/balloon.png');
 
 const none = null;
 
-var itemList: {[key: string]: any} = {
+var itemList: { [key: string]: any } = {
   '5ebddb16a428ab3a446f4d9c': bear,
   '5ec1849acaf74254f8f6613e': cat,
   '5ec184eecaf74254f8f6613f': cow,
@@ -95,7 +94,7 @@ class Home extends React.Component<{}, HomeState> {
     }
   }
 
-  getData = async() => {
+  getData = async () => {
     const response = await fetch(`http://${IP_ADDRESS}:3000/home`);
     const body = await response.json();
     return body;
@@ -105,15 +104,15 @@ class Home extends React.Component<{}, HomeState> {
     console.log(this.state.cosmetics);
     return bear;
   }
-  componentDidMount(){
-    setTimeout( () => {
+  componentDidMount() {
+    setTimeout(() => {
       this.getData().then(res => {
         console.log(res);
         var vcredits = res.credits < 0 ? 0 : res.credits;
-        this.setState({playerName: res.name, petName: res.petName, credits: vcredits, mood: (res.mood/20), cosmetics: res.cosmetics, temp: res.petName});
+        this.setState({ playerName: res.name, petName: res.petName, credits: vcredits, mood: (res.mood / 20), cosmetics: res.cosmetics, temp: res.petName });
       })
-    },1000);
-   }  
+    }, 1000);
+  }
 
   render() {
     console.log(this.state.mood);
@@ -125,17 +124,17 @@ class Home extends React.Component<{}, HomeState> {
     //const cosmetics = this.getCosmetics();
 
     // Didn't make style class for the different flex values
-    return(
+    return (
       <>
         <View style={styles.singleColumn}>
           <View style={styles.infoBar}>
-            <TouchableOpacity style={{flex: 1}}> 
-            <View style={styles.singleRow}>
-                  <Image source={head} style={styles.stretchImage}></Image>
+            <TouchableOpacity style={{ flex: 1 }}>
+              <View style={styles.singleRow}>
+                <Image source={head} style={styles.stretchImage}></Image>
                 <View style={styles.playerName}>
                   <Text style={styles.textBox}>{this.state.playerName}</Text>
                 </View>
-            </View>
+              </View>
             </TouchableOpacity>
             <View style={styles.singleRow}>
               <Image source={points} style={styles.stretchImage}></Image>
@@ -144,39 +143,41 @@ class Home extends React.Component<{}, HomeState> {
               </View>
             </View>
           </View>
-          <View style={{flex: 9}}>
+          <View style={{ flex: 9 }}>
             <ImageBackground source={background} style={styles.imageBackground} imageStyle={styles.imageBackground}>
-              <View style={{flex: 2, flexDirection: 'row'}}>
-                <View style={{flex: 5}}></View>
+              <View style={{ flex: 2, flexDirection: 'row' }}>
+                <View style={{ flex: 5 }}></View>
                 <View style={[styles.singleColumn, styles.border5]}>
-                  <TouchableOpacity style={{flex: 1}} onPress={() => this.props.routeTo(Screens.CustomizeScreen)}>
+                  <TouchableOpacity style={{ flex: 1 }} onPress={() => this.props.routeTo(Screens.CustomizeScreen)}>
                     <Image source={store} style={styles.stretchImage}></Image>
                   </TouchableOpacity>
-                  <TouchableOpacity style={{flex: 1}} onPress={() => this.props.routeTo(Screens.Settings)}>
+                  <TouchableOpacity style={{ flex: 1 }} onPress={() => this.props.routeTo(Screens.Settings)}>
                     <Image source={settings} style={styles.stretchImage}></Image>
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style={{flex: 4}}>
-                <ImageBackground source={{uri: petType}} style={styles.containImage} imageStyle={styles.containImage}>
+              <View style={{ flex: 4 }}>
+                <ImageBackground source={{ uri: petType }} style={styles.containImage} imageStyle={styles.containImage}>
                   <ImageBackground source={other} style={styles.containImage} imageStyle={styles.containImage}>
-                    <ImageBackground source={hat} style={styles.containImage} imageStyle={styles.containImage}/>
+                    <ImageBackground source={hat} style={styles.containImage} imageStyle={styles.containImage} />
                   </ImageBackground>
                 </ImageBackground>
               </View>
             </ImageBackground>
           </View>
           <View style={styles.petName}>
-            <TextInput style={styles.textBox} onSubmitEditing={event => {fetch(`http://${IP_ADDRESS}/petName`, {
-                  method: 'POST',
-                  headers: {
-                    Accept: 'application/json', //expects a JSON
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    name: event.nativeEvent.text
-                  }),
-                });}}>{this.state.petName}</TextInput>
+            <TextInput style={styles.textBox} onSubmitEditing={event => {
+              fetch(`http://${IP_ADDRESS}/petName`, {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json', //expects a JSON
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  name: event.nativeEvent.text
+                }),
+              });
+            }}>{this.state.petName}</TextInput>
           </View>
           <View style={styles.singleRow}>
             <Image source={feeling} style={styles.stretchImage}></Image>
@@ -218,7 +219,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 5,
     backgroundColor:
-    'blanchedalmond',
+      'blanchedalmond',
   },
   singleRow: {
     flex: 1,
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
     flex: 2, justifyContent: 'center', alignItems: 'center'
   },
   textBox: {
-    fontFamily: 'serif',
+    //fontFamily: 'serif',
     fontSize: 17
   }
 });

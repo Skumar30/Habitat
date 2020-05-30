@@ -94,7 +94,8 @@ export default class SignUp extends React.Component<any, State> {
                       //used to check if error message exists
                       this.setState({errormsg: true});
                     } else {
-                      this.setState({errormsg: false});
+                      actions.resetForm();
+                      this.props.routeTo(Screens.Home);
                     }
                   });
 
@@ -213,7 +214,7 @@ export default class SignUp extends React.Component<any, State> {
                     )}
 
                   <View style={styles.buttonGroup}>
-                     <CustomButton
+                    <CustomButton
                       text="Login"
                       onPress={() => this.props.routeTo(Screens.Login)}
                     />

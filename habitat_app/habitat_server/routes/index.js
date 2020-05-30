@@ -22,7 +22,7 @@ router.post('/createContract', async (req, res, next) => {
     console.log("error creating contract");
     res.status(500).send(err);
   }
-  
+
 });
 
 router.post('/addContract', async (req, res, next) => {
@@ -47,7 +47,6 @@ router.post('/addContract', async (req, res, next) => {
 
 
 });
-
 
 router.get('/getTheirTasks', async (req, res, next) => {
   try {
@@ -455,8 +454,7 @@ router.get('/getTheirTasks', async (req, res, next) => {
       res.send(theirTasks);
     }
     catch (err) {
-  
-      console.log("error getting their tasks");
+      //console.log("error getting their tasks");
       console.log(err);
       res.status(500).send(err);
     }
@@ -741,8 +739,7 @@ router.post('/sendHappiness', function(req,res){
   
   
   });
-  
-  
+
 router.delete('/deleteTask', function(req,res){
   
       var id = mongoose.Types.ObjectId(req.body.my_id)
@@ -763,8 +760,6 @@ router.delete('/deleteTask', function(req,res){
   
   
   });
-
-
 
 /*Daily Tasks*/
   router.get('/getDailies', async(req, res, next) => {

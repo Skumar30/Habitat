@@ -12,6 +12,16 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var indexRouter = require('./routes/index');
+var addRouter = require('./routes/AddTask')
+var createRouter = require('./routes/CreateContract')
+var customizeRouter = require('./routes/Customize')
+var dailyRouter = require('./routes/DailyTask')
+var friendsRouter = require('./routes/Friends')
+var homeRouter = require('./routes/Home')
+var regRouter = require('./routes/RegTask')
+var settingRouter = require('./routes/Settings')
+var wellnessRouter = require('./routes/WellnessContractHome')
+
 var usersRouter = require('./routes/users');
 var MongoStore = require('connect-mongo')(session);
 var app = express();
@@ -42,7 +52,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+//app.use('/', indexRouter);
+//app.use('/addTask', addRouter);
+//app.use('/createContract', createRouter);
+//app.use('/customize', customizeRouter);
+app.use('/dailyTask', dailyRouter);
+//app.use('/friends', friendsRouter);
+//app.use('/home', homeRouter);
+//app.use('/regTask', regRouter);
+//app.use('/settings', settingRouter);
+//app.use('/wellnessContract', wellnessRouter);
+
+
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

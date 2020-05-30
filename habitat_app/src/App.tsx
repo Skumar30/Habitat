@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import * as Screens from './Screens';
 import {
   SafeAreaView,
@@ -40,9 +40,14 @@ import PendingCard from './PendingCard';
 import WellnessContractHome from './WellnessContractHome';
 import TaskCard from './TaskCard';
 import SignUp from './SignUp';
+import Settings from './Settings';
+import ChangePassword from './ChangePassword';
 import ViewWellnessContract from './ViewWellnessContract';
 import WellnessContract from './WellnessContract';
-declare const global: {HermesInternal: null | {}};
+export const IP_ADDRESS = 'YOUR IPv4 HERE';
+declare const global: { HermesInternal: null | {} };
+import WellnessContractFriends from './WellnessContractFriends';
+import EditWellnessContract from './EditWellnessContract';
 
 interface State {
   screen: string;
@@ -52,12 +57,12 @@ interface State {
 class App extends React.Component<{}, State> {
   constructor(props: any) {
     super(props);
-    this.state = {screen: Screens.Login, toSend: {}, trigger: true};
+    this.state = { screen: Screens.Login, toSend: {}, trigger: true };
   }
 
   routeTo = (screen: string, props: any = {}) => {
     console.log(screen);
-    this.setState({screen: screen, toSend: props});
+    this.setState({ screen: screen, toSend: props });
   };
 
   renderScreen() {
@@ -123,6 +128,22 @@ class App extends React.Component<{}, State> {
           <WellnessContract routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
+      case Screens.EditWellnessContract:
+        screenToShow = (
+          <EditWellnessContract
+            routeTo={this.routeTo}
+            props={this.state.toSend}
+          />
+        );
+        break;
+      case Screens.WellnessContractFriends:
+        screenToShow = (
+          <WellnessContractFriends
+            routeTo={this.routeTo}
+            props={this.state.toSend}
+          />
+        );
+        break;
       case Screens.WellnessContractHome:
         screenToShow = (
           <WellnessContractHome
@@ -131,7 +152,16 @@ class App extends React.Component<{}, State> {
           />
         );
         break;
-
+      case Screens.Settings:
+        screenToShow = (
+          <Settings routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.ChangePassword:
+        screenToShow = (
+          <ChangePassword routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
       //) {
     }
     console.log(screenToShow);
@@ -139,17 +169,19 @@ class App extends React.Component<{}, State> {
   }
   render() {
     return (
+        /*
       <Fragment>
         {console.log(this.state.screen)}
         {this.renderScreen()}
       </Fragment>
-      /*
-     <Fragment>
-     {this.state.trigger && <Login/>}
-     {this.state.trigger == false && <RegTask/>}
-     <Button title="Toggle" onPress={() => this.setState({trigger: !this.state.trigger})} />
- </Fragment>
-*/
+         */
+
+       <Fragment>
+         {this.state.trigger && <Login />}
+         {this.state.trigger == false && <DailyScreen />}
+         <Button title="Toggle" onPress={() => this.setState({ trigger: !this.state.trigger })} />
+       </Fragment>
+
     );
   }
 }
