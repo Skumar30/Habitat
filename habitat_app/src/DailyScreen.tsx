@@ -62,16 +62,18 @@ class DailyScreen extends Component {
     }
 
     getDailies = async() => {
-        const response = await fetch(`http://${IP_ADDRESS}:3000/getDailies`);
+        const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/getDailies`);
         const body = await response.json();
         if (response.status !== 200) {
             console.error(body.message)
         }
+        console.log("in getDailies");
+        console.log(body);
         return body;
     }
 
     getContract = async() => {
-        const response = await fetch(`http://${IP_ADDRESS}:3000/getContract`);
+        const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/getContract`);
         const body = await response.json();
         if (response.status !== 200) {
             console.error(body.message)
@@ -80,6 +82,7 @@ class DailyScreen extends Component {
     }
 
     updateState(res:any[]):void {
+        console.log("in updateState");
         let data: any[] = [];
         let streak: any[] = [];
         let complete: any[] = [];
@@ -90,9 +93,16 @@ class DailyScreen extends Component {
             complete.push(element.datesCompleted);
             bonus.push(false);
         });
+        console.log("after pushing");
+        console.log(data);
         this.setState({tasks: data});
+        console.log("checking tasks");
+        console.log(this.state.tasks);
         this.setState({streaks: streak});
+        console.log("checking streak");
+        console.log(this.state.streaks);
         this.setState({completes: complete});
+        console.log("checking completes");
         console.log(this.state.completes);
         this.setState( {inContract: bonus});
         this.updateCheckbox();
@@ -213,7 +223,7 @@ class DailyScreen extends Component {
             )
         };
         try{
-            const response = await fetch(`http://${IP_ADDRESS}:3000/updateStreak`, settings)
+            const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/updateStreak`, settings)
             const data = await response.json();
             return data;
         } catch (e) {
@@ -227,17 +237,20 @@ class DailyScreen extends Component {
         this.updateState(res);
         })
 
-        console.log("above contract, mount");
-        console.log(this.state.inContract);
+        console.log("after getDailies");
+        console.log(this.state.tasks);
 
      this.getContract().then(res1 => {
         this.setState({contract: res1})
         this.updateContract(res1)
-        console.log("in contract, mount");
-        console.log(this.state.inContract);
         });
 
      this.checkStreak();
+
+     console.log("tasks");
+     console.log(this.state.tasks);
+     console.log("checks");
+     console.log(this.state.checked);
     }
 
     alert(index: number){
@@ -289,7 +302,7 @@ class DailyScreen extends Component {
 
         console.log('above deleteTask try');
         try {
-            const response = await fetch(`http://${IP_ADDRESS}:3000/deleteTask`, settings);
+            const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/deleteTask`, settings);
             //console.log(response);
             //const data = await response.json();
             //console.log(data);
@@ -318,9 +331,9 @@ class DailyScreen extends Component {
                         <CheckBox
                             value={this.state.checked[index]}
                             onValueChange={() => {
-                                var checked = this.state.checked
+                                var checked = this.state.checked;
                                 checked[index] = !checked[index];
-                                this.setState({checked: checked})
+                                this.setState({checked: checked});
                                 if( this.state.checked[index] == true){
                                     this.incrementStreak(index);
                                 }
@@ -353,7 +366,7 @@ class DailyScreen extends Component {
         };
 
         try{
-            const response = await fetch(`http://${IP_ADDRESS}:3000/incrementStreak`, settings)
+            const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/incrementStreak`, settings)
             const data = await response.json();
             return data;
         } catch (e) {
@@ -378,7 +391,7 @@ class DailyScreen extends Component {
         };
 
         try{
-            const response = await fetch(`http://${IP_ADDRESS}:3000/decrementStreak`, settings)
+            const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/decrementStreak`, settings)
             const data = await response.json();
             return data;
         } catch (e) {
@@ -400,7 +413,7 @@ class DailyScreen extends Component {
             )
         };
         try{
-            const response = await fetch(`http://${IP_ADDRESS}:3000/complete`, settings)
+            const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/complete`, settings)
             const data = await response.json();
             return data;
         } catch (e) {
@@ -422,7 +435,7 @@ class DailyScreen extends Component {
             )
         };
         try{
-            const response = await fetch(`http://${IP_ADDRESS}:3000/incomplete`, settings)
+            const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/incomplete`, settings)
             const data = await response.json();
             return data;
         } catch (e) {
@@ -433,7 +446,6 @@ class DailyScreen extends Component {
     render() {
         return (
          <>
-
         <View style={{flex: 1, flexDirection: 'column'}}>
           <View style={[styles.header]}>
               <Text style={styles.textBox}>Dailies</Text>
