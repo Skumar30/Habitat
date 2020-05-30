@@ -9,7 +9,8 @@ router.post('/createTask', async (req, res, next) => {
   try {
     var taskToCreate = new Task(req.body);
     taskToCreate.start_date = new Date();
-
+    taskToCreate.streak = 0;
+    taskToCreate.datesCompleted = [];
     var result = await taskToCreate.save();
     res.send(result);
   } catch (err) {
