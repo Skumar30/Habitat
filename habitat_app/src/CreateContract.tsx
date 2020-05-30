@@ -111,7 +111,7 @@ class CreateContract extends React.Component<any, State> {
                     friendID: this.state.friendID
                 })
             });
-            this.props.routeTo(Screens.ViewWellnessContract);
+            this.props.routeTo(Screens.WellnessContractHome);
         }
 
     };

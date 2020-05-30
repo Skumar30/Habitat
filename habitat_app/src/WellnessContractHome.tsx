@@ -183,7 +183,7 @@ class WellnessContractHome extends Component {
     else {
 
       Alert.alert("No Existing Wellness Contract",
-        "Please create or accept a wellness contract in order to view it.",
+        "Please wait for an invited user to accept the contract or accept a wellness contract invitation in order to view it.",
         [{text: "Cancel", style: "cancel"}]);
     }
   }

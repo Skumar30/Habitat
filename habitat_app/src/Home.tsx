@@ -76,7 +76,7 @@ class Home extends React.Component<{}, HomeState> {
       petName: "",
       playerName: "",
       credits: 0,
-      mood: 4,
+      mood: 0,
       cosmetics: [],
       temp: ""
     };
@@ -167,7 +167,7 @@ class Home extends React.Component<{}, HomeState> {
           </View>
           <View style={styles.petName}>
             <TextInput style={styles.textBox} onSubmitEditing={event => {
-              fetch(`http://${IP_ADDRESS}/Home/petName`, {
+              fetch(`http://${IP_ADDRESS}:3000/Home/petName`, {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json', //expects a JSON
