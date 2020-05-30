@@ -13,7 +13,7 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 
 //Routers
-//var addRouter = require('./routes/AddTask');
+var addRouter = require('./routes/AddTask');
 var createRouter = require('./routes/CreateContract');
 var customizeRouter = require('./routes/Customize');
 var dailyRouter = require('./routes/DailyTask');
@@ -54,7 +54,7 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //app.use('/', indexRouter);
-//app.use('/addTask', addRouter);
+app.use('/addTask', addRouter);
 app.use('/createContract', createRouter);
 app.use('/customize', customizeRouter);
 app.use('/dailyTask', dailyRouter);
