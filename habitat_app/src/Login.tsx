@@ -24,7 +24,6 @@ import * as Screens from './Screens';
 import CustomButton from './components/button';
 import {IP_ADDRESS} from './IP_Address';
 
-
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round((dimensions.width * 1) / 4);
 const imageWidth = dimensions.width;
@@ -82,7 +81,12 @@ export default class Login extends React.Component<any, State> {
                       });
                     } else {
                       actions.resetForm();
-                      this.props.routeTo(Screens.Home);
+                      this.props.routeTo(Screens.CreateContract, {
+                        date: new Date(),
+                        tasks: [],
+                        friend: 'Not Selected',
+                        friendID: '',
+                      });
                     }
                   });
 

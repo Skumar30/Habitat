@@ -11,7 +11,8 @@ var passport = require('passport');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
-var indexRouter = require('./routes/index');
+
+//Routers
 var addRouter = require('./routes/AddTask');
 var createRouter = require('./routes/CreateContract');
 var customizeRouter = require('./routes/Customize');
@@ -52,7 +53,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+//app.use('/', indexRouter);
 app.use('/addTask', addRouter);
 app.use('/createContract', createRouter);
 app.use('/customize', customizeRouter);
