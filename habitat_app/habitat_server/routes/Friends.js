@@ -61,4 +61,8 @@ router.get('/friends', (req, res) => {
     })
   })
 
+  router.get('/getUsername', (req, res) => {
+    res.json(req.user.username)
+  });
+
   module.exports = router;

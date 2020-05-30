@@ -32,7 +32,8 @@ class FriendList extends Component{
     textInput_Holder: '',
     invalidCode: false,
     existingFriend: false,
-    data: []
+    data: [],
+    user_username: ''
   };
 
 
@@ -297,6 +298,7 @@ class FriendList extends Component{
 
   componentDidMount() {
     this.createFriendList();
+    this.getUsername();
   }
 
   createFriendList() {
@@ -317,6 +319,17 @@ class FriendList extends Component{
   getFriends = async () => {
     const response = await fetch(`http://${IP_ADDRESS}:3000/friends/friends`);
     return await response.json();
+  }
+
+  getUsername = async () => {
+    const response = await fetch(`http://${IP_ADDRESS}:3000/friends/getUsername`)
+    
+    console.log("RESPONSE: " + response);
+    var userName = await response.json();
+
+    console.log("USERNAME: " + userName);
+    this.setState({user_username: userName})
+    
   }
 
   render(){
@@ -345,11 +358,15 @@ class FriendList extends Component{
                   </TouchableOpacity>
 
                 </View>
+                <Text style={{...styles.sectionDescription, marginBottom: 3}}>
+                  Your Username:   <Text style = {{fontSize: 19, fontWeight: "bold"}}>{this.state.user_username}</Text>
+                </Text>
                 <Text style={styles.sectionDescription}>
                   See who you will work with next:
                 </Text>
               </View>
             </View>
+            
           </SafeAreaView>
 
           <View style={styles.container}>

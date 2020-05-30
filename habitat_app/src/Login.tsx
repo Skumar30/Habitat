@@ -82,7 +82,7 @@ export default class Login extends React.Component<any, State> {
                       });
                     } else {
                       actions.resetForm();
-                      this.props.routeTo(Screens.Home);
+                      this.props.routeTo(Screens.FriendList);
                     }
                   });
 
