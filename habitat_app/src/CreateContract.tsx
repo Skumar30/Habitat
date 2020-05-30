@@ -111,8 +111,7 @@ class CreateContract extends React.Component<any, State> {
                     friendID: this.state.friendID
                 })
             });
-            Alert.alert("", "You'll be able to view the contract once the other user accepts, until then"
-                + " this contract will only appear under Pending Contracts", [
+            Alert.alert("", "You'll be able to view the contract once the other user accepts", [
                 {
                     text: "OK",
                     style: "cancel"
