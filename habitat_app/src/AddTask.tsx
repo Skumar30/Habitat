@@ -74,7 +74,12 @@ export default function AddTask(props){
   });
 
     // return to previous screen
-    // props.routeTo(props.props.screen)
+    if(checkDaily()){
+      props.routeTo(Screens.DailyScreen);
+    }
+    else{
+      props.routeTo(Screens.RegTask);
+    }
 }
 
     const backHandler = () => {
