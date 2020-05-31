@@ -53,8 +53,8 @@ interface Contract{
 }
 const TODAY = new Date();
 
-class DailyScreen extends Component {
-    constructor(props){
+class DailyScreen extends Component<any, any> {
+    constructor(props:any){
         super(props);
         var checks:boolean[] = [];
         var bonus:boolean[] = [];
@@ -67,8 +67,8 @@ class DailyScreen extends Component {
         if (response.status !== 200) {
             console.error(body.message)
         }
-        console.log("in getDailies");
-        console.log(body);
+        //console.log("in getDailies");
+        //console.log(body);
         return body;
     }
 
@@ -93,17 +93,9 @@ class DailyScreen extends Component {
             complete.push(element.datesCompleted);
             bonus.push(false);
         });
-        console.log("after pushing");
-        console.log(data);
         this.setState({tasks: data});
-        console.log("checking tasks");
-        console.log(this.state.tasks);
         this.setState({streaks: streak});
-        console.log("checking streak");
-        console.log(this.state.streaks);
         this.setState({completes: complete});
-        console.log("checking completes");
-        console.log(this.state.completes);
         this.setState( {inContract: bonus});
         this.updateCheckbox();
     }
@@ -137,7 +129,7 @@ class DailyScreen extends Component {
         var day = TODAY.getUTCDate();
         var year = TODAY.getUTCFullYear();
         var newdate;
-
+        let checked = []
         if (month < 10) {
             newdate = year + "-0" + month + "-" + day;
         }
@@ -154,12 +146,15 @@ class DailyScreen extends Component {
                 date1 = "";
 
             if( newdate == date1 )
-                this.state.checked[i] = true;
+                checked.push(true);
             else {
-                this.state.checked[i] = false;
+                checked.push(false);
             }
         }
-        console.log(this.state.checked);
+        this.setState({checked: checked})
+        //console.log("inside updateCheckBox");
+        //console.log(this.state.checked[0]);
+
     }
 
     checkStreak(){
@@ -235,7 +230,8 @@ class DailyScreen extends Component {
     this.getDailies().then(res => {
         this.setState({tasks: res});
         this.updateState(res);
-        })
+        //this.checkStreak();
+        });
 
         console.log("after getDailies");
         console.log(this.state.tasks);
@@ -245,11 +241,9 @@ class DailyScreen extends Component {
         //this.updateContract(res1)
         });
 
-     this.checkStreak();
-
-     console.log("tasks");
+     //console.log("tasks");
      console.log(this.state.tasks);
-     console.log("checks");
+     //console.log("checks");
      console.log(this.state.checked);
     }
 
@@ -263,15 +257,21 @@ class DailyScreen extends Component {
                     onPress: () => this.handleDelete(index)
                 },
                 { text: "Edit", onPress: () => {
-                        console.log("Edit Pressed")
-                        let data = this.state.tasks[index];
-                        let start = data.start_date;
-                        let end = data.due_date;
-                        data.due_date = new Date(end);
-                        data.start_date = new Date(start);
-                        let toSend = {data: data,
-                            screen: Screens.DailyScreen}
-                        this.props.routeTo(Screens.EditTask, toSend) } }
+                        console.log("Edit Pressed");
+                        this.getDailies().then(res => {
+                            this.setState({tasks: res});
+                            this.updateState(res);
+                            let data = this.state.tasks[index];
+                            let start = data.start_date;
+                            let end = data.due_date;
+                            data.due_date = new Date(end);
+                            data.start_date = new Date(start);
+                            let toSend = {data: data,
+                                screen: Screens.DailyScreen};
+                            this.props.routeTo(Screens.EditTask, toSend);
+                        });
+                        }
+                    }
             ]
         )
     }
@@ -279,16 +279,30 @@ class DailyScreen extends Component {
     /* Delete a task from data array */
     handleDelete(index: number) {
 
-        console.log('inside handleDelete');
+        //console.log('inside handleDelete');
         let id = this.state.tasks[index]._id;
-        console.log(id);
+        //console.log(id);
 
-        console.log('before deleteTask');
+        // Removed checkbox for deleted task
+        let checked = this.state.checked;
+        if (index > -1) {
+            checked = checked.splice(index, 1);
+        }
+        this.setState( {checked: checked} );
+
+        // Remove streak for deleted task
+        let streaks = this.state.streaks;
+        if (index > -1) {
+            streaks = streaks.splice(index, 1);
+        }
+        this.setState({streaks: streaks});
+
+        //console.log('before deleteTask');
         this.deleteTask(id).then(res => {
             console.log(res)
         });
 
-        console.log('after deleteTask');
+        //console.log('after deleteTask');
     }
 
     deleteTask = async(id:string) => {
@@ -305,7 +319,7 @@ class DailyScreen extends Component {
             })
         };
 
-        console.log('above deleteTask try');
+        //console.log('above deleteTask try');
         try {
             const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/deleteTask`, settings);
             //console.log(response);
@@ -321,11 +335,20 @@ class DailyScreen extends Component {
             this.updateState(res)
         })
 
-        console.log("returning to handle");
+        //console.log("returning to handle");
     }
 
         /* Create the individual items for the flatlist */
     Item = (title:string, index:number) =>{
+        console.log("the index is", index)
+        console.log("the len s", this.state.checked.length)
+        console.log("index: " + this.state.checked[index]);
+        console.log("double equal");
+        console.log(this.state.checked[index] == true);
+        console.log("triple equal: ");
+        console.log(this.state.checked[index] === true);
+        console.log("what is checked " + this.state.checked[index]);
+        console.log("totalData")
         return(
             <View>
                 <TouchableOpacity onPress={() => this.alert(index)}>
@@ -334,7 +357,7 @@ class DailyScreen extends Component {
                         <Text>{"   streak:"}</Text>
                         <Text >{this.state.streaks[index]}</Text>
                         <CheckBox
-                            value={this.state.checked[index]}
+                            value={this.state.checked[index] == true}
                             onValueChange={() => {
                                 var checked = this.state.checked;
                                 checked[index] = !checked[index];
@@ -352,11 +375,24 @@ class DailyScreen extends Component {
         )};
 
     incrementStreak = async(index: number) => {
-        this.complete(index);
-        this.state.streaks[index] = this.state.streaks[index] + 1;
+        //this.complete(index);
+        let dates = this.state.tasks;
+        dates[index].datesCompleted.push(new Date());
+        this.setState({tasks: dates});
 
-        console.log("above increment Daily");
-        console.log(this.state.tasks[index]._id);
+        let tasks = this.state.tasks;
+        tasks[index].streak = tasks[index].streak + 1;
+        this.setState({tasks: tasks});
+
+        //this.state.tasks[index].streak = this.state.streaks[index] + 1;
+
+        let streak = this.state.streaks;
+        streak[index] = streak[index] + 1;
+        this.setState({streaks: streak});
+        //this.state.streaks[index] = this.state.streaks[index] + 1;
+
+        //console.log("above increment Daily");
+        //console.log(this.state.tasks[index]._id);
         const settings = {
             method: 'POST',
             headers: {
@@ -380,8 +416,20 @@ class DailyScreen extends Component {
     }
 
     decrementStreak = async(index: number) =>{
-        this.incomplete( index );
-        this.state.streaks[index] = this.state.streaks[index] - 1;
+        //this.incomplete( index );
+        let dates = this.state.tasks;
+        dates[index].datesCompleted.pop();
+        this.setState({tasks: dates});
+
+        let tasks = this.state.tasks;
+        tasks[index].streak = tasks[index].streak - 1;
+        this.setState({tasks: tasks});
+
+        //this.state.tasks[index].streak = this.state.streaks[index] + 1;
+
+        let streak = this.state.streaks;
+        streak[index] = streak[index] - 1;
+        this.setState({streaks: streak});
         const settings = {
             method: 'POST',
             headers: {
