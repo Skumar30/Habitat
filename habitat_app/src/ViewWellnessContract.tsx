@@ -63,6 +63,7 @@ class ViewWellnessContract extends Component {
 
   updateTasks = async() => {
 
+    console.log("props contractId is: " + this.props.props.currentContractId);
     var response = await fetch(`http://${IP_ADDRESS}:3000/wellnessContract/updateTasks`, {
       method: 'POST',
       headers: {
@@ -144,6 +145,7 @@ class ViewWellnessContract extends Component {
                 <TaskCard task={item}
                   viewMyTasks={this.state.viewMyTasks}
                   currentContractId={this.props.props.currentContractId}
+                  routeTo = {this.props.routeTo}
                 />
               }
             />
@@ -151,11 +153,12 @@ class ViewWellnessContract extends Component {
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
             <TouchableOpacity onPress={() => {
               var taskIds = [];
-              for(var i = 0; i < this.state.myTasks; i++) {
+              for(var i = 0; i < this.state.myTasks.length; i++) {
 
                 taskIds.push(this.state.myTasks[i]._id);
               }
-              console.log("passing contractId: " + this.props.props.currentContractId);
+              console.log("this.state.myTasks: " + this.state.myTasks);
+              console.log("taskIds: " + taskIds);
               this.props.routeTo(Screens.EditWellnessContract, {
                   date: new Date(),
                   tasks: taskIds,
@@ -231,6 +234,7 @@ class ViewWellnessContract extends Component {
                   task={item}
                   viewMyTasks={this.state.viewMyTasks}
                   currentContractId={this.props.props.currentContractId}
+                  routeTo={this.props.routeTo}
                 />
               }
             />
@@ -238,7 +242,7 @@ class ViewWellnessContract extends Component {
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
             <TouchableOpacity onPress={() => {
               var taskIds = [];
-              for(var i = 0; i < this.state.myTasks; i++) {
+              for(var i = 0; i < this.state.myTasks.length; i++) {
 
                 taskIds.push(this.state.myTasks[i]._id);
               }

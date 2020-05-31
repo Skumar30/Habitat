@@ -21,9 +21,11 @@ router.post('/updateTasks', async(req, res, next) => {
     //getting user from userId
     var user = await UserModel.findOne({ _id: req.user._id });
 
+
     //current contract user is in
     var contractId = req.body.contractId;
     contractId instanceof mongoose.Types.ObjectId;
+    console.log("contractId: " + contractId);
     var currentContract = await ContractModel.findOne({_id: contractId});
 
     //other user object

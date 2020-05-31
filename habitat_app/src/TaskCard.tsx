@@ -1,6 +1,7 @@
 import React, {useState, Component} from "react";
 import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, CheckBox, TouchableHighlightBase, TabBarIOS, Modal, StyleSheet } from "react-native";
 import {IP_ADDRESS} from './IP_Address';
+import * as Screens from "./Screens";
 class TaskCard extends Component {
 
   constructor(props){
@@ -68,7 +69,10 @@ class TaskCard extends Component {
   handleSelect = () => {
 
     //present task info
-    this.props.routeTo(Screens.EditTask, {screen: Screens.ViewWellnessContract});
+    var title = this.props.task.title;
+    var frequency = this.props.task.frequency;
+    var date = new Date(this.props.task.due_date);
+    this.props.routeTo(Screens.EditTask, {screen: Screens.WellnessContractHome, data: {title: title, due_date: date, frequency: frequency}});
   }
 
   isDone = async() => {
