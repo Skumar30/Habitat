@@ -55,7 +55,7 @@ interface Contract {
 }
 const TODAY = new Date();
 
-class DailyScreen extends React.Component<{}, State> {
+class DailyScreen extends Component {
   constructor(props) {
     super(props);
     var checks: boolean[] = [];
@@ -202,7 +202,7 @@ class DailyScreen extends React.Component<{}, State> {
     // Go through each task and their last completed day
     for (var i = 0; i < this.state.tasks.length; i++) {
       var lastDay = this.state.tasks[i].datesCompleted[
-        this.state.tasks.datesCompleted.length - 1
+        this.state.tasks.datesComplete.length - 1
       ];
       lastDay = lastDay.substring(0, 10);
       console.log(lastDay);
@@ -242,7 +242,6 @@ class DailyScreen extends React.Component<{}, State> {
     this.getDailies().then((res) => {
       this.setState({tasks: res});
       this.updateState(res);
-      this.checkStreak();
     });
 
     console.log('after getDailies');
@@ -250,10 +249,10 @@ class DailyScreen extends React.Component<{}, State> {
 
     this.getContract().then((res1) => {
       this.setState({contract: res1});
-      this.updateContract(res1);
+      //this.updateContract(res1)
     });
 
-    //this.checkStreak();
+    this.checkStreak();
 
     console.log('tasks');
     console.log(this.state.tasks);
@@ -274,6 +273,11 @@ class DailyScreen extends React.Component<{}, State> {
         text: 'Edit',
         onPress: () => {
           console.log('Edit Pressed');
+          let data = this.state.tasks[index];
+          let start = data.start_date;
+          let end = data.due_date;
+          data.due_date = new Date(end);
+          data.start_date = new Date(start);
           let toSend = {
             data: this.state.tasks[index],
             screen: Screens.DailyScreen,

@@ -31,31 +31,21 @@ interface State {
   contractId?: any;
 }
 
-class EditWellnessContract extends React.Component<any, State>{
+class EditWellnessContract extends React.Component<any, State> {
+  constructor(props: any) {
+    super(props);
 
-    constructor(props:any){
-        super(props);
-
-        var checks:boolean[] = [];
-        this.state = {checked: checks,
-            allTasks: [],
-            tasks: this.props.props.tasks,
-            screen: Screens.EditWellnessContract,
-            date: this.props.props.date,
-            friend: this.props.props.friend,
-            friendID: this.props.props.friendID,
-            post: this.props.props.post,
-            contractId: this.props.props.contractId};
-    }
-
-    getTasks = async() => {
-        const response = await fetch(`http://${IP_ADDRESS}:3000/createContract/getTasks`);
-
-        const body = await response.json();
-        if(response.status != 200) {
-            console.error(body.message);
-        }
-        return body;
+    var checks: boolean[] = [];
+    this.state = {
+      checked: checks,
+      allTasks: [],
+      tasks: this.props.props.tasks,
+      screen: Screens.EditWellnessContract,
+      date: this.props.props.date,
+      friend: this.props.props.friend,
+      friendID: this.props.props.friendID,
+      post: this.props.props.post,
+      contractId: this.props.props.contractId,
     };
   }
 
@@ -83,14 +73,13 @@ class EditWellnessContract extends React.Component<any, State>{
       this.setState({allTasks: tasks});
       this.setState({checked: checks});
       var temp: boolean[] = [];
-
+      for (var i = 0; i < this.state.allTasks.length; i++) {
+        temp[i] = false;
+      }
       for (var i = 0; i < this.state.allTasks.length; i++) {
         for (var j = 0; j < this.state.tasks.length; j++) {
           if (this.state.tasks[j] == this.state.allTasks[i].key) {
             temp[i] = true;
-            j++;
-          } else {
-            temp[i] = false;
           }
         }
       }
@@ -110,7 +99,6 @@ class EditWellnessContract extends React.Component<any, State>{
           onValueChange={() => {
             var checks = this.state.checked;
             checks[index] = !checks[index];
-<<<<<<< HEAD
             this.setState({checked: checks});
           }}
         />
@@ -119,42 +107,14 @@ class EditWellnessContract extends React.Component<any, State>{
   };
 
   submitForm = async () => {
+    this.state.tasks = [];
     for (var i = 0; i < this.state.allTasks.length; i++) {
       if (this.state.checked[i] == true) {
         this.state.tasks.push(this.state.allTasks[i].key);
       }
-=======
-            this.setState({checked: checks})
-        }}/>
-        </View>
-    )};
-
-    submitForm = async() => {
-
-        for (var i = 0; i < this.state.allTasks.length; i++) {
-            if (this.state.checked[i] == true) {
-
-                this.state.tasks.push(this.state.allTasks[i].key);
-                }
-            }
-            console.log("this.state.contractId is: " + this.state.contractId);
-            console.log("this.state.tasks: " + this.state.tasks);
-            if (this.state.post) {
-            await fetch(`http://${IP_ADDRESS}:3000/createContract/updateContract`, {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json', //expects a JSON
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    contractId: this.state.contractId,
-                    tasks: this.state.tasks,
-                })
-            });
-            this.props.routeTo(this.props.props.screen, this.state);
-        }
->>>>>>> 84c5ef1843852b41c4d7068b4547f9e2f157b82f
     }
+    console.log('this.state.contractId is: ' + this.state.contractId);
+    console.log('this.state.tasks: ' + this.state.tasks);
     if (this.state.post) {
       await fetch(`http://${IP_ADDRESS}:3000/createContract/updateContract`, {
         method: 'POST',
