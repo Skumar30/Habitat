@@ -472,6 +472,7 @@ router.post('/addReward', async(req, res, next) => {
     var updatedCredits;
     if(task.daily) {
       updatedCredits = user.credits + Math.floor((10 + task.streak) * 1.5);
+      var streakUpdate = await TaskModel.updateOne({_id: req.body.taskId}, {streak: task.streak + 1});
     }
     else {
       updatedCredits = user.credits + 45;
@@ -561,7 +562,8 @@ router.post('/removeReward', async(req, res, next) => {
     //calculating credits to remove from user
     var updatedCredits;
     if(task.daily) {
-      updatedCredits = user.credits - Math.floor((10 + task.streak) * 1.5)
+      updatedCredits = user.credits - Math.floor((10 + task.streak) * 1.5);
+      var streakUpdate = await TaskModel.updateOne({_id: taskId}, {streak: task.streak - 1});
     }
     else {
       updatedCredits = user.credits - 45;
