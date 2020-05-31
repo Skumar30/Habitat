@@ -40,6 +40,7 @@ router.get('/getFriends', (req, res) => {
 });
 
 router.post('/addContract', async (req, res, next) => {
+
   try {
     var result = await UserModel.update(
       {_id: req.user._id},
@@ -55,11 +56,6 @@ router.post('/addContract', async (req, res, next) => {
 
 router.post('/addContractToFriend', async (req, res, next) => {
   try {
-    var result = await UserModel.update(
-      {_id: req.body.friendID},
-      {$push: {contracts: mongoose.Types.ObjectId(req.body.contractId)}}
-    );
-
     var result = await UserModel.update(
       {_id: req.body.friendID},
       {$push: {contracts: mongoose.Types.ObjectId(req.body.contractId)}}
