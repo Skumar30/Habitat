@@ -73,9 +73,19 @@ router.post('/addContractToFriend', async (req, res, next) => {
 
 router.post('/updateContract', async (req, res, next) => {
   try {
-    var result = await ContractModel.findByIdAndUpdate(req.body.contractId, {
-      tasks: req.body.tasks
-    });
+
+    var contractId = req.body.contractId;
+    contractId instanceof mongoose.Types.ObjectId;
+    console.log("contractId is " + contractId);
+    var taskIds = [];
+    for(var i = 0; i < req.body.tasks.length; i++) {
+      var tempId = req.body.tasks[i];
+      tempId instanceof mongoose.Types.ObjectId;
+      taskIds.push(tempId);
+    }
+    var result = await ContractModel.updateOne({_id: contractId}, {
+      tasks: taskIds}
+    );
     res.send(result);
   } catch (err) {
     res.status(500).send(err);

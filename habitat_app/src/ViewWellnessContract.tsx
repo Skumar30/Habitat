@@ -150,13 +150,20 @@ class ViewWellnessContract extends Component {
           </ScrollView>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
             <TouchableOpacity onPress={() => {
+              var taskIds = [];
+              for(var i = 0; i < this.state.myTasks; i++) {
+
+                taskIds.push(this.state.myTasks[i]._id);
+              }
+              console.log("passing contractId: " + this.props.props.currentContractId);
               this.props.routeTo(Screens.EditWellnessContract, {
                   date: new Date(),
-                  tasks: this.state.myTasks,
+                  tasks: taskIds,
                   friend: 'Not Selected',
                   friendID:'',
-                  screen: Screens.ViewWellnessContract,
-                  contractId: this.state.currentContractId
+                  screen: Screens.WellnessContractHome,
+                  contractId: this.props.props.currentContractId,
+                  post: true
                 }
               );}} style={{alignContent: 'center'}}>
               <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>
@@ -230,13 +237,20 @@ class ViewWellnessContract extends Component {
           </ScrollView>
           <View style={{borderWidth: 5, backgroundColor: 'powderblue', borderRadius: 50, alignContent: 'center'}}>
             <TouchableOpacity onPress={() => {
+              var taskIds = [];
+              for(var i = 0; i < this.state.myTasks; i++) {
+
+                taskIds.push(this.state.myTasks[i]._id);
+              }
+              console.log("passing contractId: " + this.props.props.currentContractId);
               this.props.routeTo(Screens.EditWellnessContract, {
                   date: new Date(),
-                  tasks: this.state.myTasks,
+                  tasks: taskIds,
                   friend: 'Not Selected',
                   friendID:'',
-                  screen: Screens.ViewWellnessContract,
-                  contractId: this.state.currentContractId
+                  screen: Screens.WellnessContractHome,
+                  contractId: this.props.props.currentContractId,
+                  post: true
                 }
               );}} style={{alignContent: 'center'}}>
               <Text style={{alignContent: 'center', fontSize: 20, textAlign: 'center'}}>

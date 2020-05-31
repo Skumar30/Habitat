@@ -32,7 +32,8 @@ class EditWellnessContract extends React.Component<any, State>{
             date: this.props.props.date,
             friend: this.props.props.friend,
             friendID: this.props.props.friendID,
-            post: false};
+            post: this.props.props.post,
+            contractId: this.props.props.contractId};
     }
 
     getTasks = async() => {
@@ -93,11 +94,15 @@ class EditWellnessContract extends React.Component<any, State>{
     )};
 
     submitForm = async() => {
+
         for (var i = 0; i < this.state.allTasks.length; i++) {
             if (this.state.checked[i] == true) {
+
                 this.state.tasks.push(this.state.allTasks[i].key);
                 }
             }
+            console.log("this.state.contractId is: " + this.state.contractId);
+            console.log("this.state.tasks: " + this.state.tasks);
             if (this.state.post) {
             await fetch(`http://${IP_ADDRESS}:3000/createContract/updateContract`, {
                 method: 'POST',
