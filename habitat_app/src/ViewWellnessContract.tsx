@@ -63,6 +63,7 @@ class ViewWellnessContract extends Component {
 
   updateTasks = async() => {
 
+    console.log("props contractId is: " + this.props.props.currentContractId);
     var response = await fetch(`http://${IP_ADDRESS}:3000/wellnessContract/updateTasks`, {
       method: 'POST',
       headers: {
