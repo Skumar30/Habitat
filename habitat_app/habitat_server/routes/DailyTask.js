@@ -222,6 +222,7 @@ const MAX_HAPPINESS_BONUS = 100;
         if(err)
           console.log(err)
       })
+  });
     
       router.post('/addReward', async(req, res, next) => {
 
