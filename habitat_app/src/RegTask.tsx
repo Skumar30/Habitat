@@ -64,8 +64,13 @@ class RegTask extends React.Component<any, State>{
             onPress: () => this.handleDelete(index),
           },
           { text: "Edit", onPress: () => {
-            console.log("Edit Pressed") 
-            let toSend = {data: this.state.data[index],
+            console.log("Edit Pressed")
+            let data = this.state.data[index];
+            let start = data.start_date;
+            let end = data.due_date
+            data.due_date = new Date(end)
+            data.start_date = new Date(start) 
+            let toSend = {data: data,
                           screen: Screens.RegTask}
             this.props.routeTo(Screens.EditTask, toSend)
           }} //TODO Route to Add Task
@@ -132,6 +137,7 @@ class RegTask extends React.Component<any, State>{
             checked={this.state.checked[index]}
             //disabled={disabled && !this.state.data[index].oneTimeOnly}
             onPress={() => {
+              //if()
               if(disabled && !this.state.data[index].oneTimeOnly){
                 Alert.alert('Invalid completion', 'Repeating tasks cannot be marked complete in advance', [{text: 'OK'}])
                 this.state.checked[index] = false
