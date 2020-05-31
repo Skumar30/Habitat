@@ -56,7 +56,7 @@ router.get('/friends', (req, res) => {
     console.log(req.body.friend_id)
     var id = mongoose.Types.ObjectId(req.body.friend_id)
     User.findById(id, function(err, user){
-      res.json(user);
+      res.json(user); 
       console.log(user);
     })
   })

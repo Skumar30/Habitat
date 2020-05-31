@@ -365,7 +365,7 @@ class FriendList extends Component{
                   See who you will work with next:
                 </Text>
               </View>
-            </View>
+            </View> 
             
           </SafeAreaView>
 
