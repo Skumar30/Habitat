@@ -224,7 +224,7 @@ const MAX_HAPPINESS_BONUS = 100;
       })
   });
     
-      router.post('/addReward', async(req, res, next) => {
+router.post('/addReward', async(req, res, next) => {
 
   try {
     var UserModel = require('../models/user.js');
@@ -274,8 +274,14 @@ const MAX_HAPPINESS_BONUS = 100;
     //calculating percent task completion bonus
     var contractId = req.body.contractId;
     contractId instanceof mongoose.Types.ObjectId;
-    var contract = await ContractModel.findOne({_id: contractId});
-    var bonus = Math.floor((1 / contract.tasks.length) * 100);
+    if( contractId != null) {
+      contractId = contractId._id;
+      var contract = await ContractModel.findOne({_id: contractId});
+      var bonus = Math.floor(1 / contract.tasks.length * 100);
+    }
+    else{
+      var bonus = 0;
+    }
 
     //updating user credits
     var totalCredits = updatedCredits + bonus;
@@ -285,19 +291,21 @@ const MAX_HAPPINESS_BONUS = 100;
     );
 
     //adding bonus to other user
-    var otherUser;
-    if(req.user._id.equals(contract.participants[0]))
-      otherUser = await UserModel.findOne({_id: contract.participants[1]});
-    else {
-      otherUser = await UserModel.findOne({_id: contract.participants[0]});
-    }
+    if( bonus != 0) {
+      var otherUser;
+      if (req.user._id.equals(contract.participants[0]))
+        otherUser = await UserModel.findOne({_id: contract.participants[1]});
+      else {
+        otherUser = await UserModel.findOne({_id: contract.participants[0]});
+      }
 
-    //updating other user credits
-    var otherUserBonus = otherUser.credits + bonus;
-    var otherResult = await UserModel.updateOne({_id: otherUser.id}, {credits: (otherUserBonus)});
-    var otherUserPet = await PetModel.findOne({_id: otherUser.pet_id});
-    var otherUserHappiness = otherUserPet.happiness + Math.floor(bonus / 10);
-    otherResult = await PetModel.updateOne({_id: otherUser.pet_id}, {happiness: (otherUserHappiness)});
+      //updating other user credits
+      var otherUserBonus = otherUser.credits + bonus;
+      var otherResult = await UserModel.updateOne({_id: otherUser.id}, {credits: (otherUserBonus)});
+      var otherUserPet = await PetModel.findOne({_id: otherUser.pet_id});
+      var otherUserHappiness = otherUserPet.happiness + Math.floor(bonus / 10);
+      otherResult = await PetModel.updateOne({_id: otherUser.pet_id}, {happiness: (otherUserHappiness)});
+    }
 
     res.send(result);
   }
@@ -361,8 +369,14 @@ const MAX_HAPPINESS_BONUS = 100;
     //calculating bonus to remove
     var contractId = req.body.contractId;
     contractId instanceof mongoose.Types.ObjectId;
-    var contract = await ContractModel.findOne({_id: contractId});
-    var bonus = Math.floor(1 / contract.tasks.length * 100);
+    if( contractId != null) {
+      contractId = contractId._id;
+      var contract = await ContractModel.findOne({_id: contractId});
+      var bonus = Math.floor(1 / contract.tasks.length * 100);
+    }
+    else{
+      var bonus = 0;
+    }
 
     var totalCredits = updatedCredits - bonus;
     var result = await UserModel.updateOne(
@@ -371,18 +385,20 @@ const MAX_HAPPINESS_BONUS = 100;
     );
 
     //removing bonus to other user
-    var otherUser;
-    if(req.user._id.equals(contract.participants[0]))
-      otherUser = await UserModel.findOne({_id: contract.participants[1]});
-    else {
-      otherUser = await UserModel.findOne({_id: contract.participants[0]});
-    }
+    if (bonus != 0) {
+      var otherUser;
+      if (req.user._id.equals(contract.participants[0]))
+        otherUser = await UserModel.findOne({_id: contract.participants[1]});
+      else {
+        otherUser = await UserModel.findOne({_id: contract.participants[0]});
+      }
 
-    var otherUserBonus = otherUser.credits - bonus;
-    var otherResult = await UserModel.updateOne({_id: otherUser.id}, {credits: (otherUserBonus)});
-    var otherUserPet = await PetModel.findOne({_id: otherUser.pet_id});
-    var otherUserHappiness = otherUserPet.happiness - Math.floor(bonus / 10);
-    otherResult = await PetModel.updateOne({_id: otherUser.pet_id}, {happiness: (otherUserHappiness)});
+      var otherUserBonus = otherUser.credits - bonus;
+      var otherResult = await UserModel.updateOne({_id: otherUser.id}, {credits: (otherUserBonus)});
+      var otherUserPet = await PetModel.findOne({_id: otherUser.pet_id});
+      var otherUserHappiness = otherUserPet.happiness - Math.floor(bonus / 10);
+      otherResult = await PetModel.updateOne({_id: otherUser.pet_id}, {happiness: (otherUserHappiness)});
+    }
 
     res.send(result);
   }

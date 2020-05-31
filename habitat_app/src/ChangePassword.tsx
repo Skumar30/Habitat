@@ -54,7 +54,7 @@ export default class ChangePassword extends React.Component<{}, State> {
           }}>
           <View
             style={{
-              paddingRight: 380,
+              paddingRight: 360,
               flex: 0.1,
             }}>
             <TouchableOpacity

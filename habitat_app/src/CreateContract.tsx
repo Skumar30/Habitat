@@ -38,7 +38,8 @@ class CreateContract extends React.Component<any, State> {
             tasks: this.props.props.tasks,
             friendID:this.props.props.friendID,
             friend: this.props.props.friend,
-            screen: Screens.CreateContract}
+            screen: Screens.CreateContract,
+            post: false}
 
     }
     updateFriend() {
