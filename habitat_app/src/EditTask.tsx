@@ -44,7 +44,7 @@ export default function EditTask(props){
       return;
     }
     // edit task
-    fetch(`http://${IP_ADDRESS}:3000/editTask`, {
+    fetch(`http://${IP_ADDRESS}:3000/addTask/editTask`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -57,11 +57,17 @@ export default function EditTask(props){
         daily: checkDaily(),
         frequency: repeat,
         start_date: props.props.data.start_date,
-        datesCompleted: props.props.data.datesCompleted
+        datesCompleted: props.props.data.datesCompleted,
+        streak: props.props.data.streak
       }),
     });
     // return to previous screen
-    props.routeTo(props.props.screen)
+    if(checkDaily()){
+      props.routeTo(Screens.DailyScreen);
+    }
+    else{
+      props.routeTo(Screens.RegTask);
+    }
   }
 
   const backHandler = () => {

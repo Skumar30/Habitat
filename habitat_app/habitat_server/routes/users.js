@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var mongoose = require('mongoose');
 var Pet = require('../models/pet');
 var User = require('../models/user');
 
@@ -17,15 +18,21 @@ router.post(
     defaultPet.happiness = 100;
     defaultPet.name = 'Beary';
     defaultPet.type = 'bear';
-    defaultPet.cosmetics = [];
+    defaultPet.cosmetics = [
+      mongoose.Types.ObjectId('5ebddb16a428ab3a446f4d9c'),
+      mongoose.Types.ObjectId('5ec1bc379a1d3fa4b9a5664c'),
+      mongoose.Types.ObjectId('5ec1bc939a1d3fa4b9a56652')
+    ];
     defaultPet.save(function (error, pet) {
       if (error) {
         res.json({message: 'Default Pet Error'});
+        return;
       }
 
       User.findByIdAndUpdate(req.user._id, {pet_id: pet._id}, function (err) {
         if (err) {
           res.json({message: "Could not update user's pet id"});
+          return;
         }
         req.user.pet_id = pet._id;
         res.json(req.user);

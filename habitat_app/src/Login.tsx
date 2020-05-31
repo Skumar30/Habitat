@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
   StyleSheet,
@@ -22,8 +22,7 @@ import {
 } from 'react-native';
 import * as Screens from './Screens';
 import CustomButton from './components/button';
-import {IP_ADDRESS} from './IP_Address';
-
+import { IP_ADDRESS } from './IP_Address';
 
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round((dimensions.width * 1) / 4);
@@ -38,10 +37,10 @@ interface State {
   errormsg: string;
 }
 
-export default class Login extends React.Component<any, State> {
+export default class Login extends React.Component<{}, State> {
   constructor(props: any) {
     super(props);
-    this.state = {errortoggle: false, errormsg: ''};
+    this.state = { errortoggle: false, errormsg: '' };
   }
 
   render() {
@@ -163,7 +162,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   header: {
-    fontFamily: 'italic',
+    //fontFamily: 'italic',
     fontSize: 80,
     textAlign: 'left',
     margin: 10,
@@ -184,7 +183,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   errorText: {
-    fontFamily: 'italic',
+    // fontFamily: 'italic', 
     fontSize: 13,
     textAlign: 'center',
     margin: 5,

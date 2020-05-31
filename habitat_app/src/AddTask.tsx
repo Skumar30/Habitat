@@ -11,6 +11,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 var mongoose = require('mongoose');
 import {IP_ADDRESS} from './IP_Address'
+import * as Screens from "./Screens"
 declare const global: {HermesInternal: null | {}};
 
 
@@ -46,7 +47,7 @@ export default function AddTask(props){
     }
     var temp_id = new mongoose.Types.ObjectId();
     // post the task
-    fetch(`http://${IP_ADDRESS}:3000/createTask`, {
+    fetch(`http://${IP_ADDRESS}:3000/addTask/createTask`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -61,7 +62,7 @@ export default function AddTask(props){
       })
   });
     // link task to user
-    fetch(`http://${IP_ADDRESS}:3000/addTask`, {
+    fetch(`http://${IP_ADDRESS}:3000/addTask/addTask`, {
       method: 'POST',
       headers: {
         Accept: 'application/json', //expects a JSON
@@ -73,7 +74,12 @@ export default function AddTask(props){
   });
 
     // return to previous screen
-    // props.routeTo(props.props.screen)
+    if(checkDaily()){
+      props.routeTo(Screens.DailyScreen);
+    }
+    else{
+      props.routeTo(Screens.RegTask);
+    }
 }
 
     const backHandler = () => {
