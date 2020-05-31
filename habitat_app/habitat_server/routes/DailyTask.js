@@ -325,7 +325,7 @@ const MAX_HAPPINESS_BONUS = 100;
     //calculating credits to remove from user
     var updatedCredits;
     if(task.daily) {
-      updatedCredits = user.credits - Math.floor((10 + task.streak) * 1.5);
+      updatedCredits = user.credits - Math.floor((10 + task.streak - 1) * 1.5);
       var streakUpdate = await TaskModel.updateOne({_id: req.body.taskId}, {streak: task.streak - 1});
     }
     else {
@@ -391,8 +391,5 @@ const MAX_HAPPINESS_BONUS = 100;
     res.status(500).send(err);
   }
 });
-  
-  
-  });
   
   module.exports = router;
