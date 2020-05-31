@@ -202,7 +202,7 @@ class DailyScreen extends React.Component<{}, State> {
     // Go through each task and their last completed day
     for (var i = 0; i < this.state.tasks.length; i++) {
       var lastDay = this.state.tasks[i].datesCompleted[
-        this.state.tasks.datesComplete.length - 1
+        this.state.tasks.datesCompleted.length - 1
       ];
       lastDay = lastDay.substring(0, 10);
       console.log(lastDay);
