@@ -82,7 +82,6 @@
       <change beforePath="$PROJECT_DIR$/habitat_app/src/EditWellnessContract.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/EditWellnessContract.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/Login.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/src/ViewWellnessContract.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/ViewWellnessContract.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/components/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/components/button.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/helloworld.js" beforeDir="false" />
     </list>
@@ -147,7 +146,7 @@
       <workItem from="1590721214304" duration="6769000" />
       <workItem from="1590792966953" duration="3050000" />
       <workItem from="1590815415103" duration="539000" />
-      <workItem from="1590878721541" duration="4584000" />
+      <workItem from="1590878721541" duration="8472000" />
     </task>
     <servers />
   </component>

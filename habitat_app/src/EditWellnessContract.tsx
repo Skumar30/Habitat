@@ -49,24 +49,19 @@ class EditWellnessContract extends React.Component<any, State>{
     componentDidMount() {
         this.getTasks().then(res => {
             var tasks:{key: any; title: any;}[] = [];
-            var checks:boolean[] = [];
             res.forEach((element: { _id: any; title: any; }) => {
                 var temp = {key: element._id, title: element.title};
-                checks.push(false);
                 tasks.push(temp);
             });
             this.setState({allTasks: tasks});
-            this.setState({checked: checks});
             var temp:boolean[] = [];
-
+            for(var i = 0; i < this.state.allTasks.length; i++) {
+                temp[i] = false;
+            }
             for(var i = 0; i < this.state.allTasks.length; i++) {
                 for(var j = 0; j < this.state.tasks.length; j++) {
                     if(this.state.tasks[j] == this.state.allTasks[i].key) {
                         temp[i] = true;
-                        j++;
-                    }
-                    else{
-                        temp[i] = false;
                     }
                 }
             }
@@ -94,7 +89,6 @@ class EditWellnessContract extends React.Component<any, State>{
     )};
 
     submitForm = async() => {
-
         for (var i = 0; i < this.state.allTasks.length; i++) {
             if (this.state.checked[i] == true) {
 
@@ -116,7 +110,6 @@ class EditWellnessContract extends React.Component<any, State>{
                 })
             });
         }
-
         this.props.routeTo(this.props.props.screen, this.state);
     }
 
