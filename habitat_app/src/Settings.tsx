@@ -76,10 +76,10 @@ export default class Settings extends React.Component<{}, State> {
 
 
           <View
-            style={{ paddingRight: 365, flex: 0.1 }}>
+            style={{ paddingRight: 380, flex: 0.1 }}>
             <TouchableOpacity onPress={() => this.props.routeTo(Screens.Home)}>
               <Image
-                source={require('./assets/backArrowTransparent.png')}>
+                source={require('./assets/backsmall.png')}>
               </Image>
             </TouchableOpacity>
           </View>
