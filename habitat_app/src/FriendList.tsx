@@ -32,6 +32,7 @@ class FriendList extends Component{
     textInput_Holder: '',
     invalidCode: false,
     existingFriend: false,
+    friendingSelf: false,
     data: [],
     user_username: ''
   };
@@ -41,6 +42,7 @@ class FriendList extends Component{
     this.setState({ textInput_Holder: input });
     this.setState({invalidCode: false});
     this.setState({existingFriend: false});
+    this.setState({friendingSelf: false});
   }
 
   codeInList = (code: string) => {
@@ -56,6 +58,10 @@ class FriendList extends Component{
     if (this.codeInList(this.state.textInput_Holder)) {
       this.setState({existingFriend: true});
       return;
+    }
+    else if (this.state.textInput_Holder == this.state.user_username) {
+      this.setState({friendingSelf: true});
+      return
     }
     else if (this.state.textInput_Holder.length == 0) {
       return;
@@ -121,6 +127,10 @@ class FriendList extends Component{
               {this.state.existingFriend && <Text style={{color:'red'}}>Friend Already Added</Text>}
               </View>
 
+              <View style={styles.centerThis}>
+              {this.state.friendingSelf && <Text style={{color:'red'}}>You Cannot Add Yourself</Text>}
+              </View>
+
               <View style={{...styles.centerThis}}>
               <TextInput
                 style={styles.inputTxt}
@@ -137,6 +147,7 @@ class FriendList extends Component{
                       this.setState({addModalVisible:false});
                       this.setState({invalidCode: false});
                       this.setState({existingFriend: false});
+                      this.setState({friendingSelf: false});
                     }}
                   >
                     <Text style={styles.textStyle}>Cancel</Text>
@@ -261,8 +272,8 @@ class FriendList extends Component{
                       <Text style={styles.textStyle}>Remove Friend</Text>
                     </TouchableOpacity>
                   </View>
-
-                  <View>
+                  
+                  {/*<View>
                     <TouchableOpacity
                       style={{...styles.addButton}}
                       onPress={() => this.viewFriend(this.state.currFriend)}
@@ -272,7 +283,7 @@ class FriendList extends Component{
                   </View>
                 </View>
 
-                <View style={styles.centerThis}>
+                <View style={styles.centerThis}>*/}
                   <TouchableOpacity
                     style={{
                       ...styles.addButton,
