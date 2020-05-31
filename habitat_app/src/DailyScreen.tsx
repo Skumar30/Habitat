@@ -189,8 +189,9 @@ class DailyScreen extends Component<any, any> {
 
         // Go through each task and their last completed day
         for ( var i = 0; i < this.state.tasks.length; i++){
-            var lastDay = this.state.tasks[i].datesCompleted[this.state.tasks.datesComplete.length-1];
-            lastDay = lastDay.substring(0,10);
+            var lastDay = this.state.tasks[i].datesCompleted[this.state.tasks[i].datesCompleted.length-1];
+            if( lastDay != null)
+                lastDay = lastDay.substring(0,10);
             console.log(lastDay);
 
             // If the last completed date was not today or yesterday, streak resets
@@ -340,6 +341,7 @@ class DailyScreen extends Component<any, any> {
 
         /* Create the individual items for the flatlist */
     Item = (title:string, index:number) =>{
+        /*
         console.log("the index is", index)
         console.log("the len s", this.state.checked.length)
         console.log("index: " + this.state.checked[index]);
@@ -349,6 +351,7 @@ class DailyScreen extends Component<any, any> {
         console.log(this.state.checked[index] === true);
         console.log("what is checked " + this.state.checked[index]);
         console.log("totalData")
+         */
         return(
             <View>
                 <TouchableOpacity onPress={() => this.alert(index)}>
@@ -402,7 +405,7 @@ class DailyScreen extends Component<any, any> {
             body: JSON.stringify(
                 {streak: this.state.streaks[index],
                         taskId: this.state.tasks[index]._id ,
-                        contractId: this.state.contract._id
+                        contractId: this.state.contract
                 })
         };
 
@@ -439,7 +442,7 @@ class DailyScreen extends Component<any, any> {
             body: JSON.stringify(
                 {streak: this.state.streaks[index],
                     taskId: this.state.tasks[index]._id,
-                    contractId: this.state.contract._id
+                    contractId: this.state.contract
                 })
         };
 
