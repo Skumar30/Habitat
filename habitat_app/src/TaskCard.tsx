@@ -86,8 +86,8 @@ class TaskCard extends Component {
   dueDateString = (due_date) => {
 
     var temp = new Date(due_date);
-    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Nov", "Dec"];
+    const daysOfWeek = ["Nan", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const monthsOfYear = ["Nan", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Nov", "Dec"];
     var formatted = daysOfWeek[temp.getDay()] + ", " + monthsOfYear[temp.getMonth()] + " " + temp.getDate();
 
 
