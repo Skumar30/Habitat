@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,9 +10,9 @@ import {
   ScrollView,
 } from 'react-native';
 import * as Screens from './Screens';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
-import {IP_ADDRESS} from './IP_Address';
+import { IP_ADDRESS } from './IP_Address';
 
 const checkingSchema = yup.object({
   old_password: yup.string(),
@@ -39,7 +39,7 @@ interface State {
 export default class ChangePassword extends React.Component<{}, State> {
   constructor(props) {
     super(props);
-    this.state = {errormsg: false, error_message: ''};
+    this.state = { errormsg: false, error_message: '' };
   }
 
   render() {
@@ -54,13 +54,13 @@ export default class ChangePassword extends React.Component<{}, State> {
           }}>
           <View
             style={{
-              paddingRight: 365,
+              paddingRight: 380,
               flex: 0.1,
             }}>
             <TouchableOpacity
               onPress={() => this.props.routeTo(Screens.Settings)}>
               <Image
-                source={require('./assets/backArrowTransparent.png')}></Image>
+                source={require('./assets/backsmall.png')}></Image>
             </TouchableOpacity>
           </View>
           <Text style={styles.buttonText}>Change Password</Text>
@@ -162,7 +162,7 @@ export default class ChangePassword extends React.Component<{}, State> {
                       ...styles.textInput,
                       backgroundColor:
                         props.touched.confirm_password &&
-                        props.errors.confirm_password
+                          props.errors.confirm_password
                           ? 'red'
                           : 'white',
                     }}

@@ -60,14 +60,16 @@ export default function EditTask(props){
         datesCompleted: props.props.data.datesCompleted,
         streak: props.props.data.streak
       }),
+    }).then(res => {
+      // return to previous screen
+      if(checkDaily()){
+        props.routeTo(Screens.DailyScreen);
+      }
+      else{
+        props.routeTo(Screens.RegTask);
+      }
     });
-    // return to previous screen
-    if(checkDaily()){
-      props.routeTo(Screens.DailyScreen);
-    }
-    else{
-      props.routeTo(Screens.RegTask);
-    }
+
   }
 
   const backHandler = () => {
