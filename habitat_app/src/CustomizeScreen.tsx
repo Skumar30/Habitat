@@ -161,7 +161,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
 
                   <View>
                     <TouchableOpacity
-                      style={[styles.confirmationButton, { backgroundColor: 'indianred' }]}
+                      style={[styles.confirmationButton, { backgroundColor: '#556' }]}
                       onPress={() => { this.setState({ modalVisible: false }); }}
                     >
                       <Text style={[styles.itemText]}>NO</Text>
@@ -170,7 +170,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
 
                   <View>
                     <TouchableOpacity
-                      style={[styles.confirmationButton, { backgroundColor: '#b4ecb4' }]}
+                      style={[styles.confirmationButton, { backgroundColor: 'slategray' }]}
                       onPress={() => { this.handlePurchase(code, type) }}
                     >
                       <Text style={[styles.itemText, { color: 'black' }]}>YES</Text>
@@ -331,8 +331,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
               </TouchableOpacity>
             </View>
             <Text style={styles.screenTitle}>Customize</Text>
-            {/* <Text style={styles.creditDisplay}>${this.state.credits}</Text> */}
-            {/* add logic to make negative nums appear as 0*/}
+            {/* <Image source={require('./assets/points.png')} style={{ height: 20, width: 20, paddingTop: 60 }}></Image> */}
             {this.state.credits < 0 ? <Text style={styles.creditDisplay}>$0</Text> :
               <Text style={styles.creditDisplay}>${this.state.credits}</Text>}
           </View>
@@ -367,7 +366,8 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
 
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: '#e0eeee',
+    // backgroundColor: '#e0eeee',
+    backgroundColor: 'blanchedalmond'
   },
   engine: {
     position: 'absolute',
@@ -377,7 +377,8 @@ const styles = StyleSheet.create({
     zIndex: 3,
     flexDirection: 'row',
     borderBottomWidth: 4,
-    backgroundColor: '#a0aaaa',
+    // backgroundColor: '#a0aaaa',
+    backgroundColor: 'rgb(185, 230, 215)',
     paddingHorizontal: 15,
     height: 100,
   },
@@ -391,8 +392,8 @@ const styles = StyleSheet.create({
     //fontFamily: 'proximaSoft'
   },
   body: {
-    backgroundColor: '#e0eeee',
-    //backgroundColor: 'blanchedalmond'
+    // backgroundColor: '#e0eeee',
+    backgroundColor: 'blanchedalmond'
   },
   creditDisplay: {
     textAlign: 'center',
@@ -492,9 +493,9 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    marginTop: 250,
+    marginTop: 230,
     width: 375,
-    backgroundColor: '#e0eeee',
+    backgroundColor: 'white',
     borderWidth: 4,
     borderRadius: 20,
     padding: 35,
@@ -526,7 +527,7 @@ const styles = StyleSheet.create({
     width: 90,
     elevation: 2,
     justifyContent: 'center',
-    borderWidth: 4
+    borderWidth: 3
   },
 });
 

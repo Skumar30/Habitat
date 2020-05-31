@@ -1,15 +1,15 @@
 import React from 'react';
-import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, Alert, TouchableHighlight, Image, CheckBox} from 'react-native'
-import {Dimensions} from 'react-native';
+import { Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, Alert, TouchableHighlight, Image, CheckBox } from 'react-native'
+import { Dimensions } from 'react-native';
 import * as Screens from "./Screens";
-import {IP_ADDRESS} from './IP_Address';
+import { IP_ADDRESS } from './IP_Address';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 
 interface State {
-    friends: {key: any; name: any;}[];
+    friends: { key: any; name: any; }[];
     screen: any;
     friend: any;
     friendID: any;
@@ -20,22 +20,24 @@ interface State {
 
 class WellnessContractFriends extends React.Component<any, State>{
 
-    constructor(props:any){
-            super(props);
-            this.state = {friendID: this.props.props.friendID,
-                friends: [],
-                screen: Screens.WellnessContractFriends,
-                friend: props.props.friend,
-                date: props.props.date,
-                tasks: props.props.tasks,
-                post: false};
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            friendID: this.props.props.friendID,
+            friends: [],
+            screen: Screens.WellnessContractFriends,
+            friend: props.props.friend,
+            date: props.props.date,
+            tasks: props.props.tasks,
+            post: false
+        };
     }
 
 
-    getFriends = async() => {
+    getFriends = async () => {
         const response = await fetch(`http://${IP_ADDRESS}:3000/createContract/getFriends`);
         const body = await response.json();
-        if(response.status != 200) {
+        if (response.status != 200) {
             console.error(body.message);
         }
         return body;
@@ -45,40 +47,39 @@ class WellnessContractFriends extends React.Component<any, State>{
 
     componentDidMount() {
         this.getFriends().then(res => {
-            var newFriends:{key: any; name: any;}[] = [];
+            var newFriends: { key: any; name: any; }[] = [];
             res.forEach((element: { _id: any; name: any; }) => {
-                var temp = {key: element._id, name: element.name};
+                var temp = { key: element._id, name: element.name };
                 newFriends.push(temp);
             });
-            this.setState({friends: newFriends});
+            this.setState({ friends: newFriends });
         });
     }
 
-    updateScreen(getFriend:boolean, index?:any) {
-        if(getFriend)
-        {
-            this.setState({friend: this.state.friends[index].name});
-            this.setState({friendID: this.state.friends[index].key});
+    updateScreen(getFriend: boolean, index?: any) {
+        if (getFriend) {
+            this.setState({ friend: this.state.friends[index].name });
+            this.setState({ friendID: this.state.friends[index].key });
         }
         this.props.routeTo(Screens.CreateContract, this.state)
     }
 
-    editAlert(index: number){
+    editAlert(index: number) {
         Alert.alert("", "Select this friend?", [
-                {
-                    text: "Cancel",
-                    style: "cancel"
-                },
-                { text: "Select", onPress: () => this.updateScreen(true, index)}
+            {
+                text: "Cancel",
+                style: "cancel"
+            },
+            { text: "Select", onPress: () => this.updateScreen(true, index) }
 
-            ]
+        ]
 
         )
     }
 
     /* Create the individual items for the flatlist */
-    Item = (title:string, index:number) =>{
-        return(
+    Item = (title: string, index: number) => {
+        return (
             <View style={styles.itemView}>
                 <TouchableOpacity onPress={() => this.editAlert(index)}>
                     <View style={styles.item}>
@@ -86,34 +87,34 @@ class WellnessContractFriends extends React.Component<any, State>{
                     </View>
                 </TouchableOpacity>
             </View>
-        )};
+        )
+    };
 
-    render(){
-        return(
+    render() {
+        return (
             <View style={styles.container}>
-            <View style={styles.headerContainer}>
-            <Text style={styles.headerText}>Select Friend</Text>
-        </View>
+                <View style={styles.headerContainer}>
 
-        <View style={styles.listContainer}>
-        <View style={{flex: 9}}>
-        <FlatList
-            data={this.state.friends}
-            renderItem={({ item, index }) => this.Item(item.name, index)}
+                    <View style={{ flex: 1, alignSelf: 'center' }}>
+                        <TouchableOpacity style={styles.backButton} onPress={() => this.updateScreen(false)}>
+                            <Image source={require('./assets/back.png')} style={{ width: 50, height: 50, borderRadius: 25 }} />
+                        </TouchableOpacity>
+                    </View>
 
-        />
-        </View>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-        <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}} onPress={() => this.updateScreen(false)}>
-        <Image source={require ('./assets/back.png') } style={styles.TouchableOpacityStyle}/>
-        </TouchableOpacity>
-        <View style={{flex: 4, opacity: 0}}>
+                    <Text style={styles.headerText}>Select Friend</Text>
+                </View>
 
-        </View>
-        </View>
-        </View>
-        </View>
-    )
+                <View style={styles.listContainer}>
+                    <View style={{ flex: 9 }}>
+                        <FlatList
+                            data={this.state.friends}
+                            renderItem={({ item, index }) => this.Item(item.name, index)}
+
+                        />
+                    </View>
+                </View>
+            </View>
+        )
     }
 }
 
@@ -121,24 +122,37 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'blanchedalmond',
-        borderRightWidth: 5,
-        borderLeftWidth: 5,
-        borderBottomWidth: 5
+        // borderRightWidth: 5,
+        // borderLeftWidth: 5,
+        // borderBottomWidth: 5
+    },
+    backButton: {
+        alignSelf: 'flex-start',
+        backgroundColor: 'rgb(110, 192, 178)',
+        borderRadius: 15,
+        borderWidth: 4,
+        height: 60,
+        width: 60,
     },
     headerText: {
-        fontSize: 40,
-        fontFamily: 'serif',
-        padding: 10
+        fontSize: 30,
+        fontWeight: '700',
+        color: 'black',
+        alignSelf: 'center',
+        paddingHorizontal: 5,
+        flex: 3,
     },
-    headerContainer : {
-        flex: 0.1,
-        backgroundColor: 'skyblue',
-        borderTopWidth: 5,
-        borderBottomWidth: 5,
-        justifyContent: "center",
-        alignItems: "center",
+    headerContainer: {
+        height: 100,
+        backgroundColor: 'rgb(235, 150, 90)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomWidth: 4,
+        flexDirection: 'row',
+        paddingHorizontal: 15,
+        marginBottom: 10
     },
-    dateContainer : {
+    dateContainer: {
         flex: 0.05,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -148,17 +162,17 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
-    dateText : {fontSize: 16},
-    icon : {marginTop: 5},
+    dateText: { fontSize: 16 },
+    icon: { marginTop: 5 },
     itemView: {
         flexDirection: 'row',
         alignItems: 'center',
         marginVertical: 8,
         borderColor: 'black',
-        borderWidth: 5,
+        borderWidth: 4,
         backgroundColor: '#fff',
-        borderRadius: 50,
-        width: 350
+        borderRadius: 25,
+        width: 370
     },
     item: {
         backgroundColor: '#fff',
@@ -172,17 +186,18 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     addContainer: {
-        alignSelf:'flex-end',
+        alignSelf: 'flex-end',
         width: 50,
         height: 50,
         position: 'absolute',
-        top: windowHeight-100,
-        left: windowWidth-65
+        top: windowHeight - 100,
+        left: windowWidth - 65
     },
     title: {
-        fontSize: 18,
+        fontSize: 20,
         color: 'black',
-        fontWeight: 'bold'},
+        fontWeight: 'bold'
+    },
     TouchableOpacityStyle: {
         flex: 1,
         resizeMode: 'contain',

@@ -66,8 +66,13 @@ class RegTask extends React.Component<any, State>{
       {
         text: "Edit", onPress: () => {
           console.log("Edit Pressed")
+          let data = this.state.data[index];
+          let start = data.start_date;
+          let end = data.due_date
+          data.due_date = new Date(end)
+          data.start_date = new Date(start)
           let toSend = {
-            data: this.state.data[index],
+            data: data,
             screen: Screens.RegTask
           }
           this.props.routeTo(Screens.EditTask, toSend)
@@ -136,6 +141,7 @@ class RegTask extends React.Component<any, State>{
           checked={this.state.checked[index]}
           //disabled={disabled && !this.state.data[index].oneTimeOnly}
           onPress={() => {
+            //if()
             if (disabled && !this.state.data[index].oneTimeOnly) {
               Alert.alert('Invalid completion', 'Repeating tasks cannot be marked complete in advance', [{ text: 'OK' }])
               this.state.checked[index] = false
@@ -173,7 +179,7 @@ class RegTask extends React.Component<any, State>{
       console.log("YO")
     }
   
-
+    
     toAward += inWellnessContract ? (15 + Math.floor(100/numContractTasks)) : 0
     */
     toAward *= complete ? 1 : -1;
@@ -426,14 +432,29 @@ class RegTask extends React.Component<any, State>{
     return (
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Your Tasks</Text>
+
+          <View style={{ flex: 1, alignSelf: 'center' }}>
+            <TouchableOpacity onPress={() => this.props.routeTo(Screens.Home)} style={styles.backButton}>
+              <Image style={{ width: 50, height: 50, borderRadius: 25 }} source={require('./assets/back.png')} />
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.headerText}>  Tasks</Text>
+
+          <View style={{ flex: 1, alignSelf: 'center' }}>
+            <TouchableOpacity style={[styles.backButton, { backgroundColor: 'rgb(176, 239, 179)' }]}
+              onPress={() => this.props.routeTo(Screens.AddTask, { screen: Screens.RegTask })}
+            >
+              <Image source={require('./assets/plus.png')} style={{ width: 50, height: 50, borderRadius: 25 }} />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={styles.dateContainer}>
           <Icon
             name='arrow-left'
             onPress={() => this.handleDateChange(false)}
             type='simple-line-icon'
-            size={12}
+            size={20}
             containerStyle={styles.icon}
             solid={true} />
           <Text style={styles.dateText}>
@@ -444,7 +465,7 @@ class RegTask extends React.Component<any, State>{
             name='arrow-right'
             onPress={() => this.handleDateChange(true)}
             type='simple-line-icon'
-            size={12} />
+            size={20} />
         </View>
         <View style={styles.listContainer}>
           <View style={{ flex: 9 }}>
@@ -454,8 +475,8 @@ class RegTask extends React.Component<any, State>{
               keyExtractor={item => item._id}
             />
           </View>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <TouchableOpacity style={{ flex: 1, borderWidth: 5, borderLeftWidth: 0 }}
+          {/* <View style={{ flex: 1, flexDirection: 'row' }}>
+            <TouchableOpacity style={{ flex: 1, borderWidth: 4, borderLeftWidth: 0 }}
               onPress={() => this.props.routeTo(Screens.Home)}>
               <Image source={require('./assets/back.png')} style={styles.TouchableOpacityStyle} />
             </TouchableOpacity>
@@ -467,7 +488,7 @@ class RegTask extends React.Component<any, State>{
             >
               <Image source={require('./assets/plus.png')} style={styles.TouchableOpacityStyle} />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </View>
     )
@@ -478,22 +499,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'blanchedalmond',
-    borderRightWidth: 5,
-    borderLeftWidth: 5,
-    borderBottomWidth: 5
   },
   headerText: {
-    fontSize: 40,
-    // fontFamily: 'serif',
-    padding: 10
+    flex: 2,
+    fontSize: 35,
+    fontWeight: '700',
+    color: 'black',
+    alignSelf: 'center',
+    paddingHorizontal: 70,
   },
   headerContainer: {
-    flex: 0.1,
     backgroundColor: 'skyblue',
-    borderTopWidth: 5,
-    borderBottomWidth: 5,
-    justifyContent: "center",
-    alignItems: "center",
+    borderBottomWidth: 4,
+    flexDirection: 'row',
+    paddingHorizontal: 15,
+    height: 100
   },
   dateContainer: {
     flex: 0.05,
@@ -505,17 +525,17 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  dateText: { fontSize: 16 },
+  dateText: { fontSize: 24 },
   icon: { marginTop: 5 },
   itemView: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 8,
     borderColor: 'black',
-    borderWidth: 5,
+    borderWidth: 4,
     backgroundColor: '#fff',
-    borderRadius: 50,
-    width: 350
+    borderRadius: 25,
+    width: 370
   },
   item: {
     backgroundColor: '#fff',
@@ -526,7 +546,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderRadius: 50
+    borderRadius: 25
   },
   addContainer: {
     alignSelf: 'flex-end',
@@ -537,7 +557,7 @@ const styles = StyleSheet.create({
     left: windowWidth - 65
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     color: 'black',
     fontWeight: 'bold'
   },
@@ -546,7 +566,15 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 'auto',
     height: 'auto',
-    borderWidth: 5,
-  }
+    borderWidth: 4,
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgb(110, 192, 178)',
+    borderRadius: 15,
+    borderWidth: 4,
+    height: 60,
+    width: 60,
+  },
 })
 export default RegTask;

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
@@ -21,7 +21,7 @@ import {
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import * as Screens from './Screens';
 import TaskCard from "./TaskCard";
-import {IP_ADDRESS} from './IP_Address';
+import { IP_ADDRESS } from './IP_Address';
 
 interface State {
     checked: boolean[]
@@ -32,7 +32,7 @@ interface State {
     inContract: boolean[]
 }
 
-interface Task{
+interface Task {
     id: any
     title: string
     due_date: string
@@ -43,10 +43,10 @@ interface Task{
     datesCompleted: string[]
 }
 
-interface Contract{
+interface Contract {
     _id: string
     participants: string[]
-    tasks : string[]
+    tasks: string[]
     owner: string
     pending: boolean
     due_date: string
@@ -54,14 +54,14 @@ interface Contract{
 const TODAY = new Date();
 
 class DailyScreen extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        var checks:boolean[] = [];
-        var bonus:boolean[] = [];
-        this.state = { checked: checks, streaks: [], tasks: [], completes: [], contract: null, inContract: bonus}
+        var checks: boolean[] = [];
+        var bonus: boolean[] = [];
+        this.state = { checked: checks, streaks: [], tasks: [], completes: [], contract: null, inContract: bonus }
     }
 
-    getDailies = async() => {
+    getDailies = async () => {
         const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/getDailies`);
         const body = await response.json();
         if (response.status !== 200) {
@@ -72,7 +72,7 @@ class DailyScreen extends Component {
         return body;
     }
 
-    getContract = async() => {
+    getContract = async () => {
         const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/getContract`);
         const body = await response.json();
         if (response.status !== 200) {
@@ -81,7 +81,7 @@ class DailyScreen extends Component {
         return body;
     }
 
-    updateState(res:any[]):void {
+    updateState(res: any[]): void {
         console.log("in updateState");
         let data: any[] = [];
         let streak: any[] = [];
@@ -95,32 +95,32 @@ class DailyScreen extends Component {
         });
         console.log("after pushing");
         console.log(data);
-        this.setState({tasks: data});
+        this.setState({ tasks: data });
         console.log("checking tasks");
         console.log(this.state.tasks);
-        this.setState({streaks: streak});
+        this.setState({ streaks: streak });
         console.log("checking streak");
         console.log(this.state.streaks);
-        this.setState({completes: complete});
+        this.setState({ completes: complete });
         console.log("checking completes");
         console.log(this.state.completes);
-        this.setState( {inContract: bonus});
+        this.setState({ inContract: bonus });
         this.updateCheckbox();
     }
 
-    updateContract (res:Contract|undefined=undefined):void{
-        if(res != undefined){
+    updateContract(res: Contract | undefined = undefined): void {
+        if (res != undefined) {
             console.log(res.tasks.length);
 
-            for (var i = 0; i < this.state.tasks.length; i++){
+            for (var i = 0; i < this.state.tasks.length; i++) {
                 console.log("inside contractUpdate");
                 console.log(res.tasks[i]);
                 console.log(this.state.tasks[i]._id);
 
                 console.log("above 2nd loop");
                 console.log(this.state.tasks.length);
-                for (var j = 0; res.tasks.length; j++){
-                    if( res.tasks[j] == this.state.tasks[i]._id){
+                for (var j = 0; res.tasks.length; j++) {
+                    if (res.tasks[j] == this.state.tasks[i]._id) {
                         console.log("inside 2nd loop");
                         this.state.inContract[i] = true;
                         console.log(res.tasks[j]);
@@ -131,7 +131,7 @@ class DailyScreen extends Component {
         }
     }
 
-    updateCheckbox(){
+    updateCheckbox() {
         const TODAY = new Date();
         var month = TODAY.getUTCMonth() + 1; //months from 1-12
         var day = TODAY.getUTCDate();
@@ -141,19 +141,19 @@ class DailyScreen extends Component {
         if (month < 10) {
             newdate = year + "-0" + month + "-" + day;
         }
-        else{
+        else {
             newdate = year + "-" + month + "-" + day
         }
 
-        for ( var i = 0; i < this.state.tasks.length; i++){
-            if( this.state.completes[i] != []){
+        for (var i = 0; i < this.state.tasks.length; i++) {
+            if (this.state.completes[i] != []) {
                 var date1 = this.state.completes[i].toString();
-                date1 = date1.substring(0,10);
+                date1 = date1.substring(0, 10);
             }
             else
                 date1 = "";
 
-            if( newdate == date1)
+            if (newdate == date1)
                 this.state.checked[i] = true;
             else {
                 this.state.checked[i] = false;
@@ -162,7 +162,7 @@ class DailyScreen extends Component {
         console.log(this.state.checked);
     }
 
-    checkStreak(){
+    checkStreak() {
         // Get Today's date in string format
         var TODAY = new Date();
         var month1 = TODAY.getUTCMonth() + 1; //months from 1-12
@@ -173,7 +173,7 @@ class DailyScreen extends Component {
         if (month1 < 10) {
             today = year1 + "-0" + month1 + "-" + day1;
         }
-        else{
+        else {
             today = year1 + "-" + month1 + "-" + day1;
         }
 
@@ -188,28 +188,28 @@ class DailyScreen extends Component {
         if (month2 < 10) {
             yesterday = year2 + "-0" + month2 + "-" + day2;
         }
-        else{
+        else {
             yesterday = year2 + "-" + month2 + "-" + day2;
         }
 
         // Go through each task and their last completed day
-        for ( var i = 0; i < this.state.tasks.length; i++){
-            var lastDay = this.state.tasks[i].datesCompleted[this.state.tasks.datesComplete.length-1];
-            lastDay = lastDay.substring(0,10);
+        for (var i = 0; i < this.state.tasks.length; i++) {
+            var lastDay = this.state.tasks[i].datesCompleted[this.state.tasks.datesComplete.length - 1];
+            lastDay = lastDay.substring(0, 10);
             console.log(lastDay);
 
             // If the last completed date was not today or yesterday, streak resets
-            if( lastDay == today || lastDay == yesterday)
+            if (lastDay == today || lastDay == yesterday)
                 console.log(lastDay);
             // Else, reset streak
-            else{
+            else {
                 this.state.tasks[i].streak = 0;
                 this.updateStreak(i);
             }
         }
     }
 
-    updateStreak = async(index: number) => {
+    updateStreak = async (index: number) => {
         const settings = {
             method: 'POST',
             headers: {
@@ -217,12 +217,13 @@ class DailyScreen extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(
-                {streak: 0,
-                        id: this.state.tasks[index]._id
+                {
+                    streak: 0,
+                    id: this.state.tasks[index]._id
                 }
             )
         };
-        try{
+        try {
             const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/updateStreak`, settings)
             const data = await response.json();
             return data;
@@ -231,43 +232,48 @@ class DailyScreen extends Component {
         }
     }
 
-    componentDidMount(){
-    this.getDailies().then(res => {
-        this.setState({tasks: res});
-        this.updateState(res);
+    componentDidMount() {
+        this.getDailies().then(res => {
+            this.setState({ tasks: res });
+            this.updateState(res);
         })
 
         console.log("after getDailies");
         console.log(this.state.tasks);
 
-     this.getContract().then(res1 => {
-        this.setState({contract: res1})
-        this.updateContract(res1)
+        this.getContract().then(res1 => {
+            this.setState({ contract: res1 })
+            this.updateContract(res1)
         });
 
-     this.checkStreak();
+        this.checkStreak();
 
-     console.log("tasks");
-     console.log(this.state.tasks);
-     console.log("checks");
-     console.log(this.state.checked);
+        console.log("tasks");
+        console.log(this.state.tasks);
+        console.log("checks");
+        console.log(this.state.checked);
     }
 
-    alert(index: number){
+    alert(index: number) {
         Alert.alert("Title", "Select an option", [
-                {
-                    text: "Cancel"
-                },
-                {
-                    text: "Delete",
-                    onPress: () => this.handleDelete(index)
-                },
-                { text: "Edit", onPress: () => {
-                        console.log("Edit Pressed")
-                        let toSend = {data: this.state.tasks[index],
-                            screen: Screens.DailyScreen}
-                        this.props.routeTo(Screens.EditTask, toSend) } }
-            ]
+            {
+                text: "Cancel"
+            },
+            {
+                text: "Delete",
+                onPress: () => this.handleDelete(index)
+            },
+            {
+                text: "Edit", onPress: () => {
+                    console.log("Edit Pressed")
+                    let toSend = {
+                        data: this.state.tasks[index],
+                        screen: Screens.DailyScreen
+                    }
+                    this.props.routeTo(Screens.EditTask, toSend)
+                }
+            }
+        ]
         )
     }
 
@@ -286,7 +292,7 @@ class DailyScreen extends Component {
         console.log('after deleteTask');
     }
 
-    deleteTask = async(id:string) => {
+    deleteTask = async (id: string) => {
 
         console.log("My id is", id)
         const settings = {
@@ -308,45 +314,47 @@ class DailyScreen extends Component {
             //console.log(data);
             return data;
         } catch (e) {
-            console.log( " Error for deleteTask ");
+            console.log(" Error for deleteTask ");
         }
 
         this.getDailies().then(res => {
-            this.setState({tasks: res})
+            this.setState({ tasks: res })
             this.updateState(res)
         })
 
         console.log("returning to handle");
     }
 
-        /* Create the individual items for the flatlist */
-    Item = (title:string, index:number) =>{
-        return(
-            <View>
+    /* Create the individual items for the flatlist */
+    Item = (title: string, index: number) => {
+        return (
+            <View style={styles.itemView}>
                 <TouchableOpacity onPress={() => this.alert(index)}>
-                    <View style={[styles.body]}>
-                        <Text >{title}</Text>
-                        <Text>{"   streak:"}</Text>
-                        <Text >{this.state.streaks[index]}</Text>
-                        <CheckBox
-                            value={this.state.checked[index]}
-                            onValueChange={() => {
-                                var checked = this.state.checked;
-                                checked[index] = !checked[index];
-                                this.setState({checked: checked});
-                                if( this.state.checked[index] == true){
-                                    this.incrementStreak(index);
-                                }
-                                else{
-                                    this.decrementStreak(index);
-                                }
-                            }}/>
+                    <View style={styles.item}>
+                        <Text style={styles.title}>{title}</Text>
+                        <Text style={{ fontSize: 14, fontWeight: '400', textAlign: 'left', paddingTop: 7 }}>
+                            STREAK  <Text style={{ fontSize: 15, fontWeight: '500' }}>{this.state.streaks[index]}</Text>
+                        </Text>
                     </View>
                 </TouchableOpacity>
+                <CheckBox
+                    value={this.state.checked[index]}
+                    onValueChange={() => {
+                        var checked = this.state.checked;
+                        checked[index] = !checked[index];
+                        this.setState({ checked: checked });
+                        if (this.state.checked[index] == true) {
+                            this.incrementStreak(index);
+                        }
+                        else {
+                            this.decrementStreak(index);
+                        }
+                    }} />
             </View>
-        )};
+        )
+    };
 
-    incrementStreak = async(index: number) => {
+    incrementStreak = async (index: number) => {
         this.complete(index);
         this.state.streaks[index] = this.state.streaks[index] + 1;
 
@@ -359,13 +367,14 @@ class DailyScreen extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(
-                {streak: this.state.streaks[index],
-                        id: this.state.tasks[index]._id ,
-                        inContract: this.state.inContract[index]
+                {
+                    streak: this.state.streaks[index],
+                    id: this.state.tasks[index]._id,
+                    inContract: this.state.inContract[index]
                 })
         };
 
-        try{
+        try {
             const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/incrementStreak`, settings)
             const data = await response.json();
             return data;
@@ -374,8 +383,8 @@ class DailyScreen extends Component {
         }
     }
 
-    decrementStreak = async(index: number) =>{
-        this.incomplete( index );
+    decrementStreak = async (index: number) => {
+        this.incomplete(index);
         this.state.streaks[index] = this.state.streaks[index] - 1;
         const settings = {
             method: 'POST',
@@ -384,13 +393,14 @@ class DailyScreen extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(
-                {streak: this.state.streaks[index],
-                       id: this.state.tasks[index]._id,
-                       inContract: this.state.inContract[index]
+                {
+                    streak: this.state.streaks[index],
+                    id: this.state.tasks[index]._id,
+                    inContract: this.state.inContract[index]
                 })
         };
 
-        try{
+        try {
             const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/decrementStreak`, settings)
             const data = await response.json();
             return data;
@@ -399,7 +409,7 @@ class DailyScreen extends Component {
         }
     }
 
-    complete = async(index: number) => {
+    complete = async (index: number) => {
         const settings = {
             method: 'POST',
             headers: {
@@ -407,12 +417,13 @@ class DailyScreen extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(
-                {id: this.state.tasks[index]._id,
-                        date: TODAY
+                {
+                    id: this.state.tasks[index]._id,
+                    date: TODAY
                 }
             )
         };
-        try{
+        try {
             const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/complete`, settings)
             const data = await response.json();
             return data;
@@ -421,7 +432,7 @@ class DailyScreen extends Component {
         }
     }
 
-    incomplete = async(index: number) => {
+    incomplete = async (index: number) => {
         const settings = {
             method: 'POST',
             headers: {
@@ -429,12 +440,13 @@ class DailyScreen extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(
-                {id: this.state.tasks[index]._id,
+                {
+                    id: this.state.tasks[index]._id,
                     date: TODAY
                 }
             )
         };
-        try{
+        try {
             const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/incomplete`, settings)
             const data = await response.json();
             return data;
@@ -445,83 +457,123 @@ class DailyScreen extends Component {
 
     render() {
         return (
-         <>
-        <View style={{flex: 1, flexDirection: 'column'}}>
-          <View style={[styles.header]}>
-              <Text style={styles.textBox}>Dailies</Text>
-          </View>
+            <>
+                <View style={{ flex: 1 }}>
+                    <View style={[styles.header]}>
+                        <View style={{ flex: 1, alignSelf: 'center' }}>
+                            <TouchableOpacity style={styles.backButton}
+                                onPress={() => this.props.routeTo(Screens.Home)}>
+                                <Image style={{ width: 50, height: 50, borderRadius: 25 }} source={require('./assets/back.png')} />
+                            </TouchableOpacity>
+                        </View>
+                        <Text style={styles.headerText}> Dailies</Text>
+                        <View style={{ flex: 1, alignSelf: 'center' }}>
+                            <TouchableOpacity style={[styles.backButton, { backgroundColor: 'rgb(176, 239, 179)' }]}
+                                onPress={() => this.props.routeTo(Screens.AddTask, { screen: Screens.DailyScreen })}>
+                                <Image source={require('./assets/plus.png')} style={{ width: 50, height: 50, borderRadius: 25 }} />
+                            </TouchableOpacity>
 
-          <View style={[styles.container]}>
-              <ScrollView style={{flex: 1}}>
-                  <FlatList
-                      data={this.state.tasks}
-                      renderItem={({ item, index }) => this.Item(item.title, index)}
-                      keyExtractor={item => item._id}
-                  />
-              </ScrollView>
+                        </View>
 
-              <View style={{flex: 0.15, flexDirection: 'row'}}>
-                <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}
-                                  onPress={() => this.props.routeTo(Screens.Home)}>
-                  <Image source={require ('./assets/back.png') } style={styles.TouchableOpacityStyle}/>
-                </TouchableOpacity>
-                <View style={{flex: 4, opacity: 0}}>
+                    </View>
+
+                    <View style={[styles.container]}>
+                        <ScrollView style={{ flex: 1 }}>
+                            <FlatList
+                                data={this.state.tasks}
+                                renderItem={({ item, index }) => this.Item(item.title, index)}
+                                keyExtractor={item => item._id}
+                            />
+                        </ScrollView>
+
+                        {/* <View style={{ flex: 0.15, flexDirection: 'row' }}>
+                            <TouchableOpacity style={{ flex: 1, borderWidth: 5, borderLeftWidth: 0 }}
+                                onPress={() => this.props.routeTo(Screens.Home)}>
+                                <Image source={require('./assets/back.png')} style={styles.TouchableOpacityStyle} />
+                            </TouchableOpacity>
+                            <View style={{ flex: 4, opacity: 0 }}>
+                            </View>
+                            <TouchableOpacity style={{ flex: 1, borderWidth: 5, borderRightWidth: 0 }}
+                                onPress={() => this.props.routeTo(Screens.AddTask, { screen: Screens.DailyScreen })}>
+                                <Image source={require('./assets/plus.png')} style={styles.TouchableOpacityStyle} />
+                            </TouchableOpacity>
+                        </View> */}
+                    </View>
                 </View>
-                <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}
-                                  onPress={() => this.props.routeTo(Screens.AddTask, {screen: Screens.DailyScreen})}>
-                  <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
-                </TouchableOpacity>
-              </View>
-          </View>
-        </View>
 
-        </>
+            </>
         );
     }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 6,
-    backgroundColor: 'blanchedalmond',
-    borderWidth: 5,
-    borderTopWidth: 0
-  },
-    textBox: {
-        fontSize:40,
-        fontFamily: "serif",
+    container: {
+        flex: 6,
+        backgroundColor: 'blanchedalmond',
+        borderTopWidth: 0,
+        alignItems: 'center',
+        paddingTop: 20,
     },
     card: {
-        fontSize:30,
-        fontFamily: "serif",
+        fontSize: 30,
     },
-  header: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: '#b4ecb4',
-    borderWidth: 5
-  },
+    header: {
+        backgroundColor: 'rgb(183, 283, 155)',
+        borderBottomWidth: 4,
+        flexDirection: 'row',
+        paddingHorizontal: 15,
+        height: 100
+    },
+    itemView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 8,
+        borderColor: 'black',
+        borderWidth: 4,
+        backgroundColor: '#fff',
+        borderRadius: 25,
+        width: 370
+    },
+    item: {
+        backgroundColor: '#fff',
+        padding: 20,
+        width: 250,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderRadius: 25
+    },
 
-  body:{
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: '#FFFFFF',
-    borderRadius: 60,
-    marginVertical: 20,
-    marginHorizontal: 20,
-    borderColor: '#000000',
-    borderWidth: 5,
-    flexDirection: 'row'
-  },
+    TouchableOpacityStyle: {
+        flex: 1,
+        resizeMode: 'stretch',
+        width: 'auto',
+        height: 'auto'
+    },
 
-TouchableOpacityStyle: {
-  flex: 1,
-  resizeMode: 'stretch',
-  width: 'auto',
-  height: 'auto'
-}
-
+    backButton: {
+        alignSelf: 'flex-start',
+        backgroundColor: 'rgb(110, 192, 178)',
+        borderRadius: 15,
+        borderWidth: 4,
+        height: 60,
+        width: 60,
+    },
+    headerText: {
+        flex: 2,
+        fontSize: 35,
+        fontWeight: '700',
+        color: 'black',
+        alignSelf: 'center',
+        paddingHorizontal: 70,
+    },
+    title: {
+        fontSize: 20,
+        color: 'black',
+        fontWeight: 'bold'
+    },
 
 });
 

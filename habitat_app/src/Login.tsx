@@ -98,7 +98,7 @@ export default class Login extends React.Component<{}, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.username && props.errors.username
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Username"
@@ -117,7 +117,7 @@ export default class Login extends React.Component<{}, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.password && props.errors.password
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Password"

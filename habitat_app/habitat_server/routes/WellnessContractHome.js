@@ -21,9 +21,11 @@ router.post('/updateTasks', async(req, res, next) => {
     //getting user from userId
     var user = await UserModel.findOne({ _id: req.user._id });
 
+
     //current contract user is in
     var contractId = req.body.contractId;
     contractId instanceof mongoose.Types.ObjectId;
+    console.log("contractId: " + contractId);
     var currentContract = await ContractModel.findOne({_id: contractId});
 
     //other user object
@@ -472,6 +474,7 @@ router.post('/addReward', async(req, res, next) => {
     var updatedCredits;
     if(task.daily) {
       updatedCredits = user.credits + Math.floor((10 + task.streak) * 1.5);
+      var streakUpdate = await TaskModel.updateOne({_id: req.body.taskId}, {streak: task.streak + 1});
     }
     else {
       updatedCredits = user.credits + 45;
@@ -561,7 +564,8 @@ router.post('/removeReward', async(req, res, next) => {
     //calculating credits to remove from user
     var updatedCredits;
     if(task.daily) {
-      updatedCredits = user.credits - Math.floor((10 + task.streak) * 1.5)
+      updatedCredits = user.credits - Math.floor((10 + task.streak) * 1.5);
+      var streakUpdate = await TaskModel.updateOne({_id: taskId}, {streak: task.streak - 1});
     }
     else {
       updatedCredits = user.credits - 45;

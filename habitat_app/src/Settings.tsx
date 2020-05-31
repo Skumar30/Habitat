@@ -33,57 +33,60 @@ export default class Settings extends React.Component<{}, State> {
       <>
         <View
           style={{
-            height: 60,
-            backgroundColor: '#485EEC',
+            height: 100,
+            backgroundColor: 'rgb(250, 225, 125)',
             justifyContent: 'center',
             alignItems: 'center',
-          }}
-        >
+            borderBottomWidth: 4,
+            flexDirection: 'row',
+            paddingHorizontal: 15
+          }}>
 
           <Modal
-            animationType="slide"
+            animationType="fade"
             transparent={true}
             visible={this.state.logoutModal}
             onRequestClose={() => {
               Alert.alert("Modal has been closed.");
             }}
           >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>Are you sure you want to logout?</Text>
+            {/* <View style={styles.centeredView}> */}
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Are you sure you want to logout?</Text>
+              <View style={styles.buttonSeparation}>
+                <TouchableOpacity
+                  style={[styles.confirmationButton, { backgroundColor: '#556' }]}
+                  onPress={() => {
+                    this.toggleModal(!this.state.logoutModal);
+                  }}
+                >
+                  <Text style={styles.modalButton}>NO</Text>
+                </TouchableOpacity>
 
-                <TouchableHighlight
-                  style={{ ...styles.openButton }}
+                <TouchableOpacity
+                  style={[styles.confirmationButton, { backgroundColor: 'slategray' }]}
                   onPress={() => {
                     this.toggleModal(!this.state.logoutModal);
                     this.props.routeTo(Screens.Login)
                   }}
                 >
-                  <Text style={styles.modalButton}>Yes</Text>
-                </TouchableHighlight>
+                  <Text style={styles.modalButton}>YES</Text>
+                </TouchableOpacity>
 
-                <TouchableHighlight
-                  style={{ ...styles.openButton, marginTop: 10 }}
-                  onPress={() => {
-                    this.toggleModal(!this.state.logoutModal);
-                  }}
-                >
-                  <Text style={styles.modalButton}>No</Text>
-                </TouchableHighlight>
               </View>
             </View>
+            {/* </View> */}
           </Modal>
 
 
-          <View
-            style={{ paddingRight: 365, flex: 0.1 }}>
-            <TouchableOpacity onPress={() => this.props.routeTo(Screens.Home)}>
-              <Image
-                source={require('./assets/backArrowTransparent.png')}>
+          <View style={{ alignSelf: 'center', flex: 1, }}>
+            <TouchableOpacity style={styles.backButton} onPress={() => this.props.routeTo(Screens.Home)}>
+              <Image style={{ width: 50, height: 50, borderRadius: 25 }}
+                source={require('./assets/back.png')}>
               </Image>
             </TouchableOpacity>
           </View>
-          <Text style={styles.buttonText}>Settings</Text>
+          <Text style={styles.screenTitle}>Settings</Text>
         </View>
         <View style={styles.buttonGroup}>
           <SafeAreaView>
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 1,
-    backgroundColor: '#0094FF',
+    backgroundColor: 'blanchedalmond',
   },
   centeredView: {
     flex: 1,
@@ -126,31 +129,35 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonStyle: {
-    backgroundColor: '#485EEC',
-    borderRadius: 7,
+    backgroundColor: 'slategray',
+    borderRadius: 50,
     paddingHorizontal: 80,
     paddingVertical: 12,
-    elevation: 5
+    elevation: 5,
+    borderWidth: 3
   },
   buttonText: {
     color: 'white',
-    fontWeight: 'bold',
+    fontWeight: '600',
     textTransform: 'uppercase',
     fontSize: 20,
     textAlign: 'center',
   },
   buttonGroup: {
     alignItems: 'center',
-    backgroundColor: '#0094FF',
+    backgroundColor: 'blanchedalmond',
     flex: 1,
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    marginTop: 230,
+    width: 375,
+    backgroundColor: 'white',
+    borderWidth: 4,
     borderRadius: 20,
-    padding: 25,
-    alignItems: "center",
-    shadowColor: "#000",
+    padding: 35,
+    justifyContent: 'center',
+    shadowColor: 'black',
     shadowOffset: {
       width: 0,
       height: 2
@@ -167,11 +174,46 @@ const styles = StyleSheet.create({
     elevation: 2
   },
   modalText: {
-    marginBottom: 20,
-    textAlign: "center"
+    marginBottom: 10,
+    textAlign: 'center',
+    fontSize: 20,
+    color: 'black'
   },
   modalButton: {
     color: 'white',
-    textAlign: "center"
-  }
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: '500'
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgb(110, 192, 178)',
+    borderRadius: 15,
+    borderWidth: 4,
+    height: 60,
+    width: 60,
+  },
+  screenTitle: {
+    fontSize: 35,
+    fontWeight: '700',
+    color: 'black',
+    alignSelf: 'center',
+    paddingHorizontal: 5,
+    flex: 2.1
+  },
+  confirmationButton: {
+    borderRadius: 60,
+    marginTop: 20,
+    height: 50,
+    width: 90,
+    elevation: 2,
+    justifyContent: 'center',
+    borderWidth: 3
+  },
+  buttonSeparation: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    margin: 10,
+  },
+
 });

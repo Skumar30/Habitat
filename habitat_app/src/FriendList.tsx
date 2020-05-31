@@ -32,7 +32,8 @@ class FriendList extends Component {
     textInput_Holder: '',
     invalidCode: false,
     existingFriend: false,
-    data: []
+    data: [],
+    user_username: ''
   };
 
 
@@ -109,7 +110,7 @@ class FriendList extends Component {
             <View style={styles.modalView}>
 
               <View>
-                <Text style={styles.modalText}>Add Friends!</Text>
+                <Text style={[styles.modalText, { fontSize: 22, fontWeight: '500' }]}>Enter Friend Username</Text>
               </View>
 
               <View style={styles.centerThis}>
@@ -123,7 +124,7 @@ class FriendList extends Component {
               <View style={{ ...styles.centerThis }}>
                 <TextInput
                   style={styles.inputTxt}
-                  placeholder="Enter Friend Username"
+                  placeholder="Username"
                   onChangeText={input => this.onEnterCode(input)}
                 />
               </View>
@@ -131,23 +132,23 @@ class FriendList extends Component {
               <View style={styles.buttonSeparation}>
                 <View>
                   <TouchableOpacity
-                    style={{ ...styles.addButton, backgroundColor: "white" }}
+                    style={{ ...styles.addButton, backgroundColor: '#556' }}
                     onPress={() => {
                       this.setState({ addModalVisible: false });
                       this.setState({ invalidCode: false });
                       this.setState({ existingFriend: false });
                     }}
                   >
-                    <Text style={styles.textStyle}>Cancel</Text>
+                    <Text style={styles.textStyle}>CANCEL</Text>
                   </TouchableOpacity>
                 </View>
 
                 <View>
                   <TouchableOpacity
-                    style={{ ...styles.addButton, backgroundColor: "white" }}
+                    style={{ ...styles.addButton, backgroundColor: 'slategray' }}
                     onPress={this.addFriend}
                   >
-                    <Text style={styles.textStyle}>Add</Text>
+                    <Text style={styles.textStyle}>ADD</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -257,7 +258,7 @@ class FriendList extends Component {
                       this.removeFriend(this.state.currFriend)
                     }}
                   >
-                    <Text style={styles.textStyle}>Remove Friend</Text>
+                    <Text style={styles.textStyle}>REMOVE FRIEND</Text>
                   </TouchableOpacity>
                 </View>
 
@@ -266,7 +267,7 @@ class FriendList extends Component {
                     style={{ ...styles.addButton }}
                     onPress={() => this.viewFriend(this.state.currFriend)}
                   >
-                    <Text style={styles.textStyle}>View Profile</Text>
+                    <Text style={styles.textStyle}>VIEW PROFILE</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -281,7 +282,7 @@ class FriendList extends Component {
                     this.setState({ friendModalVis: false });
                   }}
                 >
-                  <Text style={styles.textStyle}>Cancel</Text>
+                  <Text style={styles.textStyle}>CANCEL</Text>
                 </TouchableOpacity>
               </View>
 
@@ -298,6 +299,7 @@ class FriendList extends Component {
 
   componentDidMount() {
     this.createFriendList();
+    this.getUsername();
   }
 
   createFriendList() {
@@ -320,48 +322,51 @@ class FriendList extends Component {
     return await response.json();
   }
 
+  getUsername = async () => {
+    const response = await fetch(`http://${IP_ADDRESS}:3000/friends/getUsername`)
+
+    console.log("RESPONSE: " + response);
+    var userName = await response.json();
+
+    console.log("USERNAME: " + userName);
+    this.setState({ user_username: userName })
+
+  }
+
   render() {
     return (
       <>
         <SafeAreaView>
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-
-              <View style={styles.fixToText}>
-                <View style={{ flex: 0 }}>
-                  <TouchableOpacity
-                    onPress={() => this.props.routeTo(Screens.Home)}>
-                    <Image
-                      style={{ borderRadius: 15 }}
-                      source={require('./assets/backsmall.png')}>
-                    </Image>
-                  </TouchableOpacity>
-                </View>
-                <Text style={styles.sectionTitle}>Friends List</Text>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => this.setState({ addModalVisible: true })}
-                >
-                  <Text style={styles.textBox}>Add Friend</Text>
-                </TouchableOpacity>
-
-              </View>
-              <Text style={styles.sectionDescription}>
-                See who you will work with next:
-                </Text>
+          <View style={styles.header}>
+            <View style={{ flex: 1, alignSelf: 'center' }}>
+              <TouchableOpacity onPress={() => this.props.routeTo(Screens.Home)} style={styles.backButton}>
+                <Image style={{ width: 50, height: 50, borderRadius: 25 }} source={require('./assets/back.png')} />
+              </TouchableOpacity>
             </View>
+            <Text style={styles.screenTitle}>Friends</Text>
+            <View style={{ flex: 1, alignSelf: 'center' }}>
+              <TouchableOpacity style={[styles.backButton, { backgroundColor: 'rgb(176, 239, 179)' }]} onPress={() => this.setState({ addModalVisible: true })}>
+                <Image style={{ width: 50, height: 50, borderRadius: 25 }} source={require('./assets/plus.png')} />
+              </TouchableOpacity>
+            </View>
+
           </View>
+
+
         </SafeAreaView>
 
         <View style={styles.container}>
+          <Text style={{ ...styles.sectionDescription, marginBottom: 10, marginTop: 2 }}>
+            YOUR USERNAME:  <Text style={{ fontSize: 19, fontWeight: "bold" }}>{this.state.user_username}</Text>
+          </Text>
           <FlatList
             data={this.state.data}
             renderItem={({ item }) =>
-              <TouchableOpacity onPress={() => this.onFriendPress(item)}>
+              <TouchableOpacity onPress={() => this.onFriendPress(item)} style={styles.itemOpacity}>
                 <Text style={styles.item}>{item.name}</Text>
               </TouchableOpacity>
             }
-            ItemSeparatorComponent={this.FlatListItemSeparator}
+            // ItemSeparatorComponent={this.FlatListItemSeparator}
             ListEmptyComponent={() => (<Text style={styles.emptyMessageStyle}>Add Some Friends!</Text>)}
           />
         </View>
@@ -383,43 +388,43 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingLeft: 15,
     paddingRight: 15,
+    // backgroundColor: 'rgb(255, 230, 230)',
     backgroundColor: 'blanchedalmond',
     // borderWidth: 5,
-    borderTopWidth: 0
+    borderTopWidth: 0,
+    alignItems: 'center'
   },
   item: {
-    padding: 5,
-    fontSize: 28,
+    paddingLeft: 15,
+    paddingTop: 6,
+    fontSize: 24,
     height: 44,
+    fontWeight: '500'
   },
 
   button: {
     backgroundColor: "#b4ecb4",
-    borderWidth: 5,
+    borderWidth: 4,
     padding: 10,
     borderRadius: 20,
 
   },
 
-  fixToText: {
+  header: {
+    zIndex: 3,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-
-  body: {
-    backgroundColor: 'mistyrose',
-    borderBottomWidth: 4
+    borderBottomWidth: 4,
+    // backgroundColor: '#c27a86',
+    backgroundColor: 'rgb(225, 155, 160)',
+    paddingHorizontal: 15,
+    height: 100,
   },
   sectionContainer: {
     marginTop: 15,
     paddingHorizontal: 24,
     paddingRight: 10,
   },
-  sectionTitle: {
-    fontSize: 32,
-    fontWeight: '600',
-    //fontFamily: '',
-  },
+
   sectionDescription: {
     marginTop: 8,
     marginBottom: 15,
@@ -451,8 +456,10 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
+    marginTop: 230,
     width: 375,
-    backgroundColor: "blanchedalmond",
+    //backgroundColor: 'rgb(255, 230, 230)',
+    backgroundColor: 'white',
     borderRadius: 20,
     borderWidth: 4,
     padding: 35,
@@ -467,15 +474,20 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   addButton: {
-    backgroundColor: "white",
-    borderRadius: 20,
-    borderWidth: 5,
-    padding: 10,
+    borderRadius: 60,
+    marginTop: 20,
+    height: 50,
+    width: 90,
     elevation: 2,
+    justifyContent: 'center',
+    borderWidth: 3,
+    backgroundColor: 'slategray'
   },
   textStyle: {
-    fontWeight: "bold",
+    fontWeight: "500",
     textAlign: "center",
+    fontSize: 16,
+    color: 'white'
     //fontFamily: ''
   },
   modalText: {
@@ -495,10 +507,11 @@ const styles = StyleSheet.create({
     height: 35,
     width: 200,
     borderColor: 'black',
-    borderWidth: 5,
-    borderRadius: 5,
-    margin: 10,
-    textAlign: 'center',
+    borderWidth: 3,
+    borderRadius: 10,
+    padding: 5,
+    textAlign: 'left',
+    backgroundColor: 'white'
     //fontFamily: 'serif',
   },
 
@@ -507,4 +520,31 @@ const styles = StyleSheet.create({
 
   },
 
+  backButton: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgb(110, 192, 178)',
+    borderRadius: 15,
+    borderWidth: 4,
+    height: 60,
+    width: 60,
+  },
+  screenTitle: {
+    flex: 2,
+    fontSize: 35,
+    fontWeight: '700',
+    color: 'black',
+    alignSelf: 'center',
+    paddingHorizontal: 69,
+  },
+  itemOpacity: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 8,
+    borderColor: 'black',
+    borderWidth: 4,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    width: 370,
+    height: 70,
+  },
 });

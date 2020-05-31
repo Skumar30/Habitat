@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 var mongoose = require('mongoose');
 import {
     SafeAreaView,
@@ -11,34 +11,36 @@ import {
     StatusBar, TextInput, Button, YellowBox, TextComponent, FlatList, TouchableOpacity, Modal,
 } from 'react-native';
 
-import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger} from "react-native-popup-menu";
+import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger } from "react-native-popup-menu";
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Screens from './Screens';
-import {IP_ADDRESS} from './IP_Address';
+import { IP_ADDRESS } from './IP_Address';
 
-interface State{
+interface State {
     date: any;
     mode: any;
     show: any;
     friendID: any;
     friend: String;
-    tasks:any[];
+    tasks: any[];
     screen: any;
 }
 
 class CreateContract extends React.Component<any, State> {
 
-    constructor(props:any) {
+    constructor(props: any) {
         super(props);
 
-        this.state = {date: this.props.props.date,
+        this.state = {
+            date: this.props.props.date,
             mode: 'date',
             show: false,
             tasks: this.props.props.tasks,
-            friendID:this.props.props.friendID,
+            friendID: this.props.props.friendID,
             friend: this.props.props.friend,
-            screen: Screens.CreateContract}
+            screen: Screens.CreateContract
+        }
 
     }
     updateFriend() {
@@ -47,26 +49,26 @@ class CreateContract extends React.Component<any, State> {
 
     changeDate = (event: any, selectedDate: any) => {
         const currentDate = selectedDate || this.state.date;
-        this.setState({show: (Platform.OS === 'ios')});
-        this.setState({date:(currentDate)});
+        this.setState({ show: (Platform.OS === 'ios') });
+        this.setState({ date: (currentDate) });
     };
 
-    submitData = async() => {
+    submitData = async () => {
         var currDate = new Date();
-        if(this.state.friendID == '') {
+        if (this.state.friendID == '') {
 
 
-        Alert.alert("", "Please select a friend", [
-            {
-                text: "Cancel",
-                style: "cancel"
-            }
+            Alert.alert("", "Please select a friend", [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                }
             ]);
         }
-        else if((this.state.date.getFullYear() < currDate.getFullYear()) || ((this.state.date.getMonth() < currDate.getMonth())
-            &&(currDate.getFullYear() == this.state.date.getFullYear()))
+        else if ((this.state.date.getFullYear() < currDate.getFullYear()) || ((this.state.date.getMonth() < currDate.getMonth())
+            && (currDate.getFullYear() == this.state.date.getFullYear()))
             || ((this.state.date.getDate() < currDate.getDate()) && (this.state.date.getMonth() == currDate.getMonth())
-                && (this.state.date.getFullYear() == currDate.getFullYear()))){
+                && (this.state.date.getFullYear() == currDate.getFullYear()))) {
             Alert.alert("", "Please select a future due date", [
                 {
                     text: "Cancel",
@@ -77,17 +79,17 @@ class CreateContract extends React.Component<any, State> {
         else {
             var temp_id = new mongoose.Types.ObjectId();
             await fetch(`http://${IP_ADDRESS}:3000/createContract/createContract`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json', //expects a JSON
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                _id: temp_id,
-                friend: this.state.friendID,
-                tasks: this.state.tasks,
-                due_date: this.state.date
-             })
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json', //expects a JSON
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    _id: temp_id,
+                    friend: this.state.friendID,
+                    tasks: this.state.tasks,
+                    due_date: this.state.date
+                })
             });
             await fetch(`http://${IP_ADDRESS}:3000/createContract/addContract`, {
                 method: 'POST',
@@ -111,8 +113,7 @@ class CreateContract extends React.Component<any, State> {
                     friendID: this.state.friendID
                 })
             });
-            Alert.alert("", "You'll be able to view the contract once the other user accepts, until then"
-                + " this contract will only appear under Pending Contracts", [
+            Alert.alert("", "You'll be able to view the contract once the other user accepts", [
                 {
                     text: "OK",
                     style: "cancel"
@@ -123,12 +124,12 @@ class CreateContract extends React.Component<any, State> {
 
     };
 
-    showMode({currentMode}: { currentMode: any }) {
-        this.setState({show:true});
+    showMode({ currentMode }: { currentMode: any }) {
+        this.setState({ show: true });
     };
 
     showDatepicker = () => {
-        this.showMode({currentMode: 'date'});
+        this.showMode({ currentMode: 'date' });
     };
 
 
@@ -137,29 +138,28 @@ class CreateContract extends React.Component<any, State> {
             <View style={styles.container}>
                 <View>
                     <Text style={styles.titleText} >{"Create Contract"}</Text>
-                    <TouchableOpacity onPress={() => this.props.routeTo(Screens.EditWellnessContract, this.state)}>
-                        <Text style={styles.headerText}>Tasks to Add</Text>
+                    <TouchableOpacity style={styles.button} onPress={() => this.props.routeTo(Screens.EditWellnessContract, this.state)}>
+                        <Text style={{ fontSize: 20, alignSelf: 'center', paddingTop: 7 }}>Add Tasks</Text>
                     </TouchableOpacity>
 
                     <Text style={styles.dateInput}>
                         {"Friend to Invite: "}{this.state.friend}
                     </Text>
-                    <TouchableOpacity onPress={() => this.updateFriend()}>
-                        <Text style={styles.headerText}>Friend to Invite</Text>
+                    <TouchableOpacity style={styles.button} onPress={() => this.updateFriend()}>
+                        <Text style={{ fontSize: 20, alignSelf: 'center', paddingTop: 7 }}>Invite a Friend</Text>
                     </TouchableOpacity>
 
 
                     <Text style={styles.dateInput}>
-                        {"Current Due Date is "}{this.state.date.getMonth() + 1}/{this.state.date.getDate()}/{this.state.date.getFullYear()}
+                        {"Current Due Date: "}{this.state.date.getMonth() + 1}/{this.state.date.getDate()}/{this.state.date.getFullYear()}
                     </Text>
 
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                         {/* Due Date Picker */}
-                        <View style={styles.changeButton}>
-                            <TouchableOpacity onPress={this.showDatepicker}>
-                                <Text style={styles.buttonText}>Change Due Date</Text>
-                            </TouchableOpacity>
-                        </View>
+
+                        <TouchableOpacity style={styles.changeButton} onPress={this.showDatepicker}>
+                            <Text style={styles.buttonText}>Change Due Date</Text>
+                        </TouchableOpacity>
                         {this.state.show && (
                             <DateTimePicker
                                 testID="dateTimePicker"
@@ -171,32 +171,29 @@ class CreateContract extends React.Component<any, State> {
                             />
                         )}
                         {/* Add Button */}
-                        <View style={styles.addButton}>
-                            <TouchableOpacity onPress={this.submitData}>
-                                <Text style={styles.buttonText}>Create Contract</Text>
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity style={styles.addButton} onPress={this.submitData}>
+                            <Text style={styles.buttonText}>Create Contract</Text>
+                        </TouchableOpacity>
                         {/* Back Button */}
-                        <View style={styles.backButton}>
-                            <TouchableOpacity onPress={ () => this.props.routeTo(Screens.WellnessContractHome)}>
-                                <Text style={styles.buttonText}>Cancel</Text>
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity style={styles.backButton} onPress={() => this.props.routeTo(Screens.WellnessContractHome)}>
+                            <Text style={styles.buttonText}>Cancel</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
             </View>
 
-        );}
+        );
+    }
 };
 
 const styles = StyleSheet.create({
     titleText: {
-        marginTop: 30,
+        marginVertical: 30,
         fontSize: 45,
         fontWeight: "bold",
         textAlign: 'center',
-        fontFamily: "serif"
+        // fontFamily: "serif"
     },
     container: {
         flex: 1,
@@ -206,9 +203,9 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         marginBottom: 10,
-        marginLeft:70,
-        marginRight:70,
-        fontFamily: "serif"
+        marginLeft: 70,
+        marginRight: 70,
+        // fontFamily: "serif"
     },
     titleInput: {
         marginTop: 50,
@@ -218,15 +215,17 @@ const styles = StyleSheet.create({
         height: 50,
         padding: 8,
         borderRadius: 7,
-        fontFamily: "serif"
+        // fontFamily: "serif"
     },
     dateInput: {
-        marginTop: 10,
-        height: 50,
+        marginTop: 25,
+        marginBottom: 5,
+        // height: 50,
         textAlign: 'center',
-        textAlignVertical: 'center',
+        // textAlignVertical: 'center',
         fontSize: 15,
-        fontFamily: "serif"
+        // backgroundColor: 'blanchedalmond'
+        // fontFamily: "serif"
     },
 
     headerText: {
@@ -239,7 +238,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         textAlign: 'center',
         backgroundColor: 'white',
-        fontFamily: "serif"
+        // fontFamily: "serif"
     },
     menuContent: {
         color: "#000",
@@ -263,43 +262,45 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 20,
         paddingBottom: 20,
-        fontFamily: "serif"
+        borderWidth: 4
+        // fontFamily: "serif"
     },
     lastButton: {
         marginBottom: 50,
-        marginLeft:70,
-        marginRight:70,
-        fontFamily: "serif"
+        marginLeft: 70,
+        marginRight: 70,
+        // fontFamily: "serif"
     },
     changeButton: {
-        marginTop: 70,
         marginBottom: 20,
-        borderWidth: 5,
-        borderRadius: 10,
+        borderWidth: 4,
+        borderRadius: 50,
         alignItems: 'center',
         backgroundColor: 'powderblue',
         justifyContent: 'center',
+        padding: 6
     },
     addButton: {
-        marginTop: 15,
         marginBottom: 20,
-        borderWidth: 5,
-        borderRadius: 10,
+        borderWidth: 4,
+        borderRadius: 50,
         backgroundColor: '#b4ecb4',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        padding: 6
     },
     backButton: {
-        marginTop: 15,
         marginBottom: 90,
-        borderWidth: 5,
-        borderRadius: 10,
+        borderWidth: 4,
+        borderRadius: 50,
         backgroundColor: 'mistyrose',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        padding: 6
     },
     buttonText: {
-        fontSize: 20
+        fontSize: 26,
+        fontWeight: '500'
     }
 });
 
