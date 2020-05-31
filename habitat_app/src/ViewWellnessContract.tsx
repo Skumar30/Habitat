@@ -155,6 +155,7 @@ class ViewWellnessContract extends Component {
                   tasks: this.state.myTasks,
                   friend: 'Not Selected',
                   friendID:'',
+                  post: true,
                   screen: Screens.ViewWellnessContract,
                   contractId: this.state.currentContractId
                 }
@@ -235,6 +236,7 @@ class ViewWellnessContract extends Component {
                   tasks: this.state.myTasks,
                   friend: 'Not Selected',
                   friendID:'',
+                  post: true,
                   screen: Screens.ViewWellnessContract,
                   contractId: this.state.currentContractId
                 }

@@ -110,8 +110,9 @@ class EditWellnessContract extends React.Component<any, State>{
                     tasks: this.state.tasks,
                 })
             });
-            this.props.routeTo(this.props.props.screen, this.state);
         }
+
+        this.props.routeTo(this.props.props.screen, this.state);
     }
 
     render(){
