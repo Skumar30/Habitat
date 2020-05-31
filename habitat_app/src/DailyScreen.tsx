@@ -242,7 +242,7 @@ class DailyScreen extends Component {
 
      this.getContract().then(res1 => {
         this.setState({contract: res1})
-        this.updateContract(res1)
+        //this.updateContract(res1)
         });
 
      this.checkStreak();
@@ -263,7 +263,12 @@ class DailyScreen extends Component {
                     onPress: () => this.handleDelete(index)
                 },
                 { text: "Edit", onPress: () => {
-                        console.log("Edit Pressed")
+                        console.log("Edit Pressed");
+                        let data = this.state.tasks[index];
+                        let start = data.start_date;
+                        let end = data.due_date;
+                        data.due_date = new Date(end);
+                        data.start_date = new Date(start);
                         let toSend = {data: this.state.tasks[index],
                             screen: Screens.DailyScreen}
                         this.props.routeTo(Screens.EditTask, toSend) } }
