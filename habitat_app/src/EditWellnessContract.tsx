@@ -47,6 +47,7 @@ class EditWellnessContract extends React.Component<any, State>{
     };
 
     componentDidMount() {
+
         this.getTasks().then(res => {
             var tasks:{key: any; title: any;}[] = [];
             var checks:boolean[] = [];
@@ -101,9 +102,9 @@ class EditWellnessContract extends React.Component<any, State>{
                 this.state.tasks.push(this.state.allTasks[i].key);
                 }
             }
-            console.log("this.state.contractId is: " + this.state.contractId);
-            console.log("this.state.tasks: " + this.state.tasks);
+
             if (this.state.post) {
+
             await fetch(`http://${IP_ADDRESS}:3000/createContract/updateContract`, {
                 method: 'POST',
                 headers: {
@@ -115,8 +116,9 @@ class EditWellnessContract extends React.Component<any, State>{
                     tasks: this.state.tasks,
                 })
             });
-            this.props.routeTo(this.props.props.screen, this.state);
+
         }
+        this.props.routeTo(this.props.props.screen, this.state);
     }
 
     render(){
