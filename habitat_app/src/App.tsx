@@ -34,6 +34,7 @@ import Login from './Login';
 import FriendList from './FriendList';
 import DailyScreen from './DailyScreen';
 import AddTask from './AddTask';
+import EditTask from './EditTask';
 import CreateContract from './CreateContract';
 import CustomizeScreen from './CustomizeScreen';
 import PendingCard from './PendingCard';
@@ -71,6 +72,11 @@ class App extends React.Component<{}, State> {
       case Screens.AddTask:
         screenToShow = (
           <AddTask routeTo={this.routeTo} props={this.state.toSend} />
+        );
+        break;
+      case Screens.EditTask:
+        screenToShow = (
+          <EditTask routeTo={this.routeTo} props={this.state.toSend} />
         );
         break;
       case Screens.CreateContract:

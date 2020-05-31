@@ -71,8 +71,7 @@ export default function AddTask(props){
       body: JSON.stringify({
         taskId: temp_id
       })
-  });
-
+  }).then((res) => {
     // return to previous screen
     if(checkDaily()){
       props.routeTo(Screens.DailyScreen);
@@ -80,6 +79,9 @@ export default function AddTask(props){
     else{
       props.routeTo(Screens.RegTask);
     }
+  });
+
+
 }
 
     const backHandler = () => {
