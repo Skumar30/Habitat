@@ -230,7 +230,7 @@ class DailyScreen extends Component<any, any> {
     this.getDailies().then(res => {
         this.setState({tasks: res});
         this.updateState(res);
-        //this.checkStreak();
+        this.checkStreak();
         });
 
         console.log("after getDailies");
