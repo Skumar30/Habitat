@@ -53,16 +53,15 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //app.use('/', indexRouter);
-/*app.use('/addTask', addRouter);
+app.use('/addTask', addRouter);
 app.use('/createContract', createRouter)
 app.use('/customize', customizeRouter)
-app.use('/dailyTask', dailyRouter)*/
+app.use('/dailyTask', dailyRouter)
 app.use('/friends', friendsRouter)
-/*app.use('/home', homeRouter)
+app.use('/home', homeRouter)
 app.use('/regTask', regRouter)
 app.use('/settings', settingRouter)
-app.use('/wellnessContract', wellnessRouter)*/
-
+app.use('/wellnessContract', wellnessRouter)
 
 app.use('/users', usersRouter);
 
