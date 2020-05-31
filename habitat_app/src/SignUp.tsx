@@ -36,7 +36,7 @@ const checkingSchema = yup.object({
     .required()
     .min(5)
     .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/,
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&_-])[A-Za-z\d@$!%*#?&_-]{5,}$/,
       'Password must have at least one number, one letter, and one special character',
     ),
   //Minimum five characters, at least one letter, one number and one special character

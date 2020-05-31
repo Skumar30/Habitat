@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import * as Screens from './Screens';
 import { BabelFileResult } from '@babel/core';
-import {IP_ADDRESS} from './IP_Address';
+import { IP_ADDRESS } from './IP_Address';
 
 interface HomeState {
   petName: string;
@@ -19,19 +19,28 @@ interface HomeState {
   credits: number;
   mood: number;
   cosmetics: string[];
-  temp: string
+  temp: string;
+  modal: boolean;
 }
 
 // Assets
 const full = require('./assets/full.png');
 const empty = require('./assets/empty.png');
 const store = require('./assets/store.png');
-const settings = require('./assets/settings.png');
+const menu = require('./assets/menuicon.png');
 const points = require('./assets/points.png');
 const head = require('./assets/head.png');
 const happy = require('./assets/happy.png');
 const sad = require('./assets/sad.png');
 const background = require('./assets/background.png');
+
+const daily = require('./assets/dailyicon.png');
+const reg = require('./assets/regicon.png');
+const settings = require('./assets/settings.png');
+const contract = require('./assets/contracticon.png');
+const friend = require('./assets/friendicon.png');
+const back = require('./assets/back.png');
+
 // Doesnt load as a local for some reason
 const blank = 'blank';
 const bear = 'https://i.imgur.com/5BYS7cz.png';
@@ -50,7 +59,7 @@ const balloon = require('./assets/balloon.png');
 
 const none = null;
 
-var itemList: {[key: string]: any} = {
+var itemList: { [key: string]: any } = {
   '5ebddb16a428ab3a446f4d9c': bear,
   '5ec1849acaf74254f8f6613e': cat,
   '5ec184eecaf74254f8f6613f': cow,
@@ -76,9 +85,10 @@ class Home extends React.Component<{}, HomeState> {
       petName: "",
       playerName: "",
       credits: 0,
-      mood: 4,
+      mood: 0,
       cosmetics: [],
-      temp: ""
+      temp: "",
+      modal: false
     };
   }
 
@@ -94,8 +104,8 @@ class Home extends React.Component<{}, HomeState> {
     }
   }
 
-  getData = async() => {
-    const response = await fetch(`http://${IP_ADDRESS}:3000/home`);
+  getData = async () => {
+    const response = await fetch(`http://${IP_ADDRESS}:3000/Home/home`);
     const body = await response.json();
     return body;
   }
@@ -104,15 +114,41 @@ class Home extends React.Component<{}, HomeState> {
     console.log(this.state.cosmetics);
     return bear;
   }
-  componentDidMount(){
-    setTimeout( () => {
+
+  componentDidMount() {
+    setTimeout(() => {
       this.getData().then(res => {
         console.log(res);
         var vcredits = res.credits < 0 ? 0 : res.credits;
-        this.setState({playerName: res.name, petName: res.petName, credits: vcredits, mood: (res.mood/20), cosmetics: res.cosmetics, temp: res.petName});
+        this.setState({ playerName: res.name, petName: res.petName, credits: vcredits, mood: (res.mood / 20), cosmetics: res.cosmetics, temp: res.petName });
       })
-    },1000);
-   }  
+    }, 1000);
+  }
+
+  renderModal = () => {
+    return(
+      <View>  
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={this.state.modal}
+        >     
+        </Modal>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.DailyScreen)}><Image style={styles.modalimage} source={daily}></Image></TouchableOpacity>
+                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.RegTask)}><Image style={styles.modalimage} source={reg}></Image></TouchableOpacity>
+                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.WellnessContractHome)}><Image style={styles.modalimage} source={contract}></Image></TouchableOpacity>
+                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.FriendList)}><Image style={styles.modalimage} source={friend}></Image></TouchableOpacity>
+                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.Settings)}><Image style={styles.modalimage} source={settings}></Image></TouchableOpacity>
+                <TouchableOpacity style={styles.modaltouch} onPress={() => this.setState({modal: false})}><Image style={styles.modalimage} source={back}></Image></TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  }
 
   render() {
     console.log(this.state.mood);
@@ -145,37 +181,57 @@ class Home extends React.Component<{}, HomeState> {
           </View>
           <View style={{ flex: 9 }}>
             <ImageBackground source={background} style={styles.imageBackground} imageStyle={styles.imageBackground}>
-              <View style={{ flex: 2, flexDirection: 'row' }}>
+              <View style={{ flex: 1, flexDirection: 'row' }}>
                 <View style={{ flex: 5 }}></View>
-                <View style={[styles.singleColumn, styles.border5]}>
-                  <TouchableOpacity style={{flex: 1}} onPress={() => this.props.routeTo(Screens.CustomizeScreen)}>
-                    <Image source={store} style={styles.stretchImage}></Image>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={{flex: 1}} onPress={() => this.props.routeTo(Screens.Settings)}>
-                    <Image source={settings} style={styles.stretchImage}></Image>
+                <View style={[styles.singleColumn, styles.border5, styles.radius5]}>
+                 
+                  <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({modal: !this.state.modal})}>
+                    <Image source={menu} style={styles.stretchImage}></Image>
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style={{flex: 4}}>
-                <ImageBackground source={{uri: petType}} style={styles.containImage} imageStyle={styles.containImage}>
+              <View style={{ flex: 4 }}>
+                <ImageBackground source={{ uri: petType }} style={styles.containImage} imageStyle={styles.containImage}>
                   <ImageBackground source={other} style={styles.containImage} imageStyle={styles.containImage}>
-                    <ImageBackground source={hat} style={styles.containImage} imageStyle={styles.containImage}/>
+                    <ImageBackground source={hat} style={styles.containImage} imageStyle={styles.containImage}>
+                      {this.state.modal &&
+                      <View>  
+      
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.DailyScreen)}><Image style={styles.modalimage} source={daily}></Image></TouchableOpacity>
+            <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.RegTask)}><Image style={styles.modalimage} source={reg}></Image></TouchableOpacity>
+            <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.WellnessContractHome)}><Image style={styles.modalimage} source={contract}></Image></TouchableOpacity>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.FriendList)}><Image style={styles.modalimage} source={friend}></Image></TouchableOpacity>
+            <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.Settings)}><Image style={styles.modalimage} source={settings}></Image></TouchableOpacity>
+            <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.CustomizeScreen)}><Image style={styles.modalimage} source={store}></Image></TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </View>}
+
+                    </ImageBackground>
                   </ImageBackground>
                 </ImageBackground>
               </View>
             </ImageBackground>
           </View>
           <View style={styles.petName}>
-            <TextInput style={styles.textBox} onSubmitEditing={event => {fetch(`http://${IP_ADDRESS}/petName`, {
-                  method: 'POST',
-                  headers: {
-                    Accept: 'application/json', //expects a JSON
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    name: event.nativeEvent.text
-                  }),
-                });}}>{this.state.petName}</TextInput>
+            <TextInput style={styles.textBox} onSubmitEditing={event => {
+              fetch(`http://${IP_ADDRESS}:3000/Home/petName`, {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json', //expects a JSON
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  name: event.nativeEvent.text
+                }),
+              });
+            }}>{this.state.petName}</TextInput>
           </View>
           <View style={styles.singleRow}>
             <Image source={feeling} style={styles.stretchImage}></Image>
@@ -218,6 +274,7 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     backgroundColor:
       'blanchedalmond',
+    borderRadius: 5
   },
   singleRow: {
     flex: 1,
@@ -239,14 +296,40 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'blanchedalmond',
-    borderWidth: 5
+    borderWidth: 5,
+    borderRadius: 5
   },
   playerName: {
     flex: 2, justifyContent: 'center', alignItems: 'center'
   },
   textBox: {
-    fontFamily: 'serif',
+    //fontFamily: 'serif',
     fontSize: 17
+  },
+  centeredView: {
+    backgroundColor: 'blanchedalmond',
+    justifyContent: 'center',
+    borderWidth: 5,
+    padding: 5,
+    borderRadius: 20,
+    width: 200,
+    alignSelf: 'center'
+  },
+  modalView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
+  modalimage: {
+    width: 50,
+    height: 50
+  },
+  modaltouch: {
+    borderWidth: 5,
+    borderRadius: 5
+  },
+  radius5: {
+    borderRadius: 10
   }
 });
 
