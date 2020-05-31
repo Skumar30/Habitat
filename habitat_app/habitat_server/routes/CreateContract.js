@@ -76,13 +76,13 @@ router.post('/updateContract', async (req, res, next) => {
 
     var contractId = req.body.contractId;
     contractId instanceof mongoose.Types.ObjectId;
-    console.log("contractId is " + contractId);
     var taskIds = [];
     for(var i = 0; i < req.body.tasks.length; i++) {
       var tempId = req.body.tasks[i];
       tempId instanceof mongoose.Types.ObjectId;
       taskIds.push(tempId);
     }
+    console.log("taskIds: " + taskIds);
     var result = await ContractModel.updateOne({_id: contractId}, {
       tasks: taskIds}
     );

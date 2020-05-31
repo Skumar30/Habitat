@@ -71,6 +71,7 @@
       <change beforePath="$PROJECT_DIR$/habitat_app/android/app/src/main/java/com/habitat_app/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/java/com/habitat_app/MainApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/android/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/android/gradlew" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/android/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/habitat_server/routes/CreateContract.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/CreateContract.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/ios/Podfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcodeproj/project.pbxproj" afterDir="false" />
@@ -79,9 +80,9 @@
       <change beforePath="$PROJECT_DIR$/habitat_app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/CreateContract.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/CreateContract.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/habitat_app/src/EditWellnessContract.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/EditWellnessContract.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/Login.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/ViewWellnessContract.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/ViewWellnessContract.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/components/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/components/button.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/helloworld.js" beforeDir="false" />
     </list>
@@ -146,7 +147,7 @@
       <workItem from="1590721214304" duration="6769000" />
       <workItem from="1590792966953" duration="3050000" />
       <workItem from="1590815415103" duration="539000" />
-      <workItem from="1590878721541" duration="8472000" />
+      <workItem from="1590878721541" duration="8583000" />
     </task>
     <servers />
   </component>

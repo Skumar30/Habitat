@@ -66,6 +66,7 @@ class EditWellnessContract extends React.Component<any, State>{
                 }
             }
             this.setState({checked:temp});
+
         });
     }
 
@@ -89,6 +90,7 @@ class EditWellnessContract extends React.Component<any, State>{
     )};
 
     submitForm = async() => {
+        this.state.tasks = [];
         for (var i = 0; i < this.state.allTasks.length; i++) {
             if (this.state.checked[i] == true) {
 
