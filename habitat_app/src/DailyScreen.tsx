@@ -153,7 +153,7 @@ class DailyScreen extends Component {
             else
                 date1 = "";
 
-            if( newdate == date1)
+            if( newdate == date1 )
                 this.state.checked[i] = true;
             else {
                 this.state.checked[i] = false;
@@ -263,13 +263,13 @@ class DailyScreen extends Component {
                     onPress: () => this.handleDelete(index)
                 },
                 { text: "Edit", onPress: () => {
-                        console.log("Edit Pressed");
+                        console.log("Edit Pressed")
                         let data = this.state.tasks[index];
                         let start = data.start_date;
                         let end = data.due_date;
                         data.due_date = new Date(end);
                         data.start_date = new Date(start);
-                        let toSend = {data: this.state.tasks[index],
+                        let toSend = {data: data,
                             screen: Screens.DailyScreen}
                         this.props.routeTo(Screens.EditTask, toSend) } }
             ]
@@ -365,13 +365,13 @@ class DailyScreen extends Component {
             },
             body: JSON.stringify(
                 {streak: this.state.streaks[index],
-                        id: this.state.tasks[index]._id ,
-                        inContract: this.state.inContract[index]
+                        taskId: this.state.tasks[index]._id ,
+                        contractId: this.state.contract._id
                 })
         };
 
         try{
-            const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/incrementStreak`, settings)
+            const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/addReward`, settings)
             const data = await response.json();
             return data;
         } catch (e) {
@@ -390,13 +390,13 @@ class DailyScreen extends Component {
             },
             body: JSON.stringify(
                 {streak: this.state.streaks[index],
-                       id: this.state.tasks[index]._id,
-                       inContract: this.state.inContract[index]
+                    taskId: this.state.tasks[index]._id,
+                    contractId: this.state.contract._id
                 })
         };
 
         try{
-            const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/decrementStreak`, settings)
+            const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/removeReward`, settings)
             const data = await response.json();
             return data;
         } catch (e) {
