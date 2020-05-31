@@ -304,9 +304,9 @@ class DailyScreen extends Component {
         try {
             const response = await fetch(`http://${IP_ADDRESS}:3000/dailyTask/deleteTask`, settings);
             //console.log(response);
-            //const data = await response.json();
+            const data = await response.json();
             //console.log(data);
-            //return data;
+            return data;
         } catch (e) {
             console.log( " Error for deleteTask ");
         }
