@@ -246,7 +246,7 @@ class Home extends React.Component<{}, HomeState> {
               });
             }}>{this.state.petName}</TextInput>
           </View>
-          <View style={styles.singleRow}>
+          <View style={styles.happyRow}>
             <Image source={feeling} style={styles.stretchImage}></Image>
             <Image source={bars[0]} style={styles.stretchImage}></Image>
             <Image source={bars[1]} style={styles.stretchImage}></Image>
@@ -343,7 +343,14 @@ const styles = StyleSheet.create({
   },
   radius5: {
     borderRadius: 10
-  }
+  },
+  happyRow: {
+    flex: 1,
+    flexDirection: 'row',
+    borderRightWidth: 5,
+    borderLeftWidth: 5,
+    borderBottomWidth: 5
+  },
 });
 
 export default Home;

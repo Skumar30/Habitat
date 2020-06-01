@@ -353,6 +353,7 @@ class FriendList extends Component{
                 <View style={styles.fixToText}>
                   <View style={{flex:0}}>
                     <TouchableOpacity 
+                    style={{borderWidth: 5, borderRadius: 20}}
                     onPress={() => this.props.routeTo(Screens.Home)}>
                       <Image 
                         style = {{ borderRadius: 15}}

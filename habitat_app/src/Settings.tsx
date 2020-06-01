@@ -55,7 +55,7 @@ export default class Settings extends React.Component<{}, State> {
               <Text style={styles.modalText}>Are you sure you want to logout?</Text>
               <View style={styles.buttonSeparation}>
                 <TouchableOpacity
-                  style={[styles.confirmationButton, { backgroundColor: '#556' }]}
+                  style={[styles.confirmationButton, { backgroundColor: 'indianred' }]}
                   onPress={() => {
                     this.toggleModal(!this.state.logoutModal);
                   }}
@@ -64,13 +64,13 @@ export default class Settings extends React.Component<{}, State> {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.confirmationButton, { backgroundColor: 'slategray' }]}
+                  style={[styles.confirmationButton, { backgroundColor: '#b4ecb4' }]}
                   onPress={() => {
                     this.toggleModal(!this.state.logoutModal);
                     this.props.routeTo(Screens.Login)
                   }}
                 >
-                  <Text style={styles.modalButton}>YES</Text>
+                  <Text style={[styles.modalButton, {color: 'black'}]}>YES</Text>
                 </TouchableOpacity>
 
               </View>
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     margin: 20,
     marginTop: 230,
     width: 375,
-    backgroundColor: 'white',
+    backgroundColor: 'blanchedalmond',
     borderWidth: 4,
     borderRadius: 20,
     padding: 35,
