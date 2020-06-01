@@ -222,8 +222,215 @@ const MAX_HAPPINESS_BONUS = 100;
         if(err)
           console.log(err)
       })
-  
-  
   });
+    
+router.post('/addReward', async(req, res, next) => {
+
+  try {
+    var UserModel = require('../models/user.js');
+    var PetModel = require('../models/pet.js');
+    var TaskModel = require('../models/task.js');
+    var ContractModel = require('../models/wellnesscontract.js');
+
+
+    //adding credits to user
+    var user = await UserModel.findOne({_id: req.user._id});
+    var task = await TaskModel.findOne({_id: req.body.taskId});
+
+    //adding today as list of dates for datesCompleted
+    var markAsComplete = await TaskModel.updateOne({_id: req.body.taskId}, { $push: {datesCompleted: new Date()}});
+
+    var updatedCredits;
+    if(task.daily) {
+      updatedCredits = user.credits + Math.floor((10 + task.streak) * 1.5);
+      var streakUpdate = await TaskModel.updateOne({_id: req.body.taskId}, {streak: task.streak + 1});
+    }
+    else {
+      updatedCredits = user.credits + 45;
+    }
+
+    //updating pet's happiness
+    var pet = await PetModel.findOne({_id: req.user.pet_id});
+
+    var updatedHappiness;
+    if(task.daily) {
+      var temp = (1.5 * ((10 + task.streak) / 10));
+
+      updatedHappiness = pet.happiness + temp;
+    }
+    else {
+      updatedHappiness = pet.happiness + 4; //floored to 4
+    }
+
+    //happiness can be a max of 100
+    if(updatedHappiness > 100)
+      updatedHappiness = 100;
+
+    var result2 = await PetModel.updateOne(
+        {_id: req.user.pet_id},
+        {happiness: (updatedHappiness)}
+    );
+
+    var contractId = req.body.contractId;
+    console.log(contractId instanceof mongoose.Types.ObjectId);
+    var bonus = 0;
+
+    if( contractId != null) {
+        contractId = contractId._id;
+        var contract = await ContractModel.findOne({_id: contractId});
+        length = contract.tasks.length;
+        if( length == 0)
+          bonus = 0;
+        else
+          bonus = Math.floor(1 / length * 100);
+      };
+
+    //console.log("task length: " + contract.tasks.length);
+    //console.log("this is bonus: " + bonus);
+
+    /*
+      //adding bonus to other user
+      if (bonus != 0) {
+        var otherUser;
+        if (req.user._id.equals(contract.participants[0]))
+          otherUser = await UserModel.findOne({_id: contract.participants[1]});
+        else {
+          otherUser = await UserModel.findOne({_id: contract.participants[0]});
+        }
+
+        //updating other user credits
+        var otherUserBonus = otherUser.credits + bonus;
+        var otherResult = await UserModel.updateOne({_id: otherUser.id}, {credits: (otherUserBonus)});
+        var otherUserPet = await PetModel.findOne({_id: otherUser.pet_id});
+        var otherUserHappiness = otherUserPet.happiness + Math.floor(bonus / 10);
+        otherResult = await PetModel.updateOne({_id: otherUser.pet_id}, {happiness: (otherUserHappiness)});
+      }
+     */
+
+    //updating user credits
+    var totalCredits = updatedCredits + bonus;
+    var result = await UserModel.updateOne(
+        {_id: req.user._id},
+        {credits: (totalCredits)}
+    );
+
+    res.send(result);
+  }
+  catch(err) {
+
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
+  router.post('/removeReward', async(req, res, next) => {
+
+  try {
+    var UserModel = require('../models/user.js');
+    var PetModel = require('../models/pet.js');
+    var TaskModel = require('../models/task.js');
+    var ContractModel = require('../models/wellnesscontract.js');
+
+    var user = await UserModel.findOne({_id: req.user._id});
+    var task = await TaskModel.findOne({_id: req.body.taskId});
+
+    //removes last date
+    var lastCompletion = task.datesCompleted[task.datesCompleted.length - 1];
+    var markAsIncomplete = await TaskModel.updateOne({_id: req.body.taskId}, { $pull: {datesCompleted: lastCompletion}});
+
+    //calculating credits to remove from user
+    var updatedCredits;
+    if(task.daily) {
+      updatedCredits = user.credits - Math.floor((10 + task.streak - 1) * 1.5);
+      var streakUpdate = await TaskModel.updateOne({_id: req.body.taskId}, {streak: task.streak - 1});
+    }
+    else {
+      updatedCredits = user.credits - 45;
+    }
+
+    var result = await UserModel.updateOne(
+        { _id: req.user._id },
+        { credits: (updatedCredits) }
+    );
+
+    //updating pet's happiness
+    var pet = await PetModel.findOne({_id: req.user.pet_id});
+    var updatedHappiness;
+    if(task.daily) {
+      var temp = 1.5 * ((10 + task.streak) / 10);
+      updatedHappiness = pet.happiness - temp;
+    }
+    else {
+      updatedHappiness = pet.happiness - 3;
+    }
+
+    //happiness can be a min of 0
+    if(updatedHappiness < 0)
+      updatedHappiness = 0;
+
+    var result2 = await PetModel.updateOne(
+        {_id: req.user.pet_id},
+        {happiness: (updatedHappiness)}
+    );
+
+    var contractId = req.body.contractId;
+    console.log(contractId instanceof mongoose.Types.ObjectId);
+    var bonus = 0;
+
+    if( contractId != null) {
+      contractId = contractId._id;
+      var contract = await ContractModel.findOne({_id: contractId});
+      length = contract.tasks.length;
+      if( length == 0)
+        bonus = 0;
+      else
+        bonus = Math.floor(1 / length * 100);
+    };
+    /*
+    //calculating bonus to remove
+    var contractId = req.body.contractId;
+    console.log(contractId);
+    //contractId instanceof mongoose.Types.ObjectId;
+    var bonus = 0;
+    if( contractId != null) {
+      contractId = contractId._id;
+      var contract = req.body.contractId;//await ContractModel.findOne({_id: contractId});
+      bonus = Math.floor(1 / contract.tasks.length * 100);
+    }
+    else{
+      var contract = req.body.contractId;
+    }
+
+    //removing bonus to other user
+    if (bonus != 0) {
+      var otherUser;
+      if (req.user._id.equals(contract.participants[0]))
+        otherUser = await UserModel.findOne({_id: contract.participants[1]});
+      else {
+        otherUser = await UserModel.findOne({_id: contract.participants[0]});
+      }
+
+      var otherUserBonus = otherUser.credits - bonus;
+      var otherResult = await UserModel.updateOne({_id: otherUser.id}, {credits: (otherUserBonus)});
+      var otherUserPet = await PetModel.findOne({_id: otherUser.pet_id});
+      var otherUserHappiness = otherUserPet.happiness - Math.floor(bonus / 10);
+      otherResult = await PetModel.updateOne({_id: otherUser.pet_id}, {happiness: (otherUserHappiness)});
+    }
+     */
+
+    var totalCredits = updatedCredits - bonus;
+    var result = await UserModel.updateOne(
+        { _id: req.user._id },
+        { credits: (totalCredits) }
+    );
+
+    res.send(result);
+  }
+  catch(err) {
+
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
   
   module.exports = router;

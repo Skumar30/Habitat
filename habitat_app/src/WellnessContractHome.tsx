@@ -156,7 +156,7 @@ class WellnessContractHome extends Component {
   createContract = () => {
 
     //redirect to michael's create contract screen
-    this.props.routeTo(Screens.CreateContract, {date: new Date(), tasks: [], friend: 'Not Selected', friendID:'', post: false});
+    this.props.routeTo(Screens.CreateContract, {date: new Date(), tasks: [], friend: 'Not Selected', friendID:'', post: true});
   }
 
   handleCreateContract = () => {
