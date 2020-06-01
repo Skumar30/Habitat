@@ -242,9 +242,10 @@ class WellnessContractHome extends Component {
         >
           {/* back button to get out of wellness contract home screen */}
           <View
-            style={{flex:0.1}}>
-            <TouchableOpacity onPress={() => this.props.routeTo(Screens.Home)}>
+            style={{flex:0.3}}>
+            <TouchableOpacity style={{width: 60, height: 60, borderRadius: 20, borderWidth: 5}} onPress={() => this.props.routeTo(Screens.Home)}>
               <Image
+                style={{borderRadius: 15}}
                 source={require('./assets/backsmall.png')}>
               </Image>
             </TouchableOpacity>
