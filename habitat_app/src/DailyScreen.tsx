@@ -172,6 +172,10 @@ class DailyScreen extends Component<any, any> {
         var year1 = TODAY.getUTCFullYear();
         var today;
 
+        if (day1 < 10){
+            day1 = "0" + day1;
+        }
+
         if (month1 < 10) {
             today = year1 + "-0" + month1 + "-" + day1;
         }
@@ -187,6 +191,10 @@ class DailyScreen extends Component<any, any> {
         var year2 = YESTERDAY.getUTCFullYear();
         var yesterday;
 
+        if (day2 < 10){
+            day2 = "0" + day2;
+        }
+
         if (month2 < 10) {
             yesterday = year2 + "-0" + month2 + "-" + day2;
         }
@@ -196,8 +204,10 @@ class DailyScreen extends Component<any, any> {
 
         // Go through each task and their last completed day
         for ( var i = 0; i < this.state.tasks.length; i++){
-            var lastDay = this.state.tasks[i].datesCompleted[this.state.tasks[i].datesCompleted.length-1];
-            lastDay = lastDay.substring(0,10);
+            let lastDay = this.state.tasks[i].datesCompleted[this.state.tasks[i].datesCompleted.length-1];
+            //lastDay = lastDay.substring(0,10);
+            console.log("task is: " + this.state.tasks[i]);
+            console.log("dates completed: " + this.state.tasks[i].datesCompleted);
             console.log(lastDay);
 
             // If the last completed date was not today or yesterday, streak resets
@@ -205,7 +215,9 @@ class DailyScreen extends Component<any, any> {
                 console.log(lastDay);
             // Else, reset streak
             else{
-                this.state.tasks[i].streak = 0;
+                let streak = this.state.tasks;
+                streak[i].streak = 0;
+                this.setState({streak: 0});
                 this.updateStreak(i);
             }
         }
@@ -348,6 +360,7 @@ class DailyScreen extends Component<any, any> {
         /* Create the individual items for the flatlist */
     Item = (title:string, index:number) =>{
 
+        /*
         console.log("the index is", index);
         console.log("the len s", this.state.checked.length);
         console.log("index: " + this.state.checked[index]);
@@ -358,13 +371,19 @@ class DailyScreen extends Component<any, any> {
         console.log("what is checked " + this.state.checked[index]);
 
         console.log(TODAY);
+        */
         return(
-            <View>
+            <View style={styles.itemView}>
                 <TouchableOpacity onPress={() => this.alert(index)}>
-                    <View style={[styles.body]}>
-                        <Text >{title}</Text>
-                        <Text>{"   streak:"}</Text>
-                        <Text >{this.state.streaks[index]}</Text>
+                    <View style={[styles.item]}>
+                        <Text style={styles.title}>{title}</Text>
+                        <Text style={{ fontSize: 14, fontWeight: '400', textAlign: 'left', paddingTop: 7 }}>
+                            STREAK
+                            <Text style={{ fontSize: 15, fontWeight: '500' }}> {this.state.streaks[index]} </Text>
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+
                         <CheckBox
                             value={this.state.checked[index] == true}
                             onValueChange={() => {
@@ -378,8 +397,6 @@ class DailyScreen extends Component<any, any> {
                                     this.decrementStreak(index);
                                 }
                             }}/>
-                    </View>
-                </TouchableOpacity>
             </View>
         )};
 
@@ -508,32 +525,33 @@ class DailyScreen extends Component<any, any> {
     render() {
         return (
          <>
-        <View style={{flex: 1, flexDirection: 'column'}}>
-          <View style={[styles.header]}>
-              <Text style={styles.textBox}>Dailies</Text>
-          </View>
+             <View style={{ flex: 1 }}>
+                 <View style={[styles.header]}>
+                     <View style={{ flex: 1, alignSelf: 'center' }}>
+                         <TouchableOpacity style={styles.backButton}
+                                           onPress={() => this.props.routeTo(Screens.Home)}>
+                             <Image style={{ width: 50, height: 50, borderRadius: 25 }} source={require('./assets/back.png')} />
+                         </TouchableOpacity>
+                     </View>
+                     <Text style={styles.headerText}> Dailies</Text>
+                     <View style={{ flex: 1, alignSelf: 'center' }}>
+                         <TouchableOpacity style={[styles.backButton, { backgroundColor: 'rgb(176, 239, 179)' }]}
+                                           onPress={() => this.props.routeTo(Screens.AddTask, { screen: Screens.DailyScreen })}>
+                             <Image source={require('./assets/plus.png')} style={{ width: 50, height: 50, borderRadius: 25 }} />
+                         </TouchableOpacity>
 
-          <View style={[styles.container]}>
-                  <FlatList
-                      data={this.state.tasks}
-                      renderItem={({ item, index }) => this.Item(item.title, index)}
-                      keyExtractor={item => item._id}
-                  />
+                     </View>
 
-              <View style={{flex: 0.15, flexDirection: 'row'}}>
-                <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}
-                                  onPress={() => this.props.routeTo(Screens.Home)}>
-                  <Image source={require ('./assets/back.png') } style={styles.TouchableOpacityStyle}/>
-                </TouchableOpacity>
-                <View style={{flex: 4, opacity: 0}}>
-                </View>
-                <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}
-                                  onPress={() => this.props.routeTo(Screens.AddTask, {screen: Screens.DailyScreen})}>
-                  <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
-                </TouchableOpacity>
-              </View>
-          </View>
-        </View>
+                 </View>
+
+                 <View style={[styles.container]}>
+                         <FlatList
+                             data={this.state.tasks}
+                             renderItem={({ item, index }) => this.Item(item.title, index)}
+                             keyExtractor={item => item._id}
+                         />
+                 </View>
+             </View>
 
         </>
         );
@@ -541,46 +559,73 @@ class DailyScreen extends Component<any, any> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 6,
-    backgroundColor: 'blanchedalmond',
-    borderWidth: 5,
-    borderTopWidth: 0
-  },
-    textBox: {
-        fontSize:40,
-        fontFamily: "serif",
+    container: {
+        flex: 6,
+        backgroundColor: 'blanchedalmond',
+        borderTopWidth: 0,
+        alignItems: 'center',
+        paddingTop: 20,
     },
     card: {
-        fontSize:30,
-        fontFamily: "serif",
+        fontSize: 30,
     },
-  header: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: '#b4ecb4',
-    borderWidth: 5
-  },
+    header: {
+        backgroundColor: 'rgb(183, 283, 155)',
+        borderBottomWidth: 4,
+        flexDirection: 'row',
+        paddingHorizontal: 15,
+        height: 100
+    },
+    itemView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 8,
+        borderColor: 'black',
+        borderWidth: 4,
+        backgroundColor: '#fff',
+        borderRadius: 25,
+        width: 370
+    },
+    item: {
+        backgroundColor: '#fff',
+        padding: 20,
+        width: 250,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderRadius: 25
+    },
 
-  body:{
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: '#FFFFFF',
-    borderRadius: 60,
-    marginVertical: 20,
-    marginHorizontal: 20,
-    borderColor: '#000000',
-    borderWidth: 5,
-    flexDirection: 'row'
-  },
+    TouchableOpacityStyle: {
+        flex: 1,
+        resizeMode: 'stretch',
+        width: 'auto',
+        height: 'auto'
+    },
 
-TouchableOpacityStyle: {
-  flex: 1,
-  resizeMode: 'stretch',
-  width: 'auto',
-  height: 'auto'
-}
+    backButton: {
+        alignSelf: 'flex-start',
+        backgroundColor: 'rgb(110, 192, 178)',
+        borderRadius: 15,
+        borderWidth: 4,
+        height: 60,
+        width: 60,
+    },
+    headerText: {
+        flex: 2,
+        fontSize: 35,
+        fontWeight: '700',
+        color: 'black',
+        alignSelf: 'center',
+        paddingHorizontal: 70,
+    },
+    title: {
+        fontSize: 20,
+        color: 'black',
+        fontWeight: 'bold'
+    },
 
 
 });
