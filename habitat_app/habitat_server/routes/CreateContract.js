@@ -72,17 +72,32 @@ router.post('/updateContract', async (req, res, next) => {
 
     var contractId = req.body.contractId;
     contractId instanceof mongoose.Types.ObjectId;
-    var taskIds = [];
     for(var i = 0; i < req.body.tasks.length; i++) {
       var tempId = req.body.tasks[i];
       tempId instanceof mongoose.Types.ObjectId;
-      taskIds.push(tempId);
+      var findResult = await ContractModel.findOne({_id: contractId}, {tasks: tempId});
+      if(findResult == null) { //if not already in contract add it
+        var addResult = await ContractModel.updateOne({_id: contractId}, { $push: {
+          tasks: tempId}});
+      }
     }
-    console.log("taskIds: " + taskIds);
-    var result = await ContractModel.updateOne({_id: contractId}, {
-      tasks: taskIds}
-    );
-    res.send(result);
+
+
+    for(var i = 0; i < req.body.tasksToRemove.length; i++) {
+      var tempId = req.body.tasksToRemove[i];
+      tempId instanceof mongoose.Types.ObjectId;
+      var myTaskResult = await UserModel.findOne({_id: req.user._id}, {tasks: tempId});
+      console.log("myTaskResult: " + myTaskResult);
+      var findResult = await ContractModel.findOne({_id: contractId}, {tasks: tempId});
+      console.log("findResult: " + findResult);
+      if(myTaskResult != null && findResult != null) { //if it is my task and my task is in contract, remove it
+        var removeResult = await ContractModel.updateOne({_id: contractId}, { $pull: {
+          tasks: tempId}});
+      }
+    }
+
+    var empty = [];
+    res.send(empty);
   } catch (err) {
     res.status(500).send(err);
   }

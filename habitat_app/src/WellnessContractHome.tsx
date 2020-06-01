@@ -264,6 +264,7 @@ class WellnessContractHome extends Component {
         <View
           style={{
             flexDirection:"row",
+            justifyContent: 'center',
             width: 370,
             height: 150
           }}>
@@ -292,6 +293,7 @@ class WellnessContractHome extends Component {
 
               <Image
                 style={{
+
                   flex: 1
                 }}
                 source={require('./assets/leavecontract.png')}
@@ -377,7 +379,6 @@ const styles = StyleSheet.create({
   entireScreenContainer: {
     flexDirection: "column",
     flex: 1,
-    alignItems: 'center',
     backgroundColor: 'blanchedalmond'
   },
   titleText: {
