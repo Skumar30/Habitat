@@ -80,11 +80,12 @@ class ViewWellnessContract extends Component {
 
   componentDidMount = async() =>  {
 
+    console.log("current contractId is: " + this.props.props.currentContractId);
     //update list of tasks
-    this.updateTasks().then(result) => {
+    this.updateTasks().then(result => {
       this.getMyTasks();
       this.getTheirTasks();
-    };
+    });
 
   }
 
