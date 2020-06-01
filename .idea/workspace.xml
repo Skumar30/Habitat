@@ -132,6 +132,7 @@
       <change beforePath="$PROJECT_DIR$/habitat_app/src/CreateContract.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/CreateContract.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/Login.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/SignUp.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/src/ViewWellnessContract.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/ViewWellnessContract.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/components/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/src/components/button.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/src/helloworld.js" beforeDir="false" />
     </list>
@@ -197,7 +198,8 @@
       <workItem from="1590792966953" duration="3050000" />
       <workItem from="1590815415103" duration="539000" />
       <workItem from="1590878721541" duration="9485000" />
-      <workItem from="1590968584477" duration="373000" />
+      <workItem from="1590968584477" duration="4022000" />
+      <workItem from="1591052623860" duration="839000" />
     </task>
     <servers />
   </component>
@@ -225,11 +227,11 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1590439689041" />
-    <state x="413" y="182" key="com.intellij.ide.util.TipDialog" timestamp="1590968587544">
+    <state x="413" y="182" key="com.intellij.ide.util.TipDialog" timestamp="1591052672722">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="381" y="168" key="com.intellij.ide.util.TipDialog/0.0.1418.759@0.0.1418.759" timestamp="1587622978292" />
-    <state x="413" y="182" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1590968587544" />
+    <state x="413" y="182" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1591052672722" />
     <state x="425" y="187" key="run.anything.popup" timestamp="1590443424531">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

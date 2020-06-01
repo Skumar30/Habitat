@@ -81,10 +81,10 @@ class ViewWellnessContract extends Component {
   componentDidMount = async() =>  {
 
     //update list of tasks
-    this.updateTasks().then(result) => {
-      this.getMyTasks();
-      this.getTheirTasks();
-    };
+    //this.updateTasks().then(result) => {
+    //  this.getMyTasks();
+     // this.getTheirTasks();
+    //};
 
   }
 

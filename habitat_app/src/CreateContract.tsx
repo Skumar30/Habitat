@@ -182,7 +182,8 @@ class CreateContract extends React.Component<any, State> {
 
             </View>
 
-        );}
+        );
+    }
 };
 
 const styles = StyleSheet.create({

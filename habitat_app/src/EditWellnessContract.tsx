@@ -47,12 +47,16 @@ class EditWellnessContract extends React.Component<any, State>{
     };
 
     componentDidMount() {
-
+        let today = new Date();
+        today.setHours(0, 0, 0)
         this.getTasks().then(res => {
             var tasks:{key: any; title: any;}[] = [];
-            res.forEach((element: { _id: any; title: any; }) => {
-                var temp = {key: element._id, title: element.title};
-                tasks.push(temp);
+            res.forEach((element: { _id: any; title: any; due_date: any;}) => {
+                let date = new Date(element.due_date);
+                if(today <= date) {
+                    var temp = {key: element._id, title: element.title};
+                    tasks.push(temp);
+                }
             });
             this.setState({allTasks: tasks});
             var temp:boolean[] = [];
@@ -129,6 +133,11 @@ class EditWellnessContract extends React.Component<any, State>{
                     </View>
 
                     <Text style={styles.headerText}>Edit Tasks</Text>
+                    <View style={{ flex: 1, alignSelf: 'center' }}>
+                        <TouchableOpacity style={[styles.backButton, { backgroundColor: 'rgb(176, 239, 179)', marginLeft: 25 }]} onPress={this.submitForm}>
+                            <Image source={require('./assets/plus.png')} style={{ width: 50, height: 50, borderRadius: 25 }} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 <View style={styles.listContainer}>
@@ -138,11 +147,9 @@ class EditWellnessContract extends React.Component<any, State>{
                             renderItem={({ item, index }) => this.Item(item.title, index)}
                         />
                     </View>
-                    {/* <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <TouchableOpacity style={{ flex: 1, borderWidth: 5, borderLeftWidth: 0 }} onPress={() => this.props.routeTo(this.props.props.screen, this.state)}>
-                            <Image source={require('./assets/back.png')} style={styles.TouchableOpacityStyle} />
-                        </TouchableOpacity>
-                        <View style={{ flex: 4, opacity: 0 }}>
+                    { /*<View style={{ flex: 1, flexDirection: 'row' }}>
+
+                        <View style={{ flex: 5, opacity: 0 }}>
                         </View>
                         <TouchableOpacity style={{ flex: 1, borderWidth: 5, borderRightWidth: 0 }} onPress={this.submitForm}>
                             <Image source={require('./assets/plus.png')} style={styles.TouchableOpacityStyle} />
@@ -176,7 +183,7 @@ const styles = StyleSheet.create({
         color: 'black',
         alignSelf: 'center',
         paddingHorizontal: 5,
-        flex: 2.2,
+        flex: 2,
     },
     headerContainer: {
         height: 100,
