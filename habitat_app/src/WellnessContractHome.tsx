@@ -251,7 +251,7 @@ class WellnessContractHome extends Component {
           </View>
 
           <View
-            style={{flex:0.9}}>
+            style={{flex: 2, paddingVertical: 15}}>
             <Text
               style={styles.titleText}>
               Wellness Contracts
@@ -376,9 +376,8 @@ class WellnessContractHome extends Component {
 const styles = StyleSheet.create({
   entireScreenContainer: {
     flexDirection: "column",
-    height: 660,
-    width: 410,
-    padding: 20,
+    flex: 1,
+    alignItems: 'center',
     backgroundColor: 'blanchedalmond'
   },
   titleText: {
