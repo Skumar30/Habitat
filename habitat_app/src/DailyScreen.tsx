@@ -143,6 +143,11 @@ class DailyScreen extends Component<any, any> {
     var year = TODAY.getUTCFullYear();
     var newdate;
     let checked = [];
+
+    if (day < 10) {
+      day = '0' + day;
+    }
+
     if (month < 10) {
       newdate = year + '-0' + month + '-' + day;
     } else {
@@ -150,19 +155,21 @@ class DailyScreen extends Component<any, any> {
     }
 
     for (var i = 0; i < this.state.tasks.length; i++) {
-      if (this.state.completes[i] != []) {
+      if (this.state.completes[i].length != 0) {
         var date1 = this.state.completes[i].toString();
         date1 = date1.substring(0, 10);
       } else date1 = '';
 
+      console.log('newdate: ' + newdate);
+      console.log('date1: ' + date1);
       if (newdate == date1) checked.push(true);
       else {
         checked.push(false);
       }
     }
     this.setState({checked: checked});
-    //console.log("inside updateCheckBox");
-    //console.log(this.state.checked[0]);
+    console.log('inside updateCheckBox');
+    console.log(this.state.checked[0]);
   }
 
   checkStreak() {
@@ -172,6 +179,10 @@ class DailyScreen extends Component<any, any> {
     var day1 = TODAY.getUTCDate();
     var year1 = TODAY.getUTCFullYear();
     var today;
+
+    if (day1 < 10) {
+      day1 = '0' + day1;
+    }
 
     if (month1 < 10) {
       today = year1 + '-0' + month1 + '-' + day1;
@@ -187,6 +198,10 @@ class DailyScreen extends Component<any, any> {
     var year2 = YESTERDAY.getUTCFullYear();
     var yesterday;
 
+    if (day2 < 10) {
+      day2 = '0' + day2;
+    }
+
     if (month2 < 10) {
       yesterday = year2 + '-0' + month2 + '-' + day2;
     } else {
@@ -195,17 +210,21 @@ class DailyScreen extends Component<any, any> {
 
     // Go through each task and their last completed day
     for (var i = 0; i < this.state.tasks.length; i++) {
-      var lastDay = this.state.tasks[i].datesCompleted[
+      let lastDay = this.state.tasks[i].datesCompleted[
         this.state.tasks[i].datesCompleted.length - 1
       ];
-      if (lastDay != null) lastDay = lastDay.substring(0, 10);
+      //lastDay = lastDay.substring(0,10);
+      console.log('task is: ' + this.state.tasks[i]);
+      console.log('dates completed: ' + this.state.tasks[i].datesCompleted);
       console.log(lastDay);
 
       // If the last completed date was not today or yesterday, streak resets
       if (lastDay == today || lastDay == yesterday) console.log(lastDay);
       // Else, reset streak
       else {
-        this.state.tasks[i].streak = 0;
+        let streak = this.state.tasks;
+        streak[i].streak = 0;
+        this.setState({streak: 0});
         this.updateStreak(i);
       }
     }
@@ -236,7 +255,7 @@ class DailyScreen extends Component<any, any> {
     this.getDailies().then((res) => {
       this.setState({tasks: res});
       this.updateState(res);
-      this.checkStreak();
+      //this.checkStreak();
     });
 
     console.log('after getDailies');
@@ -247,9 +266,9 @@ class DailyScreen extends Component<any, any> {
       //this.updateContract(res1)
     });
 
-    //console.log("tasks");
+    console.log('tasks');
     console.log(this.state.tasks);
-    //console.log("checks");
+    console.log('checks');
     console.log(this.state.checked);
   }
 
@@ -348,38 +367,50 @@ class DailyScreen extends Component<any, any> {
   /* Create the individual items for the flatlist */
   Item = (title: string, index: number) => {
     /*
-        console.log("the index is", index)
-        console.log("the len s", this.state.checked.length)
+        console.log("the index is", index);
+        console.log("the len s", this.state.checked.length);
         console.log("index: " + this.state.checked[index]);
         console.log("double equal");
         console.log(this.state.checked[index] == true);
         console.log("triple equal: ");
         console.log(this.state.checked[index] === true);
         console.log("what is checked " + this.state.checked[index]);
-        console.log("totalData")
-         */
+        console.log(TODAY);
+        */
     return (
-      <View>
+      <View style={styles.itemView}>
         <TouchableOpacity onPress={() => this.alert(index)}>
-          <View style={[styles.body]}>
-            <Text>{title}</Text>
-            <Text>{'   streak:'}</Text>
-            <Text>{this.state.streaks[index]}</Text>
-            <CheckBox
-              value={this.state.checked[index] == true}
-              onValueChange={() => {
-                var checked = this.state.checked;
-                checked[index] = !checked[index];
-                this.setState({checked: checked});
-                if (this.state.checked[index] == true) {
-                  this.incrementStreak(index);
-                } else {
-                  this.decrementStreak(index);
-                }
-              }}
-            />
+          <View style={[styles.item]}>
+            <Text style={styles.title}>{title}</Text>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: '400',
+                textAlign: 'left',
+                paddingTop: 7,
+              }}>
+              STREAK
+              <Text style={{fontSize: 15, fontWeight: '500'}}>
+                {' '}
+                {this.state.streaks[index]}{' '}
+              </Text>
+            </Text>
           </View>
         </TouchableOpacity>
+
+        <CheckBox
+          value={this.state.checked[index] == true}
+          onValueChange={() => {
+            var checked = this.state.checked;
+            checked[index] = !checked[index];
+            this.setState({checked: checked});
+            if (this.state.checked[index] == true) {
+              this.incrementStreak(index);
+            } else {
+              this.decrementStreak(index);
+            }
+          }}
+        />
       </View>
     );
   };
@@ -513,9 +544,36 @@ class DailyScreen extends Component<any, any> {
   render() {
     return (
       <>
-        <View style={{flex: 1, flexDirection: 'column'}}>
+        <View style={{flex: 1}}>
           <View style={[styles.header]}>
-            <Text style={styles.textBox}>Dailies</Text>
+            <View style={{flex: 1, alignSelf: 'center'}}>
+              <TouchableOpacity
+                style={styles.backButton}
+                onPress={() => this.props.routeTo(Screens.Home)}>
+                <Image
+                  style={{width: 50, height: 50, borderRadius: 25}}
+                  source={require('./assets/back.png')}
+                />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.headerText}> Dailies</Text>
+            <View style={{flex: 1, alignSelf: 'center'}}>
+              <TouchableOpacity
+                style={[
+                  styles.backButton,
+                  {backgroundColor: 'rgb(176, 239, 179)'},
+                ]}
+                onPress={() =>
+                  this.props.routeTo(Screens.AddTask, {
+                    screen: Screens.DailyScreen,
+                  })
+                }>
+                <Image
+                  source={require('./assets/plus.png')}
+                  style={{width: 50, height: 50, borderRadius: 25}}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={[styles.container]}>
@@ -524,30 +582,6 @@ class DailyScreen extends Component<any, any> {
               renderItem={({item, index}) => this.Item(item.title, index)}
               keyExtractor={(item) => item._id}
             />
-
-            <View style={{flex: 0.2, flexDirection: 'row'}}>
-              <TouchableOpacity
-                style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}
-                onPress={() => this.props.routeTo(Screens.Home)}>
-                <Image
-                  source={require('./assets/back.png')}
-                  style={styles.TouchableOpacityStyle}
-                />
-              </TouchableOpacity>
-              <View style={{flex: 4, opacity: 0}}></View>
-              <TouchableOpacity
-                style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}
-                onPress={() =>
-                  this.props.routeTo(Screens.AddTask, {
-                    screen: Screens.DailyScreen,
-                  })
-                }>
-                <Image
-                  source={require('./assets/plus.png')}
-                  style={styles.TouchableOpacityStyle}
-                />
-              </TouchableOpacity>
-            </View>
           </View>
         </View>
       </>
@@ -559,35 +593,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 6,
     backgroundColor: 'blanchedalmond',
-    borderWidth: 5,
     borderTopWidth: 0,
-  },
-  textBox: {
-    fontSize: 40,
-    fontFamily: 'serif',
+    alignItems: 'center',
+    paddingTop: 20,
   },
   card: {
     fontSize: 30,
-    fontFamily: 'serif',
   },
   header: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#b4ecb4',
-    borderWidth: 5,
-  },
-
-  body: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 60,
-    marginVertical: 20,
-    marginHorizontal: 20,
-    borderColor: '#000000',
-    borderWidth: 5,
+    backgroundColor: 'rgb(183, 283, 155)',
+    borderBottomWidth: 4,
     flexDirection: 'row',
+    paddingHorizontal: 15,
+    height: 100,
+  },
+  itemView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 8,
+    borderColor: 'black',
+    borderWidth: 4,
+    backgroundColor: '#fff',
+    borderRadius: 25,
+    width: 370,
+  },
+  item: {
+    backgroundColor: '#fff',
+    padding: 20,
+    width: 250,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: 25,
   },
 
   TouchableOpacityStyle: {
@@ -595,6 +634,28 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
     width: 'auto',
     height: 'auto',
+  },
+
+  backButton: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgb(110, 192, 178)',
+    borderRadius: 15,
+    borderWidth: 4,
+    height: 60,
+    width: 60,
+  },
+  headerText: {
+    flex: 2,
+    fontSize: 35,
+    fontWeight: '700',
+    color: 'black',
+    alignSelf: 'center',
+    paddingHorizontal: 70,
+  },
+  title: {
+    fontSize: 20,
+    color: 'black',
+    fontWeight: 'bold',
   },
 });
 

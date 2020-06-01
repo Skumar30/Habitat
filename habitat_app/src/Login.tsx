@@ -98,7 +98,7 @@ export default class Login extends React.Component<{}, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.username && props.errors.username
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Username"
@@ -117,7 +117,7 @@ export default class Login extends React.Component<{}, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.password && props.errors.password
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Password"
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   header: {
-    fontFamily: 'italic',
+    //fontFamily: 'italic',
     fontSize: 80,
     textAlign: 'left',
     margin: 10,
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   errorText: {
-    fontFamily: 'italic',
+    //fontFamily: 'italic',
     fontSize: 13,
     textAlign: 'center',
     margin: 5,
