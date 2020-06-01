@@ -24,12 +24,16 @@ interface HomeState {
 }
 
 // Assets
-const full = require('./assets/full.png');
-const empty = require('./assets/empty.png');
+const full = require('./assets/fullheart.png');
+const empty = require('./assets/emptyheart.png');
 const store = require('./assets/store.png');
 const menu = require('./assets/menuicon.png');
 const points = require('./assets/points.png');
-const head = require('./assets/head.png');
+const bearhead = require('./assets/bearhead.png');
+const cathead = require('./assets/cathead.png');
+const foxhead = require('./assets/foxhead.png');
+const pighead = require('./assets/pighead.png');
+const cowhead = require('./assets/cowhead.png');
 const happy = require('./assets/happy.png');
 const sad = require('./assets/sad.png');
 const background = require('./assets/background.png');
@@ -74,6 +78,14 @@ var itemList: { [key: string]: any } = {
   '5ec1bc939a1d3fa4b9a56652': none,
   '5ec1bc999a1d3fa4b9a56653': balloon,
   '5ec1bc9e9a1d3fa4b9a56654': sir,
+};
+
+var headList: { [key: string]: any } = {
+  '5ebddb16a428ab3a446f4d9c': bearhead,
+  '5ec1849acaf74254f8f6613e': cathead,
+  '5ec184eecaf74254f8f6613f': cowhead,
+  '5ec18ab4caf74254f8f66140': foxhead,
+  '5ec1bac29a1d3fa4b9a5664b': pighead,
 };
 
 const bars = [];
@@ -157,6 +169,7 @@ class Home extends React.Component<{}, HomeState> {
     const petType = itemList[this.state.cosmetics[0]];
     const hat = itemList[this.state.cosmetics[1]];
     const other = itemList[this.state.cosmetics[2]];
+    const head = headList[this.state.cosmetics[0]];
     //const cosmetics = this.getCosmetics();
 
     // Didn't make style class for the different flex values

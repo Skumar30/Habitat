@@ -223,7 +223,7 @@ class WellnessContractHome extends Component {
                     style={{
                       flex: 1
                     }}
-                    source={require('./assets/view.png')}
+                    source={require('./assets/viewcontract.png')}
                   >
                   </Image>
               
@@ -244,7 +244,7 @@ class WellnessContractHome extends Component {
                     style={{
                       flex: 1
                     }}
-                    source={require('./assets/leave.png')}
+                    source={require('./assets/leavecontract.png')}
                   >
                   </Image>
               
@@ -265,7 +265,7 @@ class WellnessContractHome extends Component {
                     style={{
                       flex: 1
                     }}
-                    source={require('./assets/create.png')}
+                    source={require('./assets/createcontract.png')}
                   >
                   </Image>
               
