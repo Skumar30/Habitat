@@ -434,7 +434,20 @@ class RegTask extends React.Component<any, State>{
         return(
         <View style={styles.container}>
           <View style={styles.headerContainer}>
-              <Text style={styles.headerText}>Your Tasks</Text>
+          <View style={{ flex: 1, alignSelf: 'center' }}>
+                         <TouchableOpacity style={styles.backButton}
+                                           onPress={() => this.props.routeTo(Screens.Home)}>
+                             <Image style={{ width: 50, height: 50, borderRadius: 25 }} source={require('./assets/back.png')} />
+                         </TouchableOpacity>
+                     </View>
+                     <Text style={styles.headerText}> Tasks</Text>
+                     <View style={{ flex: 1, alignSelf: 'center' }}>
+                         <TouchableOpacity style={[styles.backButton, { backgroundColor: 'rgb(176, 239, 179)' }]}
+                                           onPress={() => this.props.routeTo(Screens.AddTask, { screen: Screens.RegTask })}>
+                             <Image source={require('./assets/plus.png')} style={{ width: 50, height: 50, borderRadius: 25 }} />
+                         </TouchableOpacity>
+
+                     </View>
           </View>
           <View style={styles.dateContainer}>
             <Icon 
@@ -462,20 +475,6 @@ class RegTask extends React.Component<any, State>{
                 keyExtractor={item => item._id}
               />
             </View>
-            <View style={{flex: 1, flexDirection: 'row'}}>
-              <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}
-                                onPress={() => this.props.routeTo(Screens.Home)}>
-                <Image source={require ('./assets/back.png') } style={styles.TouchableOpacityStyle}/>
-              </TouchableOpacity>
-              <View style={{flex: 4, opacity: 0}}>
-
-              </View>
-              <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}
-                              onPress={() => this.props.routeTo(Screens.AddTask, {screen: Screens.RegTask})}
-                              >
-                <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
-              </TouchableOpacity>
-            </View>
           </View>
         </View>
       )
@@ -491,17 +490,19 @@ class RegTask extends React.Component<any, State>{
       borderBottomWidth: 5
     },
     headerText: {
-      fontSize: 40,
-      fontFamily: 'serif',
-      padding: 10
+      flex: 2,
+        fontSize: 35,
+        fontWeight: '700',
+        color: 'black',
+        alignSelf: 'center',
+        paddingHorizontal: 70,
     },
     headerContainer : {
-      flex: 0.1,
       backgroundColor: 'skyblue',
-      borderTopWidth: 5,
-      borderBottomWidth: 5,
-      justifyContent: "center",
-      alignItems: "center",
+        borderBottomWidth: 4,
+        flexDirection: 'row',
+        paddingHorizontal: 15,
+        height: 100
     },
     dateContainer : {
       flex: 0.05,
@@ -554,7 +555,15 @@ class RegTask extends React.Component<any, State>{
       width: 'auto',
       height: 'auto',
       borderWidth: 5,
-    }
+    },
+    backButton: {
+      alignSelf: 'flex-start',
+      backgroundColor: 'rgb(110, 192, 178)',
+      borderRadius: 15,
+      borderWidth: 4,
+      height: 60,
+      width: 60,
+  },
   })
   export default RegTask;
   
