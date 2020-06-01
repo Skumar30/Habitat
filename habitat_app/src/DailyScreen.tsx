@@ -129,7 +129,12 @@ class DailyScreen extends Component<any, any> {
         var day = TODAY.getUTCDate();
         var year = TODAY.getUTCFullYear();
         var newdate;
-        let checked = []
+        let checked = [];
+
+        if (day < 10){
+            day = "0" + day;
+        }
+
         if (month < 10) {
             newdate = year + "-0" + month + "-" + day;
         }
@@ -138,13 +143,15 @@ class DailyScreen extends Component<any, any> {
         }
 
         for ( var i = 0; i < this.state.tasks.length; i++){
-            if( this.state.completes[i] != []){
+            if( this.state.completes[i].length != 0){
                 var date1 = this.state.completes[i].toString();
                 date1 = date1.substring(0,10);
             }
             else
                 date1 = "";
 
+            console.log("newdate: " + newdate);
+            console.log("date1: " + date1);
             if( newdate == date1 )
                 checked.push(true);
             else {
@@ -152,8 +159,8 @@ class DailyScreen extends Component<any, any> {
             }
         }
         this.setState({checked: checked})
-        //console.log("inside updateCheckBox");
-        //console.log(this.state.checked[0]);
+        console.log("inside updateCheckBox");
+        console.log(this.state.checked[0]);
 
     }
 
@@ -190,8 +197,7 @@ class DailyScreen extends Component<any, any> {
         // Go through each task and their last completed day
         for ( var i = 0; i < this.state.tasks.length; i++){
             var lastDay = this.state.tasks[i].datesCompleted[this.state.tasks[i].datesCompleted.length-1];
-            if( lastDay != null)
-                lastDay = lastDay.substring(0,10);
+            lastDay = lastDay.substring(0,10);
             console.log(lastDay);
 
             // If the last completed date was not today or yesterday, streak resets
@@ -231,7 +237,7 @@ class DailyScreen extends Component<any, any> {
     this.getDailies().then(res => {
         this.setState({tasks: res});
         this.updateState(res);
-        this.checkStreak();
+        //this.checkStreak();
         });
 
         console.log("after getDailies");
@@ -242,9 +248,9 @@ class DailyScreen extends Component<any, any> {
         //this.updateContract(res1)
         });
 
-     //console.log("tasks");
+     console.log("tasks");
      console.log(this.state.tasks);
-     //console.log("checks");
+     console.log("checks");
      console.log(this.state.checked);
     }
 
@@ -341,17 +347,17 @@ class DailyScreen extends Component<any, any> {
 
         /* Create the individual items for the flatlist */
     Item = (title:string, index:number) =>{
-        /*
-        console.log("the index is", index)
-        console.log("the len s", this.state.checked.length)
+
+        console.log("the index is", index);
+        console.log("the len s", this.state.checked.length);
         console.log("index: " + this.state.checked[index]);
         console.log("double equal");
         console.log(this.state.checked[index] == true);
         console.log("triple equal: ");
         console.log(this.state.checked[index] === true);
         console.log("what is checked " + this.state.checked[index]);
-        console.log("totalData")
-         */
+
+        console.log(TODAY);
         return(
             <View>
                 <TouchableOpacity onPress={() => this.alert(index)}>
@@ -514,7 +520,7 @@ class DailyScreen extends Component<any, any> {
                       keyExtractor={item => item._id}
                   />
 
-              <View style={{flex: 0.2, flexDirection: 'row'}}>
+              <View style={{flex: 0.15, flexDirection: 'row'}}>
                 <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}
                                   onPress={() => this.props.routeTo(Screens.Home)}>
                   <Image source={require ('./assets/back.png') } style={styles.TouchableOpacityStyle}/>
