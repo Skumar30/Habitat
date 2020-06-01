@@ -519,15 +519,13 @@ class DailyScreen extends Component<any, any> {
           </View>
 
           <View style={[styles.container]}>
-            <ScrollView style={{flex: 1}}>
-              <FlatList
-                data={this.state.tasks}
-                renderItem={({item, index}) => this.Item(item.title, index)}
-                keyExtractor={(item) => item._id}
-              />
-            </ScrollView>
+            <FlatList
+              data={this.state.tasks}
+              renderItem={({item, index}) => this.Item(item.title, index)}
+              keyExtractor={(item) => item._id}
+            />
 
-            <View style={{flex: 0.15, flexDirection: 'row'}}>
+            <View style={{flex: 0.2, flexDirection: 'row'}}>
               <TouchableOpacity
                 style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}
                 onPress={() => this.props.routeTo(Screens.Home)}>

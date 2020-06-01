@@ -72,7 +72,7 @@ class TaskCard extends Component {
     var title = this.props.task.title;
     var frequency = this.props.task.frequency;
     var date = new Date(this.props.task.due_date);
-    this.props.routeTo(Screens.EditTask, {screen: Screens.WellnessContractHome, data: {title: title, due_date: date, frequency: frequency}});
+    this.props.routeTo(Screens.EditTask, {screen: Screens.ViewWellnessContract, data: {title: title, due_date: date, frequency: frequency, currentContractId: this.props.currentContractId}});
   }
 
   isDone = async() => {
@@ -87,7 +87,7 @@ class TaskCard extends Component {
 
     var temp = new Date(due_date);
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Nov", "Dec"];
+    const monthsOfYear = ["Nan", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Nov", "Dec"];
     var formatted = daysOfWeek[temp.getDay()] + ", " + monthsOfYear[temp.getMonth()] + " " + temp.getDate();
 
 

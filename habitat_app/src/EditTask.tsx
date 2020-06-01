@@ -60,9 +60,14 @@ export default function EditTask(props){
         datesCompleted: props.props.data.datesCompleted,
         streak: props.props.data.streak
       }),
-    }).then(res => {
+    }).then((res) => {
       // return to previous screen
-      if(checkDaily()){
+      console.log("screen is: " + props.props.screen);
+      if(props.props.screen === Screens.ViewWellnessContract){
+        console.log("passing back is: " + props.props.data.currentContractId);
+        props.routeTo(Screens.ViewWellnessContract, {currentContractId: props.props.data.currentContractId});
+      }
+      else if(checkDaily()){
         props.routeTo(Screens.DailyScreen);
       }
       else{
@@ -74,7 +79,7 @@ export default function EditTask(props){
 
   const backHandler = () => {
       // return to previous screen
-      props.routeTo(props.props.screen)
+      props.routeTo(props.props.screen, {currentContractId: props.props.data.currentContractId})
     }
 
   const titleAlert = () => {
@@ -138,7 +143,7 @@ export default function EditTask(props){
       {/* Frequency */}
       <View style={{flex: 1}}>
         <View style={{...styles.repeat, flex: 1}}>
-           <Button title="S" color={repeat[0] ? "powderblue" : "#999"} onPress={() => toggleRepeat(0)}/>
+          <Button title="S" color={repeat[0] ? "powderblue" : "#999"} onPress={() => toggleRepeat(0)}/>
           <Button title="M" color={repeat[1] ? "powderblue" : "#999"} onPress={() => toggleRepeat(1)}/>
           <Button title="T" color={repeat[2] ? "powderblue" : "#999"} onPress={() => toggleRepeat(2)}/>
           <Button title="W" color={repeat[3] ? "powderblue" : "#999"} onPress={() => toggleRepeat(3)}/>
