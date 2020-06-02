@@ -47,23 +47,26 @@ export default class ChangePassword extends React.Component<{}, State> {
       <>
         <View
           style={{
-            height: 60,
-            backgroundColor: '#485EEC',
+            height: 100,
+            backgroundColor: 'rgb(250, 225, 125)',
             justifyContent: 'center',
             alignItems: 'center',
+            borderBottomWidth: 4,
+            flexDirection: 'row',
+            paddingHorizontal: 15
           }}>
           <View
             style={{
-              paddingRight: 360,
-              flex: 0.1,
+              alignSelf: 'center',
+              flex: 1,
             }}>
-            <TouchableOpacity
+            <TouchableOpacity style={styles.backButton}
               onPress={() => this.props.routeTo(Screens.Settings)}>
-              <Image
-                source={require('./assets/backsmall.png')}></Image>
+              <Image style={{ width: 50, height: 50, borderRadius: 25 }}
+                source={require('./assets/back.png')}></Image>
             </TouchableOpacity>
           </View>
-          <Text style={styles.buttonText}>Change Password</Text>
+          <Text style={styles.screenTitle}>Change Password</Text>
         </View>
         <View style={styles.buttonGroup}>
           <ScrollView>
@@ -118,7 +121,7 @@ export default class ChangePassword extends React.Component<{}, State> {
                       ...styles.textInput,
                       backgroundColor:
                         props.touched.old_password && props.errors.old_password
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Old Password"
@@ -139,7 +142,7 @@ export default class ChangePassword extends React.Component<{}, State> {
                       ...styles.textInput,
                       backgroundColor:
                         props.touched.password && props.errors.password
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="New Password"
@@ -163,7 +166,7 @@ export default class ChangePassword extends React.Component<{}, State> {
                       backgroundColor:
                         props.touched.confirm_password &&
                           props.errors.confirm_password
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Confirm New Password"
@@ -178,7 +181,7 @@ export default class ChangePassword extends React.Component<{}, State> {
                     <TouchableOpacity
                       style={styles.TO}
                       onPress={props.handleSubmit}>
-                      <Text style={styles.buttonText}>Submit</Text>
+                      <Text style={styles.buttonText}>SUBMIT</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -201,18 +204,19 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
+    fontWeight: '500',
     fontSize: 20,
+    alignSelf: 'center'
   },
   textInput: {
     margin: 20,
     height: 50,
-    width: 300,
-    borderRadius: 7,
-    borderColor: 'white',
-    borderWidth: 1,
+    width: 370,
+    borderRadius: 10,
+    borderColor: 'black',
+    borderWidth: 3,
     backgroundColor: 'white',
+    padding: 5
   },
   textStyle: {
     color: 'white',
@@ -229,12 +233,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorText: {
-    fontFamily: 'italic',
+    // fontFamily: 'italic',
     fontSize: 13,
     textAlign: 'center',
-    margin: 5,
+    marginTop: 5,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
     textTransform: 'uppercase',
   },
   input: {
@@ -242,14 +246,14 @@ const styles = StyleSheet.create({
     borderColor: '#000000',
     padding: 8,
     margin: 4,
-    backgroundColor: 'white',
-    borderRadius: 9,
+    backgroundColor: 'black',
+    borderRadius: 15,
     fontSize: 18,
   },
   buttonGroup: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#0094FF',
+    backgroundColor: 'blanchedalmond',
   },
   buttonSpacing: {
     paddingTop: 20,
@@ -257,12 +261,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   TO: {
-    backgroundColor: '#485EEC',
-    height: 45,
-    width: 300,
-    borderRadius: 7,
+    backgroundColor: 'slategray',
+    borderRadius: 60,
+    marginTop: 20,
+    height: 50,
+    width: 100,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 3
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgb(110, 192, 178)',
+    borderRadius: 15,
+    borderWidth: 4,
+    height: 60,
+    width: 60,
+  },
+  screenTitle: {
+    fontSize: 25,
+    fontWeight: '700',
+    color: 'black',
+    alignSelf: 'center',
+    paddingHorizontal: 5,
+    flex: 3.5
   },
 });
