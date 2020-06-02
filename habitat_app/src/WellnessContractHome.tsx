@@ -266,8 +266,7 @@ class WellnessContractHome extends Component {
           style={{
             flexDirection:"row",
             justifyContent: 'center',
-            width: 370,
-            height: 150
+        
           }}>
 
           {/* button which allows user to view existing wellness contract */}
