@@ -119,7 +119,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
               <View style={styles.modalView}>
                 <View>
                   <Text style={styles.modalText}>
-                    Sorry, you don't have enough for the {this.getName(code)} {this.getCategory(code)} right now.
+                    Sorry, you don't have enough points for the {this.getName(code)} {this.getCategory(code)} right now.
                   </Text>
                 </View>
 
@@ -153,7 +153,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
               <View style={styles.modalView}>
                 <View>
                   <Text style={styles.modalText}>
-                    Would you like to purchase the {this.getName(code)} {this.getCategory(code)} for ${this.getPrice(code)}?
+                    Would you like to purchase the {this.getName(code)} {this.getCategory(code)} for {this.getPrice(code)} points?
                   </Text>
                 </View>
 
@@ -161,7 +161,7 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
 
                   <View>
                     <TouchableOpacity
-                      style={[styles.confirmationButton, { backgroundColor: 'indianred' }]}
+                      style={[styles.confirmationButton, { backgroundColor: '#556' }]}
                       onPress={() => { this.setState({ modalVisible: false }); }}
                     >
                       <Text style={[styles.itemText]}>NO</Text>
@@ -170,10 +170,10 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
 
                   <View>
                     <TouchableOpacity
-                      style={[styles.confirmationButton, { backgroundColor: '#b4ecb4' }]}
+                      style={[styles.confirmationButton, { backgroundColor: 'slategray' }]}
                       onPress={() => { this.handlePurchase(code, type) }}
                     >
-                      <Text style={[styles.itemText, { color: 'black' }]}>YES</Text>
+                      <Text style={styles.itemText}>YES</Text>
                     </TouchableOpacity>
                   </View>
 
@@ -310,7 +310,11 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
         >
           <Text style={styles.itemText}>{this.getName(e.id)}</Text>
           <Image style={styles.itemImage} source={this.getImage(e.id)} />
-          {this.getOwnedStatus(e.id) ? null : <Text style={styles.itemText} >${this.getPrice(e.id)}</Text>}
+          {this.getOwnedStatus(e.id) ? null :
+            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+              <Image source={require('./assets/points.png')} style={{ height: 15, width: 15, marginTop: 3 }}></Image>
+              <Text style={styles.itemText} > {this.getPrice(e.id)}</Text>
+            </View>}
         </TouchableOpacity>
       );
     });
@@ -331,10 +335,11 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
               </TouchableOpacity>
             </View>
             <Text style={styles.screenTitle}>Customize</Text>
-            {/* <Text style={styles.creditDisplay}>${this.state.credits}</Text> */}
-            {/* add logic to make negative nums appear as 0*/}
-            {this.state.credits < 0 ? <Text style={styles.creditDisplay}>$0</Text> :
-              <Text style={styles.creditDisplay}>${this.state.credits}</Text>}
+            <View style={{ flex: 1, paddingTop: 60, flexDirection: 'row', alignSelf: 'center' }}>
+              <Image source={require('./assets/points.png')} style={{ height: 20, width: 20, marginTop: 3.5 }}></Image>
+              {this.state.credits < 0 ? <Text style={styles.creditDisplay}> 0</Text> :
+                <Text style={styles.creditDisplay}> {this.state.credits}</Text>}
+            </View>
           </View>
 
           <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.scrollView}>
@@ -367,7 +372,8 @@ class Customize extends React.Component<any, { modalVisible: boolean, rerender: 
 
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: '#e0eeee',
+    // backgroundColor: '#e0eeee',
+    backgroundColor: 'blanchedalmond'
   },
   engine: {
     position: 'absolute',
@@ -377,7 +383,8 @@ const styles = StyleSheet.create({
     zIndex: 3,
     flexDirection: 'row',
     borderBottomWidth: 4,
-    backgroundColor: '#a0aaaa',
+    // backgroundColor: '#a0aaaa',
+    backgroundColor: 'rgb(185, 230, 215)',
     paddingHorizontal: 15,
     height: 100,
   },
@@ -388,18 +395,15 @@ const styles = StyleSheet.create({
     color: 'black',
     alignSelf: 'center',
     paddingHorizontal: 15,
-    //fontFamily: 'proximaSoft'
   },
   body: {
-    backgroundColor: '#e0eeee',
-    //backgroundColor: 'blanchedalmond'
+    // backgroundColor: '#e0eeee',
+    backgroundColor: 'blanchedalmond'
   },
   creditDisplay: {
     textAlign: 'center',
     fontSize: 22,
     fontWeight: '600',
-    paddingTop: 60,
-    flex: 1
   },
   itemsContainer: {
     margin: 10,
@@ -454,7 +458,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   itemText: {
-    margin: 5,
+    //margin: 1,
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '500',
@@ -492,9 +496,9 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    marginTop: 250,
+    marginTop: 230,
     width: 375,
-    backgroundColor: '#e0eeee',
+    backgroundColor: 'white',
     borderWidth: 4,
     borderRadius: 20,
     padding: 35,
@@ -526,7 +530,7 @@ const styles = StyleSheet.create({
     width: 90,
     elevation: 2,
     justifyContent: 'center',
-    borderWidth: 4
+    borderWidth: 3
   },
 });
 
