@@ -167,7 +167,7 @@ class ViewWellnessContract extends Component {
                   tasks: taskIds,
                   friend: 'Not Selected',
                   friendID:'',
-                  screen: Screens.WellnessContractHome,
+                  screen: Screens.ViewWellnessContract,
                   contractId: this.props.props.currentContractId,
                   post: true
                 }
@@ -255,7 +255,7 @@ class ViewWellnessContract extends Component {
                   tasks: taskIds,
                   friend: 'Not Selected',
                   friendID:'',
-                  screen: Screens.WellnessContractHome,
+                  screen: Screens.ViewWellnessContract,
                   contractId: this.props.props.currentContractId,
                   post: true
                 }

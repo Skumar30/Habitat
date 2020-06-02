@@ -46,6 +46,7 @@ class EditWellnessContract extends React.Component<any, State> {
       friendID: this.props.props.friendID,
       post: this.props.props.post,
       contractId: this.props.props.contractId,
+      currentContractId: this.props.props.contractId
     };
   }
 
