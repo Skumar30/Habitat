@@ -1,31 +1,31 @@
-import React, {useState, Component} from "react";
+import React, { useState, Component } from "react";
 import { ScrollView, View, Text, Button, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, Modal, StyleSheet } from "react-native";
-import {IP_ADDRESS} from './IP_Address';
+import { IP_ADDRESS } from './IP_Address';
 class PendingCard extends Component {
 
-  constructor(props){
+  constructor(props) {
 
     super(props);
 
     //acceptModalVisible and rejectModalVisible initialized to false
-    this.state = {acceptModalVisible: false, rejectModalVisible: false};
+    this.state = { acceptModalVisible: false, rejectModalVisible: false };
   }
 
   //method which toggles acceptModalVisible
   handleAcceptModalVisible = () => {
 
-    this.setState({acceptModalVisible: !this.state.acceptModalVisible});
+    this.setState({ acceptModalVisible: !this.state.acceptModalVisible });
   }
 
   //method which toggles rejectModalVisible
   handleRejectModalVisible = () => {
 
-    this.setState({rejectModalVisible: !this.state.rejectModalVisible});
+    this.setState({ rejectModalVisible: !this.state.rejectModalVisible });
   }
 
   render() {
 
-    return(
+    return (
 
       <TouchableOpacity>
         <View
@@ -36,10 +36,10 @@ class PendingCard extends Component {
           <View
             style={styles.cardTextContainer}
           >
-            <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 24}}>
+            <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 24 }}>
               {this.props.owner}
             </Text>
-            <Text style={{textAlign: 'center', fontWeight: 'bold', fontSize: 18}}>
+            <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>
               Due: {this.props.due_date}
             </Text>
           </View>
@@ -84,27 +84,27 @@ class PendingCard extends Component {
             <View
               style={styles.popupModalScreen}
             >
-                <View
-                  style={styles.popupModalContainer}
-                >
-                  <Text
-                    style={{
-                      fontSize: 20
-                    }}>
-                      Are you sure you want to accept the invitation?
+              <View
+                style={styles.popupModalContainer}
+              >
+                <Text
+                  style={{
+                    fontSize: 20
+                  }}>
+                  Are you sure you want to accept the invitation?
                   </Text>
-                  <Button
-                    title="Accept Invitation"
-                    onPress={() => {
-                      this.props.handleAccept(this.props.id);
-                      this.handleAcceptModalVisible();
-                    }}>
-                  </Button>
-                  <Button
-                    title="Cancel"
-                    onPress={this.handleAcceptModalVisible}>
-                  </Button>
-                </View>
+                <Button
+                  title="Accept Invitation"
+                  onPress={() => {
+                    this.props.handleAccept(this.props.id);
+                    this.handleAcceptModalVisible();
+                  }}>
+                </Button>
+                <Button
+                  title="Cancel"
+                  onPress={this.handleAcceptModalVisible}>
+                </Button>
+              </View>
             </View>
           </Modal>
 
@@ -120,27 +120,27 @@ class PendingCard extends Component {
             <View
               style={styles.popupModalScreen}
             >
-                <View
-                  style={styles.popupModalContainer}
-                >
-                  <Text
-                    style={{
-                      fontSize: 20
-                    }}>
-                      Are you sure you want to reject the invitation?
+              <View
+                style={styles.popupModalContainer}
+              >
+                <Text
+                  style={{
+                    fontSize: 20
+                  }}>
+                  Are you sure you want to reject the invitation?
                   </Text>
-                  <Button
-                    title="Reject Invitation"
-                    onPress={() => {
-                      this.props.handleReject(this.props.id);
-                      this.handleRejectModalVisible();
-                    }}>
-                  </Button>
-                  <Button
-                    title="Cancel"
-                    onPress={this.handleRejectModalVisible}>
-                  </Button>
-                </View>
+                <Button
+                  title="Reject Invitation"
+                  onPress={() => {
+                    this.props.handleReject(this.props.id);
+                    this.handleRejectModalVisible();
+                  }}>
+                </Button>
+                <Button
+                  title="Cancel"
+                  onPress={this.handleRejectModalVisible}>
+                </Button>
+              </View>
             </View>
           </Modal>
         </View>
@@ -172,13 +172,13 @@ const styles = StyleSheet.create({
   },
 
   iconButtonContainer: {
-    width:125,
-    height:150,
-    borderWidth: 5
+    width: 125,
+    height: 150,
+    borderWidth: 4
   },
 
   popupModalScreen: {
-    flex:1,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -197,8 +197,8 @@ const styles = StyleSheet.create({
 
   cardContainer: {
     backgroundColor: '#FFFFFF',
-    borderWidth: 5,
-    borderRadius: 10,
+    borderWidth: 4,
+    borderRadius: 15,
     flexDirection: 'row',
     margin: 5
   },
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   },
 
   taskCardCheckboxContainer: {
-    flex:0.3,
+    flex: 0.3,
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
     justifyContent: 'center'
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   },
 
   pendingCardInteractContainer: {
-    flex:0.15,
+    flex: 0.15,
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
     justifyContent: 'center'
@@ -237,8 +237,8 @@ const styles = StyleSheet.create({
   },
 
   pendingCardImage: {
-    height:35,
-    width:35,
+    height: 35,
+    width: 35,
   }
 });
 
