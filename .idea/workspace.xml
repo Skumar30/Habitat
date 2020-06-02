@@ -2,7 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="912dc296-c5c3-4fd8-8a3e-8ba3c824f7c3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/AntDesign.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/Entypo.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/EvilIcons.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/Feather.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/FontAwesome.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/FontAwesome5_Brands.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/FontAwesome5_Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/FontAwesome5_Solid.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/Fontisto.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/Foundation.ttf" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/Ionicons.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/MaterialCommunityIcons.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/MaterialIcons.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/Octicons.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/SimpleLineIcons.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/assets/fonts/Zocial.ttf" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/.env" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/.eslintrc" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/.prettierrc" afterDir="false" />
@@ -17,14 +32,26 @@
       <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/package-lock.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/package.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/public/stylesheets/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/AddTask.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/CreateContract.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/Customize.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/DailyTask.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/Friends.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/Home.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/RegTask.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/Settings.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/WellnessContractHome.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/index.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/habitat_server/routes/users.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/ios/Podfile.lock" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcworkspace/contents.xcworkspacedata" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/ios/habitat_app.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/AddTask.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/ChangePassword.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/CustomizeScreen.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/DailyComponent/add-trimmy.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/DailyScreen.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/EditTask.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/EditWellnessContract.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/FriendList.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/Home.tsx" afterDir="false" />
@@ -32,6 +59,7 @@
       <change afterPath="$PROJECT_DIR$/habitat_app/src/PendingCard.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/RegTask.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/Screens.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/Settings.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/TaskCard.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/ViewWellnessContract.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/WellnessContract.tsx" afterDir="false" />
@@ -42,30 +70,53 @@
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/backArrowTransparent.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/background.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/backsmall.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/balloon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/balloonicon.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/bear.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/blankicon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/bow.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/bowicon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/cap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/capicon.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/cat.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/checkmark.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/contracticon.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/cow.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/create.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/crown.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/crownicon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/dailyicon.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/delete.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/duck.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/duckicon.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/empty.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/fonts/proximaSoft.ttf" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/fox.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/friendicon.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/full.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/gary-gillespie.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/happy.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/head.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/homeicon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/homesmall.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/leave.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/menuicon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/party.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/partyicon.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/pig.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/plus.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/points.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/questionMark.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/regicon.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/sad.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/settings.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/sir.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/siricon.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/store.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/view.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/habitat_app/src/assets/x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/.eslintrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/habitat_app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/.prettierrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/.prettierrc.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/__tests__/App-test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/__tests__/App-test.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/habitat_app/android/app/src/main/java/com/habitat_app/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/habitat_app/android/app/src/main/java/com/habitat_app/MainApplication.java" afterDir="false" />
@@ -145,7 +196,9 @@
       <workItem from="1590721214304" duration="6769000" />
       <workItem from="1590792966953" duration="3050000" />
       <workItem from="1590815415103" duration="539000" />
-      <workItem from="1590878721541" duration="152000" />
+      <workItem from="1590878721541" duration="9485000" />
+      <workItem from="1590968584477" duration="4022000" />
+      <workItem from="1591052623860" duration="2192000" />
     </task>
     <servers />
   </component>
@@ -173,11 +226,11 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1590439689041" />
-    <state x="413" y="182" key="com.intellij.ide.util.TipDialog" timestamp="1590878727536">
+    <state x="413" y="182" key="com.intellij.ide.util.TipDialog" timestamp="1591052672722">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="381" y="168" key="com.intellij.ide.util.TipDialog/0.0.1418.759@0.0.1418.759" timestamp="1587622978292" />
-    <state x="413" y="182" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1590878727536" />
+    <state x="413" y="182" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1591052672722" />
     <state x="425" y="187" key="run.anything.popup" timestamp="1590443424531">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

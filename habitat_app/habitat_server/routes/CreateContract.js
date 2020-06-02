@@ -40,7 +40,6 @@ router.get('/getFriends', (req, res) => {
 });
 
 router.post('/addContract', async (req, res, next) => {
-
   try {
     var result = await UserModel.update(
       {_id: req.user._id},
