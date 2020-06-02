@@ -1,92 +1,103 @@
 import React, {useLayoutEffect} from 'react';
-import {Modal, Text, View, SectionList, StyleSheet, FlatList, TouchableOpacity, Alert, TouchableHighlight, Image, CheckBox} from 'react-native'
+import {
+  Modal,
+  Text,
+  View,
+  SectionList,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+  TouchableHighlight,
+  Image,
+  CheckBox,
+} from 'react-native';
 import {Dimensions} from 'react-native';
-import * as Screens from "./Screens";
+import * as Screens from './Screens';
 import {IP_ADDRESS} from './IP_Address';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 interface State {
-    checked: boolean[]
-    allTasks:{key: any; title: any;}[];
-    tasks:{key: any;}[];
-    screen: any;
-    friend: any;
-    friendID: any;
-    date: any;
-    post: boolean;
-    contractId?: any;
+  checked: boolean[];
+  allTasks: {key: any; title: any}[];
+  tasks: {key: any}[];
+  screen: any;
+  friend: any;
+  friendID: any;
+  date: any;
+  post: boolean;
+  contractId?: any;
 }
 
-class EditWellnessContract extends React.Component<any, State>{
+class EditWellnessContract extends React.Component<any, State> {
+  constructor(props: any) {
+    super(props);
 
-    constructor(props:any){
-        super(props);
-
-        var checks:boolean[] = [];
-        this.state = {checked: checks,
-            allTasks: [],
-            tasks: this.props.props.tasks,
-            screen: Screens.EditWellnessContract,
-            date: this.props.props.date,
-            friend: this.props.props.friend,
-            friendID: this.props.props.friendID,
-            post: this.props.props.post,
-            contractId: this.props.props.contractId};
-    }
-
-    getTasks = async() => {
-        const response = await fetch(`http://${IP_ADDRESS}:3000/createContract/getTasks`);
-
-        const body = await response.json();
-        if(response.status != 200) {
-            console.error(body.message);
-        }
-        return body;
+    var checks: boolean[] = [];
+    this.state = {
+      checked: checks,
+      allTasks: [],
+      tasks: this.props.props.tasks,
+      screen: Screens.EditWellnessContract,
+      date: this.props.props.date,
+      friend: this.props.props.friend,
+      friendID: this.props.props.friendID,
+      post: this.props.props.post,
+      contractId: this.props.props.contractId,
     };
+  }
 
     componentDidMount() {
         let today = new Date();
         today.setHours(0, 0, 0)
         this.getTasks().then(res => {
-            var tasks:{key: any; title: any;}[] = [];
-            res.forEach((element: { _id: any; title: any; due_date: any;}) => {
+            var tasks: { key: any; title: any; }[] = [];
+            res.forEach((element: { _id: any; title: any; due_date: any; }) => {
                 let date = new Date(element.due_date);
-                if(today <= date) {
+                if (today <= date) {
                     var temp = {key: element._id, title: element.title};
                     tasks.push(temp);
                 }
             });
             this.setState({allTasks: tasks});
-            var temp:boolean[] = [];
-            for(var i = 0; i < this.state.allTasks.length; i++) {
+            var temp: boolean[] = [];
+            for (var i = 0; i < this.state.allTasks.length; i++) {
                 temp[i] = false;
             }
-            for(var i = 0; i < this.state.allTasks.length; i++) {
-                for(var j = 0; j < this.state.tasks.length; j++) {
-                    if(this.state.tasks[j] == this.state.allTasks[i].key) {
+            for (var i = 0; i < this.state.allTasks.length; i++) {
+                for (var j = 0; j < this.state.tasks.length; j++) {
+                    if (this.state.tasks[j] == this.state.allTasks[i].key) {
                         temp[i] = true;
                     }
                 }
             }
-            this.setState({checked:temp});
+            this.setState({checked: temp});
+        })
+    };
+  getTasks = async () => {
+    const response = await fetch(
+      `http://${IP_ADDRESS}:3000/createContract/getTasks`,
+    );
 
-        });
+    const body = await response.json();
+    if (response.status != 200) {
+      console.error(body.message);
     }
+    return body;
+  };
 
-
-
-    /* Create the individual items for the flatlist */
-    Item = (title:string, index:number) => {
-        return(
-            <View style={styles.itemView}>
-                <View style={styles.item}>
-                    <Text style={styles.title}>{title}</Text>
-                </View>
-            <CheckBox
-                value={this.state.checked[index]}
-                onValueChange={() => {
+  /* Create the individual items for the flatlist */
+  Item = (title: string, index: number) => {
+    return (
+      <View style={styles.itemView}>
+        <View style={styles.item}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+        <CheckBox
+          value={this.state.checked[index]}
+          onValueChange={() => {
             var checks = this.state.checked;
             checks[index] = !checks[index];
             this.setState({checked: checks})
@@ -249,4 +260,5 @@ const styles = StyleSheet.create({
         borderWidth: 5,
     }
 })
+
 export default EditWellnessContract;

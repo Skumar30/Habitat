@@ -242,16 +242,17 @@ class WellnessContractHome extends Component {
         >
           {/* back button to get out of wellness contract home screen */}
           <View
-            style={{flex:0.1}}>
-            <TouchableOpacity onPress={() => this.props.routeTo(Screens.Home)}>
+            style={{flex:0.3}}>
+            <TouchableOpacity style={{width: 60, height: 60, borderRadius: 20, borderWidth: 5}} onPress={() => this.props.routeTo(Screens.Home)}>
               <Image
+                style={{borderRadius: 15}}
                 source={require('./assets/backsmall.png')}>
               </Image>
             </TouchableOpacity>
           </View>
 
           <View
-            style={{flex:0.9}}>
+            style={{flex: 2, paddingVertical: 15}}>
             <Text
               style={styles.titleText}>
               Wellness Contracts
@@ -277,7 +278,7 @@ class WellnessContractHome extends Component {
                 style={{
                   flex: 1
                 }}
-                source={require('./assets/view.png')}
+                source={require('./assets/viewcontract.png')}
               >
               </Image>
 
@@ -294,7 +295,7 @@ class WellnessContractHome extends Component {
                 style={{
                   flex: 1
                 }}
-                source={require('./assets/leave.png')}
+                source={require('./assets/leavecontract.png')}
               >
               </Image>
 
@@ -347,7 +348,7 @@ class WellnessContractHome extends Component {
                 style={{
                   flex: 1
                 }}
-                source={require('./assets/create.png')}
+                source={require('./assets/createcontract.png')}
               >
               </Image>
 
@@ -376,9 +377,8 @@ class WellnessContractHome extends Component {
 const styles = StyleSheet.create({
   entireScreenContainer: {
     flexDirection: "column",
-    height: 660,
-    width: 410,
-    padding: 20,
+    flex: 1,
+    alignItems: 'center',
     backgroundColor: 'blanchedalmond'
   },
   titleText: {
