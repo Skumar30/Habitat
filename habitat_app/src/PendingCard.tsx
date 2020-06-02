@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   iconButtonContainer: {
     width:125,
     height:150,
-    borderWidth: 5
+    borderWidth: 4
   },
 
   popupModalScreen: {
@@ -197,8 +197,8 @@ const styles = StyleSheet.create({
 
   cardContainer: {
     backgroundColor: '#FFFFFF',
-    borderWidth: 5,
-    borderRadius: 10,
+    borderWidth: 4,
+    borderRadius: 15,
     flexDirection: 'row',
     margin: 5
   },
