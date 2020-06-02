@@ -49,6 +49,33 @@ class EditWellnessContract extends React.Component<any, State> {
     };
   }
 
+    componentDidMount() {
+        let today = new Date();
+        today.setHours(0, 0, 0)
+        this.getTasks().then(res => {
+            var tasks: { key: any; title: any; }[] = [];
+            res.forEach((element: { _id: any; title: any; due_date: any; }) => {
+                let date = new Date(element.due_date);
+                if (today <= date) {
+                    var temp = {key: element._id, title: element.title};
+                    tasks.push(temp);
+                }
+            });
+            this.setState({allTasks: tasks});
+            var temp: boolean[] = [];
+            for (var i = 0; i < this.state.allTasks.length; i++) {
+                temp[i] = false;
+            }
+            for (var i = 0; i < this.state.allTasks.length; i++) {
+                for (var j = 0; j < this.state.tasks.length; j++) {
+                    if (this.state.tasks[j] == this.state.allTasks[i].key) {
+                        temp[i] = true;
+                    }
+                }
+            }
+            this.setState({checked: temp});
+        })
+    };
   getTasks = async () => {
     const response = await fetch(
       `http://${IP_ADDRESS}:3000/createContract/getTasks`,
@@ -60,32 +87,6 @@ class EditWellnessContract extends React.Component<any, State> {
     }
     return body;
   };
-
-  componentDidMount() {
-    this.getTasks().then((res) => {
-      var tasks: {key: any; title: any}[] = [];
-      var checks: boolean[] = [];
-      res.forEach((element: {_id: any; title: any}) => {
-        var temp = {key: element._id, title: element.title};
-        checks.push(false);
-        tasks.push(temp);
-      });
-      this.setState({allTasks: tasks});
-      this.setState({checked: checks});
-      var temp: boolean[] = [];
-      for (var i = 0; i < this.state.allTasks.length; i++) {
-        temp[i] = false;
-      }
-      for (var i = 0; i < this.state.allTasks.length; i++) {
-        for (var j = 0; j < this.state.tasks.length; j++) {
-          if (this.state.tasks[j] == this.state.allTasks[i].key) {
-            temp[i] = true;
-          }
-        }
-      }
-      this.setState({checked: temp});
-    });
-  }
 
   /* Create the individual items for the flatlist */
   Item = (title: string, index: number) => {
@@ -134,122 +135,137 @@ class EditWellnessContract extends React.Component<any, State> {
         }
 
         this.props.routeTo(this.props.props.screen, this.state);
+
     }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Edit Tasks</Text>
-        </View>
+    render(){
+        return (
+            <View style={styles.container}>
+                <View style={styles.headerContainer}>
 
-        <View style={styles.listContainer}>
-          <View style={{flex: 9}}>
-            <FlatList
-              data={this.state.allTasks}
-              renderItem={({item, index}) => this.Item(item.title, index)}
-            />
-          </View>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <TouchableOpacity
-              style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}
-              onPress={() =>
-                this.props.routeTo(this.props.props.screen, this.state)
-              }>
-              <Image
-                source={require('./assets/back.png')}
-                style={styles.TouchableOpacityStyle}
-              />
-            </TouchableOpacity>
-            <View style={{flex: 4, opacity: 0}}></View>
-            <TouchableOpacity
-              style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}
-              onPress={this.submitForm}>
-              <Image
-                source={require('./assets/plus.png')}
-                style={styles.TouchableOpacityStyle}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    );
-  }
+                    <View style={{ flex: 1, alignSelf: 'center' }}>
+                        <TouchableOpacity style={styles.backButton} onPress={() => this.props.routeTo(this.props.props.screen, this.state)}>
+                            <Image source={require('./assets/back.png')} style={{ width: 50, height: 50, borderRadius: 25 }} />
+
+                        </TouchableOpacity>
+                    </View>
+
+                    <Text style={styles.headerText}>Edit Tasks</Text>
+                    <View style={{ flex: 1, alignSelf: 'center' }}>
+                        <TouchableOpacity style={[styles.backButton, { backgroundColor: 'rgb(176, 239, 179)', marginLeft: 25 }]} onPress={this.submitForm}>
+                            <Image source={require('./assets/plus.png')} style={{ width: 50, height: 50, borderRadius: 25 }} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                <View style={styles.listContainer}>
+                    <View style={{ flex: 9 }}>
+                        <FlatList
+                            data={this.state.allTasks}
+                            renderItem={({ item, index }) => this.Item(item.title, index)}
+                        />
+                    </View>
+                    { /*<View style={{ flex: 1, flexDirection: 'row' }}>
+
+                        <View style={{ flex: 5, opacity: 0 }}>
+                        </View>
+                        <TouchableOpacity style={{ flex: 1, borderWidth: 5, borderRightWidth: 0 }} onPress={this.submitForm}>
+                            <Image source={require('./assets/plus.png')} style={styles.TouchableOpacityStyle} />
+                        </TouchableOpacity>
+                    </View> */}
+                </View>
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'blanchedalmond',
-    borderRightWidth: 5,
-    borderLeftWidth: 5,
-    borderBottomWidth: 5,
-  },
-  headerText: {
-    fontSize: 40,
-    fontFamily: 'serif',
-    padding: 10,
-  },
-  headerContainer: {
-    flex: 0.1,
-    backgroundColor: 'skyblue',
-    borderTopWidth: 5,
-    borderBottomWidth: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dateContainer: {
-    flex: 0.05,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  listContainer: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  dateText: {fontSize: 16},
-  icon: {marginTop: 5},
-  itemView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 8,
-    borderColor: 'black',
-    borderWidth: 5,
-    backgroundColor: '#fff',
-    borderRadius: 50,
-    width: 350,
-  },
-  item: {
-    backgroundColor: '#fff',
-    padding: 20,
-    width: 250,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderRadius: 50,
-  },
-  addContainer: {
-    alignSelf: 'flex-end',
-    width: 50,
-    height: 50,
-    position: 'absolute',
-    top: windowHeight - 100,
-    left: windowWidth - 65,
-  },
-  title: {
-    fontSize: 18,
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  TouchableOpacityStyle: {
-    flex: 1,
-    resizeMode: 'contain',
-    width: 'auto',
-    height: 'auto',
-    borderWidth: 5,
-  },
-});
+    container: {
+        flex: 1,
+        backgroundColor: 'blanchedalmond',
+        // borderRightWidth: 5,
+        // borderLeftWidth: 5,
+        // borderBottomWidth: 5
+    },
+    backButton: {
+        alignSelf: 'flex-start',
+        backgroundColor: 'rgb(110, 192, 178)',
+        borderRadius: 15,
+        borderWidth: 4,
+        height: 60,
+        width: 60,
+    },
+    headerText: {
+        fontSize: 30,
+        fontWeight: '700',
+        color: 'black',
+        alignSelf: 'center',
+        paddingHorizontal: 5,
+        flex: 2,
+    },
+    headerContainer: {
+        height: 100,
+        backgroundColor: 'rgb(235, 150, 90)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomWidth: 4,
+        flexDirection: 'row',
+        paddingHorizontal: 15,
+        marginBottom: 10
+    },
+    dateContainer: {
+        flex: 0.05,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    listContainer: {
+        flex: 1,
+        alignItems: 'center',
+    },
+    dateText: { fontSize: 16 },
+    icon: { marginTop: 5 },
+    itemView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 8,
+        borderColor: 'black',
+        borderWidth: 4,
+        backgroundColor: '#fff',
+        borderRadius: 25,
+        width: 370
+    },
+    item: {
+        backgroundColor: '#fff',
+        padding: 20,
+        width: 250,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderRadius: 50
+    },
+    addContainer: {
+        alignSelf: 'flex-end',
+        width: 50,
+        height: 50,
+        position: 'absolute',
+        top: windowHeight - 100,
+        left: windowWidth - 65
+    },
+    title: {
+        fontSize: 20,
+        color: 'black',
+        fontWeight: 'bold'
+    },
+    TouchableOpacityStyle: {
+        flex: 1,
+        resizeMode: 'contain',
+        width: 'auto',
+        height: 'auto',
+        borderWidth: 5,
+    }
+})
+
 export default EditWellnessContract;
