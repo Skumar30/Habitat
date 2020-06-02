@@ -429,83 +429,97 @@ class RegTask extends React.Component<any, State>{
       this.setState({data: newData, checked: checks})
   
     }
-    
-    render(){
-        return(
+
+
+    render() {
+      return (
         <View style={styles.container}>
           <View style={styles.headerContainer}>
-              <Text style={styles.headerText}>Your Tasks</Text>
+  
+            <View style={{ flex: 1, alignSelf: 'center' }}>
+              <TouchableOpacity onPress={() => this.props.routeTo(Screens.Home)} style={styles.backButton}>
+                <Image style={{ width: 50, height: 50, borderRadius: 25 }} source={require('./assets/back.png')} />
+              </TouchableOpacity>
+            </View>
+  
+            <Text style={styles.headerText}>  Tasks</Text>
+  
+            <View style={{ flex: 1, alignSelf: 'center' }}>
+              <TouchableOpacity style={[styles.backButton, { backgroundColor: 'rgb(176, 239, 179)' }]}
+                onPress={() => this.props.routeTo(Screens.AddTask, { screen: Screens.RegTask })}
+              >
+                <Image source={require('./assets/plus.png')} style={{ width: 50, height: 50, borderRadius: 25 }} />
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.dateContainer}>
-            <Icon 
+            <Icon
               name='arrow-left'
               onPress={() => this.handleDateChange(false)}
               type='simple-line-icon'
-              size={12}
+              size={20}
               containerStyle={styles.icon}
               solid={true} />
-            <Text style={styles.dateText}> 
-              {this.state.isToday ? "Today" : this.dateString(this.state.date)} 
+            <Text style={styles.dateText}>
+              {this.state.isToday ? "Today" : this.dateString(this.state.date)}
             </Text>
-            <Icon 
+            <Icon
               containerStyle={styles.icon}
               name='arrow-right'
               onPress={() => this.handleDateChange(true)}
               type='simple-line-icon'
-              size={12} />           
+              size={20} />
           </View>
           <View style={styles.listContainer}>
-            <View style={{flex: 9}}>
+            <View style={{ flex: 9 }}>
               <FlatList
                 data={this.state.data}
                 renderItem={({ item, index }) => this.Item(item.title, index)}
                 keyExtractor={item => item._id}
               />
             </View>
-            <View style={{flex: 1, flexDirection: 'row'}}>
-              <TouchableOpacity style={{flex: 1, borderWidth: 5, borderLeftWidth: 0}}
-                                onPress={() => this.props.routeTo(Screens.Home)}>
-                <Image source={require ('./assets/back.png') } style={styles.TouchableOpacityStyle}/>
+            {/* <View style={{ flex: 1, flexDirection: 'row' }}>
+              <TouchableOpacity style={{ flex: 1, borderWidth: 4, borderLeftWidth: 0 }}
+                onPress={() => this.props.routeTo(Screens.Home)}>
+                <Image source={require('./assets/back.png')} style={styles.TouchableOpacityStyle} />
               </TouchableOpacity>
-              <View style={{flex: 4, opacity: 0}}>
-
+              <View style={{ flex: 4, opacity: 0 }}>
               </View>
-              <TouchableOpacity style={{flex: 1, borderWidth: 5, borderRightWidth: 0}}
-                              onPress={() => this.props.routeTo(Screens.AddTask, {screen: Screens.RegTask})}
-                              >
-                <Image source={require ('./assets/plus.png') } style={styles.TouchableOpacityStyle}/>
+              <TouchableOpacity style={{ flex: 1, borderWidth: 5, borderRightWidth: 0 }}
+                onPress={() => this.props.routeTo(Screens.AddTask, { screen: Screens.RegTask })}
+              >
+                <Image source={require('./assets/plus.png')} style={styles.TouchableOpacityStyle} />
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </View>
       )
     }
   }
-
+  
   const styles = StyleSheet.create({
     container: {
-      flex: 1, 
-      backgroundColor: 'blanchedalmond', 
-      borderRightWidth: 5,
-      borderLeftWidth: 5,
-      borderBottomWidth: 5
+      flex: 1,
+      backgroundColor: 'blanchedalmond',
     },
     headerText: {
-      fontSize: 40,
-      fontFamily: 'serif',
-      padding: 10
+      flex: 2,
+      fontSize: 35,
+      fontWeight: '700',
+      color: 'black',
+      alignSelf: 'center',
+      paddingHorizontal: 70,
     },
-    headerContainer : {
-      flex: 0.1,
+    headerContainer: {
       backgroundColor: 'skyblue',
-      borderTopWidth: 5,
-      borderBottomWidth: 5,
-      justifyContent: "center",
-      alignItems: "center",
+      borderBottomWidth: 4,
+      flexDirection: 'row',
+      paddingHorizontal: 15,
+      height: 100
     },
-    dateContainer : {
+    dateContainer: {
       flex: 0.05,
-      flexDirection: 'row', 
+      flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -513,48 +527,56 @@ class RegTask extends React.Component<any, State>{
       flex: 1,
       alignItems: 'center',
     },
-    dateText : {fontSize: 16},
-    icon : {marginTop: 5},
+    dateText: { fontSize: 24 },
+    icon: { marginTop: 5 },
     itemView: {
-      flexDirection: 'row', 
-      alignItems: 'center', 
+      flexDirection: 'row',
+      alignItems: 'center',
       marginVertical: 8,
-      borderColor: 'black', 
-      borderWidth: 5, 
-      backgroundColor: '#fff', 
-      borderRadius: 50,
-      width: 350
+      borderColor: 'black',
+      borderWidth: 4,
+      backgroundColor: '#fff',
+      borderRadius: 25,
+      width: 370
     },
     item: {
       backgroundColor: '#fff',
-      padding: 20, 
+      padding: 20,
       width: 250,
       marginVertical: 8,
-      marginHorizontal: 16, 
-      flexDirection: 'row', 
+      marginHorizontal: 16,
+      flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      borderRadius: 50
+      borderRadius: 25
     },
     addContainer: {
-      alignSelf:'flex-end', 
-      width: 50, 
-      height: 50, 
-      position: 'absolute', 
-      top: windowHeight-100, 
-      left: windowWidth-65
+      alignSelf: 'flex-end',
+      width: 50,
+      height: 50,
+      position: 'absolute',
+      top: windowHeight - 100,
+      left: windowWidth - 65
     },
     title: {
-      fontSize: 18, 
-      color: 'black', 
-      fontWeight: 'bold'},
+      fontSize: 20,
+      color: 'black',
+      fontWeight: 'bold'
+    },
     TouchableOpacityStyle: {
       flex: 1,
       resizeMode: 'contain',
       width: 'auto',
       height: 'auto',
-      borderWidth: 5,
-    }
+      borderWidth: 4,
+    },
+    backButton: {
+      alignSelf: 'flex-start',
+      backgroundColor: 'rgb(110, 192, 178)',
+      borderRadius: 15,
+      borderWidth: 4,
+      height: 60,
+      width: 60,
+    },
   })
   export default RegTask;
-  
