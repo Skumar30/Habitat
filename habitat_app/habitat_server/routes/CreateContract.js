@@ -74,8 +74,14 @@ router.post('/updateContract', async (req, res, next) => {
     for(var i = 0; i < req.body.tasks.length; i++) {
       var tempId = req.body.tasks[i];
       tempId instanceof mongoose.Types.ObjectId;
-      var findResult = await ContractModel.findOne({_id: contractId}, {tasks: tempId});
+      console.log("tempId is: " + tempId);
+      var findResult = await ContractModel.findOne({
+        _id: {$eq: contractId},
+        tasks: {$eq: tempId}
+      });
+      console.log("findResult: " + findResult);
       if(findResult == null) { //if not already in contract add it
+        console.log("adding: " + tempId);
         var addResult = await ContractModel.updateOne({_id: contractId}, { $push: {
           tasks: tempId}});
       }
@@ -85,9 +91,15 @@ router.post('/updateContract', async (req, res, next) => {
     for(var i = 0; i < req.body.tasksToRemove.length; i++) {
       var tempId = req.body.tasksToRemove[i];
       tempId instanceof mongoose.Types.ObjectId;
-      var myTaskResult = await UserModel.findOne({_id: req.user._id}, {tasks: tempId});
+      var myTaskResult = await UserModel.findOne({
+        _id: {$eq: req.user._id},
+        tasks: {$eq: tempId}
+      });
       console.log("myTaskResult: " + myTaskResult);
-      var findResult = await ContractModel.findOne({_id: contractId}, {tasks: tempId});
+      var findResult = await ContractModel.findOne({
+        _id: {$eq: contractId},
+        tasks: {$eq: tempId}
+      });
       console.log("findResult: " + findResult);
       if(myTaskResult != null && findResult != null) { //if it is my task and my task is in contract, remove it
         var removeResult = await ContractModel.updateOne({_id: contractId}, { $pull: {

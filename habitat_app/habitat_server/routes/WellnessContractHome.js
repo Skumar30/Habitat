@@ -78,8 +78,14 @@ router.post('/updateTasks', async(req, res, next) => {
         var removeContract = await ContractModel.updateOne({_id: currentContract._id}, { $pull: {tasks: currentContract.tasks[i]}});
 
         //get rid of task from user field, call remove for both, 1 will call 500 error but should be fine
-        var findUser = await UserModel.findOne({_id: user._id}, {tasks: currentContract.tasks[i]});
+    
+        var findUser = await UserModel.findOne({
+          _id: {$eq: user._id},
+          tasks: {$eq: currentContract.tasks[i]}
+        });
+
         if(findUser != null) {
+
           var removeUser = await UserModel.updateOne({_id: user._id}, { $pull: {tasks: currentContract.tasks[i]}});
         }
         else {
