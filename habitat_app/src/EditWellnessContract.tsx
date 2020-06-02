@@ -200,8 +200,8 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: 'black',
         alignSelf: 'center',
-        paddingHorizontal: 5,
-        flex: 2,
+        paddingHorizontal: 25,
+        flex: 1.5,
     },
     headerContainer: {
         height: 100,
