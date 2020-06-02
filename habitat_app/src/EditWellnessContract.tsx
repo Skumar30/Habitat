@@ -106,13 +106,17 @@ class EditWellnessContract extends React.Component<any, State> {
     )};
 
     submitForm = async() => {
-        this.state.tasks = [];
-        for (var i = 0; i < this.state.allTasks.length; i++) {
-            if (this.state.checked[i] == true) {
 
-                this.state.tasks.push(this.state.allTasks[i].key);
-                }
-            }
+        this.state.tasks = [];
+        var tasksToRemove = [];
+        for (var i = 0; i < this.state.allTasks.length; i++) {
+          if (this.state.checked[i] == true) {
+            this.state.tasks.push(this.state.allTasks[i].key);
+          }
+          else {
+            tasksToRemove.push(this.state.allTasks[i].key);
+          }
+        }
 
             if (this.state.post) {
 
@@ -125,10 +129,13 @@ class EditWellnessContract extends React.Component<any, State> {
                 body: JSON.stringify({
                     contractId: this.state.contractId,
                     tasks: this.state.tasks,
+                    tasksToRemove: tasksToRemove
                 })
             });
+
         }
         this.props.routeTo(this.props.props.screen, this.state);
+    }
     }
 
     render(){
