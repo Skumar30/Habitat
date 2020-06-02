@@ -118,24 +118,24 @@ class EditWellnessContract extends React.Component<any, State> {
           }
         }
 
-            if (this.state.post) {
+        if (this.state.post) {
 
-            await fetch(`http://${IP_ADDRESS}:3000/createContract/updateContract`, {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json', //expects a JSON
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    contractId: this.state.contractId,
-                    tasks: this.state.tasks,
-                    tasksToRemove: tasksToRemove
-                })
-            });
-
+          await fetch(`http://${IP_ADDRESS}:3000/createContract/updateContract`, {
+              method: 'POST',
+              headers: {
+                  Accept: 'application/json', //expects a JSON
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  contractId: this.state.contractId,
+                  tasks: this.state.tasks,
+                  tasksToRemove: tasksToRemove
+              })
+          });
         }
+
         this.props.routeTo(this.props.props.screen, this.state);
-    }
+
     }
 
     render(){
