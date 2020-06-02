@@ -138,23 +138,23 @@ class Home extends React.Component<{}, HomeState> {
   }
 
   renderModal = () => {
-    return(
-      <View>  
+    return (
+      <View>
         <Modal
           animationType="fade"
           transparent={true}
           visible={this.state.modal}
-        >     
+        >
         </Modal>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.DailyScreen)}><Image style={styles.modalimage} source={daily}></Image></TouchableOpacity>
-                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.RegTask)}><Image style={styles.modalimage} source={reg}></Image></TouchableOpacity>
-                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.WellnessContractHome)}><Image style={styles.modalimage} source={contract}></Image></TouchableOpacity>
-                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.FriendList)}><Image style={styles.modalimage} source={friend}></Image></TouchableOpacity>
-                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.Settings)}><Image style={styles.modalimage} source={settings}></Image></TouchableOpacity>
-                <TouchableOpacity style={styles.modaltouch} onPress={() => this.setState({modal: false})}><Image style={styles.modalimage} source={back}></Image></TouchableOpacity>
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.DailyScreen)}><Image style={styles.modalimage} source={daily}></Image></TouchableOpacity>
+              <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.RegTask)}><Image style={styles.modalimage} source={reg}></Image></TouchableOpacity>
+              <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.WellnessContractHome)}><Image style={styles.modalimage} source={contract}></Image></TouchableOpacity>
+              <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.FriendList)}><Image style={styles.modalimage} source={friend}></Image></TouchableOpacity>
+              <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.Settings)}><Image style={styles.modalimage} source={settings}></Image></TouchableOpacity>
+              <TouchableOpacity style={styles.modaltouch} onPress={() => this.setState({ modal: false })}><Image style={styles.modalimage} source={back}></Image></TouchableOpacity>
             </View>
           </View>
         </View>
@@ -196,10 +196,10 @@ class Home extends React.Component<{}, HomeState> {
             <ImageBackground source={background} style={styles.imageBackground} imageStyle={styles.imageBackground}>
               <View style={{ flex: 1, flexDirection: 'row' }}>
                 <View style={{ flex: 5 }}></View>
-                <View style={[styles.singleColumn, styles.border5, styles.radius5]}>
-                 
-                  <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({modal: !this.state.modal})}>
-                    <Image source={menu} style={styles.stretchImage}></Image>
+                <View style={[styles.singleColumn, styles.border5, { borderRadius: 20, margin: 15}]}>
+
+                  <TouchableOpacity style={{ flex: 1, borderRadius: 35 }} onPress={() => this.setState({ modal: !this.state.modal })}>
+                    <Image source={menu} style={[styles.stretchImage, { borderRadius: 50 }]}></Image>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -208,23 +208,23 @@ class Home extends React.Component<{}, HomeState> {
                   <ImageBackground source={other} style={styles.containImage} imageStyle={styles.containImage}>
                     <ImageBackground source={hat} style={styles.containImage} imageStyle={styles.containImage}>
                       {this.state.modal &&
-                      <View>  
-      
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.DailyScreen)}><Image style={styles.modalimage} source={daily}></Image></TouchableOpacity>
-            <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.RegTask)}><Image style={styles.modalimage} source={reg}></Image></TouchableOpacity>
-            <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.WellnessContractHome)}><Image style={styles.modalimage} source={contract}></Image></TouchableOpacity>
-            </View>
-            <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.FriendList)}><Image style={styles.modalimage} source={friend}></Image></TouchableOpacity>
-            <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.Settings)}><Image style={styles.modalimage} source={settings}></Image></TouchableOpacity>
-            <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.CustomizeScreen)}><Image style={styles.modalimage} source={store}></Image></TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </View>}
+                        <View>
+
+                          <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                              <View style={{ flexDirection: 'row' }}>
+                                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.DailyScreen)}><Image style={styles.modalimage} source={daily}></Image></TouchableOpacity>
+                                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.RegTask)}><Image style={styles.modalimage} source={reg}></Image></TouchableOpacity>
+                                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.WellnessContractHome)}><Image style={styles.modalimage} source={contract}></Image></TouchableOpacity>
+                              </View>
+                              <View style={{ flexDirection: 'row' }}>
+                                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.FriendList)}><Image style={styles.modalimage} source={friend}></Image></TouchableOpacity>
+                                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.CustomizeScreen)}><Image style={styles.modalimage} source={store}></Image></TouchableOpacity>
+                                <TouchableOpacity style={styles.modaltouch} onPress={() => this.props.routeTo(Screens.Settings)}><Image style={styles.modalimage} source={settings}></Image></TouchableOpacity>
+                              </View>
+                            </View>
+                          </View>
+                        </View>}
 
                     </ImageBackground>
                   </ImageBackground>
@@ -233,7 +233,7 @@ class Home extends React.Component<{}, HomeState> {
             </ImageBackground>
           </View>
           <View style={styles.petName}>
-            <TextInput style={styles.textBox} onSubmitEditing={event => {
+            <TextInput style={[styles.textBox, { fontSize: 30 }]} onSubmitEditing={event => {
               fetch(`http://${IP_ADDRESS}:3000/Home/petName`, {
                 method: 'POST',
                 headers: {
@@ -246,8 +246,8 @@ class Home extends React.Component<{}, HomeState> {
               });
             }}>{this.state.petName}</TextInput>
           </View>
-          <View style={styles.happyRow}>
-            <Image source={feeling} style={styles.stretchImage}></Image>
+          <View style={[styles.singleRow, { backgroundColor: 'black' }]}>
+            <Image source={feeling} style={[styles.stretchImage, { borderRadius: 100, backgroundColor: '#FDED8D' }]}></Image>
             <Image source={bars[0]} style={styles.stretchImage}></Image>
             <Image source={bars[1]} style={styles.stretchImage}></Image>
             <Image source={bars[2]} style={styles.stretchImage}></Image>
@@ -284,10 +284,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 5,
-    backgroundColor:
-      'blanchedalmond',
-    borderRadius: 5
+    borderTopWidth: 4,
+    borderBottomWidth: 4,
+    backgroundColor: 'blanchedalmond',
   },
   singleRow: {
     flex: 1,
@@ -309,23 +308,23 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'blanchedalmond',
-    borderWidth: 5,
-    borderRadius: 5
+    borderTopWidth: 4,
+    borderBottomWidth: 4,
   },
   playerName: {
     flex: 2, justifyContent: 'center', alignItems: 'center'
   },
   textBox: {
-    //fontFamily: 'serif',
-    fontSize: 17
+    fontSize: 22,
+    fontWeight: '500',
   },
   centeredView: {
     backgroundColor: 'blanchedalmond',
     justifyContent: 'center',
     borderWidth: 5,
-    padding: 5,
+    padding: 10,
     borderRadius: 20,
-    width: 200,
+    width: 295,
     alignSelf: 'center'
   },
   modalView: {
@@ -334,23 +333,18 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   modalimage: {
-    width: 50,
-    height: 50
+    width: 70,
+    height: 70,
+    borderRadius: 10
   },
   modaltouch: {
-    borderWidth: 5,
-    borderRadius: 5
+    borderWidth: 4,
+    borderRadius: 15,
+    margin: 6
   },
   radius5: {
     borderRadius: 10
-  },
-  happyRow: {
-    flex: 1,
-    flexDirection: 'row',
-    borderRightWidth: 5,
-    borderLeftWidth: 5,
-    borderBottomWidth: 5
-  },
+  }
 });
 
 export default Home;
