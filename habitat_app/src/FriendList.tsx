@@ -253,38 +253,43 @@ class FriendList extends Component {
 
                 <View>
                   <TouchableOpacity
-                    style={{ ...styles.addButton }}
+                    style={{ ...styles.addButton, width: 100, backgroundColor: 'indianred' }}
                     onPress={() => {
                       this.removeFriend(this.state.currFriend)
                     }}
                   >
-                    <Text style={styles.textStyle}>REMOVE FRIEND</Text>
+                    <Text style={styles.textStyle}>REMOVE</Text>
                   </TouchableOpacity>
                 </View>
 
-                <View>
+                {/* <View>
                   <TouchableOpacity
                     style={{ ...styles.addButton }}
                     onPress={() => this.viewFriend(this.state.currFriend)}
                   >
                     <Text style={styles.textStyle}>VIEW PROFILE</Text>
                   </TouchableOpacity>
+                </View> */}
+
+                <View>
+                  <TouchableOpacity
+                    style={{ ...styles.addButton, width: 100 }}
+                    onPress={() => { this.setState({ friendModalVis: false }); }}
+                  >
+                    <Text style={styles.textStyle}>CANCEL</Text>
+                  </TouchableOpacity>
                 </View>
+
               </View>
 
-              <View style={styles.centerThis}>
+              {/* <View style={styles.centerThis}>
                 <TouchableOpacity
-                  style={{
-                    ...styles.addButton,
-                    width: 100,
-                  }}
-                  onPress={() => {
-                    this.setState({ friendModalVis: false });
-                  }}
+                  style={{ ...styles.addButton,width: 100}}
+                  onPress={() => {this.setState({ friendModalVis: false });}}
                 >
                   <Text style={styles.textStyle}>CANCEL</Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
 
             </View>
           </View>
@@ -544,7 +549,7 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     backgroundColor: '#fff',
     borderRadius: 20,
-    width: 370,
+    width: 380,
     height: 70,
   },
 });

@@ -179,7 +179,7 @@ export default function EditTask(props) {
         </TouchableOpacity>
         {/* Back Button */}
         <TouchableOpacity style={styles.backButton} onPress={backHandler}>
-          <Text style={styles.buttonText}>Back</Text>
+          <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
       </View>
     </View>

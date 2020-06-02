@@ -130,11 +130,17 @@ class EditWellnessContract extends React.Component<any, State>{
                     <View style={{ flex: 1, alignSelf: 'center' }}>
                         <TouchableOpacity style={styles.backButton} onPress={() => this.props.routeTo(this.props.props.screen, this.state)}>
                             <Image source={require('./assets/back.png')} style={{ width: 50, height: 50, borderRadius: 25 }} />
-
                         </TouchableOpacity>
                     </View>
 
                     <Text style={styles.headerText}>Edit Tasks</Text>
+
+                    <View style={{ flex: 1, alignSelf: 'center' }}>
+                        <TouchableOpacity style={[styles.backButton, { backgroundColor: 'rgb(176, 239, 179)', marginLeft: 35 }]} onPress={this.submitForm}>
+                            <Image source={require('./assets/plus.png')} style={{ width: 50, height: 50, borderRadius: 25 }} />
+                        </TouchableOpacity>
+                    </View>
+
                 </View>
 
                 <View style={styles.listContainer}>
@@ -184,8 +190,8 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: 'black',
         alignSelf: 'center',
-        paddingHorizontal: 5,
-        flex: 2.2,
+        paddingHorizontal: 25,
+        flex: 1.5,
     },
     headerContainer: {
         height: 100,
@@ -217,7 +223,7 @@ const styles = StyleSheet.create({
         borderWidth: 4,
         backgroundColor: '#fff',
         borderRadius: 25,
-        width: 370
+        width: 380
     },
     item: {
         backgroundColor: '#fff',

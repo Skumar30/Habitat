@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
   StyleSheet,
@@ -22,7 +22,7 @@ import {
 } from 'react-native';
 import * as Screens from './Screens';
 import CustomButton from './components/button';
-import {IP_ADDRESS} from './IP_Address';
+import { IP_ADDRESS } from './IP_Address';
 
 const dimensions = Dimensions.get('window');
 const imageHeight = Math.round((dimensions.width * 1) / 4);
@@ -52,7 +52,7 @@ interface State {
 export default class SignUp extends React.Component<any, State> {
   constructor(props: any) {
     super(props);
-    this.state = {errormsg: false};
+    this.state = { errormsg: false };
   }
 
   render() {
@@ -92,7 +92,7 @@ export default class SignUp extends React.Component<any, State> {
                     console.log(output);
                     if (output.message) {
                       //used to check if error message exists
-                      this.setState({errormsg: true});
+                      this.setState({ errormsg: true });
                     } else {
                       actions.resetForm();
                       this.props.routeTo(Screens.Home);
@@ -114,7 +114,7 @@ export default class SignUp extends React.Component<any, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.name && props.errors.name
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Name"
@@ -132,7 +132,7 @@ export default class SignUp extends React.Component<any, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.email && props.errors.email
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Email"
@@ -150,7 +150,7 @@ export default class SignUp extends React.Component<any, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.username && props.errors.username
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Username"
@@ -171,7 +171,7 @@ export default class SignUp extends React.Component<any, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.password && props.errors.password
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Password"
@@ -193,8 +193,8 @@ export default class SignUp extends React.Component<any, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.confirm_password &&
-                        props.errors.confirm_password
-                          ? 'red'
+                          props.errors.confirm_password
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Confirm Password"

@@ -254,7 +254,7 @@ class WellnessContractHome extends Component {
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.screenTitle}>Wellness Contracts</Text>
+          <Text style={styles.screenTitle}>Wellness Contract</Text>
         </View>
 
 
@@ -462,7 +462,7 @@ const styles = StyleSheet.create({
     color: 'black',
     alignSelf: 'center',
     paddingHorizontal: 5,
-    flex: 4.2
+    flex: 3.7
   },
   modalText: {
     marginBottom: 10,

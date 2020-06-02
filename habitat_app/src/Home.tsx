@@ -220,7 +220,7 @@ class Home extends React.Component<{}, HomeState> {
             </ImageBackground>
           </View>
           <View style={styles.petName}>
-            <TextInput style={styles.textBox} onSubmitEditing={event => {
+            <TextInput style={[styles.textBox, { fontSize: 30 }]} onSubmitEditing={event => {
               fetch(`http://${IP_ADDRESS}:3000/Home/petName`, {
                 method: 'POST',
                 headers: {
@@ -295,6 +295,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'blanchedalmond',
+    borderTopWidth: 4,
     borderBottomWidth: 4,
   },
   playerName: {

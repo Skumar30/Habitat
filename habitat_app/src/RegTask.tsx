@@ -54,7 +54,7 @@ class RegTask extends React.Component<any, State>{
   /* Display the alert that allows a user to edit/delete a task */
 
   editAlert(index: number) {
-    Alert.alert("Title", "Select an option", [
+    Alert.alert("", "Select an option", [
       {
         text: "Cancel",
         style: "cancel"
@@ -144,7 +144,9 @@ class RegTask extends React.Component<any, State>{
             //if()
             if (disabled && !this.state.data[index].oneTimeOnly) {
               Alert.alert('Invalid completion', 'Repeating tasks cannot be marked complete in advance', [{ text: 'OK' }])
-              this.state.checked[index] = false
+              let checked = this.state.checked;
+              checked[index] = false
+              this.setState({ checked: checked })
               return
             }
             var checked = this.state.checked
@@ -179,7 +181,6 @@ class RegTask extends React.Component<any, State>{
       console.log("YO")
     }
   
-    
     toAward += inWellnessContract ? (15 + Math.floor(100/numContractTasks)) : 0
     */
     toAward *= complete ? 1 : -1;
@@ -199,22 +200,28 @@ class RegTask extends React.Component<any, State>{
     else {
       this.markAsComplete(index, complete, date, oneTimeOnly)
     }
+    let allData = this.state.allData;
     if (complete) {
-      this.state.allData.forEach((element, ind) => {
+      allData.forEach((element, ind) => {
         if (element._id == this.state.data[index]._id) {
           console.log(date)
           element.datesCompleted.push(date)
           console.log(this.state.allData[ind])
         }
       })
+      this.setState({ allData: allData })
     }
     else {
       let task = this.state.data[index]
       if (this.state.data[index].oneTimeOnly) {
-        this.state.data[index].datesCompleted = []
+        let tempData = this.state.data;
+
+        tempData[index].datesCompleted = []
+        this.setState({ data: tempData })
       }
       else {
-        this.state.allData.forEach((element) => {
+        allData = this.state.allData
+        allData.forEach((element) => {
           if (element._id == this.state.data[index]._id) {
             element.datesCompleted.forEach((date: string, index: number) => {
               let currDate = new Date(date)
@@ -225,6 +232,7 @@ class RegTask extends React.Component<any, State>{
             })
           }
         })
+        this.setState({ allData: allData })
       }
     }
   }
@@ -535,7 +543,7 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     backgroundColor: '#fff',
     borderRadius: 25,
-    width: 370
+    width: 380
   },
   item: {
     backgroundColor: '#fff',

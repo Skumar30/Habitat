@@ -185,7 +185,7 @@ export default function AddTask(props) {
         </TouchableOpacity>
         {/* Back Button */}
         <TouchableOpacity onPress={backHandler} style={styles.backButton}>
-          <Text style={styles.buttonText}>Back</Text>
+          <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
       </View>
     </View>
