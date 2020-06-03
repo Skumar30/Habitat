@@ -114,7 +114,7 @@ export default class SignUp extends React.Component<any, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.name && props.errors.name
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Name"
@@ -132,7 +132,7 @@ export default class SignUp extends React.Component<any, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.email && props.errors.email
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Email"
@@ -150,7 +150,7 @@ export default class SignUp extends React.Component<any, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.username && props.errors.username
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Username"
@@ -171,7 +171,7 @@ export default class SignUp extends React.Component<any, State> {
                       ...styles.input,
                       backgroundColor:
                         props.touched.password && props.errors.password
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Password"
@@ -194,7 +194,7 @@ export default class SignUp extends React.Component<any, State> {
                       backgroundColor:
                         props.touched.confirm_password &&
                         props.errors.confirm_password
-                          ? 'red'
+                          ? 'indianred'
                           : 'white',
                     }}
                     placeholder="Confirm Password"
