@@ -1,1 +1,1 @@
-export const IP_ADDRESS = '192.168.254.27';
+export const IP_ADDRESS = 'YOUR IPV4 ADDRESS HERE';
