@@ -13,7 +13,7 @@ Username | Password | Details
 | test_case6 | password1! | Used for test case 6 (logout)
 | new_username | password! | Account should be used for testing sign up
 | Darin8 | pass123!!! | Used for wellness contract functionality (cases 20-24)
-
+| new_1_testername | password1! | Used in signup
 ## Requirements
 
 To run this app you will need the following:
