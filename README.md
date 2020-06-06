@@ -11,7 +11,7 @@ Username | Password | Details
 |test_username | password1! | Used for most test cases
 | test_case6 | password1! | Used for test case 6 (logout)
 | new_username | password! | Account should be used for testing sign up
-| Darin8 | pass123!!! | Used for wellness contract functionality (cases 20-26)
+| Darin8 | pass123!!! | Used for wellness contract functionality (cases 20-24)
 
 ## Requirements
 
