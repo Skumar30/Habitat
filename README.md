@@ -49,7 +49,7 @@ In command prompt:
 ```bash
 ipconfig
 ```
-Specifically, we want the **IPv4 Address** under **Wireless LAN adapter WI-Fi 2:**
+Specifically, we want the **IPv4 Address** under **Wireless LAN adapter WI-Fi 2:** (or **Wireless Lan adapter WI-Fi** if there is no 2)
 
 **(Mac)**:\
 [Follow this link](https://osxdaily.com/2010/11/21/find-ip-address-mac/#:~:text=You%20can%20find%20any%20Macs,indicated%20in%20the%20screenshot%20below)
