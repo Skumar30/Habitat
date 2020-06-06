@@ -11,9 +11,13 @@ Username | Password | Details
 | --- | --- | ---
 |test_username | password1! | Used for most test cases
 | test_case6 | password1! | Used for test case 6 (logout)
-| new_username | password! | Account should be used for testing sign up
+| new_username | password! | Account should be used for testing the sign-up functionality in the test cases
+
+
 | Darin8 | pass123!!! | Used for wellness contract functionality (cases 20-24)
-| new_1_testername | password1! | Used in acceptance cases
+| new_1_testername | password1! | Account should be used for testing the sign-up functionality in the user story acceptance tests
+
+
 ## Requirements
 
 To run this app you will need the following:
