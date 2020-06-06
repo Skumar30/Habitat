@@ -1,6 +1,7 @@
 # Habitat
 
 One of the biggest obstacles to building habits is that they often feel like work. Habitat from Team Habit aims to flip that notion on its head by giving users the tools they need for self-improvement. Habitat features cute virtual pets that users can keep happy and buy cosmetics for using the Friendship Points they receive after completing tasks. By treating task completion as a game rather than a chore, Habitat empowers users to complete their goals and have fun while doing so. We hope you enjoy bonding with your virtual pet in Habitat!
+![Cat Image](https://github.com/Skumar30/Habitat/blob/master/habitat_app/src/assets/cat.png)
 
 ## Login Credentials
 
